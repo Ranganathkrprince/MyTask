@@ -1,0 +1,32 @@
+/*
+ * package com.niftem.app.repository;
+ * 
+ * import java.util.ArrayList; import java.util.List;
+ * 
+ * import org.springframework.data.jpa.repository.Query; import
+ * org.springframework.data.repository.CrudRepository; import
+ * com.niftem.app.entity.StudentRegistration;
+ * 
+ * 
+ * public interface StudentRegistrationRepository extends
+ * CrudRepository<StudentRegistration, Long>{
+ * 
+ * 
+ * @Query(value
+ * ="SELECT * FROM ex_student_registration sa where sa.exam_announcement_id = ?1 and sa.registration_type_id = ?2 and programmes_id  = ?3 group by courses_id"
+ * , nativeQuery = true) List<StudentRegistration> getSupplyCourses(Long
+ * examAnnouncement, Long registrationType, Long programmes);
+ * 
+ * @Query(value
+ * ="SELECT * FROM ex_student_registration sa where   sa.ex_student_id >= ?1 and sa.ex_student_id <= ?2 and colleges_id = ?3 and programmes_id =?4  and courses_id = ?5 and academicyear_id =?6 and registration_type_id = ?7 and degree_id = ?8"
+ * , nativeQuery = true) ArrayList <StudentRegistration>getStudentBetween(String
+ * startstudentid , String endstudentid , Long colleges , Long programmes , Long
+ * courses , Long academic , Long registrationtype , Long degree);
+ * 
+ * List<StudentRegistration>
+ * findByCoursesIdAndAcademicYearIdAndRegistrationIdAndCollegesIdAndDegreeIdAndSemesterId
+ * (Long courses, Long academicYear, Long registrationType, Long colleges, Long
+ * degree , Long semester);
+ * 
+ * }
+ */

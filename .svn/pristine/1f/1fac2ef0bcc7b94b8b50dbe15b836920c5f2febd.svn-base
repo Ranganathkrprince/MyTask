@@ -1,0 +1,71 @@
+package com.niftem.app.model;
+
+import java.util.Date;
+
+
+
+public class PrivilegesFeaturesRequest {
+	
+	
+	    private Long id;  
+	    private String exFeaturename;
+		private Long privilegesModules;  
+	   	private Boolean exIsActive;	
+	   	private Boolean exIsDelete;
+	   	private Date exCreateDate;	   
+	   	private Date exUpdateDate;
+		public Long getId() {
+			return id;
+		}
+		public void setId(Long id) {
+			this.id = id;
+		}
+	
+		public Long getPrivilegesModules() {
+			return privilegesModules;
+		}
+		public void setPrivilegesModules(Long privilegesModules) {
+			this.privilegesModules = privilegesModules;
+		}
+		public Boolean getExIsActive() {
+			return exIsActive;
+		}
+		public void setExIsActive(Boolean exIsActive) {
+			this.exIsActive = exIsActive;
+		}
+		public Boolean getExIsDelete() {
+			return exIsDelete;
+		}
+		public void setExIsDelete(Boolean exIsDelete) {
+			this.exIsDelete = exIsDelete;
+		}
+		public Date getExCreateDate() {
+			return exCreateDate;
+		}
+		public void setExCreateDate(Date exCreateDate) {
+			this.exCreateDate = exCreateDate;
+		}
+		public Date getExUpdateDate() {
+			return exUpdateDate;
+		}
+		public void setExUpdateDate(Date exUpdateDate) {
+			this.exUpdateDate = exUpdateDate;
+		}
+		public String getExFeaturename() {
+			return exFeaturename;
+		}
+		public void setExFeaturename(String exFeaturename) {
+			this.exFeaturename = exFeaturename;
+		}
+		@Override
+		public String toString() {
+			return "PrivilegesFeaturesRequest [id=" + id + ", exFeaturename="
+					+ exFeaturename + ", privilegesModules=" + privilegesModules
+					+ ", exIsActive=" + exIsActive + ", exIsDelete="
+					+ exIsDelete + ", exCreateDate=" + exCreateDate
+					+ ", exUpdateDate=" + exUpdateDate + "]";
+		}
+		
+
+
+}

@@ -1,0 +1,154 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+public class LateRegStudentApprove {
+	
+     
+		@NotNull(message = "academicYear is required")
+	    private Long academicYear;    
+
+		@NotNull(message = "colleges is required")
+		 private Long colleges; 
+		
+		@NotNull(message = "degree is required")
+		private Long degree;
+		
+		@NotNull(message = "programmes is required")
+		private Long programmes; 
+		
+		@NotNull(message = "department is required")
+		private Long department; 
+		
+		private Long mentor; 
+		
+		@NotNull(message = "semester is required")
+		private Long semester; 
+	
+		@NotNull(message = "please selest students")
+		private List<Long> student; 
+		
+		@NotNull(message = "programmeYear is required")
+        private Long programmeYear; 
+		
+	    private Integer exIsApprove;
+	    
+	    private Integer  exIsApproveType;
+	    
+	    private String Type;
+
+		public Long getAcademicYear() {
+			return academicYear;
+		}
+
+		public void setAcademicYear(Long academicYear) {
+			this.academicYear = academicYear;
+		}
+
+		public Long getColleges() {
+			return colleges;
+		}
+
+		public void setColleges(Long colleges) {
+			this.colleges = colleges;
+		}
+
+		public Long getDegree() {
+			return degree;
+		}
+
+		public void setDegree(Long degree) {
+			this.degree = degree;
+		}
+
+		public Long getProgrammes() {
+			return programmes;
+		}
+
+		public void setProgrammes(Long programmes) {
+			this.programmes = programmes;
+		}
+
+		public Long getDepartment() {
+			return department;
+		}
+
+		public void setDepartment(Long department) {
+			this.department = department;
+		}
+
+		public Long getSemester() {
+			return semester;
+		}
+
+		public void setSemester(Long semester) {
+			this.semester = semester;
+		}
+
+		public List<Long> getStudent() {
+			return student;
+		}
+
+		public void setStudent(List<Long> student) {
+			this.student = student;
+		}
+
+		public Long getProgrammeYear() {
+			return programmeYear;
+		}
+
+		public void setProgrammeYear(Long programmeYear) {
+			this.programmeYear = programmeYear;
+		}
+
+		
+
+		public Integer getExIsApprove() {
+			return exIsApprove;
+		}
+
+		public void setExIsApprove(Integer exIsApprove) {
+			this.exIsApprove = exIsApprove;
+		}
+
+		public String getType() {
+			return Type;
+		}
+
+		public void setType(String type) {
+			Type = type;
+		}
+
+		public Integer getExIsApproveType() {
+			return exIsApproveType;
+		}
+
+		public void setExIsApproveType(Integer exIsApproveType) {
+			this.exIsApproveType = exIsApproveType;
+		}
+
+		public Long getMentor() {
+			return mentor;
+		}
+
+		public void setMentor(Long mentor) {
+			this.mentor = mentor;
+		}
+
+		@Override
+		public String toString() {
+			return "LateRegStudentApprove [academicYear=" + academicYear + ", colleges=" + colleges + ", degree="
+					+ degree + ", programmes=" + programmes + ", department=" + department + ", mentor=" + mentor
+					+ ", semester=" + semester + ", student=" + student + ", programmeYear=" + programmeYear
+					+ ", exIsApprove=" + exIsApprove + ", exIsApproveType=" + exIsApproveType + ", Type=" + Type + "]";
+		}
+
+		
+		
+		
+	    
+	    
+
+}

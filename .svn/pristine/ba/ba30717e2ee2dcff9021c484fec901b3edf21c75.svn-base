@@ -1,0 +1,209 @@
+package com.niftem.app.service;
+
+import java.util.Map;
+
+import javax.validation.Valid;
+
+import com.niftem.app.entity.Designation;
+import com.niftem.app.entity.StaffType;
+import com.niftem.app.entity.Staffpersonal;
+import com.niftem.app.entity.Studentadmission;
+import com.niftem.app.model.CoursesCoverageRequest;
+import com.niftem.app.model.CreateStaffRequest;
+import com.niftem.app.model.CreateStudentRequest;
+import com.niftem.app.model.ExamAttendanceRequest;
+import com.niftem.app.model.ExamTimeTableRequest;
+import com.niftem.app.model.ExternalMarksRequest;
+import com.niftem.app.model.FeeCategoryRequest;
+import com.niftem.app.model.FeeHeadMasterRequest;
+import com.niftem.app.model.FeeMasterRequest;
+import com.niftem.app.model.HostelConfigureDetailRequest;
+import com.niftem.app.model.InternalMarksRequest;
+import com.niftem.app.model.InvigilatorAllocationRequest;
+import com.niftem.app.model.QuestionPaperPatternRequest;
+import com.niftem.app.model.QuestionPaperTopicRequest;
+import com.niftem.app.model.QuestionPaperTypeRequest;
+import com.niftem.app.model.QuestionpaperRequest;
+import com.niftem.app.model.SeatArrangementRequest;
+import com.niftem.app.model.SemesterRegistrationRequest;
+import com.niftem.app.model.StudentEnrollementNoRequest;
+import com.niftem.app.model.StudentProfile;
+import com.niftem.app.model.StudentRollNoRequest;
+
+public interface AcademicService {
+
+	Map<String, String> createStudentProfile(CreateStudentRequest request);
+
+	Boolean validateStudentInfo(CreateStudentRequest request, Studentadmission admision);
+
+	Map<String, Object> getAllStudentProfile(CreateStudentRequest request);
+
+	Map<String, String> deleteStudentProfile(CreateStudentRequest request);
+
+	
+	Map<String, String> createStaff(CreateStaffRequest request);
+	//Map<String, String> saveStaffDetails(CreateStaffRequest request, Staffpersonal staffpersonal,String discipline, Optional<Designation> designation, Optional<StaffType> safftype);
+	Map<String, String> updateStaff(CreateStaffRequest request);
+	Map<String, String> deleteStaff(CreateStaffRequest request);
+	Map<String, Object> getAllStaff(CreateStaffRequest request);
+
+	Map<String, String> updateStudentInternalMarks(InternalMarksRequest request);
+		
+	
+
+
+	Map<String, String> createExamAttendance(ExamAttendanceRequest request);
+
+	Map<String, Object> checkAttendance(ExamAttendanceRequest request);
+
+	Map<String, Object> checkRoomCapacity(ExamAttendanceRequest request);
+
+	Map<String, String> createStudentEnrollementNo(StudentEnrollementNoRequest request);
+	
+	Map<String, String> createStudentRollNo( StudentRollNoRequest request);
+
+	Map<String, Object> getStudentEnrollementNo(StudentEnrollementNoRequest request);
+
+	Map<String, Object> getstudentRollNo(StudentEnrollementNoRequest request);
+	    //Newly added method
+	
+	Map<String, String> saveStaffDetails(CreateStaffRequest request, Staffpersonal staffpersonal,
+					java.util.Optional<Designation> designation, java.util.Optional<StaffType> safftype);
+
+	
+	//FeeHeadMaster
+	Map<String, String> feeHeadMaster(FeeHeadMasterRequest request);
+
+	Map<String, String> updatefeeHeadMaster(FeeHeadMasterRequest request);
+
+	Map<String, Object> getfeeHeadMaster(FeeHeadMasterRequest request);
+
+	Map<String, String> deletefeeHeadMaster(FeeHeadMasterRequest request);
+	
+	//FeeCategory
+
+
+	Map<String, String> createfeeCategory(FeeCategoryRequest request);
+
+	Map<String, String> updatefeeCategory(FeeCategoryRequest request);
+
+	Map<String, Object> getfeeCategory(FeeCategoryRequest request);
+
+	Map<String, String> deletefeeCategory(FeeCategoryRequest request);
+	
+//FeeMaster
+
+	Map<String, String> createfeeMaster(FeeMasterRequest request);
+
+	Map<String, String> updatefeeMaster(FeeMasterRequest request);
+
+	Map<String, Object> getfeeMaster(FeeMasterRequest request);
+
+	Map<String, String> deletefeeMaster(FeeMasterRequest request);
+
+	
+	
+	Map<String, String> createExamTimeTable(ExamTimeTableRequest Request);
+	Map<String, String> updateExamTimeTable(ExamTimeTableRequest request);
+	Map<String, Object> getExamTimeTable(ExamTimeTableRequest request);
+	
+
+
+	Map<String, String> createQuestionPaperType(QuestionPaperTypeRequest questionPaperType);
+	Map<String, Object> getQuestionPaperType(QuestionPaperTypeRequest request);
+	Map<String, String> deleteQuestionPaperType(QuestionPaperTypeRequest request);
+	Map<String, String> updateQuestionPaperType(QuestionPaperTypeRequest request);
+
+	Map<String, String> createQuestionPaperTopic(QuestionPaperTopicRequest request);
+	Map<String, Object> getQuestionPaperTopic(QuestionPaperTopicRequest request);
+	Map<String, String> deleteQuestionPaperTopic(QuestionPaperTopicRequest request);
+	Map<String, String> updateQuestionPaperTopic(QuestionPaperTopicRequest request);
+
+	Map<String, String> createQuestionPaperPattern(QuestionPaperPatternRequest request);
+	Map<String, Object> getQuestionPaperPattern(QuestionPaperPatternRequest request);
+	Map<String, String> deleteQuestionPaperPattern(QuestionPaperPatternRequest request);
+	Map<String, String> updateQuestionPaperPattern(QuestionPaperPatternRequest request);
+
+	Map<String, String> createInvigilatorAllocation(InvigilatorAllocationRequest request);
+	Map<String, Object> getInvigilatorAllocation(InvigilatorAllocationRequest request);
+	Map<String, String> deleteInvigilatorAllocation(InvigilatorAllocationRequest request);
+	Map<String, String> updateInvigilatorAllocation(InvigilatorAllocationRequest request);
+
+	Map<String, Object> getExamAttendance(ExamAttendanceRequest request);
+
+
+	Map<String, Object> updateExamTimeTableDetails(ExamTimeTableRequest request);
+
+	Map<String, String> generateTimetable(ExternalMarksRequest request);
+
+	Map<String, Object> uploadQuestionPaper(QuestionpaperRequest request);
+
+	Map<String, Object> saveJumble(QuestionpaperRequest request);
+
+	
+
+	Map<String, Object> getStudentListForHostel(SemesterRegistrationRequest request);
+
+	Map<String, Object> getRegStudentListForHostel(SemesterRegistrationRequest request);
+
+	Map<String, String> updateHostelForStudent( CreateStudentRequest request);
+
+	Map<String, String> deleteHostelForStudent(CreateStudentRequest request);
+
+	Map<String, Object> getHostelPenalty(HostelConfigureDetailRequest request);
+
+	Map<String, Object> getPaybleAmount(HostelConfigureDetailRequest request);
+
+	Map<String, Object> checkApprove(SemesterRegistrationRequest request);
+
+	Map<String, Object> qpSetterUpload(QuestionpaperRequest request);
+
+	Map<String, Object> getQuestionPaper(QuestionpaperRequest request);
+
+	Map<String, Object> verifyQuestionpaper(QuestionpaperRequest request);
+
+	Map<String, Object> uploadQPKeyAnswer(QuestionpaperRequest request);
+
+	Map<String, Object> getQPKeyAnswer(QuestionpaperRequest request);
+
+	Map<String, String> updateStudentEnrollementNo(@Valid StudentEnrollementNoRequest request);
+
+	Map<String, String> deleteStudentEnrollementNo(StudentEnrollementNoRequest request);
+
+	Map<String, String> updateStudentRollNo(@Valid StudentEnrollementNoRequest request);
+
+	Map<String, String> deleteStudentRollNo(StudentEnrollementNoRequest request);
+
+	Map<String, String> updateProfileByStudent(StudentProfile request);
+
+	Map<String, String> updateStudentProfile(CreateStudentRequest request);
+
+	Map<String, String> updateStudentProfileByStudent(CreateStudentRequest request);
+
+	Map<String, Object> approveStudentPersonalDetails(CreateStudentRequest request);
+
+	Map<String, Object> getstudentupdatedprofile(CreateStudentRequest request);
+
+	Map<String, String> createseatArrangement(SeatArrangementRequest request);
+
+	Map<String, Object> approveStatus(CreateStudentRequest request);
+
+	Map<String, Object> getUpdatedStudentPersonalDetails(CreateStudentRequest request);
+
+	Map<String, Object> updateExamTimeSlot(ExamTimeTableRequest request);
+
+	Map<String, String> PublishTimetable(ExternalMarksRequest request);
+
+	Map<String, String> createcoursescoverage(CoursesCoverageRequest request);
+
+	Map<String, String> updatecoursescoverage(CoursesCoverageRequest request);
+
+	Map<String, Object> getcoursescoverage(CoursesCoverageRequest request);
+
+	Map<String, String> deletecoursescoverage(CoursesCoverageRequest request);
+
+	Map<String, Object> getDate(SeatArrangementRequest request);
+
+	Map<String, Object> getExamDuty(SeatArrangementRequest request);
+
+}

@@ -1,0 +1,50 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Colleges;
+import com.niftem.app.entity.RoomMaster;
+
+
+public interface RoomMasterRepository extends CrudRepository<RoomMaster, Long> {
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_room_master set ex_is_delete = ?1,ex_is_active =?2  where id =?3", nativeQuery = true)
+	int deleteRoomMaster(Boolean exIsDelete,Boolean exIsActive, Long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_room_master set ex_name = ?1,ex_room_number = ?2 ,colleges_id = ?3 ,ex_room_capacity = ?4, ex_is_active =?5 , ex_update_date = ?6,ex_number_of_student= ?8 , no_of_invigilator =?9 where id =?7", nativeQuery = true)
+	int updateRoomMasterRecord(String exName, String exRoomNumber, Colleges colleges, Integer exRoomCapacity,
+			Boolean exIsActive, Date date, Long id, Integer exNumberOfStudent , int invigilator);
+
+	
+	List<RoomMaster> findByExIsDelete(boolean is_delete);
+
+	List<RoomMaster> findByExNameAndExIsDeleteAndCollegesId(String exName, boolean delete, Long colleges);
+
+	@Query(value = "SELECT * FROM ex_room_master where colleges_id in ?1 and ex_is_delete=?2 and ex_is_active=?3", nativeQuery = true)
+	List<RoomMaster> getRoomsOnCollege(List<Long> list, boolean isDelete, boolean isActive);
+
+	Optional<RoomMaster> findByExIsDeleteAndExIsActiveAndId(boolean is_delete, boolean is_active, Long roomId);
+
+	List<RoomMaster> findByExIsDeleteAndExIsActiveAndCollegesId(boolean b, boolean c, Long colleges);
+	
+
+	List<RoomMaster> findByCollegesId(Long colleges);
+
+	Optional<RoomMaster> findByIdAndExIsDeleteAndExIsActive(Long roomId, boolean b, boolean c);
+
+	
+	List<RoomMaster> findByExIsDeleteAndExIsActive(boolean is_delete, boolean is_active);
+
+
+}

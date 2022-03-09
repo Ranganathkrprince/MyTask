@@ -1,0 +1,75 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.ExamAttendance;
+
+public interface ExamAttendanceRepository extends CrudRepository<ExamAttendance, Long>{
+	
+	List<ExamAttendance> findByExIsDeleteAndAcademicYearIdAndCollegesIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndProgrammesIdAndRegistrationIdAndRoomIdId
+	(Boolean is_delete , Long academic , Long college , Long course , Long degree , Long announsment , Long program , Long regid , Long roomid);
+
+	
+
+	@Query(value ="SELECT coalesce(max(ch.id), 0) FROM ex_exam_attendance ch", nativeQuery = true)
+	Long getMaxId();
+
+
+
+	List<ExamAttendance> findByExIsDeleteAndAcademicYearIdAndCollegesIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndProgrammesIdAndRegistrationIdAndDepartmentIdAndStudentadmissionId(boolean b, Long academicYear, Long colleges, Long courses, Long degree, Long examAnnouncement,Long programmes, Long registrationType, Long department , Long studentadmision);
+
+
+
+	List<ExamAttendance> findByExIsDeleteAndAcademicYearIdAndCollegesIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndProgrammesIdAndRegistrationId(
+			boolean b, Long academicYear, Long colleges, Long courses, Long degree, Long examAnnouncement,
+			Long programmes, Long registrationType);
+
+	
+	Optional<ExamAttendance> findByExIsDeleteAndExIsActiveAndStudentadmissionExRollNoAndCollegesIdAndDegreeIdAndProgrammesIdAndExamAnnouncementIdAndCoursesId(
+			boolean b, boolean c, String trim, Long colleges, Long degree, Long programmes, Long examAnnouncement,
+			Long courses);
+
+	
+
+	List<ExamAttendance> findByCollegesIdAndProgrammesIdAndDepartmentIdAndStreamIdAndAcademicYearIdAndDegreeIdAndSemesterIdAndExIsActiveAndExIsDelete(
+			Long colleges, Long programmes, Long department, Long stream, Long academicYear, Long degree, Long semester,
+			boolean b, boolean c);
+
+
+
+	List<ExamAttendance> findByExIsDeleteAndAcademicYearIdAndCollegesIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndProgrammesIdAndRegistrationIdAndDepartmentId(
+			boolean b, Long academicYear, Long colleges, Long courses, Long degree, Long examAnnouncement,
+			Long programmes, Long registrationType, Long department);
+	
+	List<ExamAttendance> findByExIsDeleteAndAcademicYearIdAndCollegesIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndProgrammesIdAndRegistrationIdAndDepartmentIdAndRoomIdIdAndStreamId(
+			boolean b, Long academicYear, Long colleges, Long courses, Long degree, Long examAnnouncement,
+			Long programmes, Long registrationType, Long department , Long room , Long stream);
+
+
+
+	Optional<ExamAttendance> findByExIsDeleteAndExIsActiveAndStudentadmissionIdAndCollegesIdAndDegreeIdAndProgrammesIdAndExamAnnouncementIdAndCoursesId(
+			boolean b, boolean c, Long studentAdmissionId, Long colleges, Long degree, Long programmes,
+			Long examAnnouncement, Long courses);
+
+
+
+	List<ExamAttendance> findByStudentadmissionIdAndCoursesIdIn(Long id, List<Long> courses);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "delete from ex_exam_attendance where student_admission_id=?1 AND  courses_id IN ?2", nativeQuery = true)
+	int deleteCourseFromAttendanceTable(Long id, List<Long> courses);
+
+
+
+	Optional<ExamAttendance> findByExIsDeleteAndExIsActiveAndStudentadmissionExRollNoAndCollegesIdAndDegreeIdAndProgrammesIdAndCoursesId(
+			boolean b, boolean c, String trim, Long colleges, Long degree, Long programmes, Long courses);
+
+}

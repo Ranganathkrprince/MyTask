@@ -1,0 +1,244 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+
+@Entity
+@Table(name = "ex_publish_result")
+public class PublishResult {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "batch_id", nullable = false)
+	private Batch batch;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "collage_id", nullable = false)
+	private Colleges colleges;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_publish_result_sem", joinColumns = {
+			@JoinColumn(name = "publish_result_id", referencedColumnName = "id", nullable = false, updatable = true) }, inverseJoinColumns = {
+					@JoinColumn(name = "semster_id", referencedColumnName = "id", nullable = false, updatable = true) })
+	private List<Semster> semster = new LinkedList<>();
+
+	private int exResultType;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	private int exIsPublish;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+
+	public Batch getBatch() {
+		return batch;
+	}
+
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+
+	public List<Semster> getSemster() {
+		return semster;
+	}
+
+
+	public int getExResultType() {
+		return exResultType;
+	}
+
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+
+	public int getExIsPublish() {
+		return exIsPublish;
+	}
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+
+	public void setBatch(Batch batch) {
+		this.batch = batch;
+	}
+
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+
+	public void setSemster(List<Semster> semster) {
+		this.semster = semster;
+	}
+
+
+	public void setExResultType(int exResultType) {
+		this.exResultType = exResultType;
+	}
+
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+
+	public void setExIsPublish(int exIsPublish) {
+		this.exIsPublish = exIsPublish;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	
+	@Override
+	public String toString() {
+		return "PublishResult [id=" + id + ", programmes=" + programmes + ", academicYear=" + academicYear + ", batch="
+				+ batch + ", degree=" + degree + ", colleges=" + colleges + ", semster=" + semster + ", exResultType="
+				+ exResultType + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", exIsActive="
+				+ exIsActive + ", exIsDelete=" + exIsDelete + ", exIsPublish=" + exIsPublish + ", user=" + user
+				+ ", department=" + department + "]";
+	}
+
+
+	
+	
+}

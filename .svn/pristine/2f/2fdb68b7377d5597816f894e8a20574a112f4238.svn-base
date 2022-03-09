@@ -1,0 +1,42 @@
+package com.niftem.app.service;
+
+import java.util.Map;
+
+import javax.validation.Valid;
+
+import com.niftem.app.entity.NotificationCategory;
+import com.niftem.app.model.LoadAlertRequest;
+import com.niftem.app.model.NotificationTemplateRequest;
+import com.niftem.app.model.PushAlertNotificationRequest;
+
+
+public interface NotificationService {
+
+	Map<String, String> saveNotificationCategory(NotificationCategory request);
+
+	Map<String, Object> getNotificationCategory(NotificationCategory request);
+
+	Map<String, String> deleteNotificationCategory(NotificationCategory request);
+
+	Map<String, String> updateNotificationCategory(NotificationCategory request);
+
+	Map<String, String> createNotificationTemplate(NotificationTemplateRequest request);
+
+	Map<String, Object> getNotificationTemplate(NotificationTemplateRequest request);
+
+	Map<String, String> deleteNotificationTemplate(NotificationTemplateRequest request);
+
+	Map<String, String> updateNotificationTemplate(NotificationTemplateRequest request);
+
+	Map<String, String> createAlert(@Valid PushAlertNotificationRequest request);
+
+	Map<String, String> deleteAlert(PushAlertNotificationRequest request);
+
+	Map<String, Object> getAlert(PushAlertNotificationRequest request);
+
+	Map<String, String> updateAlert(PushAlertNotificationRequest request);
+
+	Map<String, Object> loadAlert(@Valid LoadAlertRequest request);
+
+	Map<String, String> updateAlert(LoadAlertRequest request);
+}

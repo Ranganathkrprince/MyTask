@@ -1,0 +1,84 @@
+package com.niftem.app.model;
+
+public class ExamAcademicYearProgrammesRequest {
+	private Long id;
+	 private Long academicyear; 
+	 private Long programmes; 
+	 private Long degree;
+	 private Long department;
+	 private Long registrationtype;
+	 private Long examAnnouncement;
+	 private Long user;
+	 private Boolean exIsTimeTable;
+	 private Boolean exIsInvigilator ;
+	 public Long getDegree() {
+		return degree;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public Long getDepartment() {
+		return department;
+	}
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getAcademicyear() {
+		return academicyear;
+	}
+	public void setAcademicyear(Long academicyear) {
+		this.academicyear = academicyear;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public Long getRegistrationtype() {
+		return registrationtype;
+	}
+	public void setRegistrationtype(Long registrationtype) {
+		this.registrationtype = registrationtype;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public Boolean getExIsTimeTable() {
+		return exIsTimeTable;
+	}
+	public void setExIsTimeTable(Boolean exIsTimeTable) {
+		this.exIsTimeTable = exIsTimeTable;
+	}
+
+	public Boolean getExIsInvigilator() {
+		return exIsInvigilator;
+	}
+	public void setExIsInvigilator(Boolean exIsInvigilator) {
+		this.exIsInvigilator = exIsInvigilator;
+	}
+	
+	@Override
+	public String toString() {
+		return "ExamAcademicYearProgrammesRequest [id=" + id + ", academicyear=" + academicyear + ", programmes="
+				+ programmes + ", degree=" + degree + ", department=" + department + ", registrationtype="
+				+ registrationtype + ", examAnnouncement=" + examAnnouncement + ", user=" + user + ", exIsTimeTable="
+				+ exIsTimeTable + ", exIsInvigilator=" + exIsInvigilator + "]";
+	}
+
+}

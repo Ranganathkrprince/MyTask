@@ -1,0 +1,36 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.StaffComplaintType;
+
+public interface StaffComplaintTypeRepository extends CrudRepository<StaffComplaintType, Long>{
+
+	List<StaffComplaintType> findByExNameAndExIsDelete(String exName, boolean b);
+
+	List<StaffComplaintType> findByExIsDelete(boolean b);
+
+	Optional<StaffComplaintType> findByIdAndExIsActiveAndExIsDelete(Long complaintType, boolean b, boolean c);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_staff_complaint_type set ex_name = ?1 ,ex_update_date=?2 , role_id =?4 where id=?3", nativeQuery = true)
+	int updateComplaintType(String exName, Date date,Long id , Long role);
+
+	Optional<StaffComplaintType> findByExName(String exName);
+
+	Optional<StaffComplaintType> findByExIsDeleteAndExIsActiveAndId( boolean b, boolean c,Long id);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_staff_complaint_type set ex_is_delete =?1 ,ex_is_active =?3 where id=?2", nativeQuery = true)
+	int deleteComplaintType(boolean b, Long id, boolean c);
+
+}

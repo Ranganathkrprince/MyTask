@@ -1,0 +1,251 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Semster;
+
+
+public interface SemsterRepository extends CrudRepository<Semster, Long> {
+
+	List<Semster> findByExNameAndExIsDelete(String exName, Boolean is_delete);
+
+	List<Semster> findByExIsDelete(Boolean is_delete);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_semester set ex_name = ?1 ,ex_update_date = ?2 ,ex_is_active = ?3 , ex_identifier =?4,ex_description = ?6 where id =?5", nativeQuery = true)
+
+	int updateSemsterRecord(String exName, Date date, Boolean exIsActive, Integer exIdentifier, Long id,
+			String exDescription);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_semester set ex_is_delete = ?1 , ex_is_active = ?2 where id =?3", nativeQuery = true)
+	int deleteSemster(Boolean is_delete, Boolean is_active, Long id);
+
+	Optional<Semster> findByExIsDeleteAndExIsActiveAndId(Boolean delete, Boolean active, Long semester);
+
+	Optional<Semster> findByExNameAndExIsActiveAndExIsDelete(String exName, Boolean active, Boolean delete);
+
+	Optional<Semster> findByIdAndExIsDeleteAndExIsActive(Long semster, boolean b, boolean c);
+
+	
+	List<Semster> findByExIdentifierAndExIsDeleteAndExIsActive(Integer exIdentifier, boolean b, boolean c);
+
+	Optional<Semster> findByExIsDeleteAndExIsActiveAndId(boolean delete, boolean active, Semster semester);
+
+	Optional<Semster> findByIdAndExIsActiveAndExIsDelete(Long semester, boolean b, boolean c);
+
+	Optional<Semster> findByExIsDeleteAndId(boolean b, Long id);
+
+	
+	@Query(value = "SELECT s.ex_roll_no  as studentId,\r\n" + 
+			"       sa.ex_name as studentname, \r\n" + 
+			"       c.ex_identifier AS collage,\r\n" + 
+			"       p.ex_identifier AS pogram,\r\n" + 
+			"       \r\n" + 
+			"      b.ex_identifier,sa.ex_enrollement_no, z.ex_contact_details,z.ex_email_id,\r\n "+
+			"	   concat(r1.ex_grade_point_av ,'/',r1.ex_camu_grade_point_av) as firstSemGPACGPA,\r\n" + 
+			"	   concat(r2.ex_grade_point_av ,'/',r2.ex_camu_grade_point_av) as SecondGPACGPA,\r\n" + 
+			"	   concat(r3.ex_grade_point_av ,'/',r3.ex_camu_grade_point_av) as threedSemGPACGPA,\r\n" + 
+			"	   concat(r4.ex_grade_point_av ,'/',r4.ex_camu_grade_point_av) as fourSemGPACGPA,\r\n" + 
+			"	   concat(r5.ex_grade_point_av ,'/',r5.ex_camu_grade_point_av) as fiveSemGPACGPA,\r\n" + 
+			"	   concat(r6.ex_grade_point_av ,'/',r6.ex_camu_grade_point_av) as sixSemGPACGPA,\r\n" + 
+			"	   concat(r7.ex_grade_point_av ,'/',r7.ex_camu_grade_point_av) as sevenSemGPACGPA,\r\n" + 
+			"	   concat(r8.ex_grade_point_av ,'/',r8.ex_camu_grade_point_av) as eightSemGPACGPA,\r\n" + 
+			"	   r8.ex_camu_grade_point_av AS OGPA\r\n" + 
+			"	   \r\n" + 
+			"FROM\r\n" + 
+			"	 (SELECT DISTINCT \r\n" + 
+			"       e.ex_roll_no,e.colleges_id,e.programmes_id\r\n" + 
+			"     FROM \r\n" + 
+			"         ex_semester_progress_report e , ex_student_admission s\r\n" + 
+			"         \r\n" + 
+			"         WHERE e.colleges_id=?1 AND s.academic_year_id = ?3 AND s.id = e.student_admission_id  and    e. programmes_id=?2\r\n" + 
+			"         )s\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r1  ON r1.ex_roll_no = s.ex_roll_no AND r1.programmeyear_id=1 AND r1.semester_id =1\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r2  ON r2.ex_roll_no = s.ex_roll_no AND r2.programmeyear_id=1 AND r2.semester_id =2\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r3  ON r3.ex_roll_no = s.ex_roll_no AND r3.programmeyear_id=2 AND r3.semester_id =3\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r4  ON r4.ex_roll_no = s.ex_roll_no AND r4.programmeyear_id=2 AND r4.semester_id =4\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r5  ON r5.ex_roll_no = s.ex_roll_no AND r5.programmeyear_id=3 AND r5.semester_id =5\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r6  ON r6.ex_roll_no = s.ex_roll_no AND r6.programmeyear_id=3 AND r6.semester_id =6\r\n" + 
+			"	   LEFT JOIN ex_semester_progress_report r7  ON r7.ex_roll_no = s.ex_roll_no AND r7.programmeyear_id=4 AND r7.semester_id =7\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r8  ON r8.ex_roll_no = s.ex_roll_no AND r8.programmeyear_id=4 AND r8.semester_id =8\r\n" + 
+			"      LEFT JOIN ex_colleges c ON c.id = s.colleges_id\r\n" + 
+			"      LEFT JOIN ex_programmes p ON p.id = s.programmes_id\r\n" + 
+			"       LEFT JOIN ex_student_admission sa ON sa.ex_roll_no=s.ex_roll_no\r\n" +
+			" 		LEFT JOIN ex_student_personal z ON z.student_admission_id=sa.id\r\n"+
+			"		LEFT JOIN ex_batch b ON b.id=sa.batch_id\r\n"+
+			"      GROUP BY s.ex_roll_no", nativeQuery = true)
+	List<Object[]> getrecords(Long colleges, Long programmes , Long academic);
+
+	
+	
+	
+	
+	@Query(value = "SELECT s.ex_roll_no  as studentId,\r\n" + 
+			"       sa.ex_name as studentname, \r\n" + 
+			"       c.ex_identifier AS collage,\r\n" + 
+			"       p.ex_identifier AS pogram,\r\n" + 
+			"       \r\n" + 
+			"      b.ex_identifier,sa.ex_enrollement_no, z.ex_contact_details,z.ex_email_id,\r\n "+
+			"	   concat(r1.ex_grade_point_av ,'/',r1.ex_camu_grade_point_av) as firstSemGPACGPA,\r\n" + 
+			"	   concat(r2.ex_grade_point_av ,'/',r2.ex_camu_grade_point_av) as SecondGPACGPA,\r\n" + 
+			"	   concat(r3.ex_grade_point_av ,'/',r3.ex_camu_grade_point_av) as threedSemGPACGPA,\r\n" + 
+			"	   concat(r4.ex_grade_point_av ,'/',r4.ex_camu_grade_point_av) as fourSemGPACGPA,\r\n" + 
+			"	   r4.ex_camu_grade_point_av AS OGPA\r\n" + 
+			"	   \r\n" + 
+			"FROM\r\n" + 
+			"	 (SELECT DISTINCT \r\n" + 
+			"       e.ex_roll_no,e.colleges_id,e.programmes_id\r\n" + 
+			"     FROM \r\n" + 
+			"         ex_semester_progress_report e , ex_student_admission s\r\n" + 
+			"         \r\n" + 
+			"         WHERE e.colleges_id=?1 AND s.academic_year_id = ?3 AND s.id = e.student_admission_id  and    e. programmes_id=?2\r\n" + 
+			"         )s\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r1  ON r1.ex_roll_no = s.ex_roll_no AND r1.programmeyear_id=1 AND r1.semester_id =1\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r2  ON r2.ex_roll_no = s.ex_roll_no AND r2.programmeyear_id=1 AND r2.semester_id =2\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r3  ON r3.ex_roll_no = s.ex_roll_no AND r3.programmeyear_id=2 AND r3.semester_id =3\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r4  ON r4.ex_roll_no = s.ex_roll_no AND r4.programmeyear_id=2 AND r4.semester_id =4\r\n" + 
+			"      LEFT JOIN ex_colleges c ON c.id = s.colleges_id\r\n" + 
+			"      LEFT JOIN ex_programmes p ON p.id = s.programmes_id\r\n" + 
+			"       LEFT JOIN ex_student_admission sa ON sa.ex_roll_no=s.ex_roll_no\r\n" +
+			" 		LEFT JOIN ex_student_personal z ON z.student_admission_id=sa.id\r\n"+
+			"		LEFT JOIN ex_batch b ON b.id=sa.batch_id\r\n"+
+			"      GROUP BY s.ex_roll_no", nativeQuery = true)
+	List<Object[]> getrecordssssss(Long colleges, Long programmes, Long academicYear);
+	
+	
+	
+	
+	@Query(value = " SELECT c.ex_identifier AS clgId,p.ex_identifier AS pgm,m.ex_identifier AS dept,\r\n" + 
+			" b.ex_identifier AS batch, s.ex_roll_no  as studentId,\r\n" + 
+			"			       sa.ex_name as studentname ,z.ex_contact_details AS cd,z.ex_email_id AS email,\r\n" + 
+			"		case when r1.marksheet_path IS NULL OR r1.marksheet_path='NA' then 'pending' ELSE 'uploaded' END AS 1stsemMarksheet,\r\n" + 
+			"			case when r2.marksheet_path IS NULL OR r2.marksheet_path='NA' then 'pending' ELSE 'uploaded' END AS 2ndsemMarksheet,\r\n" + 
+			"				case when r3.marksheet_path IS NULL OR r3.marksheet_path='NA' then 'pending' ELSE 'uploaded' END AS 3rdSemMarksheet,\r\n" + 
+			"					case when r4.marksheet_path IS NULL OR r4.marksheet_path='NA' then 'pending' ELSE 'uploaded' END AS 4thSemMarksheet,\r\n" + 
+			"						case when r5.marksheet_path IS NULL OR r5.marksheet_path='NA' then 'pending' ELSE 'uploaded' END AS 5thSemMarksheet,\r\n" + 
+			"							case when r6.marksheet_path IS NULL OR r6.marksheet_path='NA' then 'pending' ELSE 'uploaded' END AS 6thSemMarksheet,\r\n" + 
+			"								case when r7.marksheet_path IS NULL OR r7.marksheet_path='NA' then 'pending' ELSE 'uploaded' END AS 7thSemMarksheet,\r\n" + 
+			"									case when r8.marksheet_path IS NULL OR r8.marksheet_path='NA' then 'pending' ELSE 'uploaded' END AS 8thSemMarksheet,\r\n "+
+			" 										case when a.certificate_type= 1 AND a.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END AS pdc, \r\n" +
+			" 										case when a.certificate_type= 2 AND a.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END AS Transcript ,\r\n" +
+			" 										case when a.certificate_type= 3 AND a.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END AS Degree \r\n" +
+			"			 	FROM \r\n" + 
+			"				 (SELECT DISTINCT \r\n" + 
+			"			       e.ex_roll_no,e.colleges_id,e.programmes_id\r\n" + 
+			"			     FROM \r\n" + 
+			"			         ex_semester_progress_report e , ex_student_admission s  \r\n" + 
+			"			         \r\n" + 
+			"			         WHERE e.colleges_id=?1 AND s.academic_year_id =?3 AND s.id = e.student_admission_id  AND e. programmes_id=?2  \r\n" + 
+			"			         )s\r\n" + 
+			"		  \r\n" + 
+			"			      LEFT JOIN ex_semester_progress_report r1  ON r1.ex_roll_no = s.ex_roll_no AND r1.programmeyear_id=1 AND r1.semester_id =1  \r\n" + 
+			"			      LEFT JOIN ex_semester_progress_report r2  ON r2.ex_roll_no = s.ex_roll_no AND r2.programmeyear_id=1 AND r2.semester_id =2 \r\n" + 
+			"			      LEFT JOIN ex_semester_progress_report r3  ON r3.ex_roll_no = s.ex_roll_no AND r3.programmeyear_id=2 AND r3.semester_id =3 \r\n" + 
+			"			      LEFT JOIN ex_semester_progress_report r4  ON r4.ex_roll_no = s.ex_roll_no AND r4.programmeyear_id=2 AND r4.semester_id =4 \r\n" + 
+			"			      LEFT JOIN ex_semester_progress_report r5  ON r5.ex_roll_no = s.ex_roll_no AND r5.programmeyear_id=3 AND r5.semester_id =5 \r\n" + 
+			"			      LEFT JOIN ex_semester_progress_report r6  ON r6.ex_roll_no = s.ex_roll_no AND r6.programmeyear_id=3 AND r6.semester_id =6\r\n" + 
+			"				   LEFT JOIN ex_semester_progress_report r7  ON r7.ex_roll_no = s.ex_roll_no AND r7.programmeyear_id=4 AND r7.semester_id =7 \r\n" + 
+			"			      LEFT JOIN ex_semester_progress_report r8  ON r8.ex_roll_no = s.ex_roll_no AND r8.programmeyear_id=4 AND r8.semester_id =8\r\n" + 
+			"\r\n" + 
+			"			      LEFT JOIN ex_colleges c ON c.id = s.colleges_id\r\n" + 
+			"			      LEFT JOIN ex_programmes p ON p.id = s.programmes_id\r\n" + 
+			"			      LEFT JOIN ex_student_admission sa ON sa.ex_roll_no=s.ex_roll_no\r\n" + 
+			"			 		LEFT JOIN ex_student_personal z ON z.student_admission_id=sa.id\r\n" + 
+			"					LEFT JOIN ex_batch b ON b.id=sa.batch_id\r\n" + 
+			"					LEFT JOIN ex_department m ON m.id=sa.department_id\r\n" + 
+			"					LEFT JOIN ex_student_certificate a ON a.student_admission_id=sa.id\r\n" +
+			"					LEFT JOIN ex_certificate_type b11 ON  a.certificate_type = b11.id \r\n" +
+			"			      GROUP BY s.ex_roll_no", nativeQuery = true)
+	List<Object[]> getmarksheetrecords(Long colleges, Long programmes, Long academicYear);
+
+	
+	
+	@Query(value = " SELECT c.ex_identifier AS clgId,p.ex_identifier AS pgm,m.ex_identifier AS dept,\r\n" + 
+			" b.ex_identifier AS batch, s.ex_roll_no  as studentId,\r\n" + 
+			"			       sa.ex_name as studentname ,z.ex_contact_details AS cd,z.ex_email_id AS email,\r\n" + 
+			"		case when r1.marksheet_path IS NULL OR r1.marksheet_path='NA' then 'pending' ELSE 'uploaded' END AS 1stsemMarksheet,\r\n" + 
+			"			case when r2.marksheet_path IS NULL OR r2.marksheet_path='NA' then 'pending' ELSE 'uploaded' END AS 2ndsemMarksheet,\r\n" + 
+			"				case when r3.marksheet_path IS NULL OR r3.marksheet_path='NA' then 'pending' ELSE 'uploaded' END AS 3rdSemMarksheet,\r\n" + 
+			"					case when r4.marksheet_path IS NULL OR r4.marksheet_path='NA' then 'pending' ELSE 'uploaded' END AS 4thSemMarksheet ,\r\n" +
+			" 										case when a.certificate_type= 1 AND a.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END AS pdc, \r\n" +
+			" 										case when a.certificate_type= 2 AND a.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END AS Transcript ,\r\n" +
+			" 										case when a.certificate_type= 3 AND a.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END AS Degree \r\n" +
+	
+			"	 		\r\n" + 
+			"			 	FROM \r\n" + 
+			"				 (SELECT DISTINCT \r\n" + 
+			"			       e.ex_roll_no,e.colleges_id,e.programmes_id\r\n" + 
+			"			     FROM \r\n" + 
+			"			         ex_semester_progress_report e , ex_student_admission s\r\n" + 
+			"			         \r\n" + 
+			"			         WHERE e.colleges_id=?1 AND s.academic_year_id =?3 AND s.id = e.student_admission_id  AND e. programmes_id=?2\r\n" + 
+			"			         )s\r\n" + 
+			"		  \r\n" + 
+			"			      LEFT JOIN ex_semester_progress_report r1  ON r1.ex_roll_no = s.ex_roll_no AND r1.programmeyear_id=1 AND r1.semester_id =1  \r\n" + 
+			"			      LEFT JOIN ex_semester_progress_report r2  ON r2.ex_roll_no = s.ex_roll_no AND r2.programmeyear_id=1 AND r2.semester_id =2 \r\n" + 
+			"			      LEFT JOIN ex_semester_progress_report r3  ON r3.ex_roll_no = s.ex_roll_no AND r3.programmeyear_id=2 AND r3.semester_id =3 \r\n" + 
+			"			      LEFT JOIN ex_semester_progress_report r4  ON r4.ex_roll_no = s.ex_roll_no AND r4.programmeyear_id=2 AND r4.semester_id =4 \r\n" +  
+			"\r\n" + 
+			"			      LEFT JOIN ex_colleges c ON c.id = s.colleges_id\r\n" + 
+			"			      LEFT JOIN ex_programmes p ON p.id = s.programmes_id\r\n" + 
+			"			      LEFT JOIN ex_student_admission sa ON sa.ex_roll_no=s.ex_roll_no\r\n" + 
+			"			 		LEFT JOIN ex_student_personal z ON z.student_admission_id=sa.id\r\n" + 
+			"					LEFT JOIN ex_batch b ON b.id=sa.batch_id\r\n" + 
+			"					LEFT JOIN ex_department m ON m.id=sa.department_id\r\n" + 
+			"					LEFT JOIN ex_student_certificate a ON a.student_admission_id=sa.id\r\n" +
+			"					LEFT JOIN ex_certificate_type b11 ON  a.certificate_type = b11.id \r\n" +
+			"			      GROUP BY s.ex_roll_no", nativeQuery = true)
+	List<Object[]> getmarksheetrecordsmtechmba(Long colleges, Long programmes, Long academicYear);
+
+	
+	
+	@Query(value = "SELECT s.ex_roll_no  as studentId,\r\n" + 
+			"       sa.ex_name as studentname, \r\n" + 
+			"       c.ex_identifier AS collage,\r\n" + 
+			"       p.ex_name AS pogram,\r\n" + 
+			"       \r\n" + 
+			"      b.ex_identifier,sa.ex_enrollement_no, z.ex_contact_details,z.ex_email_id,\r\n "+
+			"	   concat(r1.ex_grade_point_av ,'/',r1.ex_camu_grade_point_av) as firstSemGPACGPA,\r\n" + 
+			"	   concat(r2.ex_grade_point_av ,'/',r2.ex_camu_grade_point_av) as SecondGPACGPA,\r\n" + 
+			"	   concat(r3.ex_grade_point_av ,'/',r3.ex_camu_grade_point_av) as threedSemGPACGPA,\r\n" + 
+			"	   concat(r4.ex_grade_point_av ,'/',r4.ex_camu_grade_point_av) as fourSemGPACGPA,\r\n" + 
+			"	   concat(r5.ex_grade_point_av ,'/',r5.ex_camu_grade_point_av) as fiveSemGPACGPA,\r\n" + 
+			"	   concat(r6.ex_grade_point_av ,'/',r6.ex_camu_grade_point_av) as sixSemGPACGPA,\r\n" + 
+			"	   concat(r7.ex_grade_point_av ,'/',r7.ex_camu_grade_point_av) as sevenSemGPACGPA,\r\n" + 
+			"	   concat(r8.ex_grade_point_av ,'/',r8.ex_camu_grade_point_av) as eightSemGPACGPA,\r\n" + 
+			"	   r8.ex_camu_grade_point_av AS OGPA\r\n" + 
+			"	   \r\n" + 
+			"FROM\r\n" + 
+			"	 (SELECT DISTINCT \r\n" + 
+			"       e.ex_roll_no,e.colleges_id,e.programmes_id\r\n" + 
+			"     FROM \r\n" + 
+			"         ex_semester_progress_report e , ex_student_admission s\r\n" + 
+			"         \r\n" + 
+			"         WHERE e.colleges_id=?1 AND s.academic_year_id = ?3 AND s.id = e.student_admission_id  and    e. programmes_id=?2\r\n" + 
+			"         )s\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r1  ON r1.ex_roll_no = s.ex_roll_no AND r1.programmeyear_id=1 AND r1.semester_id =1\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r2  ON r2.ex_roll_no = s.ex_roll_no AND r2.programmeyear_id=1 AND r2.semester_id =2\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r3  ON r3.ex_roll_no = s.ex_roll_no AND r3.programmeyear_id=2 AND r3.semester_id =3\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r4  ON r4.ex_roll_no = s.ex_roll_no AND r4.programmeyear_id=2 AND r4.semester_id =4\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r5  ON r5.ex_roll_no = s.ex_roll_no AND r5.programmeyear_id=3 AND r5.semester_id =5\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r6  ON r6.ex_roll_no = s.ex_roll_no AND r6.programmeyear_id=3 AND r6.semester_id =6\r\n" + 
+			"	   LEFT JOIN ex_semester_progress_report r7  ON r7.ex_roll_no = s.ex_roll_no AND r7.programmeyear_id=4 AND r7.semester_id =7\r\n" + 
+			"      LEFT JOIN ex_semester_progress_report r8  ON r8.ex_roll_no = s.ex_roll_no AND r8.programmeyear_id=4 AND r8.semester_id =8\r\n" + 
+			"      LEFT JOIN ex_colleges c ON c.id = s.colleges_id\r\n" + 
+			"      LEFT JOIN ex_programmes p ON p.id = s.programmes_id\r\n" + 
+			"       LEFT JOIN ex_student_admission sa ON sa.ex_roll_no=s.ex_roll_no\r\n" +
+			" 		LEFT JOIN ex_student_personal z ON z.student_admission_id=sa.id\r\n"+
+			"		LEFT JOIN ex_batch b ON b.id=sa.batch_id\r\n"+
+			"      GROUP BY s.ex_roll_no", nativeQuery = true)
+	List<Object[]> getrecordspdf(Long colleges, Long programmes , Long academic);
+}

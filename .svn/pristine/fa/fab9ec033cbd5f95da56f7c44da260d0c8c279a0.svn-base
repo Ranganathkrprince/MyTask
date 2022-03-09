@@ -1,0 +1,43 @@
+package com.niftem.app.dao;
+
+import java.util.List;
+
+public class EligiBilityResponse {
+
+	private String  studentname ;
+	private String   rollnumber ;
+	private String   enrollment ;	
+	private List<String>   approvetye ;
+	public String getStudentname() {
+		return studentname;
+	}
+	public String getRollnumber() {
+		return rollnumber;
+	}
+	public String getEnrollment() {
+		return enrollment;
+	}
+	public List<String> getApprovetye() {
+		return approvetye;
+	}
+	public void setStudentname(String studentname) {
+		this.studentname = studentname;
+	}
+	public void setRollnumber(String rollnumber) {
+		this.rollnumber = rollnumber;
+	}
+	public void setEnrollment(String enrollment) {
+		this.enrollment = enrollment;
+	}
+	public void setApprovetye(List<String> approvetye) {
+		this.approvetye = approvetye;
+	}
+	@Override
+	public String toString() {
+		return "EligiBilityResponse [studentname=" + studentname + ", rollnumber=" + rollnumber + ", enrollment="
+				+ enrollment + ", approvetye=" + approvetye + "]";
+	}
+	
+	
+	
+}

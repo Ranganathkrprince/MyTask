@@ -1,0 +1,51 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.University;
+
+public interface UniversityRepository extends CrudRepository<University, Long>{
+	List<University> findByExNameAndExIsDelete(String name , Boolean is_delete);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_university set ex_name = ?1 ,ex_identifier =?2 , ex_description =?3  , ex_is_active =?4  , ex_update_date = ?5 ,ex_address = ?7,ex_email = ?8,ex_fax = ?9,ex_local_name = ?10 ,ex_pincode = ?11,ex_place = ?12,ex_telephone =  ?13 where id =?6", nativeQuery = true)
+	//int updateUniversityRecord(String name , String identifire , String description, Boolean is_active , Date ex_update_date, Long id, String string, String string2, String string3, String string4, Integer integer, String string5, String string6);
+	int updateUniversityRecord(String exName, String exIdentifier, String exDescription, Boolean exIsActive, Date date,
+			Long id, String exAddress, String exEmail, String exFax, String exLocalName, Integer exPincode,
+			String exPlace, String exTelephone);
+	
+	
+	
+/*	id, ex_create_date, ex_description, ex_identifier, ex_is_active, ex_is_delete, ex_name, ex_update_date, photo, ex_address, 
+	ex_email, ex_fax, ex_local_name, ex_pincode, ex_place, ex_telephone*/
+	
+	List<University> findByExIsDelete(boolean delete);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_university set ex_is_delete = ?1  ,ex_is_active = ?2  where id =?3", nativeQuery = true)
+	int deleteUniversity(Boolean exIsDelete, Boolean is_active , Long id);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "SELECT * FROM ex_university", nativeQuery = true)
+	List<University> findAllUnivesity();
+
+	
+	List<University> findByExIdentifierAndExIsDeleteAndExIsActive(String exIdentifier, boolean b, boolean c);
+
+	Optional<University> findByExIsDeleteAndId(boolean b, Long id);
+
+	
+
+
+}

@@ -1,0 +1,31 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.FeedbackConfiguration;
+
+public interface FeedbackConfigurationRepository extends CrudRepository<FeedbackConfiguration, Long>{
+
+	List<FeedbackConfiguration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndBatchIdAndFeedbackType(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long batch , int feedbacktype);
+
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_feedback_configuration set ex_is_active = ?1 ,ex_end_date=?2 ,ex_start_date =?3 , ex_update_date = ?4 , ex_extend_date =?5 , feedback_type =?6 , batch_id =?8  where id =?7", nativeQuery = true)
+	int updateConfig(Boolean exIsActive, Date parse, Date parse2, Date date, Date exExtendDate, Integer feedback_type , Long id , Long batch);
+
+
+
+
+	List<FeedbackConfiguration> findByExIsDelete(boolean b);
+}

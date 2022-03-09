@@ -1,0 +1,318 @@
+package com.niftem.app.util;
+
+import java.util.HashMap;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.repository.AcademicYearRepository;
+
+@Component
+public class RomanToNumber {
+	@Autowired
+	private AcademicYearRepository AcademicYearRepository;
+	
+	private static int[] bases = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
+	private static HashMap<Integer, String> map = new HashMap<Integer, String>();
+
+	// This function returns value of a Roman symbol
+	int value(char r) {
+		if (r == 'I')
+			return 1;
+		if (r == 'V')
+			return 5;
+		if (r == 'X')
+			return 10;
+		if (r == 'L')
+			return 50;
+		if (r == 'C')
+			return 100;
+		if (r == 'D')
+			return 500;
+		if (r == 'M')
+			return 1000;
+		return -1;
+	}
+
+	// Finds decimal value of a given romal numeral
+	public Long romanToDecimal(String str) {
+		// Initialize result
+		long res = 0;
+
+		for (int i = 0; i < str.length(); i++) {
+			// Getting value of symbol s[i]
+			int s1 = value(str.charAt(i));
+
+			// Getting value of symbol s[i+1]
+			if (i + 1 < str.length()) {
+				int s2 = value(str.charAt(i + 1));
+
+				// Comparing both values
+				if (s1 >= s2) {
+					// Value of current symbol is greater
+					// or equalto the next symbol
+					res = res + s1;
+				} else {
+					res = res + s2 - s1;
+					i++; // Value of current symbol is
+					// less than the next symbol
+				}
+			} else {
+				res = res + s1;
+				i++;
+			}
+		}
+
+		return res;
+	}
+
+	public Boolean numberOrRoman(String number) {
+		try {
+			int num = Integer.parseInt(number);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	private static void setup() {
+		map.put(1, "I");
+		map.put(4, "IV");
+		map.put(5, "V");
+		map.put(9, "IX");
+		map.put(10, "X");
+		map.put(40, "XL");
+		map.put(50, "L");
+		map.put(90, "XC");
+		map.put(100, "C");
+		map.put(400, "CD");
+		map.put(500, "D");
+		map.put(900, "CM");
+		map.put(1000, "M");
+	}
+	
+	public String LongToRoman(long num) {
+		setup();
+		String result = new String();
+		for (int i : bases) {
+			while (num >= i) {
+				result += map.get(i);
+				num -= i;
+			}
+		}
+		return result;
+	}
+	
+	public long getLastEvenOddSemester(Long semester){
+		try {
+			long lastsemester = 0;
+			if(semester == 2) {
+				lastsemester = 1;
+			}else {
+				lastsemester = semester;
+			}					
+			return lastsemester;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public Boolean checkSupplyAvalableOnSemester(Long currentsem , Long lastoddevensem) {
+			try {
+				if(currentsem == lastoddevensem) {
+					return false; // Supplymentry Not avalable
+				}else {
+					return true;
+				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		return false;
+	}
+	
+	public Boolean checkSupplyAvalableOnProgramYear(Long currentpyear , Long lastoddevenpyear) {
+		try {
+			if(currentpyear == lastoddevenpyear) {
+				return false; // Supplymentry Not avalable On this Program Year
+			}else {
+				return true;
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	return false;
+	}
+	
+	
+	public Boolean checkSupplyAvalableOrNot(Long programyear , Long semester) {
+		try {
+			if(programyear ==1 && semester ==1) {
+				return true; 
+			}
+			if(programyear ==1 &&semester ==2) {
+				return true; 
+			}else {
+				return false;
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	return false;
+	}
+	
+	
+	public long getLastEvenOddProgramYear(Long programyear){
+		try {
+			long lastprogramyear = 0;
+			
+			if(programyear >= 2) {
+				lastprogramyear = programyear-1;
+			}else {
+				lastprogramyear = programyear;
+			}		
+			return lastprogramyear;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+
+	public String kannnadawording(String exName) {
+		try {
+			if(exName=="I" || exName.equals("I")|| exName.equals("1") ){
+				return "ಒಂದ";
+			}
+			else if(exName=="II" || exName.equals("II") || exName.equals("2")){
+				return "ಎರಡ";
+			}
+			else if(exName=="III" || exName.equals("III") || exName.equals("3")){
+				return "ಮೂರ";
+			}
+			else if(exName=="IV" || exName.equals("IV") || exName.equals("4")){
+				return "ನಾಲ್ಕ";
+			}
+			else{
+				return "NA";
+				}
+			
+	}catch(Exception e) {
+		e.printStackTrace();
+		return null;
+	}		
+	}		
+	
+	public Boolean checkOddSemester(String semester) {
+		try {
+				if(semester.equalsIgnoreCase("I")) {
+					return true;
+				}
+				return false;			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public String getLastSem(String semester) {
+		try {
+			if(semester.equalsIgnoreCase("II") || semester.equalsIgnoreCase("2")) {
+					Boolean check = numberOrRoman(semester);
+					if(!check) {
+							return "I";
+					}else {
+						return "1";
+					}	
+				}
+			
+			if(semester.equalsIgnoreCase("I") || semester.equalsIgnoreCase("1")) {
+				Boolean check = numberOrRoman(semester);
+				if(!check) {
+						return "II";
+				}else {
+					return "2";
+				}	
+			}	
+			
+					
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return semester;
+	}
+	
+	
+	public String getLastSemProgramYear(String semester ,String programmeYear) {
+		String lastprogramname = "";
+		try {
+			long currentprogramYear = 0; Boolean is_programroman = false , is_semesterroman = false ;		
+			Boolean checkprogramyear = numberOrRoman(programmeYear);
+			if(!checkprogramyear) {
+				currentprogramYear = romanToDecimal(programmeYear);
+				is_programroman = true;
+			}else {
+				currentprogramYear = Long.parseLong(programmeYear);
+			}			
+			long currentsemester = 0; 
+			Boolean checksemester = numberOrRoman(semester);
+				if(!checksemester) {
+					currentsemester = romanToDecimal(semester);
+					is_semesterroman = true;
+				}else {
+					currentsemester = Long.parseLong(semester);
+				}
+				
+				long lastprogram = 0;
+			    if(currentprogramYear == 1 && currentsemester ==1) {
+			    	lastprogram =1;				
+				}else if(currentprogramYear == 1 && currentsemester ==2) {
+					lastprogram =1;			
+				}else if(currentprogramYear == 2 && currentsemester ==1) {
+					lastprogram =1;			
+				}else if(currentprogramYear == 2 && currentsemester ==2) {
+					lastprogram =2;			
+				}else if(currentprogramYear == 3 && currentsemester ==1) {
+					lastprogram =2;			
+				}else if(currentprogramYear == 3 && currentsemester ==2) {
+					lastprogram =3;	
+				}else if(currentprogramYear == 4 && currentsemester ==1) {
+					lastprogram =3;	
+				}else if(currentprogramYear == 4 && currentsemester ==2) {
+					lastprogram =4;	
+				}else {
+					lastprogram =4;	
+				}				
+			    if(is_programroman){
+					// convert Program Year to Roman							
+					lastprogramname = LongToRoman(lastprogram);
+				}else {
+					lastprogramname =Long.toString(lastprogram); 
+				}
+			    return lastprogramname;
+					
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return lastprogramname;
+	}	
+	
+	public String getLastAcademic(String semester ,String academicyear) {
+		return academicyear;
+		/*
+		 * try { if(semester.equalsIgnoreCase("I") || semester.equalsIgnoreCase("1")) {
+		 * List<AcademicYear> academic =
+		 * AcademicYearRepository.getLastAcademic(true,false,academicyear);
+		 * if(academic.size() >0) { return academic.get(0).getExYear(); } }else { return
+		 * academicyear; } }catch(Exception e) { e.printStackTrace(); } return
+		 * academicyear;
+		 */
+	}
+	
+}

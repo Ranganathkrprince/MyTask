@@ -1,0 +1,317 @@
+
+package com.niftem.app.controller;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+
+import com.niftem.app.model.ClassTimeTableRequest;
+import com.niftem.app.model.CoursesRequest;
+import com.niftem.app.model.ExamAttendanceRequest;
+import com.niftem.app.model.ExternalMarksRequest;
+import com.niftem.app.model.MidTermMarksRequest;
+import com.niftem.app.model.QuestionpaperRequest;
+import com.niftem.app.service.UploadService;
+import com.niftem.app.util.CommonHelper;
+
+@RequestMapping("/api/upload/")
+
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+
+@RestController
+
+@Validated
+public class UploadController {
+	  private static org.slf4j.Logger logger = LoggerFactory.getLogger("master-log");
+	@Autowired
+	private UploadService uploadService;
+	  @Autowired private CommonHelper CommonHelper;
+
+	@PostMapping(value = "/uploadCourses")
+	public Map<String, Object> uploadCourses(MultipartFile exCourseFile, Long user) {
+		return uploadService.uploadCourses(exCourseFile, user);
+	}
+	
+	@PostMapping(value = "/uploadCoursesType")
+	public Map<String, Object> uploadCoursesType(MultipartFile file, Long user) {
+		return uploadService.uploadCoursesType(file, user);
+	}
+
+	@PostMapping(value = "/uploadStudentProfile")
+	public Map<String, Object> uploadStudentProfile(MultipartFile studentProfilefile) {
+		return uploadService.uploadStudentProfile(studentProfilefile);
+	}
+	
+	//==================
+	@PostMapping(value = "/uploadStudentsDetails")
+	public Map<String, Object> uploadStudentsDetails(MultipartFile StudentsDetails) {
+		return uploadService.uploadStudentsDetails(StudentsDetails);
+	}
+	
+	
+	
+	@PostMapping(value = "/uploadStudentsAdmissionDetails")
+	public Map<String, Object> uploadStudentsAdmissionDetails(MultipartFile StudentsDetails) {
+		return uploadService.uploadStudentsAdmissionDetails(StudentsDetails);
+	}
+	//==================
+
+	
+	@PostMapping(value = "/uploadModerationExcel")
+	public Map<String, Object> uploadModerationExcel(MultipartFile excel) {
+		return uploadService.uploadModerationExcel(excel);
+	}
+	
+	@PostMapping(value = "/uploadDateOfBirth")
+	public Map<String, Object> uploadDateOfBirth(MultipartFile excel) {
+		return uploadService.uploadDateOfBirth(excel);
+	}
+	
+	
+	@PostMapping(value = "/uploadSemesterSerialNumberExcel")
+	public Map<String, Object> uploadSemesterSerialNumberExcel(MultipartFile excel) {
+		return uploadService.uploadSemesterSerialNumberExcel(excel);
+	}
+	
+	
+	@PostMapping(value = "/uploadMagrationExcel")
+	public Map<String, Object> uploadMagrationExcel(MultipartFile excel) {
+		return uploadService.uploadMagrationExcel(excel);
+	}
+	
+
+	@PostMapping(value = "/uploadStaffProfile")
+	public Map<String, Object> uploadStaffProfile(MultipartFile staffProfilefile) {
+		return uploadService.uploadStaffProfile(staffProfilefile);
+	}
+
+	
+	@PostMapping(value = "/uploadExternalMarks")
+	public Map<String, Object> uploadExternalMarks(ExternalMarksRequest request) {
+		// logger.info("uploadExternalMarks Request : " + request.toString());
+		return uploadService.uploadExternalMarks(request);
+
+	}
+
+	@PostMapping(value = "/uploadFeeMaster")
+	public Map<String, Object> uploadFeeMaster(MultipartFile exFeeMasterFile, Long user) {
+		return uploadService.uploadFeeMaster(exFeeMasterFile, user);
+	}
+
+	@PostMapping(value = "/uploadTeacherCourse")
+	public Map<String, Object> uploadTeacherCourse(MultipartFile exTeacherCourseFile, Long user) {
+		return uploadService.uploadTeacherCourse(exTeacherCourseFile, user);
+	}
+
+	@PostMapping(value = "/uploadImage")
+	public Map<String, Object> uploadImage(MultipartFile file, Long id, String userType) {
+		System.out.println(">>>.." + file);
+		return uploadService.uploadImage(file, id, userType);
+	}
+
+	@PostMapping(value = "/uploadQuizMarks")
+	public Map<String, Object> uploadQuizMarks(MidTermMarksRequest request) {
+		return uploadService.uploadQuizMarks(request);
+	}
+
+	@PostMapping(value = "/uploadMidTermMarks")
+	public Map<String, Object> uploadMidTermMarks(MidTermMarksRequest request) {
+		return uploadService.uploadMidTermMarks(request);
+	}
+
+	@PostMapping(value = "/uploadAssignmentMarks")
+	public Map<String, Object> uploadAssignmentMarks(MidTermMarksRequest request) {
+		return uploadService.uploadAssignmentMarks(request);
+	}
+	
+	
+	@PostMapping(value = "/uploadStudentMarks")
+	public Map<String, Object> uploadStudentMarks(MidTermMarksRequest request) {
+		return uploadService.uploadStudentMarks(request);
+	}
+	
+
+	@PostMapping(value = "/uploadPracticalMarks")
+	public Map<String, Object> uploadPracticalMarks(MidTermMarksRequest request) {
+		return uploadService.uploadPracticalMarks(request);
+	}
+	
+	
+	@PostMapping(value = "/uploadClassAttendance")
+	public Map<String, Object> uploadPracticalMarks(ClassTimeTableRequest request) {
+		return uploadService.uploadClassAttendance(request);
+	}
+	
+	@PostMapping(value = "/uploadAttendenceMarks")
+	public Map<String, Object> uploadAttendenceMarks(MidTermMarksRequest request) {
+		return uploadService.uploadAttendenceMarks(request);
+	}
+	
+	@PostMapping(value = "/uploadPracticalExternalMarks")
+	public Map<String, Object> uploadPracticalLabExperminent(ExamAttendanceRequest request) {
+		return uploadService.uploadPracticalLabExperminent(request);
+	}
+	
+	@PostMapping(value = "/uploadGradePoint")
+	public Map<String, Object> uploadGradePoint(MultipartFile exGradePointFile, Long user) {
+		return uploadService.uploadGradePoint(exGradePointFile,user);
+	}
+	
+	
+	@PostMapping(value = "/downloadQuestionPapers")
+	public ResponseEntity downloadQuestionPapers(@RequestBody QuestionpaperRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+		    Map<String, Object> tasks = uploadService.downloadQuestionPapers(request);
+		  //  return tasks;	    
+		    String status = (String) tasks.get("status");		    
+		    if(status !=null && status.equals("1")) {
+		    	 File file =  CommonHelper.downloadPDF((String) tasks.get("url"));	      
+			        if(file!=null) {
+				        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));		   	 
+				        return ResponseEntity.ok()
+				                // Content-Disposition
+				                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
+				                // Content-Type
+				                .contentType(MediaType.APPLICATION_PDF)
+				                // Contet-Length
+				                .contentLength(file.length()) //
+				                .body(resource);	        	
+			        	
+			        }else {
+						info.put("status", "0");
+						info.put("message", "Something went wrong");
+						return new ResponseEntity<Map>(info, HttpStatus.OK);
+			        }
+		    }else {
+		    	return new ResponseEntity<Map>(tasks, HttpStatus.OK); 
+		    } 	
+		    
+		}catch(Exception e) {
+			logger.error("Exception occured"+ e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return new ResponseEntity<Map>(info, HttpStatus.OK); 
+		}
+		
+	}
+
+	
+	@PostMapping(value = "/uploadEvaluatorList")
+	public Map<String, Object> uploadEvaluatorList(MultipartFile exEvaluatorFile, Long user) {
+		return uploadService.uploadEvaluatorList(exEvaluatorFile, user);
+	}
+
+	
+	@PostMapping(value = "/bulkRegistration")
+	public Map<String, Object> bulkRegistration(MultipartFile file, Long user) {
+		return uploadService.bulkRegistration(file,user);
+	}
+	
+/*	@PostMapping(value = "/uploadSyllabus")
+	public Map<String, Object> uploadSyllabus( CoursesRequest request) {
+		return uploadService.uploadSyllabus( request);
+     }*/
+	
+	@PostMapping(value = "/uploadSyllabus")
+	public Map<String, Object> uploadSyllabus(CoursesRequest request) {
+	return uploadService.uploadSyllabus(request);
+	}
+	
+	
+	
+	@PostMapping(value = "/uploadQuestionPaper")
+	public Map<String, Object> uploadQuestionPaper(CoursesRequest request) {
+	return uploadService.uploadQuestionPaper(request);
+	}
+	
+	@PostMapping(value = "/uploadMarksheet")
+	public Map<String, Object> uploadMarksheet(CoursesRequest request) {
+	return uploadService.uploadMarksheet(request);
+	}
+	
+	@PostMapping(value = "/uploadMultipleMarksheet")
+	public Map<String, Object> uploadMultipleMarksheet(CoursesRequest request) {
+	return uploadService.uploadMultipleMarksheet(request);
+	}
+	
+	@PostMapping(value = "/downloadMarksheet")
+	public Map<String, Object> downloadMarksheet(@RequestBody CoursesRequest request) {
+	return uploadService.downloadMarksheet(request);
+	}
+	
+	
+	@PostMapping(value = "/uploadStudentDocument")
+	public Map<String, Object> uploadStudentDocument(MultipartFile file, String exRollNo ,Long documentType ) {
+		return uploadService.uploadStudentDocument(file, exRollNo ,documentType );
+	}
+	
+	@PostMapping(value = "/uploadStudentCertificate")
+	public Map<String, Object> uploadStudentCertificate(MultipartFile[]  file, String exRollNo ,Long exCertificateType ) {
+		return uploadService.uploadStudentCertificate(file, exRollNo ,exCertificateType );
+	}
+	
+	
+
+	@PostMapping(value = "/uploadIAMarks")
+	public Map<String, Object> uploadIAMarks(MidTermMarksRequest request) {
+		return uploadService.uploadIAMarks(request);
+	}
+
+	
+
+	@PostMapping(value = "/uploadIAMarksPractical")
+	public Map<String, Object> uploadIAMarksPractical(MidTermMarksRequest request) {
+		return uploadService.uploadIAMarksPractical(request);
+	}
+	
+	@PostMapping(value = "/uploadStudentpassbook")
+	public Map<String, Object> uploadStudentpassbook(MultipartFile file, Long student ) {
+		return uploadService.uploadStudentpassbook(file, student);
+	}
+	
+	@PostMapping(value = "/uploadStudentSupplyReceipt")
+	public Map<String, Object> uploadStudentSupplyReceipt(CoursesRequest request ) {
+		return uploadService.uploadStudentSupplyReceipt(request);
+	}
+
+	
+	@PostMapping(value = "/uploadFeedetailsofstudent")
+	public Map<String, Object> uploadFeedetailsofstudent(MultipartFile exFeeFile, Long user) {
+		return uploadService.uploadFeedetailsofstudent(exFeeFile, user);
+	}
+	
+	
+	@PostMapping(value = "/uploadActivity")
+	public Map<String, Object> uploadActivity(MultipartFile exFeeFile, Long user) {
+		return uploadService.uploadActivity(exFeeFile, user);
+	}
+
+	@PostMapping(value = "/uploadCalender")
+	public Map<String, Object> uploadCalender(MultipartFile exFeeFile, Long user) {
+		return uploadService.uploadCalender(exFeeFile, user);
+	}
+
+}

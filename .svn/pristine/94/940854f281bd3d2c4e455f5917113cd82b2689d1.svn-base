@@ -1,0 +1,118 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+public class StudentDynamicRequest {
+
+	private List<Long> filter;
+	private String reportName;
+	
+	private Long colleges;
+	private List<Long> programmes;
+	private List<Long> academicYear;
+	
+	private List<Long> category;
+	private List<Long> department;
+	
+	private List<String> religion;
+	private List<String> bloodgroup;
+	private List<String> gender;
+	
+	private Long degree;
+	private List<String> boards;	
+	private List<String> states;
+	private List<String> motherTongue;
+	public List<Long> getFilter() {
+		return filter;
+	}
+	public String getReportName() {
+		return reportName;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public List<Long> getProgrammes() {
+		return programmes;
+	}
+	public List<Long> getAcademicYear() {
+		return academicYear;
+	}
+	public List<Long> getCategory() {
+		return category;
+	}
+	public List<Long> getDepartment() {
+		return department;
+	}
+	public List<String> getReligion() {
+		return religion;
+	}
+	public List<String> getBloodgroup() {
+		return bloodgroup;
+	}
+	public List<String> getGender() {
+		return gender;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public List<String> getBoards() {
+		return boards;
+	}
+	public List<String> getStates() {
+		return states;
+	}
+	public List<String> getMotherTongue() {
+		return motherTongue;
+	}
+	public void setFilter(List<Long> filter) {
+		this.filter = filter;
+	}
+	public void setReportName(String reportName) {
+		this.reportName = reportName;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public void setProgrammes(List<Long> programmes) {
+		this.programmes = programmes;
+	}
+	public void setAcademicYear(List<Long> academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setCategory(List<Long> category) {
+		this.category = category;
+	}
+	public void setDepartment(List<Long> department) {
+		this.department = department;
+	}
+	public void setReligion(List<String> religion) {
+		this.religion = religion;
+	}
+	public void setBloodgroup(List<String> bloodgroup) {
+		this.bloodgroup = bloodgroup;
+	}
+	public void setGender(List<String> gender) {
+		this.gender = gender;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public void setBoards(List<String> boards) {
+		this.boards = boards;
+	}
+	public void setStates(List<String> states) {
+		this.states = states;
+	}
+	public void setMotherTongue(List<String> motherTongue) {
+		this.motherTongue = motherTongue;
+	}
+	@Override
+	public String toString() {
+		return "StudentDynamicRequest [filter=" + filter + ", reportName=" + reportName + ", colleges=" + colleges
+				+ ", programmes=" + programmes + ", academicYear=" + academicYear + ", category=" + category
+				+ ", department=" + department + ", religion=" + religion + ", bloodgroup=" + bloodgroup + ", gender="
+				+ gender + ", degree=" + degree + ", boards=" + boards + ", states=" + states + ", motherTongue="
+				+ motherTongue + "]";
+	}
+	
+}

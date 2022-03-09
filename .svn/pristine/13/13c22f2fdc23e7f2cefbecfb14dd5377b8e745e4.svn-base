@@ -1,0 +1,62 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class LoadAlertRequest {
+	
+	private Long colleges;
+	private Long programeYear;	
+	private Long academicYear;
+	private Long semester;
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a roll no")
+	private String exRollNo;
+	private Long alertId;
+	public Long getColleges() {
+		return colleges;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public Long getProgrameYear() {
+		return programeYear;
+	}
+	public void setProgrameYear(Long programeYear) {
+		this.programeYear = programeYear;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public Long getSemester() {
+		return semester;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+
+	
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	public Long getAlertId() {
+		return alertId;
+	}
+	public void setAlertId(Long alertId) {
+		this.alertId = alertId;
+	}
+	@Override
+	public String toString() {
+		return "LoadAlertRequest [colleges=" + colleges + ", programeYear=" + programeYear + ", academicYear="
+				+ academicYear + ", semester=" + semester + ", exRollNo=" + exRollNo + ", alertId=" + alertId + "]";
+	}
+	
+	
+	
+}

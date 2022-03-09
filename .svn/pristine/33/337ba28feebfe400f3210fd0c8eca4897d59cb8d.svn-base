@@ -1,0 +1,1046 @@
+package com.niftem.app.controller;
+
+import java.util.Map;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.niftem.app.entity.AccessLogs;
+import com.niftem.app.entity.FeeType;
+import com.niftem.app.entity.PrivilegesModules;
+import com.niftem.app.entity.Scale;
+import com.niftem.app.entity.University;
+import com.niftem.app.model.AboutFeedBackRequest;
+import com.niftem.app.model.AcademicCalenderActivityRequest;
+import com.niftem.app.model.AcademicYearRequest;
+import com.niftem.app.model.ApplicationVersionRequest;
+import com.niftem.app.model.BatchRequest;
+import com.niftem.app.model.CategoryRequest;
+import com.niftem.app.model.CollegesRequest;
+import com.niftem.app.model.CourseGroupRequest;
+import com.niftem.app.model.CoursesRequest;
+import com.niftem.app.model.CoursesTypeRequest;
+import com.niftem.app.model.CreateStudentRequest;
+import com.niftem.app.model.CreditHoursRquest;
+import com.niftem.app.model.DegreeRequest;
+import com.niftem.app.model.DepartmentRequest;
+import com.niftem.app.model.DesignationRequest;
+import com.niftem.app.model.ElectiveGroupRequest;
+import com.niftem.app.model.EvaluationTypeRequest;
+import com.niftem.app.model.ExamAnnouncementRequest;
+import com.niftem.app.model.ExportListRequest;
+import com.niftem.app.model.FeeTypeRequest;
+import com.niftem.app.model.FeedbackRequest;
+import com.niftem.app.model.HostelConfigureDetailRequest;
+import com.niftem.app.model.HostelFeeTypeRequest;
+import com.niftem.app.model.HostelRequest;
+import com.niftem.app.model.Login;
+import com.niftem.app.model.MentorRequest;
+import com.niftem.app.model.ProgramTypeRequest;
+import com.niftem.app.model.ProgrammeRequest;
+import com.niftem.app.model.ProgrammeYearRequest;
+import com.niftem.app.model.RegistrationTypeRequest;
+import com.niftem.app.model.RoleRequest;
+import com.niftem.app.model.RoomMasterRequest;
+import com.niftem.app.model.SectionRequest;
+import com.niftem.app.model.SemesterRegistrationConfigurationRequest;
+import com.niftem.app.model.SemesterRequest;
+import com.niftem.app.model.StaffTypeRequest;
+import com.niftem.app.model.StreamRequest;
+import com.niftem.app.model.StudentMentorAllocation;
+import com.niftem.app.model.StudentMentorRequest;
+import com.niftem.app.model.TeacherCourseMappingRequest;
+import com.niftem.app.model.UniversityRequest;
+import com.niftem.app.model.UserRequest;
+import com.niftem.app.service.MasterService;
+import com.niftem.app.service.RoleService;
+
+@RequestMapping("/api/master/")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RestController
+@Validated
+public class MasterController {	
+	@Autowired
+	private MasterService msterService;
+	
+	@Autowired
+	private RoleService RoleService;
+
+	@PostMapping(value = "/university/create")
+	public Map<String, String> createUniversity(@Valid  @RequestBody UniversityRequest university) {
+			return msterService.createUniversity(university);			
+	}
+
+	
+	@PostMapping(value = "/university/update")
+	public Map<String, String> updateUniversity(@Valid @RequestBody UniversityRequest university) {
+			return msterService.updateUniversity(university);			
+	}
+	
+	@PostMapping(value = "/university/delete")
+	public Map<String, String> deleteUniversity(@RequestBody University university) {
+			return msterService.deleteUniversity(university);			
+	}
+	
+	@PostMapping(value = "/university/get")
+	public Map<String, Object> getUniversity(University university) {
+			return msterService.getUniversity(university);			
+	}	
+	
+	@PostMapping(value = "/college/create")
+	public Map<String, String> createCollege(@Valid @RequestBody CollegesRequest request) {
+			return msterService.createCollege(request);			
+	}
+	
+	@PostMapping(value = "/college/update")
+	public Map<String, String> updateCollege(@Valid @RequestBody CollegesRequest request) {
+			return msterService.updateCollege(request);			
+	}
+	
+	@PostMapping(value = "/college/delete")
+	public Map<String, String> deleteCollege(@RequestBody CollegesRequest request) {
+			return msterService.deleteCollege(request);			
+	}
+	
+	@PostMapping(value = "/college/get")
+	public Map<String, Object> getCollege(CollegesRequest request) {
+			return msterService.getCollege(request);			
+	}	
+	
+	@PostMapping(value = "/category/create")
+	public Map<String, String> createCategory(@Valid @RequestBody CategoryRequest category) {
+	return msterService.createCategory(category);
+	}
+
+	@PostMapping(value = "/category/update")
+	public Map<String, String> updateCategory(@Valid @RequestBody CategoryRequest category) {
+	return msterService.updateCategory(category);
+	}
+
+	@PostMapping(value = "/category/delete")
+	public Map<String, String> deleteCategory(@RequestBody CategoryRequest category) {
+	return msterService.deleteCategory(category);
+	}
+
+	@PostMapping(value = "/category/get")
+	public Map<String, Object> getCategory(CategoryRequest category) {
+	return msterService.getCategory(category);
+	}
+	
+	// Program 	
+	@PostMapping(value = "/programme/create")
+	public Map<String, String> createProgramme(@Valid @RequestBody ProgrammeRequest programme) {
+			return msterService.createProgramme(programme);			
+	}
+	
+	@PostMapping(value = "/programme/update")
+	public Map<String, String> updateProgramme(@Valid @RequestBody ProgrammeRequest request) {
+			return msterService.updateProgramme(request);			
+	}
+	
+	@PostMapping(value = "/programme/delete")
+	public Map<String, String> deleteProgramme(@RequestBody ProgrammeRequest request) {
+			return msterService.deleteProgramme(request);			
+	}
+	
+	@PostMapping(value = "/programme/get")
+	public Map<String, Object> getProgramme(ProgrammeRequest program) {
+			return msterService.getProgramme(program);			
+	}	
+	
+	// Degree 
+	@PostMapping(value = "/degree/create")
+	public Map<String, String> createDegree(@Valid  @RequestBody DegreeRequest request) {
+			return msterService.createDegree(request);			
+	}
+	
+	@PostMapping(value = "/degree/update")
+	public Map<String, String> updateDegree(@Valid @RequestBody DegreeRequest request) {
+			return msterService.updateDegree(request);			
+	}
+	
+	@PostMapping(value = "/degree/delete")
+	public Map<String, String> deleteDegree(@RequestBody DegreeRequest request) {
+			return msterService.deleteDegree(request);			
+	}
+	
+	@PostMapping(value = "/degree/get")
+	public Map<String, Object> getDegree(DegreeRequest request) {
+			return msterService.getDegree(request);			
+	}	
+	
+	// AcademicYear
+	// AcademicYear
+	@PostMapping(value = "/academicyear/create")
+	public Map<String, String> createAcademicYear(@Valid @RequestBody AcademicYearRequest request) {
+	return msterService.createAcademicYear(request);
+	}
+
+	@PostMapping(value = "/academicyear/update")
+	public Map<String, String> updateAcademicYear(@Valid @RequestBody AcademicYearRequest request) {
+	return msterService.updateAcademicYear(request);
+	}
+
+	@PostMapping(value = "/academicyear/delete")
+	public Map<String, String> deleteAcademicYear(@RequestBody AcademicYearRequest request) {
+	return msterService.deleteAcademicYear(request);
+	}
+
+	@PostMapping(value = "/academicyear/get")
+	public Map<String, Object> getAcademicYear(AcademicYearRequest request) {
+	return msterService.getAcademicYear(request);
+	}
+
+	// FeeType
+	@PostMapping(value = "/feeType/create")
+	public Map<String, String> createFeeType(@Valid @RequestBody FeeTypeRequest request) {
+		return msterService.createFeeType(request);
+	}
+
+	@PostMapping(value = "/feeType/update")
+	public Map<String, String> updateFeeType(@Valid @RequestBody FeeTypeRequest request) {
+		return msterService.updateFeeType(request);
+	}
+
+	@PostMapping(value = "/feeType/delete")
+	public Map<String, String> deleteFeeType(@RequestBody FeeType request) {
+		return msterService.deleteFeeType(request);
+	}
+
+	@PostMapping(value = "/feeType/get")
+	public Map<String, Object> getFeeType(FeeType request) {
+		return msterService.getFeeType(request);
+	}
+
+	// Department
+	@PostMapping(value = "/department/create")
+	public Map<String, String> createDepartment(@Valid @RequestBody DepartmentRequest request) {
+		return msterService.createDepartment(request);
+	}
+
+	@PostMapping(value = "/department/update")
+	public Map<String, String> updateDepartment(@Valid @RequestBody DepartmentRequest request) {
+		return msterService.updateDepartment(request);
+	}
+
+	@PostMapping(value = "/department/delete")
+	public Map<String, String> deleteDepartment(@RequestBody DepartmentRequest request) {
+		return msterService.deleteDepartment(request);
+	}
+
+	@PostMapping(value = "/department/get")
+	public Map<String, Object> getDepartment(DepartmentRequest request) {
+		return msterService.getDepartment(request);
+	}
+		
+	// ProgrammeYear
+	// ProgrammeYear
+		@PostMapping(value = "/programmeyear/create")
+		public Map<String, String> createProgrammeYear(@Valid @RequestBody ProgrammeYearRequest request) {
+			return msterService.createProgrammeYear(request);
+		}
+
+		@PostMapping(value = "/programmeyear/update")
+		public Map<String, String> updateProgrammeYear(@Valid @RequestBody ProgrammeYearRequest request) {
+			return msterService.updateProgrammeYear(request);
+		}
+
+		@PostMapping(value = "/programmeyear/delete")
+		public Map<String, String> deleteProgrammeYear(@RequestBody ProgrammeYearRequest request) {
+			return msterService.deleteProgrammeYear(request);
+		}
+
+		@PostMapping(value = "/programmeyear/get")
+		public Map<String, Object> getProgrammeYear(ProgrammeYearRequest request) {
+			return msterService.getProgrammeYear(request);
+		}
+
+	// Semester
+		@PostMapping(value = "/semester/create")
+		public Map<String, String> createSemster(@Valid @RequestBody SemesterRequest request) {
+		return msterService.createSemster(request);
+		}
+
+		@PostMapping(value = "/semester/update")
+		public Map<String, String> updateSemster(@Valid @RequestBody SemesterRequest request) {
+		return msterService.updateSemster(request);
+		}
+
+		@PostMapping(value = "/semester/delete")
+		public Map<String, String> deleteSemster(@RequestBody SemesterRequest request) {
+		return msterService.deleteSemster(request);
+		}
+
+		@PostMapping(value = "/semester/get")
+		public Map<String, Object> getSemester(SemesterRequest request) {
+		return msterService.getSemster(request);
+		}
+		
+	// Section
+	@PostMapping(value = "/section/create")
+	public Map<String, String> createSection(@Valid @RequestBody SectionRequest request) {
+		return msterService.createSection(request);
+	}
+
+	@PostMapping(value = "/section/update")
+	public Map<String, String> updateSection(@Valid @RequestBody SectionRequest request) {
+		return msterService.updateSection(request);
+	}
+
+	@PostMapping(value = "/section/delete")
+	public Map<String, String> deleteSection(@RequestBody SectionRequest request) {
+		return msterService.deleteSection(request);
+	}
+
+	@PostMapping(value = "/section/get")
+	public Map<String, Object> getSection(SectionRequest request) {
+		return msterService.getSection(request);
+	}
+	
+	// CourseGroup
+	@PostMapping(value = "/coursegroup/create")
+	public Map<String, String> createCourseGroup(@Valid @RequestBody CourseGroupRequest request) {
+		return msterService.createCourseGroup(request);
+	}
+
+	@PostMapping(value = "/coursegroup/update")
+	public Map<String, String> updateCourseGroup(@Valid @RequestBody CourseGroupRequest request) {
+		return msterService.updateCourseGroup(request);
+	}
+
+	@PostMapping(value = "/coursegroup/delete")
+	public Map<String, String> deleteCourseGroup(@RequestBody CourseGroupRequest request) {
+		return msterService.deleteCourseGroup(request);
+	}
+
+	@PostMapping(value = "/coursegroup/get")
+	public Map<String, Object> getCourseGroup(CourseGroupRequest request) {
+		return msterService.getCourseGroup(request);
+	}
+	
+	// CreditHours
+	@PostMapping(value = "/credithours/create")
+	public Map<String, String> createCreditHours(@Valid @RequestBody CreditHoursRquest request) {
+	return msterService.createCreditHours(request);
+	}
+
+	@PostMapping(value = "/credithours/update")
+	public Map<String, String> updateCreditHours(@Valid @RequestBody CreditHoursRquest request) {
+	return msterService.updateCreditHours(request);
+	}
+
+	@PostMapping(value = "/credithours/delete")
+	public Map<String, String> deleteCreditHours(@RequestBody CreditHoursRquest request) {
+	return msterService.deleteCreditHours(request);
+	}
+
+	@PostMapping(value = "/credithours/get")
+	public Map<String, Object> getCreditHours(CreditHoursRquest request) {
+	return msterService.getCreditHours(request);
+	}
+	
+	// EvaluationType
+		@PostMapping(value = "/evaluationType/create")
+		public Map<String, String> createEvaluationType(@Valid @RequestBody EvaluationTypeRequest evaluationType) {
+			return msterService.createEvaluationType(evaluationType);
+		}
+
+		@PostMapping(value = "/evaluationType/update")
+		public Map<String, String> updateEvaluationType(@Valid @RequestBody EvaluationTypeRequest evaluationType) {
+			return msterService.updateEvaluationType(evaluationType);
+		}
+
+		@PostMapping(value = "/evaluationType/delete")
+		public Map<String, String> deleteEvaluationType(@RequestBody EvaluationTypeRequest evaluationType) {
+			return msterService.deleteEvaluationType(evaluationType);
+		}
+
+		@PostMapping(value = "/evaluationType/get")
+		public Map<String, Object> getEvaluationType( EvaluationTypeRequest evaluationType) {
+			return msterService.getEvaluationType(evaluationType);
+		}
+		
+	// StaffType
+	@PostMapping(value = "/staffType/create")
+	public Map<String, String> createStaffType(@Valid @RequestBody StaffTypeRequest staffType) {
+		return msterService.createStaffType(staffType);
+	}
+
+	@PostMapping(value = "/staffType/update")
+	public Map<String, String> updateStaffType(@Valid @RequestBody StaffTypeRequest staffType) {
+		return msterService.updateStaffType(staffType);
+	}
+
+	@PostMapping(value = "/staffType/delete")
+	public Map<String, String> deleteStaffType(@RequestBody StaffTypeRequest staffType) {
+		return msterService.deleteStaffType(staffType);
+	}
+
+	@PostMapping(value = "/staffType/get")
+	public Map<String, Object> getStaffType( StaffTypeRequest staffType) {
+		return msterService.getStaffType(staffType);
+	}
+	
+	// RegistrationType
+	@PostMapping(value = "/registrationType/create")
+	public Map<String, String> createRegistrationType(@Valid @RequestBody RegistrationTypeRequest request) {
+		return msterService.createRegistrationType(request);
+	}
+
+	@PostMapping(value = "/registrationType/update")
+	public Map<String, String> updateRegistrationType(@Valid @RequestBody RegistrationTypeRequest request) {
+		return msterService.updateRegistrationType(request);
+	}
+
+	@PostMapping(value = "/registrationType/delete")
+	public Map<String, String> deleteRegistrationType(@RequestBody RegistrationTypeRequest request) {
+		return msterService.deleteRegistrationType(request);
+	}
+
+	@PostMapping(value = "/registrationType/get")
+	public Map<String, Object> getRegistrationType( RegistrationTypeRequest request) {
+		return msterService.getRegistrationType(request);
+	}
+	
+	// HostelFeeType
+		@PostMapping(value = "/hostelFeeType/create")
+		public Map<String, String> createHostelFeeType(@Valid @RequestBody HostelFeeTypeRequest hostelFeeType) {
+			return msterService.createHostelFeeType(hostelFeeType);
+		}
+
+		@PostMapping(value = "/hostelFeeType/update")
+		public Map<String, String> updateHostelFeeType(@Valid @RequestBody HostelFeeTypeRequest hostelFeeType) {
+			return msterService.updateHostelFeeType(hostelFeeType);
+		}
+
+		@PostMapping(value = "/hostelFeeType/delete")
+		public Map<String, String> deleteHostelFeeType(@RequestBody HostelFeeTypeRequest hostelFeeType) {
+			return msterService.deleteHostelFeeType(hostelFeeType);
+		}
+
+		@PostMapping(value = "/hostelFeeType/get")
+		public Map<String, Object> getHostelFeeType( HostelFeeTypeRequest hostelFeeType) {
+			return msterService.getHostelFeeType(hostelFeeType);
+		}
+
+	// RoomMaster
+	@PostMapping(value = "/roomMaster/create")
+	public Map<String, String> createRoomMaster(@Valid @RequestBody RoomMasterRequest request) {
+		return msterService.createRoomMaster(request);
+	}
+
+	@PostMapping(value = "/roomMaster/update")
+	public Map<String, String> updateRoomMaster(@Valid @RequestBody RoomMasterRequest request) {
+		return msterService.updateRoomMaster(request);
+	}
+
+	@PostMapping(value = "/roomMaster/delete")
+	public Map<String, String> deleteRoomMaster(@RequestBody RoomMasterRequest request) {
+		return msterService.deleteRoomMaster(request);
+	}
+
+	@PostMapping(value = "/roomMaster/get")
+	public Map<String, Object> getRoomMaster( RoomMasterRequest request) {
+		return msterService.getRoomMaster(request);
+	}
+
+	// Designation
+	@PostMapping(value = "/designation/create")
+	public Map<String, String> createDesignation(@Valid @RequestBody DesignationRequest request) {
+		return msterService.createDesignation(request);
+	}
+
+	@PostMapping(value = "/designation/update")
+	public Map<String, String> updateDesignation(@Valid @RequestBody DesignationRequest request) {
+		return msterService.updateDesignation(request);
+	}
+
+	@PostMapping(value = "/designation/delete")
+	public Map<String, String> deleteDesignation(@RequestBody DesignationRequest request) {
+		return msterService.deleteDesignation(request);
+	}
+
+	@PostMapping(value = "/designation/get")
+	public Map<String, Object> getDesignation( DesignationRequest request) {
+		return msterService.getDesignation(request);
+	}
+
+
+	
+	// User
+	@PostMapping(value = "/user/create")
+	public Map<String, String> createUser(@Valid @RequestBody UserRequest request) {
+		return msterService.createUser(request);
+	}
+
+	@PostMapping(value = "/user/update")
+	public Map<String, String> updateUser(@Valid @RequestBody UserRequest request) {
+		return msterService.updateUser(request);
+	}
+
+	@PostMapping(value = "/user/delete")
+	public Map<String, String> deleteUser(@RequestBody UserRequest request) {
+		return msterService.deleteUser(request);
+	}
+
+	@PostMapping(value = "/user/get")
+	public Map<String, Object> getUser( UserRequest request) {
+		return msterService.getUser(request);
+	}
+	
+
+	// Courses
+	@PostMapping(value = "/courses/create")
+	public Map<String, String> createCourses(@Valid @RequestBody CoursesRequest request) {
+		return msterService.createCourses(request);
+	}
+
+	@PostMapping(value = "/courses/update")
+	public Map<String, String> updateCourses(@Valid @RequestBody CoursesRequest request) {
+		return msterService.updateCourses(request);
+	}
+
+	@PostMapping(value = "/courses/delete")
+	public Map<String, String> deleteCourses(@RequestBody CoursesRequest request) {
+		return msterService.deleteCourses(request);
+	}
+
+	@PostMapping(value = "/courses/get")
+	public Map<String, Object> getCourses( CoursesRequest request) {
+		return msterService.getCourses(request);
+	}
+	
+	
+	// ExamAnnouncement
+	@PostMapping(value = "/examAnnouncement/create")
+	public Map<String, String> createExamAnnouncement(@Valid @RequestBody ExamAnnouncementRequest request) {
+		return msterService.createExamAnnouncement(request);
+	}
+
+	@PostMapping(value = "/examAnnouncement/update")
+	public Map<String, String> updateExamAnnouncement(@Valid @RequestBody ExamAnnouncementRequest request) {
+		return msterService.updateExamAnnouncement(request);
+	}
+
+	@PostMapping(value = "/examAnnouncement/delete")
+	public Map<String, String> deleteExamAnnouncement(@RequestBody ExamAnnouncementRequest request) {
+		return msterService.deleteExamAnnouncement(request);
+	}
+
+	@PostMapping(value = "/examAnnouncement/get")
+	public Map<String, Object> getExamAnnouncement( ExamAnnouncementRequest request) {
+		return msterService.getExamAnnouncement(request);
+	}
+	@PostMapping(value = "/getLiveExamDetails")
+	public Map<String, Object> getLiveExamDetails( ExamAnnouncementRequest request) {
+		return msterService.getLiveExamDetails(request);
+	}
+	
+	// SemesterRegistrationConfiguration
+	@PostMapping(value = "/semesterRegistrationConfiguration/create")
+	public Map<String, String> createSemesterRegistrationConfiguration(@Valid @RequestBody SemesterRegistrationConfigurationRequest request) {
+		return msterService.createSemesterRegistrationConfiguration(request);
+	}
+
+	@PostMapping(value = "/semesterRegistrationConfiguration/update")
+	public Map<String, String> updateSemesterRegistrationConfiguration(@Valid @RequestBody SemesterRegistrationConfigurationRequest request) {
+		return msterService.updateSemesterRegistrationConfiguration(request);
+	}
+
+	@PostMapping(value = "/semesterRegistrationConfiguration/delete")
+	public Map<String, String> deleteSemesterRegistrationConfiguration(@RequestBody SemesterRegistrationConfigurationRequest request) {
+		return msterService.deleteSemesterRegistrationConfiguration(request);
+	}
+
+	@PostMapping(value = "/semesterRegistrationConfiguration/get")
+	public Map<String, Object> getSemesterRegistrationConfiguration( SemesterRegistrationConfigurationRequest request) {
+		return msterService.getSemesterRegistrationConfiguration(request);
+	}
+
+	// AccessLogs
+	@PostMapping(value = "/accessLogs/create")
+	public Map<String, String> createAccessLogs(@Valid @RequestBody AccessLogs request) {
+		return msterService.createAccessLogs(request);
+	}
+
+	@PostMapping(value = "/accessLogs/get")
+	public Map<String, Object> getAccessLogs( AccessLogs request) {
+		return msterService.getAccessLogs(request);
+	}
+		
+	// Hostel
+	@PostMapping(value = "/hostel/create")
+	public Map<String, String> createHostel(@Valid @RequestBody HostelRequest request) {
+		return msterService.createHostel(request);
+	}
+
+	@PostMapping(value = "/hostel/update")
+	public Map<String, String> updateHostel(@Valid @RequestBody HostelRequest request) {
+		return msterService.updateHostel(request);
+	}
+
+	@PostMapping(value = "/hostel/delete")
+	public Map<String, String> deleteHostel(@RequestBody HostelRequest request) {
+		return msterService.deleteHostel(request);
+	}
+
+	@PostMapping(value = "/hostel/get")
+	public Map<String, Object> getHostel(HostelRequest request) {
+		return msterService.getHostel(request);
+	}
+	
+	// FeedbackScale
+	@PostMapping(value = "/scale/create")
+	public Map<String, String> createScale(@Valid @RequestBody Scale request) {
+		return msterService.createScale(request);
+	}
+
+	@PostMapping(value = "/scale/update")
+	public Map<String, String> updateScale(@Valid @RequestBody Scale request) {
+		return msterService.updateScale(request);
+	}
+
+	@PostMapping(value = "/scale/delete")
+	public Map<String, String> deleteScale(@RequestBody Scale request) {
+		return msterService.deleteScale(request);
+	}
+
+	@PostMapping(value = "/scale/get")
+	public Map<String, Object> getScale(Scale request) {
+		return msterService.getScale(request);
+	}
+
+	
+	// AboutFeedback
+	@PostMapping(value = "/aboutFeedBack/create")
+	public Map<String, String> createAboutFeedBack(@Valid @RequestBody AboutFeedBackRequest request) {
+		return msterService.createAboutFeedBack(request);
+	}
+
+	@PostMapping(value = "/aboutFeedBack/update")
+	public Map<String, String> updateAboutFeedBack(@Valid @RequestBody AboutFeedBackRequest request) {
+		return msterService.updateAboutFeedBack(request);
+	}
+
+	@PostMapping(value = "/aboutFeedBack/delete")
+	public Map<String, String> deleteAboutFeedBack(@RequestBody AboutFeedBackRequest request) {
+		return msterService.deleteAboutFeedBack(request);
+	}
+
+	@PostMapping(value = "/aboutFeedBack/get")
+	public Map<String, Object> getAboutFeedBack(AboutFeedBackRequest request) {
+		return msterService.getAboutFeedBack(request);
+	}
+
+	// Feedback
+	@PostMapping(value = "/feedback/sumbit")
+	public Map<String, String> createFeedBack(@Valid @RequestBody FeedbackRequest request) {
+		return msterService.createFeedBack(request);
+	}
+	
+	// TeacherCourseMapping
+	@PostMapping(value = "/teacherCourseMapping/create")
+	public Map<String, Object> createTeacherCourseMapping(@Valid @RequestBody TeacherCourseMappingRequest request) {
+		return msterService.createTeacherCourseMapping(request);
+	}
+
+	@PostMapping(value = "/teacherCourseMapping/update")
+	public Map<String, Object> updateTeacherCourseMapping(@Valid @RequestBody TeacherCourseMappingRequest request) {
+		return msterService.updateTeacherCourseMapping(request);
+	}
+
+	@PostMapping(value = "/teacherCourseMapping/delete")
+	public Map<String, String> deleteTeacherCourseMapping(@RequestBody TeacherCourseMappingRequest request) {
+		return msterService.deleteTeacherCourseMapping(request);
+	}
+
+	@PostMapping(value = "/teacherCourseMapping/get")
+	public Map<String, Object> getTeacherCourseMapping(TeacherCourseMappingRequest request) {
+		return msterService.getTeacherCourseMapping(request);
+	}
+	
+	
+	@PostMapping(value = "/checkFBSubmitted")
+	public Map<String, String> checkFBSubmitted(@RequestBody FeedbackRequest request) {		
+	return  msterService.checkFBSubmitted(request);	
+	}
+	
+	@PostMapping(value = "/validateAboutFeedback")
+	public Map<String, Object> validateAboutFeedback(@RequestBody FeedbackRequest request) {		
+	return  msterService.validateAboutFeedback(request);
+	}		
+	
+	@PostMapping(value = "/getStaffList")
+	public Map<String, Object> stafflist(@RequestBody FeedbackRequest request) {			
+	return msterService.getStaffList(request);	
+	}
+	
+	@PostMapping(value = "/uploadImage")
+	public Map<String, Object>  uploadImage(  @RequestParam(value = "exPhoto" , required=false) MultipartFile exfile ,@RequestParam(value = "id" , required = false) Long id ,@RequestParam(value = "userType" , required = false) String userType){
+		return msterService.uploadImage(exfile,id,userType);	
+	}
+	
+	//Stream
+	@PostMapping(value = "/stream/create")
+	public Map<String, String> stream(@RequestBody StreamRequest request) {			
+	return msterService.createstream(request);	
+	}
+	
+	@PostMapping(value = "/stream/update")
+	public Map<String, String> updatestream(@RequestBody StreamRequest request) {			
+	return msterService.updateStream(request);	
+	}
+	
+	@PostMapping(value = "/stream/get")
+	public Map<String, Object> getstream(@RequestBody StreamRequest request) {			
+	return msterService.getstream(request);	
+	}
+	
+	@PostMapping(value = "/stream/delete")
+	public Map<String, String> getdelete(@RequestBody StreamRequest request) {			
+	return msterService.deletestream(request);	
+	}
+
+	// Batch
+	@PostMapping(value = "/batch/create")
+	public Map<String, String> createBatch(@Valid @RequestBody BatchRequest request) {
+		return msterService.createBatch(request);
+	}
+
+	@PostMapping(value = "/batch/get")
+	public Map<String, Object> getBatch(BatchRequest request) {
+		return msterService.getBatch(request);
+	}
+
+	@PostMapping(value = "/batch/delete")
+	public Map<String, String> deleteBatch(@RequestBody BatchRequest request) {
+		return msterService.deleteBatch(request);
+	}
+
+	@PostMapping(value = "/batch/update")
+	public Map<String, String> updateBatch(@Valid @RequestBody BatchRequest request) {
+		return msterService.updateBatch(request);
+	}
+
+	// programtype
+	@PostMapping(value = "/programtype/create")
+	public Map<String, String> createProgramType(@Valid @RequestBody ProgramTypeRequest request) {
+		return msterService.createProgramType(request);
+	}
+
+	@PostMapping(value = "/programtype/get")
+	public Map<String, Object> getProgramType(ProgramTypeRequest request) {
+		return msterService.getProgramType(request);
+	}
+
+	@PostMapping(value = "/programtype/delete")
+	public Map<String, String> deleteProgramType(@RequestBody ProgramTypeRequest request) {
+		return msterService.deleteProgramType(request);
+	}
+
+	@PostMapping(value = "/programtype/update")
+	public Map<String, String> updateProgramType(@Valid @RequestBody ProgramTypeRequest request) {
+		return msterService.updateProgramType(request);
+	}
+
+	// Coursestype
+	@PostMapping(value = "/coursestype/create")
+	public Map<String, String> createCoursesType(@Valid @RequestBody CoursesTypeRequest request) {
+		return msterService.createCoursesType(request);
+	}
+
+	@PostMapping(value = "/coursestype/get")
+	public Map<String, Object> getCoursesType(CoursesTypeRequest request) {
+		return msterService.getCoursesType(request);
+	}
+
+	@PostMapping(value = "/coursestype/delete")
+	public Map<String, String> deleteCoursesType(@RequestBody CoursesTypeRequest request) {
+		return msterService.deleteCoursesType(request);
+	}
+
+	@PostMapping(value = "/coursestype/update")
+	public Map<String, String> updateCoursesType(@Valid @RequestBody CoursesTypeRequest request) {
+		return msterService.updateCoursesType(request);
+	}
+
+	// AcademicActivity
+	@PostMapping(value = "/academicactivity/create")
+	public Map<String, String> createAcademicCalenderActivity(
+			@Valid @RequestBody AcademicCalenderActivityRequest request) {
+		return msterService.createAcademicCalenderActivity(request);
+	}
+
+	@PostMapping(value = "/academicactivity/get")
+	public Map<String, Object> getAcademicCalenderActivity(AcademicCalenderActivityRequest request) {
+		return msterService.getAcademicCalenderActivity(request);
+	}
+
+	@PostMapping(value = "/academicactivity/delete")
+	public Map<String, String> deleteAcademicCalenderActivity(@RequestBody AcademicCalenderActivityRequest request) {
+		return msterService.deleteAcademicCalenderActivity(request);
+	}
+
+	@PostMapping(value = "/academicactivity/update")
+	public Map<String, String> updateAcademicCalenderActivity(
+			@Valid @RequestBody AcademicCalenderActivityRequest request) {
+		return msterService.updateAcademicCalenderActivity(request);
+	}
+
+	@PostMapping(value = "/role/create")
+	public Map<String, String> saveRole(@RequestBody RoleRequest Role) {
+		return RoleService.saveRole(Role);
+	}
+
+	@PostMapping(value = "/role/update")
+	public Map<String, String> updateRole(@RequestBody RoleRequest Role) {
+		return RoleService.updateRole(Role);
+	}
+
+	@PostMapping(value = "/role/get")
+	public Map<String, Object> getRole(@RequestBody RoleRequest Role) {
+		return RoleService.getRole();
+	}
+
+	@PostMapping(value = "/role/delete")
+	public Map<String, String> deleteRole(@RequestBody RoleRequest Role) {
+		return RoleService.deleteRole(Role.getId());
+	}
+	
+	@PostMapping(value = "/savePrivilegesModules")
+	public Map<String, String> savesavePrivilegesModules(@RequestBody PrivilegesModules module) {
+		return RoleService.savePrivilegesModules(module);
+	}
+	
+	@PostMapping(value = "/updatePrivilegesModules")
+	public Map<String, String> updateRole(@RequestBody PrivilegesModules module) {
+		return RoleService.updatePrivilegesModules(module);
+	}
+
+	@PostMapping(value = "/getPrivilegesModules")
+	public Map<String, Object> getPrivilegesModules() {
+		return RoleService.getPrivilegesModules();
+		
+	}
+	@GetMapping(value = "/deletePrivilegesModules")
+	public Map<String, String> deletePrivilegesModules( Long id) {
+		return RoleService.deletePrivilegesModules(id);
+	}
+	
+	
+	@PostMapping(value = "/electivegroup/create")
+	public Map<String, String> createelectiveGroup(@RequestBody ElectiveGroupRequest request) {
+		  return msterService.createelectiveGroup(request);				
+	}
+	
+	
+	
+	@PostMapping(value = "/electivegroup/get")
+	public Map<String, Object> getelectiveGroup(ElectiveGroupRequest request) {
+		return msterService.getelectiveGroup(request);
+	}
+	
+	@PostMapping(value = "/electivegroup/delete")
+	public Map<String, String> deleteelectiveGroup(@RequestBody ElectiveGroupRequest request) {
+		return msterService.deleteelectiveGroup(request);
+	}
+	
+
+	
+	@PostMapping(value = "/electivegroup/update")
+	public Map<String, String> updateelectiveGroup(@Valid @RequestBody ElectiveGroupRequest request) {
+		return msterService.updateelectiveGroup(request);
+	}
+	
+	
+	
+	
+	@PostMapping(value = "/electiveGroupMapping/create")
+	public Map<Object, Object> electiveGroupMapping(@RequestBody ElectiveGroupRequest request) {
+		  return msterService.electiveGroupMapping(request);				
+	}	
+	
+	
+	
+	@PostMapping(value = "/electiveGroupName/get")
+	public Map<String, Object> getElectiveGroupName(@RequestBody  ElectiveGroupRequest request) {
+		  return msterService.getElectiveGroupName(request);				
+	}	
+	
+	
+	@PostMapping(value = "/courseOnGroupId/get")
+	public Map<String, Object> courseOnGroupId(@RequestBody  ElectiveGroupRequest request) {
+		  return msterService.courseOnGroupId(request);				
+	}
+	
+	@PostMapping(value = "/mentor/create")
+	public Map<String, String> createMentor(@Valid @RequestBody MentorRequest request) {
+		return msterService.createMentor(request);
+	}
+	
+	
+	@PostMapping(value = "/mentor/get")
+	public Map<String, Object> getMentor(MentorRequest request) {
+		return msterService.getMentor(request);
+	}
+	
+	
+	
+	@PostMapping(value = "/mentor/delete")
+	public Map<String, String> deleteMentor(@RequestBody MentorRequest request) {
+		return msterService.deleteMentor(request);
+	}
+	
+
+	
+
+	@PostMapping(value = "/mentor/update")
+	public Map<String, String> updateMentor(@Valid @RequestBody MentorRequest request) {
+		return msterService.updateMentor(request);
+	}
+		
+	
+	
+	
+	@PostMapping(value = "/studentmentor/update")
+	public Map<String, String> updateStudentMentor(@Valid  @RequestBody StudentMentorRequest request) {
+			return msterService.updateStudentMentor(request);			
+	}
+	
+	
+
+	@PostMapping(value = "/changePassword")
+	public Map<Object, Object> changePassword(@RequestBody Login request) {
+		return msterService.changePassword(request);		
+	}
+	
+	
+	@PostMapping(value = "/forgetPassword")
+	public Map<Object, Object> forgetPassword(@RequestBody Login request) {
+		return msterService.forgetPassword(request);		
+		}
+	
+	@PostMapping(value = "/AdminPassword")
+	public Map<Object, Object> AdminPassword(@RequestBody Login request) {
+		return msterService.AdminPassword(request);		
+		}
+
+	@PostMapping(value = "/resetPassword")
+	public Map<Object, Object> resetPassword(@RequestBody Login request) {
+		return msterService.resetPassword(request);			
+	}
+	
+	@PostMapping(value = "/mentorAllocation")
+	public Map<String, String> createMentorAllocation(@Valid  @RequestBody StudentMentorAllocation request) {
+			return msterService.createMentorAllocation(request);			
+	}
+	@PostMapping(value = "/hostelConfiguration/create")
+	public Map<String, String> createhostelConfiguration(@Valid  @RequestBody HostelConfigureDetailRequest request) {
+			return msterService.createhostelConfiguration(request);			
+	}
+	@PostMapping(value = "/updateStudentProfilebyStudent")
+	public Map<String, String> updateStudentProfilebyStudent( @RequestBody CreateStudentRequest request) {
+			return msterService.updateStudentProfilebyStudent(request);			
+	}
+	
+	@PostMapping(value = "/updateStudentSection")
+	public Map<String, String> updateStudentSection( @RequestBody CreateStudentRequest request) {
+			return msterService.updateStudentSection(request);			
+	}
+	@PostMapping(value = "/getExportList")
+	public Map<String, Object> getExportList( ExportListRequest request) {
+		return msterService.getExportList(request);
+	}
+	
+	
+	// Inernal marksConfiguration
+	@PostMapping(value = "/internalMarksConfiguration/create")
+	public Map<String, String> createInternalMarksConfiguration( @RequestBody SemesterRegistrationConfigurationRequest request) {
+		return msterService.createInternalMarksConfiguration(request);
+	}
+
+	@PostMapping(value = "/internalMarksConfiguration/update")
+	public Map<String, String> updateInternalMarksConfiguration( @RequestBody SemesterRegistrationConfigurationRequest request) {
+		return msterService.updateInternalMarksConfiguration(request);
+	}
+
+	@PostMapping(value = "/internalMarksConfiguration/delete")
+	public Map<String, String> deleteInternalMarksConfiguration(@RequestBody SemesterRegistrationConfigurationRequest request) {
+		return msterService.deleteInternalMarksConfiguration(request);
+	}
+
+	@PostMapping(value = "/internalMarksConfiguration/get")
+	public Map<String, Object> getInternalMarksConfiguration( SemesterRegistrationConfigurationRequest request) {
+		return msterService.getInternalMarksConfiguration(request);
+	}
+	@PostMapping(value = "/getAcademicyearActivityBasedOnAcademicYear")
+	public Map<String, Object> getAcademicyearActivityBasedOnAcademicYear(@RequestBody AcademicCalenderActivityRequest request) {
+		return msterService.getAcademicyearActivityBasedOnAcademicYear(request);
+	}
+	
+	@PostMapping(value = "/getActivityBasedOnAcademicYearANDISEven")
+	public Map<String, Object> getActivityBasedOnAcademicYearANDISEven(@RequestBody AcademicCalenderActivityRequest request) {
+		return msterService.getActivityBasedOnAcademicYearANDISEven(request);
+	}
+	
+	
+	@PostMapping(value = "/ApplicationVersion/create")
+	public Map<String, String> createApplicationVersion(@Valid  @RequestBody ApplicationVersionRequest apprequest) {
+			return msterService.createApplicationVersion(apprequest);			
+	}
+
+	
+	@PostMapping(value = "/ApplicationVersion/update")
+	public Map<String, String> updateApplicationVersion(@Valid @RequestBody ApplicationVersionRequest apprequest) {
+			return msterService.updateApplicationVersion(apprequest);			
+	}
+	
+	@PostMapping(value = "/ApplicationVersion/delete")
+	public Map<String, String> deleteApplicationVersion(@RequestBody ApplicationVersionRequest apprequest) {
+			return msterService.deleteApplicationVersion(apprequest);			
+	}
+	
+	@PostMapping(value = "/ApplicationVersion/get")
+	public Map<String, Object> getApplicationVersion(ApplicationVersionRequest apprequest) {
+			return msterService.getApplicationVersion(apprequest);			
+	}	
+	
+	
+	@PostMapping(value = "/ApplicationVersion/Status")
+	public Map<String, Object> ApplicationVersionstatus( @RequestBody ApplicationVersionRequest apprequest) {
+			return msterService.ApplicationVersionstatus(apprequest);			
+	}	
+	
+	
+	// SemesterRegistrationConfiguration
+	@PostMapping(value = "/feedbackconfig/create")
+	public Map<String, String> createFeedbackConfig(@RequestBody SemesterRegistrationConfigurationRequest request) {
+		return msterService.createFeedbackConfig(request);
+	}
+
+	@PostMapping(value = "/feedbackconfig/update")
+	public Map<String, String> updateFeedbackConfig( @RequestBody SemesterRegistrationConfigurationRequest request) {
+		return msterService.updateFeedbackConfig(request);
+	}
+
+	@PostMapping(value = "/feedbackconfig/delete")
+	public Map<String, String> deleteFeedbackConfig(@RequestBody SemesterRegistrationConfigurationRequest request) {
+		return msterService.deleteFeedbackConfig(request);
+	}
+
+	@PostMapping(value = "/feedbackconfig/get")
+	public Map<String, Object> getFeedbackConfig( SemesterRegistrationConfigurationRequest request) {
+		return msterService.getFeedbackConfig(request);
+	}	
+	
+}

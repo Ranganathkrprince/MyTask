@@ -1,0 +1,459 @@
+package com.niftem.app.entity;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_student_admission")
+public class Studentadmission {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String exUserName;
+	private String exPassword;
+
+	private String exName;
+	private String exNameInHindi;
+
+	private String exPhoto;
+	private String exSignature;
+
+	private String exStudyStatus;
+	private String exEnrollementNo;
+	private String exRollNo;
+
+	private String exAllIndiaRank;
+	private String exJeeReg;
+	
+	@Column(columnDefinition="TEXT")
+	private String exDetailsQualification;
+	private Double exPercentageOfMarks;
+	private String exDocumentPath;
+
+
+	private Integer exRollNoInc;
+	
+	@Column(columnDefinition = "Integer DEFAULT 1")
+	private Integer exIsApprove;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "mentor_id", nullable = true)
+	private Mentor mentor;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "section_id", nullable = true)
+	private Section section;
+	
+	public Mentor getMentor() {
+		return mentor;
+	}
+
+
+	public void setMentor(Mentor mentor) {
+		this.mentor = mentor;
+	}
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "batch_id", nullable = false)
+	private Batch batch;
+
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_student_profile_stream_mapping",joinColumns = { @JoinColumn(name = "ex_student_profile_mapping_id", referencedColumnName = "id", nullable = false, updatable = true)},
+	inverseJoinColumns = {  @JoinColumn(name = "stream_id", referencedColumnName = "id", nullable = false, updatable = true)})
+	private List<Stream> stream = new ArrayList<>();
+
+	@ManyToOne(optional = false)
+
+	@JoinColumn(name = "program_type_id", nullable = false)
+	private ProgramType programtype;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "allocated_category_id", nullable = false)
+	private Category allocatedCategory;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "category_id", nullable = true)
+	private Category category;
+	
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "academic_year_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+	
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "hostel_id", nullable = true)
+	private Hostel hostel;
+
+//
+//	@OneToMany(targetEntity =Studentadmission.class ,cascade=CascadeType.PERSIST)
+//	@JoinColumn(name="student_personal_id",nullable=false)
+//	private List<Studentpersonal> studentPersonal;
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExUserName() {
+		return exUserName;
+	}
+
+	public void setExUserName(String exUserName) {
+		this.exUserName = exUserName;
+	}
+
+	public String getExPassword() {
+		return exPassword;
+	}
+
+	public void setExPassword(String exPassword) {
+		this.exPassword = exPassword;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public String getExNameInHindi() {
+		return exNameInHindi;
+	}
+
+	public void setExNameInHindi(String exNameInHindi) {
+		this.exNameInHindi = exNameInHindi;
+	}
+
+	public String getExPhoto() {
+		return exPhoto;
+	}
+
+	public void setExPhoto(String exPhoto) {
+		this.exPhoto = exPhoto;
+	}
+
+	public String getExSignature() {
+		return exSignature;
+	}
+
+	public void setExSignature(String exSignature) {
+		this.exSignature = exSignature;
+	}
+
+	public String getExStudyStatus() {
+		return exStudyStatus;
+	}
+
+	public void setExStudyStatus(String exStudyStatus) {
+		this.exStudyStatus = exStudyStatus;
+	}
+
+	public String getExEnrollementNo() {
+		return exEnrollementNo;
+	}
+
+	public void setExEnrollementNo(String exEnrollementNo) {
+		this.exEnrollementNo = exEnrollementNo;
+	}
+
+	
+	public String getExAllIndiaRank() {
+		return exAllIndiaRank;
+	}
+
+	public void setExAllIndiaRank(String exAllIndiaRank) {
+		this.exAllIndiaRank = exAllIndiaRank;
+	}
+
+	/*public String getExJEEReg() {
+		return exJEEReg;
+	}
+
+	public void setExJEEReg(String exJEEReg) {
+		this.exJEEReg = exJEEReg;
+	}
+*/
+	public String getExDetailsQualification() {
+		return exDetailsQualification;
+	}
+
+	public void setExDetailsQualification(String exDetailsQualification) {
+		this.exDetailsQualification = exDetailsQualification;
+	}
+
+	
+	public Double getExPercentageOfMarks() {
+		return exPercentageOfMarks;
+	}
+
+	public void setExPercentageOfMarks(Double exPercentageOfMarks) {
+		this.exPercentageOfMarks = exPercentageOfMarks;
+	}
+
+	public String getExDocumentPath() {
+		return exDocumentPath;
+	}
+
+	public void setExDocumentPath(String exDocumentPath) {
+		this.exDocumentPath = exDocumentPath;
+	}
+
+	
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public Category getAllocatedCategory() {
+		return allocatedCategory;
+	}
+
+	public void setAllocatedCategory(Category allocatedCategory) {
+		this.allocatedCategory = allocatedCategory;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Batch getBatch() {
+		return batch;
+	}
+
+	public void setBatch(Batch batch) {
+		this.batch = batch;
+	}
+
+	public ProgramType getProgramtype() {
+		return programtype;
+	}
+
+	public void setProgramtype(ProgramType programtype) {
+		this.programtype = programtype;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	public Integer getExRollNoInc() {
+		return exRollNoInc;
+	}
+
+	public void setExRollNoInc(Integer exRollNoInc) {
+		this.exRollNoInc = exRollNoInc;
+	}
+
+	public String getExJeeReg() {
+		return exJeeReg;
+	}
+
+	public void setExJeeReg(String exJeeReg) {
+		this.exJeeReg = exJeeReg;
+	}
+
+	public Integer getExIsApprove() {
+		return exIsApprove;
+	}
+
+	public void setExIsApprove(Integer exIsApprove) {
+		this.exIsApprove = exIsApprove;
+	}
+
+
+
+	public List<Stream> getStream() {
+		return stream;
+	}
+
+	public void setStream(List<Stream> stream) {
+		this.stream = stream;
+	}
+
+
+	public Hostel getHostel() {
+		return hostel;
+	}
+
+
+	public void setHostel(Hostel hostel) {
+		this.hostel = hostel;
+	}
+
+
+	public Section getSection() {
+		return section;
+	}
+
+
+	public void setSection(Section section) {
+		this.section = section;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Studentadmission [id=" + id + ", exUserName=" + exUserName + ", exPassword=" + exPassword + ", exName="
+				+ exName + ", exNameInHindi=" + exNameInHindi + ", exPhoto=" + exPhoto + ", exSignature=" + exSignature
+				+ ", exStudyStatus=" + exStudyStatus + ", exEnrollementNo=" + exEnrollementNo + ", exRollNo=" + exRollNo
+				+ ", exAllIndiaRank=" + exAllIndiaRank + ", exJeeReg=" + exJeeReg + ", exDetailsQualification="
+				+ exDetailsQualification + ", exPercentageOfMarks=" + exPercentageOfMarks + ", exDocumentPath="
+				+ exDocumentPath + ", exRollNoInc=" + exRollNoInc + ", exIsApprove=" + exIsApprove + ", mentor="
+				+ mentor + ", section=" + section + ", colleges=" + colleges + ", batch=" + batch + ", degree=" + degree
+				+ ", programmes=" + programmes + ", department=" + department + ", stream=" + stream + ", programtype="
+				+ programtype + ", allocatedCategory=" + allocatedCategory + ", category=" + category
+				+ ", academicYear=" + academicYear + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate
+				+ ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete + ", hostel=" + hostel + "]";
+	}
+
+
+	
+
+	
+
+	
+
+	
+
+	
+	
+
+
+	
+	
+	
+
+}

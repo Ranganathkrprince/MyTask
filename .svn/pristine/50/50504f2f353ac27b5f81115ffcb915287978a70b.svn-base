@@ -1,0 +1,30 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.PushAlertLog;
+import com.niftem.app.entity.PushAlertNotification;
+
+public interface PushAlertLogRepository extends CrudRepository<PushAlertLog, Long> {
+
+	
+	List<PushAlertLog> findByExRollNoAndId(String exRollNo, Long id);
+	List<PushAlertLog> findByExRollNoAndAlertId(String exRollNo, PushAlertNotification id);
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_notification_alert_log set is_view =?1 where ex_roll_no =?2 and alert_id = ?3", nativeQuery = true)	
+	int updateAlert(boolean b, String exRollNo, Long alertId);
+
+
+	
+	Optional<PushAlertLog> findByIdAndExRollNo(Long alertId, String exRollNo);
+
+}

@@ -1,0 +1,79 @@
+package com.niftem.app.entity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+
+
+@Entity
+@Table(name = "ex_elective_courses_group")
+public class ElectiveCoursesGroup {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "courses_id", nullable = false)
+	private Courses courses ;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "elective_group_id", nullable = false)
+	private ElectiveGroup electiveGroup;
+	
+
+	public Courses getCourses() {
+		return courses;
+	}
+
+
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+
+
+	public ElectiveGroup getElectiveGroup() {
+		return electiveGroup;
+	}
+
+
+	public void setElectiveGroup(ElectiveGroup electiveGroup) {
+		this.electiveGroup = electiveGroup;
+	}
+
+
+	@Override
+	public String toString() {
+		return "ElectiveCoursesGroup [id=" + id + ", courses=" + courses + ", electiveGroup=" + electiveGroup + "]";
+	}
+
+
+
+
+
+
+}

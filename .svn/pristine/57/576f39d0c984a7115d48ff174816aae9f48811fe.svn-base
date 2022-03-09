@@ -1,0 +1,26 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.StaffComplaint;
+
+public interface StaffComplaintRepository extends CrudRepository<StaffComplaint, Long>{
+	Optional<StaffComplaint> findByExTicketNumber(String exTicketNumber);
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_staff_complaint set complaint_status = ?1 ,ex_remark=?3 ,user_id=?5  ,ex_update_date=?4 where ex_ticket_number =?2", nativeQuery = true)
+	int updateComplaintRecord(Integer complaintStatus, String exTicketNumber, String exRemark, Date date, Long user);
+
+	List<StaffComplaint> findByComplaintStatus(Integer complaintStatus);
+	
+	List<StaffComplaint> findByComplaintStatusAndComplaintTypeRoleId(Integer complaintStatus , Long role);
+
+	List<StaffComplaint> findByStaffId (Long studentId);
+}

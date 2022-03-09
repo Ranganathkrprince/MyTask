@@ -1,0 +1,77 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.PushAlertNotification;
+
+public interface PushAlertNotificationRepository extends CrudRepository<PushAlertNotification, Long> {
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_notification_push_alert set ex_is_delete = ?1 ,ex_is_active = ?2 where id =?3", nativeQuery = true)
+	int deleteAlert(Boolean exIsDelete, Boolean is_active, Long id);
+
+	List<PushAlertNotification> findByExIsDelete(boolean b);
+
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_notification_push_alert set title = ?1, message = ?2,ex_update_date  = ?3   where id =?4", nativeQuery = true)	
+	
+	int updatealertRecord(String title, String message, Date date, Long id);
+	/*@Modifying
+	@Transactional
+	@Query(value = "delete from ex_notification_alert_collage  where alert_id =?1", nativeQuery = true)
+	
+	void deleteDeptCollege(Long id);*/
+	@Modifying
+	@Transactional	
+	@Query(value = "insert into ex_notification_alert_collage(alert_id,collage_id)values(?1,?2)", nativeQuery = true)
+
+	void savealertCollege(Long id, Long col);
+	@Modifying
+	@Transactional	
+	@Query(value = "insert into ex_notification_alert_programme(alert_id,programme_id)values(?1,?2)", nativeQuery = true)
+
+	void savealertProgramme(Long id, Long pgm);
+	
+	@Modifying
+	@Transactional	
+	@Query(value = "insert into ex_notification_alert_programmeyear(alert_id,programmeyear_id)values(?1,?2)", nativeQuery = true)
+
+	void savealertProgrammeYear(Long id, Long pgm);
+	
+	@Modifying
+	@Transactional	
+	@Query(value = "insert into ex_notification_alert_department(alert_id,department_id)values(?1,?2)", nativeQuery = true)
+
+	void savealertDepartment(Long id, Long pgm);
+
+	@Modifying
+	@Transactional	
+	@Query(value = "insert into ex_notification_alert_degree(alert_id,degree_id)values(?1,?2)", nativeQuery = true)
+
+	void savealertdegree(Long id, Long col);
+
+	
+	
+
+	List<PushAlertNotification> findByMessageAndTitleAndTemplateIdAndCollegeIdInAndDegreeIdAndDepartmentIdAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndCategoryIdAndExIsDelete(
+			String message, String title, Long template, List<Long> college, List<Long> degree, List<Long> department,
+			List<Long> programmes, List<Long> programmeYear, Long semester, Long category, boolean b);
+
+	List<PushAlertNotification> findByExIsActiveAndExIsDeleteAndAcademicYearIdAndSemesterIdAndCollegeIdAndProgrammeYearId(
+			boolean b, boolean c, Long academicYear, Long semester, Long colleges, Long programeYear);
+	List<PushAlertNotification> findByMessageAndTitleAndTemplateIdAndCollegeIdInAndDegreeIdInAndDepartmentIdInAndProgrammesIdInAndProgrammeYearIdInAndSemesterIdAndCategoryIdAndExIsDelete(
+			String message, String title, Long template, List<Long> college, List<Long> degree, List<Long> department,
+			List<Long> programmes, List<Long> programmeYear, Long semester, Long category, boolean b);
+
+}

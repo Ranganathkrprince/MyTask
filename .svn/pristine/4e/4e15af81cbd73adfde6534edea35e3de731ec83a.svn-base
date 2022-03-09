@@ -1,0 +1,56 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.AcademicCalenderActivity;
+import com.niftem.app.entity.AcademicYear;
+
+public interface AcademicCalenderActivityRepository  extends CrudRepository<AcademicCalenderActivity, Long>{
+	List<AcademicCalenderActivity> findByExNameAndExIsDelete(String trim, boolean b);
+
+	List<AcademicCalenderActivity> findByExIsDelete(boolean b);
+
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_academic_calenderactivity set ex_is_delete = ?1  ,ex_is_active = ?2  where id =?3", nativeQuery = true)
+	
+	int deleteAcademicCalenderActivity(Boolean exIsDelete, Boolean is_active, Long id);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_academic_calenderactivity set ex_name = ?1 ,ex_is_active =?2 , ex_description =?3  , ex_update_date = ?4 ,academic_year_id=?6 , ex_is_even = ?7 where id =?5", nativeQuery = true)
+	int updateAcademicCalenderActivityRecord(String exName, Boolean exIsActive, String exDescription, Date date,
+			Long id, AcademicYear academicYear, Boolean is_even);
+	
+
+
+	Optional<AcademicCalenderActivity> findByIdAndExIsDeleteAndExIsActive(Long academicCalenderActivity, boolean b,
+			boolean c);
+
+	List<AcademicCalenderActivity> findByExNameAndExIsDeleteAndAcademicYearId(String trim, boolean b,
+			Long academicYear);
+	
+	List<AcademicCalenderActivity> findByExNameAndExIsDeleteAndAcademicYearIdAndExIsEven(String trim, boolean b,
+			Long academicYear , Boolean is_een);
+
+	
+	List<AcademicCalenderActivity> findByExIsDeleteAndExIsActiveAndAcademicYearId(boolean b, boolean c,Long academicYear);
+
+	List<AcademicCalenderActivity> findByExIsDeleteAndExIsActive(boolean b, boolean c);
+
+	
+
+	List<AcademicCalenderActivity> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndExIsEven(boolean b, boolean c,Long academicYear , boolean iseven);
+
+}

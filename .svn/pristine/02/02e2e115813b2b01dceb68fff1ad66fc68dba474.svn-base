@@ -1,0 +1,124 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotNull;
+
+public class AttendenceRequest {
+	
+
+	@NotNull(message = "Programme is required")
+	private Long programmes;
+		
+	@NotNull(message = "programmeyear is required")
+	private Long programmeYear;
+	
+	@NotNull(message = "semester is required")
+	private Long semester;
+	
+	@NotNull(message = "degree is required")
+	private Long degree;
+		
+	@NotNull(message="please provide colleges")
+	private Long colleges;
+
+	@NotNull(message = "academicyear is required")
+	private Long academicYear;
+	
+	@NotNull(message = "department is required")
+	private Long department;
+	
+	@NotNull(message = "coursesType is required")
+	private Long coursesType;
+	@NotNull(message = "courses is required")
+	private Long courses;
+
+	private Long staff;
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public Long getSemester() {
+		return semester;
+	}
+
+	public Long getDegree() {
+		return degree;
+	}
+
+	public Long getColleges() {
+		return colleges;
+	}
+
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+
+	public Long getDepartment() {
+		return department;
+	}
+
+	public Long getCoursesType() {
+		return coursesType;
+	}
+
+	public Long getCourses() {
+		return courses;
+	}
+
+	public Long getStaff() {
+		return staff;
+	}
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+
+	public void setCoursesType(Long coursesType) {
+		this.coursesType = coursesType;
+	}
+
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+
+	public void setStaff(Long staff) {
+		this.staff = staff;
+	}
+
+	@Override
+	public String toString() {
+		return "AttendenceRequest [programmes=" + programmes + ", programmeYear=" + programmeYear + ", semester="
+				+ semester + ", degree=" + degree + ", colleges=" + colleges + ", academicYear=" + academicYear
+				+ ", department=" + department + ", coursesType=" + coursesType + ", courses=" + courses + ", staff="
+				+ staff + "]";
+	}	
+	
+}

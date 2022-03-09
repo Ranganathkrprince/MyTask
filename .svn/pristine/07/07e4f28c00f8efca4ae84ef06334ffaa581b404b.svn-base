@@ -1,0 +1,2023 @@
+package com.niftem.app.controller;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.niftem.app.dao.EligiBilityResponse;
+import com.niftem.app.entity.AccessLogs;
+import com.niftem.app.entity.AuditLog;
+import com.niftem.app.entity.Batch;
+import com.niftem.app.entity.Courses;
+import com.niftem.app.entity.CoursesRegistration;
+import com.niftem.app.entity.CreditHours;
+import com.niftem.app.entity.Designation;
+import com.niftem.app.entity.EvaluatorList;
+import com.niftem.app.entity.ExamAnnouncement;
+import com.niftem.app.entity.FeeMaster;
+import com.niftem.app.entity.Hostel;
+import com.niftem.app.entity.InvigilatorDuty;
+import com.niftem.app.entity.NoDuesConfiguration;
+import com.niftem.app.entity.ReportRequestEntity;
+import com.niftem.app.entity.SemesterRegistration;
+import com.niftem.app.entity.StaffEmpDetails;
+import com.niftem.app.entity.Studentpersonal;
+import com.niftem.app.implementation.ExcelImpl;
+import com.niftem.app.model.BatchRequest;
+import com.niftem.app.model.BookletStaffRequest;
+import com.niftem.app.model.BookletUploadRequest;
+import com.niftem.app.model.CommonRequest;
+import com.niftem.app.model.CoursesRequest;
+import com.niftem.app.model.CreateStaffRequest;
+import com.niftem.app.model.CreditHoursRquest;
+import com.niftem.app.model.CriteriaRequest;
+import com.niftem.app.model.DesignationRequest;
+import com.niftem.app.model.EvaluatorSelectionRequest;
+import com.niftem.app.model.ExamAnnouncementRequest;
+import com.niftem.app.model.ExportListRequest;
+import com.niftem.app.model.HostelRequest;
+import com.niftem.app.model.InternalMarksRequest;
+import com.niftem.app.model.LogReportRequest;
+import com.niftem.app.model.OrderTransactionReport;
+import com.niftem.app.model.ReportRequest;
+import com.niftem.app.model.SeatArrangementRequest;
+import com.niftem.app.model.SemesterEligibility;
+import com.niftem.app.model.StudentDynamicRequest;
+import com.niftem.app.repository.CoursesRepository;
+import com.niftem.app.repository.FeeMasterRepository;
+import com.niftem.app.repository.NoDuesConfigurationRepository;
+import com.niftem.app.repository.ReportRequestEntityRepository;
+import com.niftem.app.service.ExcellService;
+import com.niftem.app.util.ExcelExportResponse;
+
+
+@RequestMapping("/api/excel/")
+
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+
+@RestController
+@Validated
+public class ExcelController {
+@Autowired
+private ExcellService excelService;
+
+@Autowired
+private ReportRequestEntityRepository reportrequest;
+
+
+@Autowired
+public CoursesRepository courses;
+
+@Autowired
+public FeeMasterRepository feeMaster;
+
+@Autowired
+private NoDuesConfigurationRepository nodues;
+
+@PostMapping("/export/auditLogReport")
+public ResponseEntity<InputStreamResource> auditLogReport(@RequestBody LogReportRequest request){
+	
+	try {
+		
+		List<AuditLog> audit = (List<AuditLog>) excelService.validateAuditLogReport(request);
+		ByteArrayInputStream in = ExcelImpl.auditLogReport(audit);
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=audit.xlsx");
+		System.out.println("Audit Log Report To Ecxcel Success>>>>>>>>>");
+		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return null;
+}
+
+
+@PostMapping("/export/staffReport")
+public ResponseEntity<InputStreamResource> staffReport(@RequestBody CreateStaffRequest request){
+	
+	try {
+		
+		List<StaffEmpDetails> staff = (List<StaffEmpDetails>) excelService.validateStaffReport(request);
+		ByteArrayInputStream in = ExcelImpl.staffReport(staff);
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=staff.xlsx");
+		System.out.println("Staff Report To Ecxcel Success>>>>>>>>>");
+		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return null;
+}
+
+@PostMapping("/export/batchReport")
+public ResponseEntity<InputStreamResource> batchReport(@RequestBody BatchRequest request){
+	
+	try {
+		
+		List<Batch> batch = (List<Batch>) excelService.validateBatchReport(request);
+		ByteArrayInputStream in = ExcelImpl.batchReport(batch);
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=batch.xlsx");
+		System.out.println("Batch Report To Ecxcel Success>>>>>>>>>");
+		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return null;
+}
+
+	/*
+	 * @PostMapping("/export/creditHoursReport") public
+	 * ResponseEntity<InputStreamResource> creditHoursReport(@RequestBody
+	 * CreditHoursRquest request){
+	 * 
+	 * try {
+	 * 
+	 * List<CreditHours> credit = (List<CreditHours>)
+	 * excelService.validateCreditHoursReport(request); ByteArrayInputStream in =
+	 * ExcelImpl.creditHoursReport(credit); HttpHeaders headers = new HttpHeaders();
+	 * headers.set(HttpHeaders.CONTENT_DISPOSITION,
+	 * "attachment; filename=credit.xlsx");
+	 * System.out.println("Credit Hour Report To Ecxcel Success>>>>>>>>>"); return
+	 * ResponseEntity.ok().headers(headers).body(new InputStreamResource(in)); }
+	 * catch (Exception e) { e.printStackTrace(); } return null; }
+	 */
+	 
+@PostMapping(value = "/export/creditHoursReport")
+public ResponseEntity<InputStreamResource> creditHoursReportNewReport(@RequestBody CreditHoursRquest request,HttpServletResponse response ) throws IOException {
+ try {
+        List<CreditHours> list =excelService.validatecreditHoursReportNewReport(request);
+        SXSSFWorkbook wb = (new ExcelExportResponse()).creditHoursReportNewReportExcel(new String[] { "Credit Name" ,"Created Date","Updated Date","CreditHour Title","CreditHour Lecture" ,"CreditHour Practical","Total Marks","Passing GradePoints","External Marks","External PassingMarks","NoOfTopics","Total CreditHour ","CreditHour Tutorials "}, list);                  
+                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+                    wb.write(outByteStream);
+                    byte[] outArray = outByteStream.toByteArray();                      
+                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                    response.setContentLength(outArray.length);
+                    response.setHeader("Expires:", "0"); // eliminates browser caching
+                    response.setHeader("Content-Disposition", "attachment; filename=creditHoursReport.xlsx");
+                    OutputStream outStream = response.getOutputStream();
+                    outStream.write(outArray);
+                    outStream.flush();
+                    wb.dispose();
+                    wb.close();
+                    return new ResponseEntity(outStream, HttpStatus.OK);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+return null;
+
+}
+
+@PostMapping("/export/hostelReport")
+public ResponseEntity<InputStreamResource> hostelReport(@RequestBody HostelRequest request){
+	
+	try {
+		
+		List<Hostel> hostel = (List<Hostel>) excelService.validateHostelReport(request);
+		ByteArrayInputStream in = ExcelImpl.hostelReport(hostel);
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=hostel.xlsx");
+		System.out.println("Hostel Report To Ecxcel Success>>>>>>>>>");
+		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return null;
+}
+
+@PostMapping("/export/designationreport")
+public ResponseEntity<InputStreamResource> designationReport(@RequestBody DesignationRequest request){
+	
+	try {
+		
+		List<Designation> designation = (List<Designation>) excelService.validateDesignationReport(request);
+		ByteArrayInputStream in = ExcelImpl.designationReport(designation);
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=designation.xlsx");
+		System.out.println("Designation Report To Ecxcel Success>>>>>>>>>");
+		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return null;
+}
+
+@PostMapping("/export/examAnnouncementReport")
+public ResponseEntity<InputStreamResource> examAnnouncementReport(@RequestBody ExamAnnouncementRequest request){
+	
+	try {
+		
+		List<ExamAnnouncement> exam = (List<ExamAnnouncement>) excelService.validateExamAnnouncementReport(request);
+		ByteArrayInputStream in = ExcelImpl.examAnnouncementReport(exam);
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=exam.xlsx");
+		System.out.println("Exam Announcement Report To Excel Success>>>>>>>>>");
+		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return null;
+}
+
+
+
+@PostMapping(value = "/download/examAttendanceReport")
+public ResponseEntity<InputStreamResource> ExamAttendanceReport(@RequestBody ReportRequest request,HttpServletResponse response ) throws IOException {
+ try {
+        List<Object[]> list =excelService.validateExamAttendanceReport(request);
+        SXSSFWorkbook wb = (new ExcelExportResponse()).examattendanceexportExcel(new String[] { "Academic Year" ,"College_Name","Degree_Name","Programmes_Name","Department" ,"ProgrammeYear Name" ,"Semester","Courses","CoursesCodes","Registration Type","Exam Name","Student Name","Student RollNO","Barcode" }, list);                  
+                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+                    wb.write(outByteStream);
+                    byte[] outArray = outByteStream.toByteArray();                      
+                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                    response.setContentLength(outArray.length);
+                    response.setHeader("Expires:", "0"); // eliminates browser caching
+                    response.setHeader("Content-Disposition", "attachment; filename=examAttendanceReport.xlsx");
+                    OutputStream outStream = response.getOutputStream();
+                    outStream.write(outArray);
+                    outStream.flush();
+                    wb.dispose();
+                    wb.close();
+                    return new ResponseEntity(outStream, HttpStatus.OK);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+return null;
+ 				
+
+             
+}
+
+@PostMapping(value = "/download/examTimeTableReport")
+public ResponseEntity<InputStreamResource> examTimeTableLog(@RequestBody LogReportRequest request,HttpServletResponse response ) throws IOException {
+ try {
+        List<Object[]> list =excelService.validateExamTimeTableLog(request);
+        SXSSFWorkbook wb = (new ExcelExportResponse()).exportExcelTimeTableLog(new String[] { "Programmes Name","Degree_Name","Academic_Year[Identifier]" , "ExamAnnounment_Name" ,"ExTimeTableUrl","ExCreateDate()","User"}, list);                        
+                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+                    wb.write(outByteStream);
+                    byte[] outArray = outByteStream.toByteArray();                      
+                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                    response.setContentLength(outArray.length);
+                    response.setHeader("Expires:", "0"); // eliminates browser caching
+                    response.setHeader("Content-Disposition", "attachment; filename=examTimetableLogReport.xlsx");
+                    OutputStream outStream = response.getOutputStream();
+                    outStream.write(outArray);
+                    outStream.flush();
+                    wb.dispose();
+                    wb.close();
+                    return new ResponseEntity(outStream, HttpStatus.OK);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+return null;
+ 				
+
+             
+}
+@PostMapping(value = "/download/logReport")
+public ResponseEntity<InputStreamResource> GradeReportLog(@RequestBody ReportRequest request,HttpServletResponse response ) throws IOException {
+
+ try {
+        if(request.getMethodType().equalsIgnoreCase("gradeReport")){
+        List<Object[]> list =excelService.validateGradeReportLog(request);
+        SXSSFWorkbook wb = (new ExcelExportResponse()).exportExcelGradeReportLog(new String[] { "Collage_Name" ,"Degree_Name" ,"Programmes Name","Department_Name","Academic_Year"  ,"ProgrammeYear","Semester","RegistrationType","Courses","ReportType","ReportCategory ","IsReGenerated", "Remark","Url","Downloaded_Date","User"}, list);                        
+
+        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+                    wb.write(outByteStream);
+                    byte[] outArray = outByteStream.toByteArray();                      
+                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                    response.setContentLength(outArray.length);
+                    response.setHeader("Expires:", "0"); // eliminates browser caching
+                    response.setHeader("Content-Disposition", "attachment; filename=gradeReportLog.xlsx");
+                    OutputStream outStream = response.getOutputStream();
+                    outStream.write(outArray);
+                    outStream.flush();
+                    wb.dispose();
+                    wb.close();
+                    return new ResponseEntity(outStream, HttpStatus.OK);              
+        }
+        if(request.getMethodType().equalsIgnoreCase("semesterReport")) {
+			List<Object[]> list =excelService.semesterReportLogReport(request);
+			
+			SXSSFWorkbook wb = (new ExcelExportResponse()).exportExcelSemesterReportLog(new String[]{ "Collage_Name" ,"Degree_Name" ,"Programmes Name","Department_Name","Academic_Year"  ,"ProgrammeYear","Semester","ReportType","ReportCategory ","IsReGenerated", "Remark","Url","Downloaded_Date","User"}, list);                        
+					  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+			            wb.write(outByteStream);
+			            byte[] outArray = outByteStream.toByteArray();			           
+			            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			            response.setContentLength(outArray.length);
+			            response.setHeader("Expires:", "0"); // eliminates browser caching
+			            response.setHeader("Content-Disposition", "attachment; filename=semesterLogReport.xlsx");
+			            OutputStream outStream = response.getOutputStream();
+			            outStream.write(outArray);
+			            outStream.flush();
+			            wb.dispose();
+			            wb.close();
+			            return new ResponseEntity(outStream, HttpStatus.OK);
+			            
+		 }          
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+ 		return null;           
+	}
+//  New Report Start from Here 
+
+	@PostMapping("/export/studentAdmissionReport")
+	public ResponseEntity<InputStreamResource> excelStudentAdmissionReport(@RequestBody ReportRequest request , HttpServletResponse response) {
+		try {
+			List<Studentpersonal> student = (List<Studentpersonal>) excelService.validateStudentReport(request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).exportStudentAdmision(new String[] {  "CollegeName", "Degree", "Batch","Programmes", "Department", "Stream", "Academic Year" ,"AllottedCategory","Category", "StudentName", "RollNo", "EnrollmentNo","StudyStatus", "EmailId", "ContactNo" , "DateOfBirth" , "Gender","Father'sName" , "Mother'sName", "NativeState" , "Religion","AdharNumber","ParentContactSetails","PermanentAddress"}, student);                        
+            ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+              wb.write(outByteStream);
+              byte[] outArray = outByteStream.toByteArray();                      
+              response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+              response.setContentLength(outArray.length);
+              response.setHeader("Expires:", "0"); // eliminates browser caching
+              response.setHeader("Content-Disposition", "attachment; filename=studentAdmision.xlsx");
+              OutputStream outStream = response.getOutputStream();
+              outStream.write(outArray);
+              outStream.flush();
+              wb.dispose();
+              wb.close();
+              return new ResponseEntity(outStream, HttpStatus.OK);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+		return null;
+	}
+
+
+	@PostMapping("/export/CompletestudentAdmissionReport")
+	public ResponseEntity<InputStreamResource> excelcompleteStudentAdmissionReport(@RequestBody ReportRequest request , HttpServletResponse response) {
+		try {
+			List<Studentpersonal> student = (List<Studentpersonal>) excelService.validateCompletestudentAdmissionReport(request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).exportCompletestudentAdmissionReport(new String[] {  "CollegeName", "Degree", "Batch","Programmes", "Department", "Stream", "Academic Year" ,"AllottedCategory","Category", "StudentName", "RollNo", "EnrollmentNo","StudyStatus", "EmailId", "ContactNo" , "DateOfBirth" , "Gender","Father'sName" , "Mother'sName", "NativeState" , "Religion","AdharNumber","ParentContactSetails","PermanentAddress"}, student);                        
+            ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+              wb.write(outByteStream);
+              byte[] outArray = outByteStream.toByteArray();                      
+              response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+              response.setContentLength(outArray.length);
+              response.setHeader("Expires:", "0"); // eliminates browser caching
+              response.setHeader("Content-Disposition", "attachment; filename=studentAdmision.xlsx");
+              OutputStream outStream = response.getOutputStream();
+              outStream.write(outArray);
+              outStream.flush();
+              wb.dispose();
+              wb.close();
+              return new ResponseEntity(outStream, HttpStatus.OK);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+		return null;
+	}
+
+	
+	
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping("/export/semRegistration")
+	public ResponseEntity<InputStreamResource> excelsemRegistration(@RequestBody ReportRequest request , HttpServletResponse response) {
+		try {
+			List<SemesterRegistration> student = (List<SemesterRegistration>) excelService.validatesemRegistration(request);
+			List<CoursesRegistration> code= (List<CoursesRegistration>) excelService.validatesemcrRegistration(student);
+			List<Courses> code1=(List<Courses>) excelService.validatesemcrccRegistration(student);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).exportsemesterRegistration(new String[] { "Academic Year" , "College Name", "Degree","StudentAdmmissionNo" }, student, code, code1);                        
+            ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+              wb.write(outByteStream);
+              byte[] outArray = outByteStream.toByteArray();                      
+              response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+              response.setContentLength(outArray.length);
+              response.setHeader("Expires:", "0"); // eliminates browser caching
+              response.setHeader("Content-Disposition", "attachment; filename=studentAdmision.xlsx");
+              OutputStream outStream = response.getOutputStream();
+              outStream.write(outArray);
+              outStream.flush();
+              wb.dispose();
+              wb.close();
+              return new ResponseEntity(outStream, HttpStatus.OK);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+		return null;
+	}
+
+	
+	
+	
+	@PostMapping("/export/semesterRegistrationReport")
+	public ResponseEntity<InputStreamResource> excelSemesterRegistrationReport(@RequestBody ReportRequest request , HttpServletResponse response){	
+		try {		
+			List<SemesterRegistration> semester = (List<SemesterRegistration>) excelService.validationSemesterRegistrationReport( request);
+			ByteArrayInputStream in = excelService.semesterRegistrationReport(semester);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=semesterRegistration.xlsx");
+			System.out.println("Exam Announcement Report To Excel Success>>>>>>>>>");
+			return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+		return null;
+	}
+	
+	@PostMapping("/export/SupplysemesterRegistrationReport")
+	public ResponseEntity<InputStreamResource> SupplysemesterRegistrationReport(@RequestBody ReportRequest request , HttpServletResponse response){	
+		try {		
+			List<CoursesRegistration> semester = (List<CoursesRegistration>) excelService.validationSupplysemesterRegistrationReport( request);
+			ByteArrayInputStream in = excelService.SupplysemesterRegistrationReport(semester);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=SupplysemesterRegistrationReport.xlsx");
+			System.out.println("Exam Announcement Report To Excel Success>>>>>>>>>");
+			return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+		return null;
+	}
+	
+	//==========
+
+	@PostMapping("/export/semesterRegistration")
+	public ResponseEntity<InputStreamResource> excelSemesterRegistration(@RequestBody ReportRequest request , HttpServletResponse response){	
+		try {		
+			List<SemesterRegistration> semester = (List<SemesterRegistration>) excelService.validationSemesterRegistration( request);
+			ByteArrayInputStream in = excelService.semesterRegistration(semester);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=semesterRegistration.xlsx");
+			System.out.println("Exam Announcement Report To Excel Success>>>>>>>>>");
+			return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+		return null;
+	}
+	//====
+	
+	@PostMapping("/export/semesterUnRegistrationReport")
+	public ResponseEntity<InputStreamResource> semesterNotRegistrationReport(@RequestBody ReportRequest request , HttpServletResponse response){	
+		try {		
+			List<Studentpersonal> semester = (List<Studentpersonal>) excelService.semesterNotRegistrationReport( request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).exportStudentNotAdmision(new String[] { "Academic Year" , "College Name", "Degree", "Batch","Programmes", "Department", "Student Name", "Roll No", "Enrollment No", "Email Id", "Contact No" }, semester);                        
+            ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+              wb.write(outByteStream);
+              byte[] outArray = outByteStream.toByteArray();                      
+              response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+              response.setContentLength(outArray.length);
+              response.setHeader("Expires:", "0"); // eliminates browser caching
+              response.setHeader("Content-Disposition", "attachment; filename=NotRegisterStudent.xlsx");
+              OutputStream outStream = response.getOutputStream();
+              outStream.write(outArray);
+              outStream.flush();
+              wb.dispose();
+              wb.close();
+              return new ResponseEntity(outStream, HttpStatus.OK);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+		return null;
+	}	
+	
+	
+	/*
+	 * @PostMapping("/export/teacherCourseMap") public
+	 * ResponseEntity<InputStreamResource> excelTeacherCourseMapReport(@RequestBody
+	 * ReportRequest request , HttpServletResponse response){ try {
+	 * List<TeacherCourseMapping> teacher = (List<TeacherCourseMapping>)
+	 * excelService.validateTeacherCourseMappingReport(request); SXSSFWorkbook wb =
+	 * (new ExcelExportResponse()).teacherCourseMapping(new String[] {
+	 * "Academic Year" , "College Name", "Degree", "Programmes", "Department",
+	 * "Program Year","Semester" , "Course Code", "Teacher Name", "Section"},
+	 * teacher); ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	 * wb.write(outByteStream); byte[] outArray = outByteStream.toByteArray();
+	 * response.setContentType(
+	 * "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	 * response.setContentLength(outArray.length); response.setHeader("Expires:",
+	 * "0"); // eliminates browser caching response.setHeader("Content-Disposition",
+	 * "attachment; filename=teacherCourseMappping.xlsx"); OutputStream outStream =
+	 * response.getOutputStream(); outStream.write(outArray); outStream.flush();
+	 * wb.dispose(); wb.close(); return new ResponseEntity(outStream,
+	 * HttpStatus.OK); } catch (Exception e) { e.printStackTrace(); } return null; }
+	 */
+	
+	@PostMapping(value = "/download/midtermReport")
+	public ResponseEntity<InputStreamResource> midTermMarksReport(@RequestBody ReportRequest request,HttpServletResponse response) throws IOException {
+	 try {
+	        List<Object[]> list =excelService.validateMidtermMarksReport(request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).exportMidtermExamExcel(new String[] { "College_Name","Degree_Name","Programme_Name","Department_Name","Stream_Name","Academic_Year","Programme_Year" ,"Semester_Name","CreditHours","Courses_Name","Courses_Code" ,
+	        		"Student_Name" ,"Roll_No", "Assignment_Marks" ,"Quiz_Marks"  ,"Attendance_Marks" , "Case_Study" ,"Midterm_Marks" ,"Practical_Learning_Marks","Practical_Record_Marks","LabExperiment","Viva/IndustryVisit", "Submit_By","StaffEmailId","StaffContactDetails","EmployeeCode","Submit_Date", "Submitted_Status","StudentContactNo","StudentEmailId", }, list);                   
+	                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	                    wb.write(outByteStream);
+	                    byte[] outArray = outByteStream.toByteArray();                      
+	                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	                    response.setContentLength(outArray.length);
+	                    response.setHeader("Expires:", "0"); // eliminates browser caching
+	                    response.setHeader("Content-Disposition", "attachment; filename=midtermExamReport.xlsx");
+	                    OutputStream outStream = response.getOutputStream();
+	                    outStream.write(outArray);
+	                    outStream.flush();
+	                    wb.dispose();
+	                    wb.close();
+	                    return new ResponseEntity(outStream, HttpStatus.OK);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	             return null;
+	}	
+	/*
+	 * @PostMapping("/export/gradeReport") public
+	 * ResponseEntity<InputStreamResource> gradeReport(@RequestBody ReportRequest
+	 * request , HttpServletResponse response){ try { List<GradeReport> semester =
+	 * (List<GradeReport>) excelService.gradeReport( request); List<Studentpersonal>
+	 * spersonal=(List<Studentpersonal>) excelService.gradeReportGrade(semester);
+	 * SXSSFWorkbook wb = (new ExcelExportResponse()).gradeReportExcel(new String[]
+	 * { "Academic Year" , "College Name", "Degree", "Programmes", "Department",
+	 * "Programme Year","Semester" , "Course", "Roll No",
+	 * "Enrollment No","Student Name","ContactDetails","Grade Point","Latter Grade"
+	 * ,"Remarks" ,"Registration Type"}, semester,spersonal); ByteArrayOutputStream
+	 * outByteStream = new ByteArrayOutputStream(); wb.write(outByteStream); byte[]
+	 * outArray = outByteStream.toByteArray(); response.setContentType(
+	 * "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	 * response.setContentLength(outArray.length); response.setHeader("Expires:",
+	 * "0"); // eliminates browser caching response.setHeader("Content-Disposition",
+	 * "attachment; filename=gradeReport.xlsx"); OutputStream outStream =
+	 * response.getOutputStream(); outStream.write(outArray); outStream.flush();
+	 * wb.dispose(); wb.close(); return new ResponseEntity(outStream,
+	 * HttpStatus.OK); } catch (Exception e) { e.printStackTrace(); } return null; }
+	 */
+	
+
+@PostMapping("/export/coursesReport")
+public ResponseEntity<InputStreamResource> coursesReport(@RequestBody CoursesRequest request, HttpServletResponse response){
+	try {		
+		List<Courses> coursess = (List<Courses>) excelService.validateCoursesReport( request);
+        SXSSFWorkbook wb = (new ExcelExportResponse()).coursesReportExcel(new String[] { "Degree","College Name" , "Programmes", "Department","Stream", "Academic Year","Batch",  "Programme Year","Semester" ,  "Credit Hour",  "CourseName", "Course code","Description","CoursesType","IsSatisfactoryCourse","IsProject" ,
+        		"IsSeminar","IsElectiveCourse","Iscompulsory","IsIndustrialVisit","IsVillageAdoption","IsIndustrialTrainingInternship","IsResearchProject","SubjectType","SyllabusUploadStatus"}, coursess);                        
+        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+          wb.write(outByteStream);
+          byte[] outArray = outByteStream.toByteArray();                      
+          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+          response.setContentLength(outArray.length);
+          response.setHeader("Expires:", "0"); // eliminates browser caching
+          response.setHeader("Content-Disposition", "attachment; filename=coursesReport.xlsx");
+          OutputStream outStream = response.getOutputStream();
+          outStream.write(outArray);
+          outStream.flush();
+          wb.dispose();
+          wb.close();
+          return new ResponseEntity(outStream, HttpStatus.OK);
+  } catch (Exception e) {
+      e.printStackTrace();
+  }
+	return null;
+}	
+	/*
+	 * @PostMapping("/export/StaffReport") public
+	 * ResponseEntity<InputStreamResource> excelStaffReport(@RequestBody
+	 * ReportRequest request , HttpServletResponse response){ try {
+	 * List<Staffpersonal> list = (List<Staffpersonal>)
+	 * excelService.validationStaffReport( request); SXSSFWorkbook wb = (new
+	 * ExcelExportResponse()).staffReport(new String[] { "College Name" , "Degree",
+	 * "Programmes", "Department","StaffType" , "Designation",
+	 * "Employee Id","StaffName", "Email",
+	 * "Contact Details","Address","DateOfBirth","Gender","AdharNumber",
+	 * "BankAccountNumber","BankName","IFSCCode","PanCardNumber","Qualification",
+	 * "BloodGroup"}, list); ByteArrayOutputStream outByteStream = new
+	 * ByteArrayOutputStream(); wb.write(outByteStream); byte[] outArray =
+	 * outByteStream.toByteArray(); response.setContentType(
+	 * "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	 * response.setContentLength(outArray.length); response.setHeader("Expires:",
+	 * "0"); // eliminates browser caching response.setHeader("Content-Disposition",
+	 * "attachment; filename=StaffReport.xlsx"); OutputStream outStream =
+	 * response.getOutputStream(); outStream.write(outArray); outStream.flush();
+	 * wb.dispose(); wb.close(); return new ResponseEntity(outStream,
+	 * HttpStatus.OK); } catch (Exception e) { e.printStackTrace(); } return null; }
+	 */
+
+
+@PostMapping("/export/BatchReport")
+public ResponseEntity<InputStreamResource> excelBatchReport(@RequestBody ReportRequest request , HttpServletResponse response){	
+	try {		
+		List<Batch> list = (List<Batch>) excelService.validationBatchReport( request);
+        SXSSFWorkbook wb = (new ExcelExportResponse()).batchReport(new String[] { "Batch" ,  "Degree", "Programmes", "Created Date","Updated Date","Description","Identifier"}, list);                        
+        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+          wb.write(outByteStream);
+          byte[] outArray = outByteStream.toByteArray();                      
+          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+          response.setContentLength(outArray.length);
+          response.setHeader("Expires:", "0"); // eliminates browser caching
+          response.setHeader("Content-Disposition", "attachment; filename=BatchReport.xlsx");
+          OutputStream outStream = response.getOutputStream();
+          outStream.write(outArray);
+          outStream.flush();
+          wb.dispose();
+          wb.close();
+          return new ResponseEntity(outStream, HttpStatus.OK);
+  } catch (Exception e) {
+      e.printStackTrace();
+  }
+	return null;
+}
+
+
+
+
+
+
+
+@PostMapping(value = "/download/auditLogReport")
+public ResponseEntity<InputStreamResource> auditLogReport(@RequestBody ReportRequest request , HttpSession session ,HttpServletResponse response) throws IOException {
+ try { 
+		List<Object[]> list =excelService.auditLogReport(request);
+		SXSSFWorkbook wb = (new ExcelExportResponse()).exportAuditLogReportExcel(new String[] { "ModuleName",
+	             "Privilege" , "RecordType" ," Description   ","Date"  , "User"  }, list);					
+				  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+		            wb.write(outByteStream);
+		            byte[] outArray = outByteStream.toByteArray();			           
+		            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		            response.setContentLength(outArray.length);
+		            response.setHeader("Expires:", "0"); // eliminates browser caching
+		            response.setHeader("Content-Disposition", "attachment; filename=AuditLogReport.xlsx");
+		            OutputStream outStream = response.getOutputStream();
+		            outStream.write(outArray);
+		            outStream.flush();
+		            wb.dispose();
+		            wb.close();
+		            return new ResponseEntity(outStream, HttpStatus.OK);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			 return null;
+} 
+
+@PostMapping(value = "/download/accessLogs")
+public ResponseEntity<InputStreamResource> accessLogs(@RequestBody ReportRequest request , HttpSession session ,HttpServletResponse response) throws IOException {
+ try { 
+		List<AccessLogs> list =excelService.accessLogs(request);
+		SXSSFWorkbook wb = (new ExcelExportResponse()).exportAccessLogReportExcel(new String[] { "User Name",
+	             "Name" , "Ip Address" ," Login Time" , "LoginType" , "Role" , "Module" ,"Sub Module"}, list);					
+				  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+		            wb.write(outByteStream);
+		            byte[] outArray = outByteStream.toByteArray();			           
+		            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		            response.setContentLength(outArray.length);
+		            response.setHeader("Expires:", "0"); // eliminates browser caching
+		            response.setHeader("Content-Disposition", "attachment; filename=AccessLogsReport.xlsx");
+		            OutputStream outStream = response.getOutputStream();
+		            outStream.write(outArray);
+		            outStream.flush();
+		            wb.dispose();
+		            wb.close();
+		            return new ResponseEntity(outStream, HttpStatus.OK);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			 return null;
+} 
+
+
+
+@PostMapping(value = "/download/answerBookletUploadStatus")
+public ResponseEntity<InputStreamResource> answerBookletUploadStatus(@RequestBody BookletUploadRequest request)throws IOException {
+		try {
+			JSONObject value = excelService.answerBookletUploadStatus(request);
+			ByteArrayInputStream in = excelService.answerBookletUploadStatus(value);
+			HttpHeaders headers = new HttpHeaders();
+			headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=answerBookletUploadStatus.xlsx");
+			System.out.println("answerBookletUploadStatus To Excel Success>>>>>>>>>");
+			return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+@PostMapping(value = "/download/evaluatorSelectionStatus")
+public ResponseEntity<InputStreamResource> evaluatorSelectionStatus(@RequestBody EvaluatorSelectionRequest request)throws IOException {
+		try {
+			JSONObject value = excelService.evaluatorSelectionStatus(request);
+			ByteArrayInputStream in = excelService.evaluatorSelectionStatus(value);
+			HttpHeaders headers = new HttpHeaders();
+			headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=evaluatorStatusReport.xlsx");
+			System.out.println("evaluatorStatusReport To Excel Success>>>>>>>>>");
+			return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+			//return ok;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+@PostMapping(value = "/download/bookletAllocationStatus")
+public ResponseEntity<InputStreamResource> bookletAllocationStatus(@RequestBody BookletStaffRequest request)throws IOException {
+		try {
+			JSONObject value = excelService.bookletAllocationStatus(request);
+			ByteArrayInputStream in = excelService.bookletAllocationStatus(value);
+			HttpHeaders headers = new HttpHeaders();
+			headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=bookletAllocationStatusReport.xlsx");
+			System.out.println("bookletAllocationStatusReport To Excel Success>>>>>>>>>");
+			return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+			//return ok;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+@PostMapping(value = "/download/bookletReAllocationStatus")
+public ResponseEntity<InputStreamResource> bookletReAllocationStatus(@RequestBody BookletStaffRequest request)throws IOException {
+		try {
+			JSONObject value = excelService.bookletReAllocationStatus(request);
+			ByteArrayInputStream in = excelService.bookletReAllocationStatus(value);
+			HttpHeaders headers = new HttpHeaders();
+			headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=bookletReAllocationStatus.xlsx");
+			System.out.println("bookletReAllocationStatus To Excel Success>>>>>>>>>");
+			return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+			//return ok;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+@PostMapping(value = "/download/evaluationStatus")
+public ResponseEntity<InputStreamResource> evaluationStatus(@RequestBody BookletStaffRequest request)throws IOException {
+		try {
+			JSONObject value = excelService.evaluationStatus(request);
+			ByteArrayInputStream in = excelService.evaluationStatus(value);
+			HttpHeaders headers = new HttpHeaders();
+			headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=evaluationStatusReport.xlsx");
+			System.out.println("evaluationStatusReport To Excel Success>>>>>>>>>");
+			return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+			//return ok;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+@PostMapping(value = "/download/TransactionReport")
+public ResponseEntity<InputStreamResource> TransactionReport(@RequestBody ReportRequest request,HttpServletResponse response ) throws IOException {
+try {
+	List<FeeMaster> master = feeMaster.findrecords(request.getAcademicYear(),request.getSemester());
+	String d="";
+	for(int j=0;j<master.size();j++) {
+	d=d+master.get(j).getExFeeName()+" , ";
+	}
+	System.out.println("Excelout"+d);
+	String as="";
+	String strArray[] = d.split(" , ");
+		for (int i = 0; i < strArray.length; i++) {
+			as=strArray[i] + ", ";
+			System.out.print("Excel innnnn "+strArray[i] + ", ");
+		}
+	String[] namesArray = null;
+	Pattern pattern = Pattern.compile(" , ");
+	namesArray = pattern.split( d );
+	System.out.println("excelmiddle  "+Arrays.toString(namesArray));
+
+	String[] arr = Arrays.toString(namesArray).replace("[", "").replace ("]", "").split (",");
+	System.out.println("excelllllllllsss "+Arrays.toString(arr));
+	
+    List<Object[]> list =excelService.validateExcelTransactionList1(request);
+    SXSSFWorkbook wb = (new ExcelExportResponse()).transactionexportExcel(new String[] { "OrderId" ,"Transaction Number" ,"Bank Reference number"  ,"AcademicYear" , "Programmes","Department","Batch","ProgrammeYear" , "Semester" ,"RollNo" ,"StudentName", "Mobile","StudentEmail","AllottedCategory","Candidate Category","Transaction Date","Payment Status","Mode","Pg Type","Error","Error_message","TotalTransactionAmount",Arrays.toString(arr)}, list);                  
+              ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+                wb.write(outByteStream);
+                byte[] outArray = outByteStream.toByteArray();                      
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                response.setContentLength(outArray.length);
+                response.setHeader("Expires:", "0"); // eliminates browser caching
+                response.setHeader("Content-Disposition", "attachment; filename=TransactionReport.xlsx");
+                OutputStream outStream = response.getOutputStream();
+                outStream.write(outArray);
+                outStream.flush();
+                wb.dispose();
+                wb.close();
+                return new ResponseEntity(outStream, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+			return null;          
+  }
+
+
+	@PostMapping("/export/approvalReport")
+	public ResponseEntity<InputStreamResource> approvalReport(@RequestBody ReportRequest request , HttpServletResponse response){	
+		try {		
+			List<SemesterRegistration> semester = (List<SemesterRegistration>) excelService.validationapprovalReport( request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).approvalReport(new String[] { "Academic Year" , "College Name", "Degree", "Programmes", "Department", "Program Year","Semester" ,  "Student Name",  "Roll No", "Enrollment No", "Accounts Approve", "Computer Lab Approve", "Dean Approve", "Examination Approve", "IT Department Approve", "Mentor Approve", "Library Approve","Hostel Approve","Eligible Status"}, semester);                        
+	        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	          wb.write(outByteStream);
+	          byte[] outArray = outByteStream.toByteArray();                      
+	          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	          response.setContentLength(outArray.length);
+	          response.setHeader("Expires:", "0"); // eliminates browser caching
+	          response.setHeader("Content-Disposition", "attachment; filename=approvalReport.xlsx");
+	          OutputStream outStream = response.getOutputStream();
+	          outStream.write(outArray);
+	          outStream.flush();
+	          wb.dispose();
+	          wb.close();
+	          return new ResponseEntity(outStream, HttpStatus.OK);
+	  } catch (Exception e) {
+	      e.printStackTrace();
+	  }
+		return null;
+	}
+	
+	
+	@PostMapping("/export/expertListReport")
+	public ResponseEntity<InputStreamResource> expertListReport(@RequestBody ExportListRequest request, HttpServletResponse response){
+		try {		
+			List<EvaluatorList> expert = (List<EvaluatorList>) excelService.validateexpertListReport( request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).EvaluatorListReportExcel(new String[] { "Name" , "Email Id", "Contact Number","Designation", "Bank Account Number", "Bank Name", "IFSC Code ","Adressline1" ,  "	AddressLine2",  "AdressLine3", "State ","PinCode"}, expert);                        
+	        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	          wb.write(outByteStream);
+	          byte[] outArray = outByteStream.toByteArray();                      
+	          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	          response.setContentLength(outArray.length);
+	          response.setHeader("Expires:", "0"); // eliminates browser caching
+	          response.setHeader("Content-Disposition", "attachment; filename=ExpertReport.xlsx");
+	          OutputStream outStream = response.getOutputStream();
+	          outStream.write(outArray);
+	          outStream.flush();
+	          wb.dispose();
+	          wb.close();
+	          return new ResponseEntity(outStream, HttpStatus.OK);
+	  } catch (Exception e) {
+	      e.printStackTrace();
+	  }
+		return null;
+	}
+	
+	//topper report 
+	@PostMapping(value = "/export/topperListReport")
+	public ResponseEntity<InputStreamResource> excelTopperListReportList(@RequestBody ReportRequest request,HttpServletResponse response ) throws IOException {
+	 try {
+	        List<Object[]> list =excelService.validateTopperlistReportList1(request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).topperlistExcel(new String[] {"college", "Degree","programme" ,"programmeyear","academicyear","semester","RollNo","StudentsName","ContactNo","EmailID","GradePointAv"}, list);                  
+	                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	                    wb.write(outByteStream);
+	                    byte[] outArray = outByteStream.toByteArray();                      
+	                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	                    response.setContentLength(outArray.length);
+	                    response.setHeader("Expires:", "0"); // eliminates browser caching
+	                    response.setHeader("Content-Disposition", "attachment; filename=TopperListReport.xlsx");
+	                    OutputStream outStream = response.getOutputStream();
+	                    outStream.write(outArray);
+	                    outStream.flush();
+	                    wb.dispose();
+	                    wb.close();
+	                    return new ResponseEntity(outStream, HttpStatus.OK);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	 			return null;
+	}
+	
+	
+	
+	@PostMapping(value = "/export/criteriaReport")
+	public ResponseEntity<InputStreamResource> excelcriteriaReportList(@RequestBody CriteriaRequest request,HttpServletResponse response ) throws IOException {
+	 try {
+	        List<Object[]> list =excelService.validatecriteriaReportlistReportList1(request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).criteriaReportlistExcel(new String[] {"College","Degree","Programme","ProgrammeYear","AcademicYear" ,"Semester","rollno","StudentName","StudentContactDetails","StudentEmailId","CGPA"}, list);                  
+	                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	                    wb.write(outByteStream);
+	                    byte[] outArray = outByteStream.toByteArray();                      
+	                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	                    response.setContentLength(outArray.length);
+	                    response.setHeader("Expires:", "0"); // eliminates browser caching
+	                    response.setHeader("Content-Disposition", "attachment; filename=CriteriaListReport.xlsx");
+	                    OutputStream outStream = response.getOutputStream();
+	                    outStream.write(outArray);
+	                    outStream.flush();
+	                    wb.dispose();
+	                    wb.close();
+	                    return new ResponseEntity(outStream, HttpStatus.OK);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	 			return null;
+	}
+	
+	@PostMapping(value = "/export/goldMeritReport")
+	public ResponseEntity<InputStreamResource> excelgoldMeritReportList(@RequestBody CriteriaRequest request,HttpServletResponse response ) throws IOException {
+	 try {
+	        List<Object[]> list =excelService.validategoldMeritReportlistReportList1(request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).goldMeritReportlistExcel(new String[] {"College","Degree","Programme","Batch","AcademicYear" ,"Name","rollno","StudentContactDetails","StudentEmailId","1stSem SGPA/Total_Credithours/CGPA","2ndSem SGPA/Total_Credithours/CGPA",
+	        		"3rdSem SGPA/Total_Credithours/CGPA","4thSem SGPA/Total_Credithours/CGPA","5thSem SGPA/Total_Credithours/CGPA",
+	        		"6thSem SGPA/Total_Credithours/CGPA","7thSem SGPA/Total_Credithours/CGPA","8thSem SGPA/Total_Credithours/CGPA","Over_All_CGPA"}, list);                  
+	                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	                    wb.write(outByteStream);
+	                    byte[] outArray = outByteStream.toByteArray();                      
+	                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	                    response.setContentLength(outArray.length);
+	                    response.setHeader("Expires:", "0"); // eliminates browser caching
+	                    response.setHeader("Content-Disposition", "attachment; filename=GoldMeritListReport.xlsx");
+	                    OutputStream outStream = response.getOutputStream();
+	                    outStream.write(outArray);
+	                    outStream.flush();
+	                    wb.dispose();
+	                    wb.close();
+	                    return new ResponseEntity(outStream, HttpStatus.OK);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	 			return null;
+	}	
+	
+	
+	
+	@PostMapping(value = "/export/transactionReport")
+	public ResponseEntity<InputStreamResource> excelTransactionReport(@RequestBody OrderTransactionReport request,
+			HttpServletResponse response) throws IOException {
+		 try {
+		        List<Object[]> list =excelService.validateTransactionReportlistReportList1(request);
+		        SXSSFWorkbook wb = (new ExcelExportResponse()).TransactionReportlistExcel(new String[] {"RollNo ","Order Id","Txn Reference No","Bank Reference No" ,"Student Name","Mobile", "Academic Year","College Name","Program","Program Year","Semester","Payment Date","Amount","Payment Status","Fee Type","Fee Name","Category"}, list);                  
+		                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+		                    wb.write(outByteStream);
+		                    byte[] outArray = outByteStream.toByteArray();                      
+		                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		                    response.setContentLength(outArray.length);
+		                    response.setHeader("Expires:", "0"); // eliminates browser caching
+		                    response.setHeader("Content-Disposition", "attachment; filename=TransactionListReport.xlsx");
+		                    OutputStream outStream = response.getOutputStream();
+		                    outStream.write(outArray);
+		                    outStream.flush();
+		                    wb.dispose();
+		                    wb.close();
+		                    return new ResponseEntity(outStream, HttpStatus.OK);
+		            } catch (Exception e) {
+		                e.printStackTrace();
+		            }
+		 			return null;
+		}	
+	
+	
+	@PostMapping(value = "/export/backlogReport")
+	public ResponseEntity<InputStreamResource> backlogReport(@RequestBody OrderTransactionReport request)throws IOException {
+		try {
+			JSONObject value = excelService.backlogReport(request);
+			ByteArrayInputStream in = excelService.backlogReport(value);
+			HttpHeaders headers = new HttpHeaders();
+			headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=backlogReport.xlsx");
+			System.out.println("marksUploadStatus To Excel Success>>>>>>>>>");
+			return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}	
+	
+	
+/*	
+	 @PostMapping(value = "/export/questionPaperReport")
+		public ResponseEntity<InputStreamResource> questionPaperReport(@RequestBody OrderTransactionReport request) throws IOException {
+		 try { 
+				List<Object[]> questionPaperReport =excelService.validateExcelQuestionPaper(request);
+				System.out.println(">>>>>>>questionPaperReport>>>>>>>"+questionPaperReport.size());			
+				ByteArrayInputStream in = excelService.questionPaperReportToExcel(questionPaperReport);			
+				HttpHeaders headers = new HttpHeaders();
+				 headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=questionPaperReport.xlsx");
+				System.out.println("questionPaperReport To Excel Success>>>>>>>>>");
+				return ResponseEntity
+						.ok()
+						.headers(headers)
+						.body(new InputStreamResource(in));
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+			return null;
+		} 
+	 	
+	
+	
+	
+	*/
+	@PostMapping(value = "/export/questionPaperReport")
+	public ResponseEntity<InputStreamResource> excelquestionPaperReport(@RequestBody OrderTransactionReport request,
+			HttpServletResponse response) throws IOException {
+		 try {
+		        List<Object[]> list =excelService.validatequestionPaperReportlistReportList1(request);
+		        SXSSFWorkbook wb = (new ExcelExportResponse()).questionPaperReportlistExcel(new String[] { "Degree","AcademicYear","CourseName","CourseCode","Version ","QuestionNumber","QuestionType","Question" ,"Marks"}, list);                  
+		                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+		                    wb.write(outByteStream);
+		                    byte[] outArray = outByteStream.toByteArray();                      
+		                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		                    response.setContentLength(outArray.length);
+		                    response.setHeader("Expires:", "0"); // eliminates browser caching
+		                    response.setHeader("Content-Disposition", "attachment; filename=	QuestionPaperListReport.xlsx");
+		                    OutputStream outStream = response.getOutputStream();
+		                    outStream.write(outArray);
+		                    outStream.flush();
+		                    wb.dispose();
+		                    wb.close();
+		                    return new ResponseEntity(outStream, HttpStatus.OK);
+		            } catch (Exception e) {
+		                e.printStackTrace();
+		            }
+		 			return null;
+		}	
+	
+	//invigilator allocation 
+	
+	
+	
+	@PostMapping(value = "/export/invigilatorReport")
+	public ResponseEntity<InputStreamResource> excelInvigilatorAllocationReport(@RequestBody ReportRequest request,
+			HttpServletResponse response) throws IOException {
+		 try {
+		        List<Object[]> list =excelService.validateexcelInvigilatorAllocationReportlistReport(request);
+		        SXSSFWorkbook wb = (new ExcelExportResponse()).excelInvigilatorAllocationReportlistExcel(new String[] {"College", "Degree","AcademicYear","Programmes","Department","Examination ","Room","user","StaffName","StaffType" ,"StartDate","StartTime","EndTime"}, list);                  
+		                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+		                    wb.write(outByteStream);
+		                    byte[] outArray = outByteStream.toByteArray();                      
+		                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		                    response.setContentLength(outArray.length);
+		                    response.setHeader("Expires:", "0"); // eliminates browser caching
+		                    response.setHeader("Content-Disposition", "attachment; filename=	InvigilatorAllocationListReport.xlsx");
+		                    OutputStream outStream = response.getOutputStream();
+		                    outStream.write(outArray);
+		                    outStream.flush();
+		                    wb.dispose();
+		                    wb.close();
+		                    return new ResponseEntity(outStream, HttpStatus.OK);
+		            } catch (Exception e) {
+		                e.printStackTrace();
+		            }
+		 			return null;
+		}	
+	
+	
+	@PostMapping(value = "/download/overallMarksReport")
+	public ResponseEntity<InputStreamResource> overallMarksReport(@RequestBody CommonRequest request , HttpSession session ,HttpServletResponse response) throws IOException {
+	 try { 
+		 if( request.getProgrammes()==1 || request.getProgrammes()==4) {
+			List<Object[]> list =excelService.overallMarksReport(request);
+			System.out.println("bbbbbbbbbbbbbbbbbbbbbbb"+list.size());
+			SXSSFWorkbook wb = (new ExcelExportResponse()).exportoverallMarksReportExcel(new String[] { "Collage" ," Program_Name ","Batch","StudentId",
+		             "StudentName","EnrollmentNO","ContactNo","EmailId","1st Sem SGPA/CGPA"  , " 2nd Sem SGPA/CGPA" , "3rd Sem SGPA/CGPA" ,"4th Sem SGPA/CGPA"  ,"5th Sem SGPA/CGPA"    ,"6th Sem SGPA/CGPA" , " 7th Sem SGPA/CGPA"  ,"8th Sem SGPA/CGPA"   }, list);					
+					  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+			            wb.write(outByteStream);
+			            byte[] outArray = outByteStream.toByteArray();			           
+			            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			            response.setContentLength(outArray.length);
+			            response.setHeader("Expires:", "0"); // eliminates browser caching
+			            response.setHeader("Content-Disposition", "attachment; filename=OverAllMarksReport.xlsx");
+			            OutputStream outStream = response.getOutputStream();
+			            outStream.write(outArray);
+			            outStream.flush();
+			            wb.dispose();
+			            wb.close();
+			            return new ResponseEntity(outStream, HttpStatus.OK);
+				}
+		 
+		 if( request.getProgrammes()==2 || request.getProgrammes()==3) {
+				List<Object[]> list =excelService.overallMarksReportMtechMba(request);
+				System.out.println("bbbbbbbbbbbbbbbbbbbbbbb"+list.size());
+				SXSSFWorkbook wb = (new ExcelExportResponse()).exportoverallMarksReportMtechMbaExcel(new String[] { "Collage" ," Program_Name ","Batch","StudentId",
+			             "StudentName","EnrollmentNO","ContactNo","EmailId","1st Sem SGPA/CGPA"  , " 2nd Sem SGPA/CGPA" , "3rd Sem SGPA/CGPA" ,"4th Sem SGPA/CGPA" }, list);					
+						  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+				            wb.write(outByteStream);
+				            byte[] outArray = outByteStream.toByteArray();			           
+				            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+				            response.setContentLength(outArray.length);
+				            response.setHeader("Expires:", "0"); // eliminates browser caching
+				            response.setHeader("Content-Disposition", "attachment; filename=OverAllMarksReport.xlsx");
+				            OutputStream outStream = response.getOutputStream();
+				            outStream.write(outArray);
+				            outStream.flush();
+				            wb.dispose();
+				            wb.close();
+				            return new ResponseEntity(outStream, HttpStatus.OK);
+					}
+			 
+		 
+		 
+	 }catch (Exception e) {
+					e.printStackTrace();
+				}
+				 return null;
+	} 
+	//eligiblity list
+	
+	
+	@PostMapping(value = "/download/StudentStaticReport")
+	public ResponseEntity<InputStreamResource> NewBatchReport(@RequestBody CommonRequest request , HttpSession session ,HttpServletResponse response) throws IOException {
+	 try { 
+			List<Object[]> list =excelService.NewBatchReport(request);
+			System.out.println("bbbbbbbbbbbbbbbbbbbbbbb"+list.size());
+			SXSSFWorkbook wb = (new ExcelExportResponse()).exportNewBatchReportExcel(new String[] { "College","AcademicSession",
+		             "Batch" , "Degree" ,"Program_Name","CreateDate", "UpdateDate" , "SC_Male","SC_Female","Total_SC","ST_Male","ST_Female","Total_ST",
+		             "OBC_Male","OBC_Female","Total_OBC","UR_Male","UR_Female","Total_UR","KM_Male","KM_Female","Total_KM","NRI_Male","NRI_Female","Total_NRI",
+		             "GeneralAICTE_Male","GeneralAICTE_Female","Total_GeneralAICTE","OBC_PC_Male",
+		             "OBC_PC_Female","Total_OBC_PC","PH_Male","PH_Female","Total_PH","General_Male","General_Female","Total_General","GEN-EWS_Male","GEN-EWS_Female","Total_GEN-EWS","OBC-NCL_Male",
+		             "OBC-NCL_Female","Total_OBC-NCL","OPEN_Male","OPEN_Female","Total_OPEN","EWS_Male","EWS_Female","Total_EWS","FOREIGN_N_Male","FOREIGNN_Female","Total_FOREIGN_N","FOREIGNER_Male",
+		             "FOREIGNER_Female","Total_FOREIGNER","OPEN(PWD)_Male","OPEN(PWD)_Female","Total_OPEN(PWD)","OPEN_EWS_Male","OPEN_EWS_Female",
+		             "Total_OPEN_EWS","MALE_OF_ALLCATEGORIES","FEMALE_OF_ALLCATEGORIES","GRAND_TOTAL","%_OF_MALE","%_OF_FEMALE","TOTAL_LEFT_MALE","TOTAL_LEFT_FEMALE","Total_LEFT"}, list);					
+					  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+			            wb.write(outByteStream);
+			            byte[] outArray = outByteStream.toByteArray();			           
+			            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			            response.setContentLength(outArray.length);
+			            response.setHeader("Expires:", "0"); // eliminates browser caching
+			            response.setHeader("Content-Disposition", "attachment; filename=StudentStaticReport.xlsx");
+			            OutputStream outStream = response.getOutputStream();
+			            outStream.write(outArray);
+			            outStream.flush();
+			            wb.dispose();
+			            wb.close();
+			            return new ResponseEntity(outStream, HttpStatus.OK);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				 return null;
+	} 
+	
+	
+	
+	@PostMapping(value = "/download/SubmittedReport")
+	public ResponseEntity<InputStreamResource> SubmittedReport(@RequestBody CommonRequest request , HttpSession session ,HttpServletResponse response) throws IOException {
+	 try { 
+			List<Object[]> list =excelService.SubmittedReport(request);
+			System.out.println("bbbbbbbbbbbbbbbbbbbbbbb"+list.size());
+			SXSSFWorkbook wb = (new ExcelExportResponse()).exportSubmittedReportExcel(new String[] { "College","AcademicSession",
+		             "ProgramName" , "StreamName" ,"CreditHours","CoursesName","CoursesCode", "SubjectFaculty" , "QUIZ(10_UG/5_PG)","ASSIGNMENT(5)","CASESTUDY(5)","ATTENDANCE(5)","ENDTERMMARKS","PracticalRecords(20)",
+		             "PracticalLearning(20)","LabExperiment(40)","VIVA(20)","TotalSubmittedStudents","TOTAL_STUDENTS","Faculty_Ph_n0","Faculty_Email_Id"}, list);					
+					  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+			            wb.write(outByteStream);
+			            byte[] outArray = outByteStream.toByteArray();			           
+			            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			            response.setContentLength(outArray.length);
+			            response.setHeader("Expires:", "0"); // eliminates browser caching
+			            response.setHeader("Content-Disposition", "attachment; filename=SubmissionReport.xlsx");
+			            OutputStream outStream = response.getOutputStream();
+			            outStream.write(outArray);
+			            outStream.flush();
+			            wb.dispose();
+			            wb.close();
+			            return new ResponseEntity(outStream, HttpStatus.OK);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				 return null;
+	} 
+	
+	
+	@PostMapping(value = "/download/eligiblitylist")
+	public ResponseEntity<InputStreamResource> eligiblitylist(@RequestBody SemesterEligibility request,HttpServletResponse response)throws IOException {
+			try {
+				
+				List<NoDuesConfiguration> list123  = nodues.findByExIsDeleteAndExIsActiveAndAcademicYearIdAndBatchIdAndDepartmentIdAndProgrammeYearIdAndSemesterId(false ,true ,request.getAcademicYear(),request.getBatch() ,request.getDepartment() ,request.getProgrammeYear() ,request.getSemester());
+				if(list123.size() <=0) {
+					 return new ResponseEntity(null, HttpStatus.OK);
+				}
+							
+				List<String> approve = new ArrayList<String>();
+						for(int i = 0 ; i<list123.get(0).getApprovetype().size() ; i++ ) {
+							approve.add(list123.get(0).getApprovetype().get(i).getExIdentifier());
+						}
+						
+						String[] str =  new String[3+approve.size()];
+						str[0] = "Roll No";
+						str[1] = "Studente Enrollment No";
+						str[2] = "Student Name";
+						 int l= 3;
+						 
+						 for(int i = 0 ; i<list123.get(0).getApprovetype().size() ; i++ ) {
+							 str[l] = list123.get(0).getApprovetype().get(i).getExIdentifier();
+								++l;
+							}
+						
+						
+				List<EligiBilityResponse> value = excelService.eligiblitylist(request,approve);
+				
+				  SXSSFWorkbook wb = (new ExcelExportResponse()).exportEligibleExcel(str , value , approve); 
+				
+			      ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+                  wb.write(outByteStream);
+                  byte[] outArray = outByteStream.toByteArray();                      
+                  response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                  response.setContentLength(outArray.length);
+                  response.setHeader("Expires:", "0"); // eliminates browser caching
+                  response.setHeader("Content-Disposition", "attachment; filename=eligiblitylist.xlsx");
+                  OutputStream outStream = response.getOutputStream();
+                  outStream.write(outArray);
+                  outStream.flush();
+                  wb.dispose();
+                  wb.close();
+                  return new ResponseEntity(outStream, HttpStatus.OK);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		}	
+	
+	
+	@PostMapping(value = "/download/MasterOfAll")
+	public ResponseEntity<InputStreamResource> MasterOfAllReport(@RequestBody ReportRequest request,HttpServletResponse response ) throws IOException {
+	 try {
+	        List<Object[]> list =excelService.validateMasterOfAllReport(request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).exportMasterOfAllExcel(new String[] { "College_Name","Degree_Name","Programme_Name","Department_Name","Stream_Name","Academic_Year",
+	        		"Exam Time","Exam Mode","Programme_Year","Semester_Name","Courses_Name" ,"Courses_Code","Subject_Credits","Roll_No",
+	        		 "Student_Name" ,"StudentsContactDetails","StudentsEmailId","EndTerm(100 Marks)","Endterm(60)","MidTerm_Marks(50)","MidTerm_Marks(20)",
+	        		 "Assignment_Marks" ,"Quiz_Marks" ,"Case_Study","Attendance_Marks" ,"TOTAL(20)","Theory_Marks(100)Pass_Marks(40)",
+	        		 "Practical_Record(20)","Practical_Learning(20)", "Lab_Experiment(40)","Viva/Indudtry_Visit(20)","Practical(100_Marks)_Pass(50_Marks)","GRANDTOTAL(T+P)","FINALTOTAL(T+P)","LetterGrade","PointGrade",
+	        		 "StaffName","StaffEMPID","StaffEMAILID","StaffContactDetails","SubmittedDate"}, list);	        		 
+		                 ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	                    wb.write(outByteStream);
+	                    byte[] outArray = outByteStream.toByteArray();                      
+	                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	                    response.setContentLength(outArray.length);
+	                    response.setHeader("Expires:", "0"); // eliminates browser caching
+	                    response.setHeader("Content-Disposition", "attachment; filename=MasterOfAllReport.xlsx");
+	                    OutputStream outStream = response.getOutputStream();
+	                    outStream.write(outArray);
+	                    outStream.flush();
+	                    wb.dispose();
+	                    wb.close();
+	                    return new ResponseEntity(outStream, HttpStatus.OK);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	             return null;
+	}
+	
+	
+	@PostMapping(value = "/download/Supplementary")
+	public ResponseEntity<InputStreamResource> Supply(@RequestBody ReportRequest request,HttpServletResponse response ) throws IOException {
+	 try {
+	        List<Object[]> list =excelService.validateSupplyReport(request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).exportSupplyExcel(new String[] { "College_Name","Programme_Name","Department_Name","Batch","Academic_Year" ,"Semester_Name","Courses_Name" ,"Courses_Code","CreditHours",
+	        		"Assignment_Marks(5)" ,"Attendance_Marks(5)" ,"Quiz_Marks(5_PG/10_UG)" ,"Case_Study(5_PG)","TOTAL(20)","MidTermMarks(20M)","EndTermMarks(60M)","Theory_Marks(100)Pass_Marks(40)",
+	        		"Practical_Learning(20)","Practical_Record(20)", "Lab_Experiment(40)","Viva/Indudtry_Visit(20)","FinalPracticalMarks(100)","Total_Marks","Letter_Grade","Roll_No", "Student_Name","Contact","Email","StudyStatus"
+	                }, list);                   
+	                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	                    wb.write(outByteStream);
+	                    byte[] outArray = outByteStream.toByteArray();                      
+	                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	                    response.setContentLength(outArray.length);
+	                    response.setHeader("Expires:", "0"); // eliminates browser caching
+	                    response.setHeader("Content-Disposition", "attachment; filename=SupplyReport.xlsx");
+	                    OutputStream outStream = response.getOutputStream();
+	                    outStream.write(outArray);
+	                    outStream.flush();
+	                    wb.dispose();
+	                    wb.close();
+	                    return new ResponseEntity(outStream, HttpStatus.OK);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	             return null;
+	}
+	
+	
+	@PostMapping(value = "/export/teacherCourseMapTeacherteacherCourseMap")
+	public ResponseEntity<InputStreamResource>teachercoursemapreport(@RequestBody ReportRequest request,HttpServletResponse response ) throws IOException {
+	 try {
+	        List<Object[]> list =excelService.validateteachercoursemapreport(request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).exportteachercoursemapreportExcel(new String[] { "College_Name","Degree","Programme_Name","Department_Name","Stream","Academic_Year","Programme_Year" ,"Semester_Name","CreditHours","Courses_Code","Courses_Name" ,
+	        		"SubjectType" ,"IsSatisfactory" ,"IsProject" ,"IsSeminar","IsElective","FacultyName","FacultyEmpId","Faculty_Login_Name",
+	        		"FacultyContactDetails","FacultyEmailId", "Section_Name"}, list);                   
+	                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	                    wb.write(outByteStream);
+	                    byte[] outArray = outByteStream.toByteArray();                      
+	                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	                    response.setContentLength(outArray.length);
+	                    response.setHeader("Expires:", "0"); // eliminates browser caching
+	                    response.setHeader("Content-Disposition", "attachment; filename=teachercoursesList.xlsx");
+	                    OutputStream outStream = response.getOutputStream();
+	                    outStream.write(outArray);
+	                    outStream.flush();
+	                    wb.dispose();
+	                    wb.close();
+	                    return new ResponseEntity(outStream, HttpStatus.OK);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	             return null;
+	}
+	
+	
+
+	@PostMapping("/export/getExcelForInternal")
+	public ResponseEntity<InputStreamResource> getExcelForInternal(@RequestBody InternalMarksRequest request){
+		
+		try {
+			
+			Map<String, Object> info =  excelService.getExcelForInternal(request);
+					
+			Optional<Courses> course = courses.findByIdAndExIsDeleteAndExIsActive(request.getCourses(),false,true);
+			
+			
+			ByteArrayInputStream in = ExcelImpl.excelForInternal(info , course.get().getExName());
+			HttpHeaders headers = new HttpHeaders();
+			headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+course.get().getExCoursesCode().replace(" ", "-")+".xlsx");
+			System.out.println("Staff Report To Ecxcel Success>>>>>>>>>");
+			return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@PostMapping(value = "/export/gradeReport")
+	public ResponseEntity<InputStreamResource>GradeReport(@RequestBody ReportRequest request,HttpServletResponse response ) throws IOException {
+	 try {
+	        List<Object[]> list =excelService.validateGradeReport(request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).exportvalidateGradeReportExcel(new String[] { "College_Name","Degree","Programme_Name","Department_Name","Academic_Year","Programme_Year" ,"Semester_Name","Courses_Code","Courses_Name" ,
+	        		"RollNo" ,"StudentName" ,"EnrollMentNo" ,"ContactDetails","EmailID","LetterGrade","PointGrade","RegistrationType","Remark"}, list);                   
+	                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	                    wb.write(outByteStream);
+	                    byte[] outArray = outByteStream.toByteArray();                      
+	                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	                    response.setContentLength(outArray.length);
+	                    response.setHeader("Expires:", "0"); // eliminates browser caching
+	                    response.setHeader("Content-Disposition", "attachment; filename=GradeReport.xlsx");
+	                    OutputStream outStream = response.getOutputStream();
+	                    outStream.write(outArray);
+	                    outStream.flush();
+	                    wb.dispose();
+	                    wb.close();
+	                    return new ResponseEntity(outStream, HttpStatus.OK);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	             return null;
+	}
+	
+	
+	@PostMapping(value = "/export/StaffReport")
+	public ResponseEntity<InputStreamResource>StaffCompleteDetails(@RequestBody ReportRequest request,HttpServletResponse response ) throws IOException {
+	 try {
+	        List<Object[]> list =excelService.validateStaffReport(request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).exportvalidateStaffReportExcel(new String[] { "College Name" ,  "Degree", "Programmes", "Department","StaffType" ,  "Designation",  "Employee Id","StaffName", "Email", "Contact Details","Address","DateOfBirth","Gender","AdharNumber","BankAccountNumber","BankName","IFSCCode","PanCardNumber","Qualification","BloodGroup" ,"Is invigilator"}, list);                   
+	                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	                    wb.write(outByteStream);
+	                    byte[] outArray = outByteStream.toByteArray();                      
+	                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	                    response.setContentLength(outArray.length);
+	                    response.setHeader("Expires:", "0"); // eliminates browser caching
+	                    response.setHeader("Content-Disposition", "attachment; filename=StaffReport.xlsx");
+	                    OutputStream outStream = response.getOutputStream();
+	                    outStream.write(outArray);
+	                    outStream.flush();
+	                    wb.dispose();
+	                    wb.close();
+	                    return new ResponseEntity(outStream, HttpStatus.OK);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	             return null;
+	}
+	
+	@PostMapping("/download/IATheoryPracticalMarks")
+	public ResponseEntity<InputStreamResource>IATheoryPracticalMarks(@RequestBody CommonRequest request, HttpServletResponse response){
+		try {	
+			if(request.getCoursesType()==1&&request.getDegree()==2 || request.getDegree()==3) {
+			List<CoursesRegistration> coursess = (List<CoursesRegistration>) excelService.validateIATheoryMarksReport( request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).IATheoryMarksReportExcel(new String[] { "Roll_Number" ,"CourseCode" ,"ExIsSubmit", "Assignment_Marks(Max.5M)","Quiz_Marks(Max.5M)","Attendance_Marks(Max.5M)","CaseStudy_Marks(Max.5M)"}, coursess);                        
+	        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	          wb.write(outByteStream);
+	          byte[] outArray = outByteStream.toByteArray();                      
+	          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	          response.setContentLength(outArray.length);
+	          response.setHeader("Expires:", "0"); // eliminates browser caching
+	          String st="";
+	          for(int i=0;i<coursess.size();i++)
+	          {
+	        	  st=coursess.get(i).getCourses().getExCoursesCode();
+	          }
+	          response.setHeader("Content-Disposition", "attachment; filename="+st);
+	          //response.setHeader("Content-Disposition", "attachment; filename=IATheoryMarks.xlsx");
+	          OutputStream outStream = response.getOutputStream();
+	          outStream.write(outArray);
+	          outStream.flush();
+	          wb.dispose();
+	          wb.close();
+	          return new ResponseEntity(outStream, HttpStatus.OK);
+	  }
+			
+			if(request.getCoursesType()==2) {
+				
+				List<Courses> cou =    courses.findByIdAndExIsActiveAndExIsDelete(request.getCourses(), true, false);
+				
+				if(cou.get(0).getExIsIndustrialVisit() == true) {
+					
+					List<CoursesRegistration> coursess = (List<CoursesRegistration>) excelService.validateIAPracticalMarksReport( request);
+			        SXSSFWorkbook wb = (new ExcelExportResponse()).IAPracticalIndustrialVisitMarksReportExcel(new String[] { "Roll_Number" ,"CourseCode" , "ExIsSubmit","ExIsPracticalAttendance","Write-up/Report(MM 50)","PresentationAndVivaVoce(MM 50)"}, coursess);                        
+			        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+			          wb.write(outByteStream);
+			          byte[] outArray = outByteStream.toByteArray();                      
+			          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			          response.setContentLength(outArray.length);
+			          response.setHeader("Expires:", "0"); // eliminates browser caching
+			          String st="";
+			          for(int i=0;i<coursess.size();i++)
+			          {
+			        	  st=coursess.get(i).getCourses().getExCoursesCode();
+			          }
+			          
+			          response.setHeader("Content-Disposition", "attachment; filename="+st);
+			         // response.setHeader("Content-Disposition", "attachment; filename=IAPractical.xlsx");
+			          OutputStream outStream = response.getOutputStream();
+			          outStream.write(outArray);
+			          outStream.flush();
+			          wb.dispose();
+			          wb.close();
+			          return new ResponseEntity(outStream, HttpStatus.OK);
+			          
+				} if (cou.get(0).getExIsIndustrialTrainingInternship() == true) {
+					
+					List<CoursesRegistration> coursess = (List<CoursesRegistration>) excelService.validateIAPracticalMarksReport( request);
+			        SXSSFWorkbook wb = (new ExcelExportResponse()).IAPracticalMarksIndustrialTrainingOrInternshipReportExcel(new String[] { "Roll_Number" ,"CourseCode" , "ExIsSubmit","ExIsPracticalAttendance","Write-up/Report(MM 40)","Presentation(MM 30)","VivaVoce(MM 30)"}, coursess);                        
+			        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+			          wb.write(outByteStream);
+			          byte[] outArray = outByteStream.toByteArray();                      
+			          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			          response.setContentLength(outArray.length);
+			          response.setHeader("Expires:", "0"); // eliminates browser caching
+			          String st="";
+			          for(int i=0;i<coursess.size();i++)
+			          {
+			        	  st=coursess.get(i).getCourses().getExCoursesCode();
+			          }
+			          
+			          response.setHeader("Content-Disposition", "attachment; filename="+st);
+			         // response.setHeader("Content-Disposition", "attachment; filename=IAPractical.xlsx");
+			          OutputStream outStream = response.getOutputStream();
+			          outStream.write(outArray);
+			          outStream.flush();
+			          wb.dispose();
+			          wb.close();
+			          return new ResponseEntity(outStream, HttpStatus.OK);
+					
+				} if (cou.get(0).getExIsSeminar()==true) {
+					
+					List<CoursesRegistration> coursess = (List<CoursesRegistration>) excelService.validateIAPracticalMarksReport( request);
+			        SXSSFWorkbook wb = (new ExcelExportResponse()).IAPracticalMarksSeminarReportExcel(new String[] { "Roll_Number" ,"CourseCode" , "ExIsSubmit","ExIsPracticalAttendance","PracticalRecord_Marks(Max.20M)","PracticalLearning_Marks(Max.20M)","LabExperiment_Marks(Max.40M)","Viva_Marks(Max.20M)"}, coursess);                        
+			        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+			          wb.write(outByteStream);
+			          byte[] outArray = outByteStream.toByteArray();                      
+			          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			          response.setContentLength(outArray.length);
+			          response.setHeader("Expires:", "0"); // eliminates browser caching
+			          String st="";
+			          for(int i=0;i<coursess.size();i++)
+			          {
+			        	  st=coursess.get(i).getCourses().getExCoursesCode();
+			          }
+			          
+			          response.setHeader("Content-Disposition", "attachment; filename="+st);
+			         // response.setHeader("Content-Disposition", "attachment; filename=IAPractical.xlsx");
+			          OutputStream outStream = response.getOutputStream();
+			          outStream.write(outArray);
+			          outStream.flush();
+			          wb.dispose();
+			          wb.close();
+			          return new ResponseEntity(outStream, HttpStatus.OK);
+					
+				} if (cou.get(0).getExIsProject()== true) {
+					
+					List<CoursesRegistration> coursess = (List<CoursesRegistration>) excelService.validateIAPracticalMarksReport( request);
+			        SXSSFWorkbook wb = (new ExcelExportResponse()).IAPracticalMarksProjectReportExcel(new String[] {"Roll_Number" ,"CourseCode" , "ExIsSubmit","ExIsPracticalAttendance","Write-up/Report(MM 40)","Presentation(MM 30)","VivaVoce(MM 30)"}, coursess);                        
+			        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+			          wb.write(outByteStream);
+			          byte[] outArray = outByteStream.toByteArray();                      
+			          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			          response.setContentLength(outArray.length);
+			          response.setHeader("Expires:", "0"); // eliminates browser caching
+			          String st="";
+			          for(int i=0;i<coursess.size();i++)
+			          {
+			        	  st=coursess.get(i).getCourses().getExCoursesCode();
+			          }
+			          
+			          response.setHeader("Content-Disposition", "attachment; filename="+st);
+			         // response.setHeader("Content-Disposition", "attachment; filename=IAPractical.xlsx");
+			          OutputStream outStream = response.getOutputStream();
+			          outStream.write(outArray);
+			          outStream.flush();
+			          wb.dispose();
+			          wb.close();
+			          return new ResponseEntity(outStream, HttpStatus.OK);
+					
+				}if (cou.get(0).getExIsResearchProject() == true ) {
+					
+					List<CoursesRegistration> coursess = (List<CoursesRegistration>) excelService.validateIAPracticalMarksReport( request);
+			        SXSSFWorkbook wb = (new ExcelExportResponse()).IAPracticalMarksResearchProjectReportExcel(new String[] { "Roll_Number" ,"CourseCode" , "ExIsSubmit","ExIsPracticalAttendance","Internal(Supervisor's)Assessment(MM 40)","External Assessment(MM60)"}, coursess);                        
+			        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+			          wb.write(outByteStream);
+			          byte[] outArray = outByteStream.toByteArray();                      
+			          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			          response.setContentLength(outArray.length);
+			          response.setHeader("Expires:", "0"); // eliminates browser caching
+			          String st="";
+			          for(int i=0;i<coursess.size();i++)
+			          {
+			        	  st=coursess.get(i).getCourses().getExCoursesCode();
+			          }
+			          
+			          response.setHeader("Content-Disposition", "attachment; filename="+st);
+			         // response.setHeader("Content-Disposition", "attachment; filename=IAPractical.xlsx");
+			          OutputStream outStream = response.getOutputStream();
+			          outStream.write(outArray);
+			          outStream.flush();
+			          wb.dispose();
+			          wb.close();
+			          return new ResponseEntity(outStream, HttpStatus.OK);
+					
+				}if (cou.get(0).getExIsVillageAdoption() == true) {
+					
+					List<CoursesRegistration> coursess = (List<CoursesRegistration>) excelService.validateIAPracticalMarksReport( request);
+			        SXSSFWorkbook wb = (new ExcelExportResponse()).IAPracticalMarksVillageAdoptionReportExcel(new String[] { "Roll_Number" ,"CourseCode" , "ExIsSubmit","ExIsPracticalAttendance","Mentor Marks (MM 60)","Jury Marks (MM 40)"}, coursess);                        
+			        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+			          wb.write(outByteStream);
+			          byte[] outArray = outByteStream.toByteArray();                      
+			          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			          response.setContentLength(outArray.length);
+			          response.setHeader("Expires:", "0"); // eliminates browser caching
+			          String st="";
+			          for(int i=0;i<coursess.size();i++)
+			          {
+			        	  st=coursess.get(i).getCourses().getExCoursesCode();
+			          }
+			          
+			          response.setHeader("Content-Disposition", "attachment; filename="+st);
+			         // response.setHeader("Content-Disposition", "attachment; filename=IAPractical.xlsx");
+			          OutputStream outStream = response.getOutputStream();
+			          outStream.write(outArray);
+			          outStream.flush();
+			          wb.dispose();
+			          wb.close();
+			          return new ResponseEntity(outStream, HttpStatus.OK);
+					
+				}
+				
+				List<CoursesRegistration> coursess = (List<CoursesRegistration>) excelService.validateIAPracticalMarksReport( request);
+		        SXSSFWorkbook wb = (new ExcelExportResponse()).IAPracticalMarksReportExcel(new String[] { "Roll_Number" ,"CourseCode" , "ExIsSubmit","ExIsPracticalAttendance","PracticalRecord_Marks(Max.20M)","PracticalLearning_Marks(Max.20M)","LabExperiment_Marks(Max.40M)","Viva_Marks(Max.20M)"}, coursess);                        
+		        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+		          wb.write(outByteStream);
+		          byte[] outArray = outByteStream.toByteArray();                      
+		          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		          response.setContentLength(outArray.length);
+		          response.setHeader("Expires:", "0"); // eliminates browser caching
+		          String st="";
+		          for(int i=0;i<coursess.size();i++)
+		          {
+		        	  st=coursess.get(i).getCourses().getExCoursesCode();
+		          }
+		          
+		          response.setHeader("Content-Disposition", "attachment; filename="+st);
+		         // response.setHeader("Content-Disposition", "attachment; filename=IAPractical.xlsx");
+		          OutputStream outStream = response.getOutputStream();
+		          outStream.write(outArray);
+		          outStream.flush();
+		          wb.dispose();
+		          wb.close();
+		          return new ResponseEntity(outStream, HttpStatus.OK);
+		  }
+			
+			if(request.getCoursesType()==1 && request.getDegree()==1) {
+				List<CoursesRegistration> coursess = (List<CoursesRegistration>) excelService.validateIATheoryMarksBtechReport( request);
+		        SXSSFWorkbook wb = (new ExcelExportResponse()).IATheoryMarksReportBtechExcel(new String[] { "Roll_Number" ,"CourseCode" ,"ExIsSubmit","Assignment_Marks(Max.5M)","Quiz_Marks(Max.10M)","Attendance_Marks(Max.5M)"}, coursess);                        
+		        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+		          wb.write(outByteStream);
+		          byte[] outArray = outByteStream.toByteArray();                      
+		          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		          response.setContentLength(outArray.length);
+		          response.setHeader("Expires:", "0"); // eliminates browser caching
+		          String st="";
+		          for(int i=0;i<coursess.size();i++)
+		          {
+		        	  st=coursess.get(i).getCourses().getExCoursesCode();
+		          }
+		          response.setHeader("Content-Disposition", "attachment; filename="+st);
+		          //response.setContentLength(st.length());
+		          OutputStream outStream = response.getOutputStream();
+		          outStream.write(outArray);
+		          outStream.flush();
+		          wb.dispose();
+		          wb.close();
+		          return new ResponseEntity(outStream, HttpStatus.OK);
+		  }
+			
+			}catch (Exception e) {
+	      e.printStackTrace();
+	  }
+		return null;
+	}
+	
+	
+	
+	@PostMapping(value = "/download/MarksheetUploadStatus")
+	public ResponseEntity<InputStreamResource> MarksheetUploadStatus(@RequestBody CommonRequest request , HttpSession session ,HttpServletResponse response) throws IOException {
+	 try { 
+		 if( request.getProgrammes()==1 || request.getProgrammes()==4) {
+			List<Object[]> list =excelService.MarksheetUploadStatus(request);
+			System.out.println("bbbbbbbbbbbbbbbbbbbbbbb"+list.size());
+			SXSSFWorkbook wb = (new ExcelExportResponse()).exportMarksheetUploadStatusExcel(new String[] { "Collage" ," Program_Name ","Department","Batch","StudentRollNo",
+		             "StudentName","ContactNo","EmailId","1stSemMarksheet"  , "2stSemMarksheet" , "3rdSemMarksheet" ,"4thSemMarksheet"  ,"5thSemMarksheet","6thSemMarksheet" , " 7thSemMarksheet" ,"8thSemMarksheet" ,"PDC Status","Transcript Status" , "Degree Status"  }, list);					
+					  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+			            wb.write(outByteStream);
+			            byte[] outArray = outByteStream.toByteArray();			           
+			            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			            response.setContentLength(outArray.length);
+			            response.setHeader("Expires:", "0"); // eliminates browser caching
+			            response.setHeader("Content-Disposition", "attachment; filename=MarksheetUploadStatus.xlsx");
+			            OutputStream outStream = response.getOutputStream();
+			            outStream.write(outArray);
+			            outStream.flush();
+			            wb.dispose();
+			            wb.close();
+			            return new ResponseEntity(outStream, HttpStatus.OK);
+				}
+		 
+		 if( request.getProgrammes()==2 || request.getProgrammes()==3) {
+				List<Object[]> list =excelService.MarksheetUploadStatusMtechMba(request);
+				System.out.println("bbbbbbbbbbbbbbbbbbbbbbb"+list.size());
+				SXSSFWorkbook wb = (new ExcelExportResponse()).exportMarksheetUploadStatusMtechMbaExcel(new String[] {  "Collage" ," Program_Name ","Department","Batch","StudentRollNo",
+			             "StudentName","ContactNo","EmailId","1stSemMarksheet"  , "2stSemMarksheet" , "3rdSemMarksheet" ,"4thSemMarksheet" ,"PDC Status","Transcript Status" , "Degree Status" }, list);					
+							ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+				            wb.write(outByteStream);
+				            byte[] outArray = outByteStream.toByteArray();			           
+				            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+				            response.setContentLength(outArray.length);
+				            response.setHeader("Expires:", "0"); // eliminates browser caching
+				            response.setHeader("Content-Disposition", "attachment; filename=MarksheetUploadStatus.xlsx");
+				            OutputStream outStream = response.getOutputStream();
+				            outStream.write(outArray);
+				            outStream.flush();
+				            wb.dispose();
+				            wb.close();
+				            return new ResponseEntity(outStream, HttpStatus.OK);
+						}		 
+	 				}catch (Exception e) {
+					e.printStackTrace();
+				}
+	 return null;
+	} 
+	
+	
+	
+	@PostMapping(value = "/download/DocumentsUploadstatus")
+	public ResponseEntity<InputStreamResource> StudentsDocumentsUploadstatus(@RequestBody CommonRequest request,HttpServletResponse response ) throws IOException {
+	 try {
+	        List<Object[]> list =excelService.validateStudentsDocumentsUploadstatus(request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).StudentsDocumentsUploadstatusExcel(new String[] {"College","Degree","Programme","Department","Batch" ,"ContactDetails","EmailID","StudentRollNo","StudentName","DocumentUploadStatus","Provissional seat allotment letter","JoSAA website duly Signed by the Candidate","JEE(Main) Admit Card and Score sheet","Class(xii) Mark Sheet And Certificate","Class(x) Mark Sheet and Certificate( As a Proof of DoB)","Adhar Card-Pan Card","Valid PassPort","OCI-PIO Card","Proof of Examination Center","Proof of Category",
+	        		"Certificate for KM(if applicable)","Medical Certificate of handicap","Migration Certificate-Transfer Certificate","Other Documents"}, list);                  
+	                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	                    wb.write(outByteStream);
+	                    byte[] outArray = outByteStream.toByteArray();                      
+	                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	                    response.setContentLength(outArray.length);
+	                    response.setHeader("Expires:", "0"); // eliminates browser caching
+	                    response.setHeader("Content-Disposition", "attachment; filename=DocumentsUploadstatus.xlsx");
+	                    OutputStream outStream = response.getOutputStream();
+	                    outStream.write(outArray);
+	                    outStream.flush();
+	                    wb.dispose();
+	                    wb.close();
+	                    return new ResponseEntity(outStream, HttpStatus.OK);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	 			return null;
+	}
+	
+	
+	@PostMapping(value = "/export/teacherCourseMap")
+	public ResponseEntity<InputStreamResource>teachercoursemapreportSample(@RequestBody ReportRequest request,HttpServletResponse response ) throws IOException {
+	 try {
+		 if(request.getCoursesType()==1) {
+	        List<Object[]> list =excelService.validateteachercoursemapreportSample(request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).exportteachercoursemapreportSampleExcel(new String[] { "College_Name","Degree","Programme_Name","Department_Name","Batch","Academic_Year","ProgrammeYear","Semester_Name","CreditHours","SubjectType","FacultyName","Courses_Code","Courses_Name",
+	        		"AssignmentStatus","QuizStatus","CaseStudyStatus","AttendanceStatus","Section","FacultiesContactNumber","FacultiesEmailID"}, list);                   
+	                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	                    wb.write(outByteStream);
+	                    byte[] outArray = outByteStream.toByteArray();                      
+	                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	                    response.setContentLength(outArray.length);
+	                    response.setHeader("Expires:", "0"); // eliminates browser caching
+	                    response.setHeader("Content-Disposition", "attachment; filename=teachercoursesList.xlsx");
+	                    OutputStream outStream = response.getOutputStream();
+	                    outStream.write(outArray);
+	                    outStream.flush();
+	                    wb.dispose();
+	                    wb.close();
+	                    return new ResponseEntity(outStream, HttpStatus.OK);
+	                    
+		 }   
+	                 
+		 if(request.getCoursesType()==2) {
+	                    List<Object[]> list =excelService.validateteachercoursemapreportSamples(request);
+	        	        SXSSFWorkbook wb = (new ExcelExportResponse()).exportteachercoursemapreportSamplesExcel(new String[] { "College_Name","Degree","Programme_Name","Department_Name","Batch","Academic_Year","ProgrammeYear","Semester_Name","CreditHours","SubjectType","FacultyName","Courses_Code","Courses_Name",
+	        	        		"PracticalRecordsStatus","PracticalLearningStatus","LabexperimentStatus","VivaStatus","Section","FacultiesContactNumber","FacultiesEmailID"}, list);                   
+	        	                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	        	                    wb.write(outByteStream);
+	        	                    byte[] outArray = outByteStream.toByteArray();                      
+	        	                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	        	                    response.setContentLength(outArray.length);
+	        	                    response.setHeader("Expires:", "0"); // eliminates browser caching
+	        	                    response.setHeader("Content-Disposition", "attachment; filename=teachercoursesList.xlsx");
+	        	                    OutputStream outStream = response.getOutputStream();
+	        	                    outStream.write(outArray);
+	        	                    outStream.flush();
+	        	                    wb.dispose();
+	        	                    wb.close();
+	        	                    return new ResponseEntity(outStream, HttpStatus.OK);
+		 				}	
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	             return null;
+	}
+	
+	
+	@PostMapping(value = "/download/BankdetailsReport")
+	public ResponseEntity<InputStreamResource> BankdetailsReport(@RequestBody ReportRequest request , HttpSession session ,HttpServletResponse response) throws IOException {
+	 try { 
+			List<Object[]> list =excelService.BankdetailsReport(request);
+			System.out.println("bbbbbbbbbbbbbbbbbbbbbbb"+list.size());
+			SXSSFWorkbook wb = (new ExcelExportResponse()).exportBankdetailsReportReportExcel(new String[] {"CollegeName", "Degree", "Programmes", "Department","Batch", "Academic Year" ,"Category","AllottedCategory", "StudentName", "RollNo", "EnrollmentNo","StudyStatus", "EmailId", "ContactNo" , "DateOfBirth" , "Gender","Father'sName" , "Mother'sName", "NativeState" , "Religion","AdharNumber","ParentContactSetails","PermanentAddress","AccountNumber","AccountType","BankAddress","Branch","IFSCCode" }, list);					
+					  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+			            wb.write(outByteStream);
+			            byte[] outArray = outByteStream.toByteArray();			           
+			            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			            response.setContentLength(outArray.length);
+			            response.setHeader("Expires:", "0"); // eliminates browser caching
+			            response.setHeader("Content-Disposition", "attachment; filename=Bankdetails.xlsx");
+			            OutputStream outStream = response.getOutputStream();
+			            outStream.write(outArray);
+			            outStream.flush();
+			            wb.dispose();
+			            wb.close();
+			            return new ResponseEntity(outStream, HttpStatus.OK);	 
+	 				}catch (Exception e) {
+					e.printStackTrace();
+				}
+				 return null;
+	} 
+	
+	
+	@PostMapping("/export/invigolatorReport")
+	public ResponseEntity<InputStreamResource> invigolatorReport(@RequestBody SeatArrangementRequest request, HttpServletResponse response){
+		try {		
+			List<InvigilatorDuty> expert = (List<InvigilatorDuty>) excelService.invigolatorReport( request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).InvigolatorReportExcel(new String[] { "Exam Hall" , "Exam Date", "No of Student","Invigilator 1 ", "Invigilator 2", "Reserved Invigilator"}, expert);                        
+	        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	          wb.write(outByteStream);
+	          byte[] outArray = outByteStream.toByteArray();                      
+	          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	          response.setContentLength(outArray.length);
+	          response.setHeader("Expires:", "0"); // eliminates browser caching
+	          response.setHeader("Content-Disposition", "attachment; filename=ExpertReport.xlsx");
+	          OutputStream outStream = response.getOutputStream();
+	          outStream.write(outArray);
+	          outStream.flush();
+	          wb.dispose();
+	          wb.close();
+	          return new ResponseEntity(outStream, HttpStatus.OK);
+	  } catch (Exception e) {
+	      e.printStackTrace();
+	  }
+		return null;
+	}
+	
+	
+	@PostMapping("/export/invigolatorReportWithExamHall")
+	public ResponseEntity<InputStreamResource> invigolatorReportWithExamHall(@RequestBody SeatArrangementRequest request, HttpServletResponse response){
+		try {		
+			List<InvigilatorDuty> expert = (List<InvigilatorDuty>) excelService.invigolatorReportWithExamHall( request);
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).InvigolatorReportExcel(new String[] { "Exam Hall" , "Exam Date", "No of Student","Invigilator 1 ", "Invigilator 2", "Reserved Invigilator"}, expert);                        
+	        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	          wb.write(outByteStream);
+	          byte[] outArray = outByteStream.toByteArray();                      
+	          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	          response.setContentLength(outArray.length);
+	          response.setHeader("Expires:", "0"); // eliminates browser caching
+	          response.setHeader("Content-Disposition", "attachment; filename=ExpertReport.xlsx");
+	          OutputStream outStream = response.getOutputStream();
+	          outStream.write(outArray);
+	          outStream.flush();
+	          wb.dispose();
+	          wb.close();
+	          return new ResponseEntity(outStream, HttpStatus.OK);
+	  } catch (Exception e) {
+	      e.printStackTrace();
+	  }
+		return null;
+	}
+	
+	
+	@PostMapping("/export/studentDynamicReport")
+	public ResponseEntity studentDynamicReport(@RequestBody StudentDynamicRequest request, HttpServletResponse response){
+		try {	
+			Map<String, Object> info = new LinkedHashMap<>();				
+			if(request.getStates().size() >0) {
+				if(!request.getFilter().contains(15L)) {
+					info.put("status", "2");
+					info.put("message", "Please select NativeState from filter");
+					return new ResponseEntity<Map>(info, HttpStatus.OK);
+				}
+			}
+					
+			if(request.getBoards().size() >0) {
+				if(!request.getFilter().contains(25L)) {
+					info.put("status", "2");
+					info.put("message", "Please select TenthBoard from filter");
+					return new ResponseEntity<Map>(info, HttpStatus.OK);
+				}
+			}			
+			if(request.getCategory().size() >0) {
+				if(!request.getFilter().contains(7L)) {
+					info.put("status", "2");
+					info.put("message", "Please select Category from filter");
+					return new ResponseEntity<Map>(info, HttpStatus.OK);
+				}
+			}
+			
+			if(request.getDepartment().size() >0) {
+				if(!request.getFilter().contains(6L)) {
+					info.put("status", "2");
+					info.put("message", "Please select Department from filter");
+					return new ResponseEntity<Map>(info, HttpStatus.OK);
+				}
+			}
+			
+			if(request.getGender().size() >0) {
+				if(!request.getFilter().contains(13L)) {
+					info.put("status", "2");
+					info.put("message", "Please select Gender from filter");
+					return new ResponseEntity<Map>(info, HttpStatus.OK);
+				}
+			}
+			
+			if(request.getReligion().size() >0) {
+				if(!request.getFilter().contains(16L)) {
+					info.put("status", "2");
+					info.put("message", "Please select Religion from filter");
+					return new ResponseEntity<Map>(info, HttpStatus.OK);
+				}
+			}
+			
+			if(request.getBloodgroup().size() >0) {
+				if(!request.getFilter().contains(34L)) {
+					info.put("status", "2");
+					info.put("message", "Please select BloodGroup from filter");
+					return new ResponseEntity<Map>(info, HttpStatus.OK);
+				}
+			}
+			
+			if(request.getMotherTongue().size() >0) {
+				if(!request.getFilter().contains(33L)) {
+					info.put("status", "2");
+					info.put("message", "Please select MotherTongue from filter");
+					return new ResponseEntity<Map>(info, HttpStatus.OK);
+				}
+			}
+			
+			List<Object[]> expert =  excelService.studentDynamicReport( request);			
+			List<ReportRequestEntity> coloumn = reportrequest.getColoumnName(request.getFilter());	
+			
+			String[] str =  new String[coloumn.size()];
+			 int i= 0;
+			String coloumnname = "";
+			for(ReportRequestEntity r :coloumn) {					
+				str[i] = r.getExName();
+				++i;
+			}
+			
+			System.out.println("55555555555"+str.length);
+		
+	        SXSSFWorkbook wb = (new ExcelExportResponse()).exportDynamicReportReportExcel(str, expert, request.getReportName());                        
+	        ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+	          wb.write(outByteStream);
+	          byte[] outArray = outByteStream.toByteArray();                      
+	          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	          response.setContentLength(outArray.length);
+	          response.setHeader("Expires:", "0"); // eliminates browser caching
+	          response.setHeader("Content-Disposition", "attachment; filename=ExpertReport.xlsx");
+	          OutputStream outStream = response.getOutputStream();
+	          outStream.write(outArray);
+	          outStream.flush();
+	          wb.dispose();
+	          wb.close();
+	          return new ResponseEntity(outStream, HttpStatus.OK);
+	  } catch (Exception e) {
+	      e.printStackTrace();
+	  }
+		return null;
+	}	
+	
+	@PostMapping("/export/validateDynamicReport")
+	public Map<String, Object> validateDynamicReport(@RequestBody StudentDynamicRequest request, HttpServletResponse response){
+		Map<String, Object> info = new LinkedHashMap<>();	
+		try {						
+			if(request.getStates().size() >0) {
+				if(!request.getFilter().contains(15L)) {
+					info.put("status", "2");
+					info.put("message", "Please select NativeState from filter");
+					return info;
+				}
+			}
+					
+			if(request.getBoards().size() >0) {
+				if(!request.getFilter().contains(25L)) {
+					info.put("status", "2");
+					info.put("message", "Please select TenthBoard from filter");
+					return info;
+				}
+			}			
+			if(request.getCategory().size() >0) {
+				if(!request.getFilter().contains(7L)) {
+					info.put("status", "2");
+					info.put("message", "Please select Category from filter");
+					return info;
+				}
+			}
+			
+			if(request.getDepartment().size() >0) {
+				if(!request.getFilter().contains(6L)) {
+					info.put("status", "2");
+					info.put("message", "Please select Department from filter");
+					return info;
+				}
+			}
+			
+			if(request.getGender().size() >0) {
+				if(!request.getFilter().contains(13L)) {
+					info.put("status", "2");
+					info.put("message", "Please select Gender from filter");
+					return info;
+				}
+			}
+			
+			if(request.getReligion().size() >0) {
+				if(!request.getFilter().contains(16L)) {
+					info.put("status", "2");
+					info.put("message", "Please select Religion from filter");
+					return info;
+				}
+			}
+			
+			if(request.getBloodgroup().size() >0) {
+				if(!request.getFilter().contains(34L)) {
+					info.put("status", "2");
+					info.put("message", "Please select BloodGroup from filter");
+					return info;
+				}
+			}
+			
+			if(request.getMotherTongue().size() >0) {
+				if(!request.getFilter().contains(33L)) {
+					info.put("status", "2");
+					info.put("message", "Please select MotherTongue from filter");
+					return info;
+				}
+			}
+			
+			info.put("status", "1");
+			info.put("message", "success");
+			return info;
+			
+	  } catch (Exception e) {
+		  	info.put("status", "2");
+			info.put("message", "Please try again");
+			return info;
+	  }
+		
+	}	
+
+}
+

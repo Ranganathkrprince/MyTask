@@ -1,0 +1,142 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_staff_emp_details")
+public class StaffEmpDetails {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private String exBankName;
+	private String exIfscCode;
+	private String exPanNumber;
+	private String exAdhaarNumber;
+	private String exBankAccountNo;
+	private String exNature;
+	private String exBloodGroup;
+	
+	@Column(columnDefinition="TEXT")
+	private String exSkill;
+	
+	@Column(columnDefinition="TEXT")
+	private String exQualification;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "staffpersonal_id", nullable = false)
+	private Staffpersonal staffpersonal;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExBankName() {
+		return exBankName;
+	}
+
+	public String getExIfscCode() {
+		return exIfscCode;
+	}
+
+	public String getExPanNumber() {
+		return exPanNumber;
+	}
+
+	public String getExAdhaarNumber() {
+		return exAdhaarNumber;
+	}
+
+	public String getExBankAccountNo() {
+		return exBankAccountNo;
+	}
+
+	public String getExNature() {
+		return exNature;
+	}
+
+	public String getExBloodGroup() {
+		return exBloodGroup;
+	}
+
+	public String getExSkill() {
+		return exSkill;
+	}
+
+	public String getExQualification() {
+		return exQualification;
+	}
+
+	public Staffpersonal getStaffpersonal() {
+		return staffpersonal;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExBankName(String exBankName) {
+		this.exBankName = exBankName;
+	}
+
+	public void setExIfscCode(String exIfscCode) {
+		this.exIfscCode = exIfscCode;
+	}
+
+	public void setExPanNumber(String exPanNumber) {
+		this.exPanNumber = exPanNumber;
+	}
+
+	public void setExAdhaarNumber(String exAdhaarNumber) {
+		this.exAdhaarNumber = exAdhaarNumber;
+	}
+
+	public void setExBankAccountNo(String exBankAccountNo) {
+		this.exBankAccountNo = exBankAccountNo;
+	}
+
+	public void setExNature(String exNature) {
+		this.exNature = exNature;
+	}
+
+	public void setExBloodGroup(String exBloodGroup) {
+		this.exBloodGroup = exBloodGroup;
+	}
+
+	public void setExSkill(String exSkill) {
+		this.exSkill = exSkill;
+	}
+
+	public void setExQualification(String exQualification) {
+		this.exQualification = exQualification;
+	}
+
+	public void setStaffpersonal(Staffpersonal staffpersonal) {
+		this.staffpersonal = staffpersonal;
+	}
+
+	@Override
+	public String toString() {
+		return "StaffEmpDetails [id=" + id + ", exBankName=" + exBankName + ", exIfscCode=" + exIfscCode
+				+ ", exPanNumber=" + exPanNumber + ", exAdhaarNumber=" + exAdhaarNumber + ", exBankAccountNo="
+				+ exBankAccountNo + ", exNature=" + exNature + ", exBloodGroup=" + exBloodGroup + ", exSkill=" + exSkill
+				+ ", exQualification=" + exQualification + ", staffpersonal=" + staffpersonal + "]";
+	}
+	
+	
+
+
+	
+}

@@ -1,0 +1,23 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.HostelConfiguration;
+
+public interface HostelConfigurationRepository extends CrudRepository<HostelConfiguration, Long>{
+
+	
+	
+	List<HostelConfiguration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndAcademicYearIdAndSemesterIdAndCollegesIdAndExRollNo(
+			boolean b, boolean c, Long programmes, Long academicYear, Long semester, Long college, String student);
+
+
+	Optional<HostelConfiguration> findByAcademicYearIdAndCollegesIdAndDegreeIdAndHostelIdAndHostelfeetypeIdAndSemesterIdAndProgrammesIdAndExRollNoAndExStartDateAndExEndDateAndExIsActiveAndProgrammeyearId(
+			Long academicYear, Long college, Long degree, Long hostel, Long hostelfeetype, Long semester,
+			Long programmes, String student, Date sdate, Date edate, boolean b, Long programmeYear);
+
+}

@@ -1,0 +1,83 @@
+package com.niftem.app.validation;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
+import com.niftem.app.model.OrderTransactionReport;
+import com.niftem.app.model.ReportRequest;
+
+@Component
+public class ReportsValidation {
+	public String validateRepor(List<Long> list) {
+		String validatereport  = "";
+		System.out.println(">>>>>list"+list.size());
+		if(list.size()>0) {	
+			
+			for(int i =0 ; i<list.size() ; i++) {
+				Long number =list.get(i);
+			validatereport = validatereport+number+",";
+			}	
+			validatereport =  validatereport.substring(0, validatereport.length() -1);
+		}
+		return validatereport;
+	}
+	
+	public String validateReporPaymet(List<String> list) {
+		String validatereport  = "";
+		if(list.size()>0) {		
+			for(int i =0 ; i<list.size() ; i++) {
+				String number =list.get(i);
+			validatereport = validatereport+"'"+number+"',";
+			}	
+			validatereport =  validatereport.substring(0, validatereport.length() -1);
+		}
+		return validatereport;
+	}
+	public List<String> validatePaymentStatus(ReportRequest request) {
+		List<String> paymentstatus = new ArrayList<String>();
+		try {			
+			if(request.getPaymentStatus() == null || request.getPaymentStatus().equals("") || request.getPaymentStatus().equalsIgnoreCase("all")) {
+				paymentstatus.add("Success");
+				paymentstatus.add("Failed");
+				paymentstatus.add("initiated");
+				paymentstatus.add("Cancelled");
+				paymentstatus.add("Refund");
+			}else if(request.getPaymentStatus().equals("failed")) {
+				paymentstatus.add("failure");
+				paymentstatus.add("failed");
+			}
+			
+			else {
+				paymentstatus.add(request.getPaymentStatus());
+			}
+			
+		}catch(Exception e) {
+			
+			e.printStackTrace();
+		}
+		return paymentstatus;
+	}
+
+	public List<String> validatePaymentStatus(OrderTransactionReport request) {
+		List<String> paymentstatus = new ArrayList<String>();
+		try {			
+			if(request.getPaymentStatus() == null || request.getPaymentStatus().equals("") || request.getPaymentStatus().equalsIgnoreCase("all")) {
+				paymentstatus.add("Success");
+				paymentstatus.add("Failed");
+				paymentstatus.add("initiated");
+				paymentstatus.add("Cancelled");
+				paymentstatus.add("Refund");
+			}else {
+				paymentstatus.add(request.getPaymentStatus());
+			}
+			
+		}catch(Exception e) {
+			
+			e.printStackTrace();
+		}
+		return paymentstatus;
+	}
+	
+}

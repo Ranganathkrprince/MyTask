@@ -1,0 +1,126 @@
+package com.niftem.app.model;
+
+public class StudentBankDetailsRequest {
+
+	private Long id;
+	
+	private Long student;
+	
+	private String exRollNo;
+	
+	private String exStudentName;
+	
+	private String exAccountType;
+	
+	private String exBranch;
+	
+	private String exAccountNumber;
+	
+	private String exIfscCode;
+	
+
+	private String exBankAddress;
+	
+	
+	private String exStudentAddress;
+
+	private String status;
+
+	public Long getId() {
+		return id;
+	}
+
+	public Long getStudent() {
+		return student;
+	}
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public String getExStudentName() {
+		return exStudentName;
+	}
+
+	public String getExAccountType() {
+		return exAccountType;
+	}
+
+	public String getExBranch() {
+		return exBranch;
+	}
+
+	public String getExAccountNumber() {
+		return exAccountNumber;
+	}
+
+	public String getExIfscCode() {
+		return exIfscCode;
+	}
+
+	public String getExBankAddress() {
+		return exBankAddress;
+	}
+
+	public String getExStudentAddress() {
+		return exStudentAddress;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setStudent(Long student) {
+		this.student = student;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	public void setExStudentName(String exStudentName) {
+		this.exStudentName = exStudentName;
+	}
+
+	public void setExAccountType(String exAccountType) {
+		this.exAccountType = exAccountType;
+	}
+
+	public void setExBranch(String exBranch) {
+		this.exBranch = exBranch;
+	}
+
+	public void setExAccountNumber(String exAccountNumber) {
+		this.exAccountNumber = exAccountNumber;
+	}
+
+	public void setExIfscCode(String exIfscCode) {
+		this.exIfscCode = exIfscCode;
+	}
+
+	public void setExBankAddress(String exBankAddress) {
+		this.exBankAddress = exBankAddress;
+	}
+
+	public void setExStudentAddress(String exStudentAddress) {
+		this.exStudentAddress = exStudentAddress;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		return "StudentBankDetailsRequest [id=" + id + ", student=" + student + ", exRollNo=" + exRollNo
+				+ ", exStudentName=" + exStudentName + ", exAccountType=" + exAccountType + ", exBranch=" + exBranch
+				+ ", exAccountNumber=" + exAccountNumber + ", exIfscCode=" + exIfscCode + ", exBankAddress="
+				+ exBankAddress + ", exStudentAddress=" + exStudentAddress + ", status=" + status + "]";
+	}
+	
+	
+}

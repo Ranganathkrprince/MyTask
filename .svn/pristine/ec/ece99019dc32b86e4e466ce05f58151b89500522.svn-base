@@ -1,0 +1,178 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+@Entity
+@Table(name = "ex_academic_calender")
+public class AcademicCalender {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+	
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsPublish;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "academicYear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	
+	 @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	 @JoinTable(name = "ex_academic_calenderactivity_batch",joinColumns = { @JoinColumn(name = "academic_calenderactivity_id", referencedColumnName = "id", nullable = false, updatable = true)},
+	 inverseJoinColumns = {  @JoinColumn(name = "batch", referencedColumnName = "id", nullable = false, updatable = true)})
+	 private List<Batch> batch = new LinkedList<>();
+	 
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsEven;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsUpdate;
+	
+	@Column(columnDefinition="TEXT")
+	private String exRemark;
+
+	public Long getId() {
+		return id;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Boolean getExIsPublish() {
+		return exIsPublish;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public List<Batch> getBatch() {
+		return batch;
+	}
+
+	public Boolean getExIsEven() {
+		return exIsEven;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public Boolean getExIsUpdate() {
+		return exIsUpdate;
+	}
+
+	public String getExRemark() {
+		return exRemark;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setExIsPublish(Boolean exIsPublish) {
+		this.exIsPublish = exIsPublish;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setBatch(List<Batch> batch) {
+		this.batch = batch;
+	}
+
+	public void setExIsEven(Boolean exIsEven) {
+		this.exIsEven = exIsEven;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setExIsUpdate(Boolean exIsUpdate) {
+		this.exIsUpdate = exIsUpdate;
+	}
+
+	public void setExRemark(String exRemark) {
+		this.exRemark = exRemark;
+	}
+
+	@Override
+	public String toString() {
+		return "AcademicCalender [id=" + id + ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete
+				+ ", exIsPublish=" + exIsPublish + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate
+				+ ", academicYear=" + academicYear + ", batch=" + batch + ", exIsEven=" + exIsEven + ", user=" + user
+				+ ", exIsUpdate=" + exIsUpdate + ", exRemark=" + exRemark + "]";
+	}
+
+	
+}

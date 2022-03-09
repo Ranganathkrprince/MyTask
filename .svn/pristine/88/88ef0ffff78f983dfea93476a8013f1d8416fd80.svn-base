@@ -1,0 +1,16 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.QuestionPaperUpload;
+
+public interface QuestionPaperUploadRepository extends CrudRepository <QuestionPaperUpload, Long> {
+
+	List<QuestionPaperUpload> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndExamAnnouncementIdAndProgrammesIdAndCoursesIdAndDegreeIdAndDepartmentId(
+			boolean delete, boolean active, Long academicYear, Long examAnnouncement, Long programmes, Long courses, Long degree , Long dept);
+
+
+
+}

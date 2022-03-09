@@ -1,0 +1,53 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.StudentBankDetails;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import java.util.Date;
+
+public interface StudentBankDetailsRepository extends CrudRepository<StudentBankDetails, Long>{
+
+	List<StudentBankDetails> findByStudentadmissionId (Long student);
+	List<StudentBankDetails> findByExRollNo (String student);
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "insert into  ex_student_bank_details set student_admission_id =?1,ex_roll_no=?2, ex_student_name =?3,ex_account_number=?4,ex_account_type=?5,ex_bank_address=?6,ex_branch=?7,ex_create_date=?8,ex_ifsc_code=?9,ex_student_address=?10", nativeQuery = true)
+	int insertdetails(Long id, String exRollNo, String exName, String exAccountNumber, String exAccountType,
+			String exBankAddress, String exBranch, Date date, String exIfscCode, String exStudentAddress);
+	
+	
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "Update ex_student_bank_details set ex_roll_no=?2, ex_student_name =?3,ex_account_number=?4,ex_account_type=?5,ex_bank_address=?6,ex_branch=?7,ex_create_date=?8,ex_ifsc_code=?9,ex_student_address=?10 where student_admission_id =?1", nativeQuery = true)
+	int updatedetails(Long id, String exRollNo, String exName, String exAccountNumber, String exAccountType,
+			String exBankAddress, String exBranch, Date date, String exIfscCode, String exStudentAddress);
+
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "Update ex_student_bank_details set ex_account_number=?1,ex_account_type=?2,ex_bank_address=?3,ex_branch=?4,ex_create_date=?5,ex_ifsc_code=?6,ex_student_address=?7 where student_admission_id =?1", nativeQuery = true)	
+	int updatebankdetails(Long student, String exAccountNumber, String exAccountType, String exBankAddress,
+			String exBranch, Date date, String exIfscCode, String exStudentAddress);
+
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update   ex_student_bank_details s set s.ex_pass_book_path = ?2 where s.student_admission_id=?1", nativeQuery = true)
+	int updatepersonal(Long student, String photopath);
+	
+
+}

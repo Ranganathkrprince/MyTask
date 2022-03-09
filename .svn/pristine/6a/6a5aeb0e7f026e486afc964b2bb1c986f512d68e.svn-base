@@ -1,0 +1,147 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotNull;
+
+public class QuestionPaperPatternRequest {
+	private Long id;
+	private Boolean exIsActive;	
+	@NotNull(message = "programme is required")
+	private Long programme;
+	@NotNull(message = "questionPaperType is required")
+	private Long questionPaperType;
+	@NotNull(message = "questionPaperTopic is required")
+	private Long questionPaperTopic;
+	@NotNull(message = "EndNo is required")
+	private Double exEndNo;
+	@NotNull(message = "StartNo is required")
+	private Double exStartNo;
+	@NotNull(message = "EachQuestionMark is required")
+	private Double exEachQuestionMark; 
+	@NotNull(message = "NoOfQuestion is required")
+	private Double exNoOfQuestion ;
+	private Long courses;
+	
+	@NotNull(message = "academicyear is required")
+	private Long academicYear;
+	
+	@NotNull(message = "department is required")
+	private Long department;
+	
+	@NotNull(message = "examAnnouncment is required")
+	private Long examAnnouncement;
+	@NotNull(message = "degree is required")
+	private Long degree;
+	
+	
+	private Long user;
+	
+	
+	
+	
+	
+	
+	
+	
+	public Long getUser() {
+		return user;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+	public Long getProgramme() {
+		return programme;
+	}
+	public void setProgramme(Long programme) {
+		this.programme = programme;
+	}
+	public Long getQuestionPaperType() {
+		return questionPaperType;
+	}
+	public void setQuestionPaperType(Long questionPaperType) {
+		this.questionPaperType = questionPaperType;
+	}
+	public Long getQuestionPaperTopic() {
+		return questionPaperTopic;
+	}
+	public void setQuestionPaperTopic(Long questionPaperTopic) {
+		this.questionPaperTopic = questionPaperTopic;
+	}
+	public Double getExEndNo() {
+		return exEndNo;
+	}
+	public void setExEndNo(Double exEndNo) {
+		this.exEndNo = exEndNo;
+	}
+	public Double getExStartNo() {
+		return exStartNo;
+	}
+	public void setExStartNo(Double exStartNo) {
+		this.exStartNo = exStartNo;
+	}
+	public Double getExEachQuestionMark() {
+		return exEachQuestionMark;
+	}
+	public void setExEachQuestionMark(Double exEachQuestionMark) {
+		this.exEachQuestionMark = exEachQuestionMark;
+	}
+	public Double getExNoOfQuestion() {
+		return exNoOfQuestion;
+	}
+	public void setExNoOfQuestion(Double exNoOfQuestion) {
+		this.exNoOfQuestion = exNoOfQuestion;
+	}
+	public Long getCourses() {
+		return courses;
+	}
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public Long getDepartment() {
+		return department;
+	}
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+	@Override
+	public String toString() {
+		return "QuestionPaperPatternRequest [id=" + id + ", exIsActive=" + exIsActive + ", programme=" + programme
+				+ ", questionPaperType=" + questionPaperType + ", questionPaperTopic=" + questionPaperTopic
+				+ ", exEndNo=" + exEndNo + ", exStartNo=" + exStartNo + ", exEachQuestionMark=" + exEachQuestionMark
+				+ ", exNoOfQuestion=" + exNoOfQuestion + ", courses=" + courses + ", academicYear=" + academicYear
+				+ ", department=" + department + ", examAnnouncement=" + examAnnouncement + ", degree=" + degree
+				+ ", user=" + user + "]";
+	}
+	
+	
+	
+}

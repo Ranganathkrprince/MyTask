@@ -1,0 +1,156 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.web.multipart.MultipartFile;
+
+public class ExternalMarksRequest {
+	
+	private MultipartFile exExternalFile;
+	private Long degree;
+	private Long programmes;
+	private Long courses;
+	private Long examAnnouncement;
+	private Long colleges;
+	private Long programmeYear;
+	private Long semster;
+	private Long registrationType;
+	private String exrollno;
+	private Long exExamType;
+	private Long studentadmission;
+	private Long academicYear;
+	private String exExternalScore;
+	private Boolean exIsEvaluated;
+	private Long user;
+	private Long department;
+
+	@NotEmpty@NotNull@NotBlank(message = "Please provide Identifier")
+    private String exIdentifier;
+	
+
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public String getExIdentifier() {
+		return exIdentifier;
+	}
+	public void setExIdentifier(String exIdentifier) {
+		this.exIdentifier = exIdentifier;
+	}
+	public MultipartFile getExExternalFile() {
+		return exExternalFile;
+	}
+	public void setExExternalFile(MultipartFile exExternalFile) {
+		this.exExternalFile = exExternalFile;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public Long getCourses() {
+		return courses;
+	}
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public Long getSemster() {
+		return semster;
+	}
+	public void setSemster(Long semster) {
+		this.semster = semster;
+	}
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+	public String getExrollno() {
+		return exrollno;
+	}
+	public void setExrollno(String exrollno) {
+		this.exrollno = exrollno;
+	}
+	public Long getStudentadmission() {
+		return studentadmission;
+	}
+	public void setStudentadmission(Long studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+	public String getExExternalScore() {
+		return exExternalScore;
+	}
+	public void setExExternalScore(String exExternalScore) {
+		this.exExternalScore = exExternalScore;
+	}
+	public Boolean getExIsEvaluated() {
+		return exIsEvaluated;
+	}
+	public void setExIsEvaluated(Boolean exIsEvaluated) {
+		this.exIsEvaluated = exIsEvaluated;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public Long getExExamType() {
+		return exExamType;
+	}
+	public void setExExamType(Long exExamType) {
+		this.exExamType = exExamType;
+	}
+	public Long getDepartment() {
+		return department;
+	}
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+	@Override
+	public String toString() {
+		return "ExternalMarksRequest [exExternalFile=" + exExternalFile + ", degree=" + degree + ", programmes="
+				+ programmes + ", courses=" + courses + ", examAnnouncement=" + examAnnouncement + ", colleges="
+				+ colleges + ", programmeYear=" + programmeYear + ", semster=" + semster + ", registrationType="
+				+ registrationType + ", exrollno=" + exrollno + ", exExamType=" + exExamType + ", studentadmission="
+				+ studentadmission + ", academicYear=" + academicYear + ", exExternalScore=" + exExternalScore
+				+ ", exIsEvaluated=" + exIsEvaluated + ", user=" + user + ", department=" + department
+				+ ", exIdentifier=" + exIdentifier + "]";
+	}
+	
+	
+	
+	
+
+}

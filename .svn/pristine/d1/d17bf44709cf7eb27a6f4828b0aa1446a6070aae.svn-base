@@ -1,0 +1,156 @@
+package com.niftem.app.model;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import com.niftem.app.entity.AcademicCalenderActivity;
+import com.niftem.app.entity.AcademicYear;
+
+public class AcademicCalenderRequest {
+	
+	
+	private Long id;
+
+	@NotNull(message = "Please provide a IsActive 0/1")
+	private Boolean exIsActive;
+
+	
+	private String exProposedDates;
+	private String exSerialNnumber;
+	private String exRemark;
+	private int isPublish;
+
+	@NotNull(message = "AcademicCalenderActivity is required")
+	private Long calenderActivity;
+	
+	@NotNull(message = "AcademicYear is required")
+	private Long academicYear;
+	
+	@NotNull(message = "Please provide a IsEven 0/1")
+	private Boolean exIsEven;
+	
+	private Long user;
+	
+	@NotNull(message="please provide batch")
+	private List<Long> batch ;
+	
+	private Long activityid;
+
+	public Long getId() {
+		return id;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public String getExProposedDates() {
+		return exProposedDates;
+	}
+
+	public String getExSerialNnumber() {
+		return exSerialNnumber;
+	}
+
+	public String getExRemark() {
+		return exRemark;
+	}
+
+	public int getIsPublish() {
+		return isPublish;
+	}
+
+	public Long getCalenderActivity() {
+		return calenderActivity;
+	}
+
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+
+	public Boolean getExIsEven() {
+		return exIsEven;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public List<Long> getBatch() {
+		return batch;
+	}
+
+	public Long getActivityid() {
+		return activityid;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExProposedDates(String exProposedDates) {
+		this.exProposedDates = exProposedDates;
+	}
+
+	public void setExSerialNnumber(String exSerialNnumber) {
+		this.exSerialNnumber = exSerialNnumber;
+	}
+
+	public void setExRemark(String exRemark) {
+		this.exRemark = exRemark;
+	}
+
+	public void setIsPublish(int isPublish) {
+		this.isPublish = isPublish;
+	}
+
+	public void setCalenderActivity(Long calenderActivity) {
+		this.calenderActivity = calenderActivity;
+	}
+
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setExIsEven(Boolean exIsEven) {
+		this.exIsEven = exIsEven;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	public void setBatch(List<Long> batch) {
+		this.batch = batch;
+	}
+
+	public void setActivityid(Long activityid) {
+		this.activityid = activityid;
+	}
+
+	@Override
+	public String toString() {
+		return "AcademicCalenderRequest [id=" + id + ", exIsActive=" + exIsActive + ", exProposedDates="
+				+ exProposedDates + ", exSerialNnumber=" + exSerialNnumber + ", exRemark=" + exRemark + ", isPublish="
+				+ isPublish + ", calenderActivity=" + calenderActivity + ", academicYear=" + academicYear
+				+ ", exIsEven=" + exIsEven + ", user=" + user + ", batch=" + batch + ", activityid=" + activityid + "]";
+	}
+
+
+	
+}

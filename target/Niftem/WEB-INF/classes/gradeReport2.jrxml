@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gradeReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="437e9bbd-fd50-4949-9f6e-57e3b9efba1a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="Style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{exRemark}=="Fail" || $F{exRemark}.equalsIgnoreCase( "Fail" )]]></conditionExpression>
+			<style forecolor="#0D0B0B" backcolor="#1A1426" radius="0" hTextAlign="Center" vTextAlign="Middle" markup="none" isBlankWhenNull="true" fontSize="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true">
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+			</style>
+		</conditionalStyle>
+	</style>
+	<style name="Style2">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{exGradePoint}=="Fail"]]></conditionExpression>
+			<style forecolor="#0D0B0B" backcolor="#1A1426" radius="0" hTextAlign="Center" vTextAlign="Middle" markup="none" isBlankWhenNull="true" fontSize="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true">
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+			</style>
+		</conditionalStyle>
+	</style>
+	<parameter name="center" class="java.lang.String"/>
+	<parameter name="university" class="java.lang.String"/>
+	<parameter name="logo" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="id" class="java.lang.Long"/>
+	<field name="totalmarks" class="java.lang.String"/>
+	<field name="exGrandTotal" class="java.lang.String"/>
+	<field name="exStudentId" class="java.lang.String"/>
+	<field name="exCoursesCode" class="java.lang.String"/>
+	<field name="exFirstName" class="java.lang.String"/>
+	<field name="exEndTermMarks" class="java.lang.String"/>
+	<field name="exGradePoint" class="java.lang.String"/>
+	<field name="exMidtermMarks" class="java.lang.String"/>
+	<field name="lettergrade" class="java.lang.String"/>
+	<field name="internalmarks" class="java.lang.String"/>
+	<field name="practicaltotal" class="java.lang.String"/>
+	<field name="university" class="java.lang.String"/>
+	<field name="college" class="java.lang.String"/>
+	<field name="collegeid" class="java.lang.Long"/>
+	<field name="semester" class="java.lang.String"/>
+	<field name="examannouncment" class="java.lang.String"/>
+	<field name="academicyear" class="java.lang.String"/>
+	<field name="exCourseName" class="java.lang.String"/>
+	<field name="excerdithour" class="java.lang.String"/>
+	<field name="programe" class="java.lang.String"/>
+	<field name="programeid" class="java.lang.Long"/>
+	<field name="exCourseid" class="java.lang.Long"/>
+	<field name="programeYear" class="java.lang.String"/>
+	<field name="exRemark" class="java.lang.String"/>
+	<field name="teacherName" class="java.lang.String"/>
+	<field name="section" class="java.lang.String"/>
+	<field name="dept" class="java.lang.String"/>
+	<field name="dateOfDeclaration" class="java.lang.String"/>
+	<field name="regtype" class="java.lang.String"/>
+	<group name="DescriptionGroup">
+		<groupExpression><![CDATA[$F{teacherName}]]></groupExpression>
+		<groupHeader>
+			<band height="130">
+				<staticText>
+					<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="0" y="60" width="20" height="70" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="ad8421f5-416e-4077-91bc-2423eda58102"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[SI. No]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="20" y="60" width="50" height="70" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="04fd339d-f7cc-481a-ae55-4b04a02b7669"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Roll.No]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="70" y="60" width="126" height="70" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="9e56fede-9024-4214-93d0-7f78059c17d3"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Student Name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement isPrintRepeatedValues="false" x="196" y="60" width="176" height="15" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="b5d9fb05-531b-4482-8c0d-5317fed6ee16">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Marks Scored]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="240" y="75" width="44" height="55" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="5bac89ac-997e-4fcc-920d-83ab3c4e6ef5"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[MidTerm Total (20)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="284" y="75" width="44" height="55" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="61986865-c578-4d82-838d-7f946f6310c7">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[EndTermTotal (60)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="372" y="60" width="41" height="70" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="ef90d08c-c16f-4569-ad1d-6551e31dac26"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Grand Total  (100)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="453" y="60" width="40" height="70" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="d53e3739-e2d0-4530-826f-efc31b16a5fd"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Letter Grade ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="493" y="60" width="62" height="70" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="5412f6ba-a3a9-4884-af6d-0a98bc5304f4"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Remarks]]></text>
+				</staticText>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement isPrintRepeatedValues="false" x="0" y="30" width="479" height="17" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="2c4cfbdc-483f-4fed-aa95-3dd25882c627"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{exCoursesCode}+"   "+$F{exCourseName} +"   "+ "("+$F{excerdithour}+")"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement isPrintRepeatedValues="false" x="0" y="0" width="90" height="20" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="42776032-c89d-4a7f-93b0-910f1f4d2648">
+						<printWhenExpression><![CDATA[($F{regtype}==null || $F{regtype}.trim().isEmpty())||($F{regtype}.equalsIgnoreCase( "Re-Evaluation" ))]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Course Teacher :]]></text>
+				</staticText>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement isPrintRepeatedValues="false" x="90" y="0" width="270" height="20" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="5acd9e34-35ba-4aad-aa7f-bdd9e1a8215c">
+						<printWhenExpression><![CDATA[($F{regtype}==null || $F{regtype}.trim().isEmpty())||($F{regtype}.equalsIgnoreCase( "Re-Evaluation" ))]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{teacherName}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement isPrintRepeatedValues="false" x="375" y="0" width="125" height="20" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" printWhenGroupChanges="DescriptionGroup" uuid="8175a5f6-86c7-4359-bff7-b05010305179"/>
+					<textElement>
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Date Of Announcement :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="196" y="75" width="44" height="55" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="4111023b-394f-4687-a6dc-69842489eae0"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Internal Marks Total (20)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="328" y="75" width="44" height="55" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="91f77b12-c897-4444-85e0-f930f851c7bc">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[PracticalTotal (100)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="413" y="60" width="40" height="70" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="2c995fa3-1d6c-40db-b606-a8ad4d6544b3"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Grade Point (10)]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement isPrintRepeatedValues="false" x="543" y="30" width="12" height="17" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="8f7939c6-9849-45d1-b4d8-a29df7e605d1">
+						<printWhenExpression><![CDATA[!$F{section}.equalsIgnoreCase( "NA" )]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{section}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement isPrintRepeatedValues="false" x="500" y="30" width="43" height="17" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="061ae1bc-da34-401c-9776-418176530cf1">
+						<printWhenExpression><![CDATA[!$F{section}.equalsIgnoreCase( "NA" )]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Section:]]></text>
+				</staticText>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement isPrintRepeatedValues="false" x="500" y="0" width="55" height="20" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="aadd515e-7109-4501-9a10-390c6cf56bd8">
+						<printWhenExpression><![CDATA[($F{regtype}==null || $F{regtype}.trim().isEmpty())||($F{regtype}.equalsIgnoreCase( "Re-Evaluation" ))]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{dateOfDeclaration}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="140" splitType="Stretch">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="554" height="30" uuid="16fde19c-deba-41d1-be2f-6dbd0a85dce8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{university}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement positionType="Float" x="4" y="30" width="76" height="60" uuid="5ef03c3b-1b79-4f3d-83a1-d164611ed8f7"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="143" y="70" width="260" height="20" uuid="c53e711f-9ee2-4e80-b595-cc85091fa599"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{programe}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="143" y="90" width="260" height="20" uuid="b9e0c62a-267a-4750-ae94-1a2727ee1915"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["("+$F{dept}+")"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="41" y="110" width="483" height="20" forecolor="#6E0A09" uuid="12d3996a-61b3-4f27-9788-71b5d6acee16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{programeYear}+" "+"YEAR"+" "+$F{semester}+" "+"SEMESTER" +" "+$F{academicyear}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="60" y="40" width="419" height="30" forecolor="#6E0A09" uuid="619147f4-dafc-454b-83eb-7e721ca1f531"/>
+				<textElement textAlignment="Center">
+					<font size="20" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{regtype}+" "+"Grade Report"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="95" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}>1]]></printWhenExpression>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="555" height="17" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="a29be082-80cf-45cc-b236-152701ea1143"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exCoursesCode}+"  "+"Contd...  "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="0" y="25" width="20" height="70" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="03a18fc7-a01c-452e-b457-5c70d38562a1"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[SI. No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="20" y="25" width="50" height="70" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="1c0c975f-7a04-4baf-8052-e2f8a7b563db"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Roll.No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="70" y="25" width="126" height="70" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="f737a151-948a-48e4-817d-fd76a80d6a9f"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Student Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement isPrintRepeatedValues="false" x="196" y="25" width="176" height="15" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="534c4d09-191c-4de9-ab3e-997f35b47662">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Marks Scored]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="240" y="40" width="44" height="55" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="bd34f9fb-7d39-4938-a922-5a378bf732d2"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[MidTerm Total (20)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="284" y="40" width="44" height="55" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="fec343cf-487a-40f3-abab-b3e06b8651ac">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[EndTermTotal (60)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="372" y="25" width="41" height="70" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="57fab0dc-1f52-47fd-bad3-0dda7e5d72ae"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Grand Total  (100)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="453" y="25" width="40" height="70" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="5ef86598-01c9-4b8b-b8ee-5c336eac7ede"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Letter Grade ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="493" y="25" width="62" height="70" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="fe652bb6-89f2-49b4-a47a-05a52792a29a"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Remarks]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="196" y="40" width="44" height="55" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="ec0589bd-b8bc-4641-a625-e8cf7fcd1f64"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Internal Marks Total (20)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="328" y="40" width="44" height="55" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="18257460-dcf8-439e-8f61-35e7da8e1b9f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[PracticalTotal (100)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" isPrintRepeatedValues="false" x="413" y="25" width="40" height="70" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="29dcd419-adb7-4d54-871a-d48b4ecb3ce7"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Grade Point (10)]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement stretchType="ContainerHeight" x="0" y="0" width="20" height="20" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="5ce1dfa4-8d94-4d1e-a5d4-54c615ea36a2"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="20" y="0" width="50" height="20" isRemoveLineWhenBlank="true" uuid="ed4b05bb-a51c-483c-9374-59286ef17f3a"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exStudentId}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="70" y="0" width="126" height="20" uuid="49df1018-bf7a-4739-983e-a4ad3107364b">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exFirstName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="240" y="0" width="44" height="20" uuid="aeedd0c1-5e38-4441-8860-e4496a20f46a"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exMidtermMarks}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="284" y="0" width="44" height="20" uuid="02bbcbab-42bd-4b16-bf86-d6584e58b138"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exEndTermMarks}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="372" y="0" width="41" height="20" isRemoveLineWhenBlank="true" uuid="f235d6ed-a9ef-4ea3-ae15-f915e51c08fd"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exGrandTotal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Style2" stretchType="ContainerHeight" x="413" y="0" width="40" height="20" isRemoveLineWhenBlank="true" uuid="6db5babc-a39c-4fe8-89fe-f2ee068065c4"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exGradePoint}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Style1" stretchType="ContainerHeight" x="493" y="0" width="62" height="20" isRemoveLineWhenBlank="true" uuid="e180e7be-5255-46fe-b72c-318a660a0c95"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exRemark}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="196" y="0" width="44" height="20" uuid="559e53a6-66f8-44e4-b698-183780324c39"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{internalmarks}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Style2" stretchType="ContainerHeight" x="453" y="0" width="40" height="20" isRemoveLineWhenBlank="true" uuid="41963bff-69c5-47cf-a963-221a23591658"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lettergrade}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="328" y="0" width="44" height="20" uuid="3f1b7c23-fc06-4842-9d50-6ba9ec24c9a1"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{practicaltotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="29">
+			<textField>
+				<reportElement x="470" y="10" width="20" height="19" uuid="03450ef2-dc86-4f1e-b0f3-87a8193d6dc8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="440" y="10" width="30" height="19" uuid="f10562e3-408e-4276-a923-39174a5cc7ca"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Page]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="490" y="10" width="10" height="19" uuid="cf19435d-a2c6-4ade-b903-a05221297290"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[of]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="500" y="10" width="24" height="19" uuid="31594023-2626-48c5-9a27-78995ec573be"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

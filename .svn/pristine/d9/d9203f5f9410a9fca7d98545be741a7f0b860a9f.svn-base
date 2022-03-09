@@ -1,0 +1,135 @@
+package com.niftem.app.model;
+
+import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class MentorRequest {
+
+		private Long id;
+		@NotEmpty
+		@NotNull
+		@NotBlank(message = "Please provide a Name")
+		private String exName;
+		
+		@NotNull(message = "college is required")
+		private Long colleges;
+
+		 @NotNull(message = "batch is required")
+		 private Long batch;
+		 
+		@NotNull(message = "degree is required")
+		private Long degree;
+
+		@NotNull(message = "Programme is required")
+		private Long programmes;
+		
+		@NotNull(message = "department is required")
+		private Long department;
+
+		@NotNull(message = "stream is required")
+		private Long stream;
+		
+		//@NotNull(message = "studentIdTo is required")
+		private Long studentIdTo;
+		
+		
+		
+		@NotNull(message = "Please provide a exIsActive 0/1")
+		@Column(columnDefinition = "BOOLEAN DEFAULT false")
+		private Boolean exIsActive;
+
+		@Column(columnDefinition = "BOOLEAN DEFAULT false")
+		private Boolean exIsDelete;
+
+		@NotNull(message = "staffpersonal is required")
+		private Long staffId;
+		
+		private Long user;
+		public Long getUser() {
+			return user;
+		}
+		public void setUser(Long user) {
+			this.user = user;
+		}
+		public Long getId() {
+			return id;
+		}
+		public void setId(Long id) {
+			this.id = id;
+		}
+		public String getExName() {
+			return exName;
+		}
+		public void setExName(String exName) {
+			this.exName = exName;
+		}
+		public Long getColleges() {
+			return colleges;
+		}
+		public void setColleges(Long colleges) {
+			this.colleges = colleges;
+		}
+		public Long getBatch() {
+			return batch;
+		}
+		public void setBatch(Long batch) {
+			this.batch = batch;
+		}
+		public Long getDegree() {
+			return degree;
+		}
+		public void setDegree(Long degree) {
+			this.degree = degree;
+		}
+		public Long getProgrammes() {
+			return programmes;
+		}
+		public void setProgrammes(Long programmes) {
+			this.programmes = programmes;
+		}
+		public Long getDepartment() {
+			return department;
+		}
+		public void setDepartment(Long department) {
+			this.department = department;
+		}
+		public Long getStream() {
+			return stream;
+		}
+		public void setStream(Long stream) {
+			this.stream = stream;
+		}
+		public Boolean getExIsActive() {
+			return exIsActive;
+		}
+		public void setExIsActive(Boolean exIsActive) {
+			this.exIsActive = exIsActive;
+		}
+		public Boolean getExIsDelete() {
+			return exIsDelete;
+		}
+		public void setExIsDelete(Boolean exIsDelete) {
+			this.exIsDelete = exIsDelete;
+		}
+		public Long getStaffId() {
+			return staffId;
+		}
+		public void setStaffId(Long staffId) {
+			this.staffId = staffId;
+		}
+		@Override
+		public String toString() {
+			return "MentorRequest [id=" + id + ", exName=" + exName + ", colleges=" + colleges + ", batch=" + batch
+					+ ", degree=" + degree + ", programmes=" + programmes + ", department=" + department + ", stream="
+					+ stream + ", studentIdTo=" + studentIdTo + ", exIsActive=" + exIsActive + ", exIsDelete="
+					+ exIsDelete + ", staffId=" + staffId + ", user=" + user + "]";
+		}
+	
+		
+
+
+		
+	}
+

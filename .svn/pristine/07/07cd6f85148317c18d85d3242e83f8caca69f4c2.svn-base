@@ -1,0 +1,101 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+public class InitiatePayment {
+
+	private Long semester;	
+	private Long academicYear;	
+	private Long student;
+	private Long examtype;	
+	private Long penaltyid;
+	private String orderId;
+	private List<Long>  feeId;	
+	private String exTotalAmount;	
+	private Long programmeYear;	
+    private Long registrationType;
+	private List<Long> courses;
+    private Boolean isMobile;
+	public Long getSemester() {
+		return semester;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public Long getStudent() {
+		return student;
+	}
+	public Long getExamtype() {
+		return examtype;
+	}
+	public Long getPenaltyid() {
+		return penaltyid;
+	}
+	public String getOrderId() {
+		return orderId;
+	}
+	public List<Long> getFeeId() {
+		return feeId;
+	}
+	public String getExTotalAmount() {
+		return exTotalAmount;
+	}
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+	public List<Long> getCourses() {
+		return courses;
+	}
+	public Boolean getIsMobile() {
+		return isMobile;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setStudent(Long student) {
+		this.student = student;
+	}
+	public void setExamtype(Long examtype) {
+		this.examtype = examtype;
+	}
+	public void setPenaltyid(Long penaltyid) {
+		this.penaltyid = penaltyid;
+	}
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+	public void setFeeId(List<Long> feeId) {
+		this.feeId = feeId;
+	}
+	public void setExTotalAmount(String exTotalAmount) {
+		this.exTotalAmount = exTotalAmount;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+	public void setCourses(List<Long> courses) {
+		this.courses = courses;
+	}
+	public void setIsMobile(Boolean isMobile) {
+		this.isMobile = isMobile;
+	}
+	@Override
+	public String toString() {
+		return "InitiatePayment [semester=" + semester + ", academicYear=" + academicYear + ", student=" + student
+				+ ", examtype=" + examtype + ", penaltyid=" + penaltyid + ", orderId=" + orderId + ", feeId=" + feeId
+				+ ", exTotalAmount=" + exTotalAmount + ", programmeYear=" + programmeYear + ", registrationType="
+				+ registrationType + ", courses=" + courses + ", isMobile=" + isMobile + "]";
+	}
+	
+    
+    
+}

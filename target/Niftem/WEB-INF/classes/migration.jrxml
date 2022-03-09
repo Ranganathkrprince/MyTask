@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="migration" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b4a6bb0f-6889-4d07-a645-989bef2a8753">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="university" class="java.lang.String"/>
+	<parameter name="studentId" class="java.lang.String"/>
+	<parameter name="fullname" class="java.lang.String"/>
+	<parameter name="refNo" class="java.lang.String"/>
+	<parameter name="geneder" class="java.lang.String"/>
+	<parameter name="pernoun" class="java.lang.String"/>
+	<parameter name="adjective" class="java.lang.String"/>
+	<parameter name="joinedyear" class="java.lang.String"/>
+	<parameter name="passoutyear" class="java.lang.String"/>
+	<parameter name="scrutinize" class="java.lang.Integer"/>
+	<parameter name="name" class="java.lang.String"/>
+	<parameter name="father" class="java.lang.String"/>
+	<parameter name="mother" class="java.lang.String"/>
+	<parameter name="ogpa" class="java.lang.String"/>
+	<parameter name="srNumber" class="java.lang.String"/>
+	<parameter name="enrollmentno" class="java.lang.String"/>
+	<parameter name="department" class="java.lang.String"/>
+	<parameter name="batch" class="java.lang.String"/>
+	<parameter name="dateOfDeclaration" class="java.lang.String"/>
+	<parameter name="universityh" class="java.lang.String"/>
+	<parameter name="emblem" class="java.lang.String"/>
+	<parameter name="swatch" class="java.lang.String"/>
+	<parameter name="logo" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="programe" class="java.lang.String"/>
+	<field name="geneder" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="studentId" class="java.lang.String"/>
+	<field name="joinedyear" class="java.lang.String"/>
+	<field name="passoutyear" class="java.lang.String"/>
+	<field name="adjective" class="java.lang.String"/>
+	<field name="college" class="java.lang.String"/>
+	<field name="pernoun" class="java.lang.String"/>
+	<field name="academicyear" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="796" splitType="Stretch">
+			<staticText>
+				<reportElement x="325" y="580" width="220" height="40" uuid="d584af6c-c911-4ac4-9153-294064fae095"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Controller Of Examinations]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="719" width="540" height="1" uuid="6b8baa42-17ed-4f54-b5d7-d55801ad7def"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="40" y="250" width="470" height="244" uuid="d31e9350-4a52-4cb6-91ea-3b837f37758d"/>
+				<textElement textAlignment="Justified" markup="styled">
+					<font fontName="Times New Roman" size="15"/>
+					<paragraph lineSpacing="Proportional" lineSpacingSize="2.1"/>
+				</textElement>
+				<textFieldExpression><![CDATA["              "+"This is to certify that" +" "+"<style isBold='true' pdfFontName='Times-Bold'>"+$F{name}+","+"</style>"+ " " +"Son/Daughter of "+"<style isBold='true' pdfFontName='Times-Bold'>"+$P{father} +" and "+$P{mother} +"</style>"+", "+"with Roll No."+"<style isBold='true' pdfFontName='Times-Bold'>"+$P{studentId}+"</style>"+" and Enrollement No. "+"<style isBold='true' pdfFontName='Times-Bold'>"+$P{enrollmentno}+"</style>"+" was a bonafide student of "+"<style isBold='true' pdfFontName='Times-Bold'>"+$F{programe}+" ("+$P{department}+"</style>"+") "+ "during the session "+$P{batch}+". After the examination, he/she has successfully completed the course."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="401" width="470" height="60" uuid="d31e9350-4a52-4cb6-91ea-3b837f37758d"/>
+				<textElement textAlignment="Justified" markup="styled">
+					<font fontName="Times New Roman" size="16"/>
+					<paragraph lineSpacing="Proportional" lineSpacingSize="2.1"/>
+				</textElement>
+				<textFieldExpression><![CDATA["This Institute has no objection in his/her taking admission to any Institution/University in India or abroad."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="746" width="553" height="14" uuid="0d0fbf66-d38e-4ae8-ad6e-882eb416e3e6"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Plot No.97,Sector - 56,HSIIDC Industrial Estate, Kundli - 131028,Distt. Sonepat (Haryana)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="776" width="100" height="20" uuid="828e608f-266f-40d5-9db4-f553d276d1ec"/>
+				<text><![CDATA[/Website: www.niftem.ac.in]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="760" width="120" height="13" uuid="d006e4c1-c54c-4e9f-a6ae-df226c5875b2"/>
+				<text><![CDATA[Phone :+91-130-2281020]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="760" width="130" height="13" uuid="3684c3a6-74af-4d55-9e4f-a472c2e67d1e"/>
+				<text><![CDATA[/Fax : +91-130-2219749]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="210" width="550" height="30" forecolor="#CC3333" uuid="80806c2c-ec91-472c-99d8-eb424a1ff9ad"/>
+				<box>
+					<topPen lineStyle="Solid" lineColor="#CC3333"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#CC3333"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="17" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[MIGRATION CERTIFICATE
+]]></text>
+			</staticText>
+			<line>
+				<reportElement x="169" y="235" width="220" height="1" forecolor="#CC3333" uuid="797d52ec-ee92-4ab4-a76f-977044c5553e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="239" y="130" width="306" height="14" forecolor="#0066FF" uuid="5e8d26f6-0859-42ff-b0ac-979ec29254fc"/>
+				<textElement>
+					<font fontName="Lohit Devanagari"/>
+				</textElement>
+				<text><![CDATA[सम विश्वविद्यालय एवं खाद्य प्रशंसकरन  उधोग मंत्रालय, भारत सरकार के अधीन स्वयायत संसथान]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="398" y="160" width="44" height="18" uuid="9ba685fe-3388-4fd6-8e9e-71a58767a737"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dated:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="442" y="160" width="110" height="18" uuid="42fc4b18-f492-4867-9caf-326d50209b47"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dateOfDeclaration}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="0" y="-10" width="560" height="120" uuid="2691a6e5-f951-4aea-9870-0ed63183594f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{swatch}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="260" y="757" width="20" height="18" uuid="81214f2d-b245-41e9-99cd-f9828ece20e0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Lohit Devanagari" size="7"/>
+				</textElement>
+				<text><![CDATA[फैक्स]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="776" width="30" height="20" uuid="dc882222-f677-48c9-b017-73533e8f2ea0"/>
+				<textElement>
+					<font fontName="Lohit Devanagari" size="7"/>
+				</textElement>
+				<text><![CDATA[वेबसाइट]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="760" width="30" height="16" uuid="52923d58-1330-4e6b-81c2-306603ad4380"/>
+				<textElement>
+					<font fontName="Lohit Devanagari" size="7"/>
+				</textElement>
+				<text><![CDATA[दूरभाष]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="130" width="44" height="18" uuid="5c69e57f-e4f4-419d-a5b3-033aa510169a"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sr.No.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="72" y="128" width="156" height="18" uuid="1fad3bef-da54-4b43-ac09-ebc3659cd129"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{srNumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="726" width="549" height="21" uuid="52923d58-1330-4e6b-81c2-306603ad4380"/>
+				<textElement textAlignment="Center">
+					<font fontName="Lohit Devanagari" size="10"/>
+				</textElement>
+				<text><![CDATA[प्लांट संख्या 97, एचएसआईआइडीसी ओद्योगिक  छेत्र, कुंडली -131028 जिला सोनीपत (हरियाणा)]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

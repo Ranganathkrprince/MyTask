@@ -1,0 +1,104 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+public class SeatArrangementRequest {
+	private Long id;
+	@NotNull(message = "colleges is required")
+	private Long colleges;
+	@NotNull(message = "academicYear is required")
+	private Long academicYear;	
+	private String semeserType;
+	private Boolean exIsActive;
+	private Long user;
+	private List<String> examDate;
+	private String examHallDate;
+	private Long roomId;
+	private Long registrationType;
+	private Long exExamType;
+	private List<SeatArrangementRequestList> seatList ;
+	public Long getId() {
+		return id;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public String getSemeserType() {
+		return semeserType;
+	}
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public List<String> getExamDate() {
+		return examDate;
+	}
+	public String getExamHallDate() {
+		return examHallDate;
+	}
+	public Long getRoomId() {
+		return roomId;
+	}
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+	public Long getExExamType() {
+		return exExamType;
+	}
+	public List<SeatArrangementRequestList> getSeatList() {
+		return seatList;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setSemeserType(String semeserType) {
+		this.semeserType = semeserType;
+	}
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public void setExamDate(List<String> examDate) {
+		this.examDate = examDate;
+	}
+	public void setExamHallDate(String examHallDate) {
+		this.examHallDate = examHallDate;
+	}
+	public void setRoomId(Long roomId) {
+		this.roomId = roomId;
+	}
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+	public void setExExamType(Long exExamType) {
+		this.exExamType = exExamType;
+	}
+	public void setSeatList(List<SeatArrangementRequestList> seatList) {
+		this.seatList = seatList;
+	}
+	@Override
+	public String toString() {
+		return "SeatArrangementRequest [id=" + id + ", colleges=" + colleges + ", academicYear=" + academicYear
+				+ ", semeserType=" + semeserType + ", exIsActive=" + exIsActive + ", user=" + user + ", examDate="
+				+ examDate + ", examHallDate=" + examHallDate + ", roomId=" + roomId + ", registrationType="
+				+ registrationType + ", exExamType=" + exExamType + ", seatList=" + seatList + "]";
+	}
+
+	
+	
+}

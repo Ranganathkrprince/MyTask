@@ -1,0 +1,126 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_nodues_penalty")
+public class NoDuePenalty {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	
+	private String exRollNo;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "registration_id", nullable = false)
+	private SemesterRegistration registration;
+	
+	
+	private Double amount;
+	
+    private String remark;
+    
+    private String approveType;
+    
+    private boolean ispaid;
+    
+    private boolean isApprove;
+
+	public Long getId() {
+		return id;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public SemesterRegistration getRegistration() {
+		return registration;
+	}
+
+	public Double getAmount() {
+		return amount;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public String getApproveType() {
+		return approveType;
+	}
+
+	public boolean isIspaid() {
+		return ispaid;
+	}
+
+	public boolean isApprove() {
+		return isApprove;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	public void setRegistration(SemesterRegistration registration) {
+		this.registration = registration;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public void setApproveType(String approveType) {
+		this.approveType = approveType;
+	}
+
+	public void setIspaid(boolean ispaid) {
+		this.ispaid = ispaid;
+	}
+
+	public void setApprove(boolean isApprove) {
+		this.isApprove = isApprove;
+	}
+
+	@Override
+	public String toString() {
+		return "NoDuePenalty [id=" + id + ", exCreateDate=" + exCreateDate + ", exRollNo=" + exRollNo
+				+ ", registration=" + registration + ", amount=" + amount + ", remark=" + remark + ", approveType="
+				+ approveType + ", ispaid=" + ispaid + ", isApprove=" + isApprove + "]";
+	}
+
+    
+}

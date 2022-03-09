@@ -1,0 +1,158 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_student_bank_details") 
+public class StudentBankDetails {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "student_admission_id", nullable = false)
+	private Studentadmission studentadmission;
+	
+	private String exPassBookPath;
+	private String exRollNo;
+	
+	private String exStudentName;
+	
+	private String exAccountType;
+	
+	private String exBranch;
+	
+	private String exAccountNumber;
+	private String exIfscCode;
+	
+	@Column(columnDefinition="TEXT")
+	private String exBankAddress;
+	
+	@Column(columnDefinition="TEXT")
+	private String exStudentAddress;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	
+	
+	
+	public String getExPassBookPath() {
+		return exPassBookPath;
+	}
+
+	public void setExPassBookPath(String exPassBookPath) {
+		this.exPassBookPath = exPassBookPath;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public String getExStudentName() {
+		return exStudentName;
+	}
+
+	public String getExAccountType() {
+		return exAccountType;
+	}
+
+	public String getExBranch() {
+		return exBranch;
+	}
+
+	public String getExAccountNumber() {
+		return exAccountNumber;
+	}
+
+	public String getExIfscCode() {
+		return exIfscCode;
+	}
+
+	public String getExBankAddress() {
+		return exBankAddress;
+	}
+
+	public String getExStudentAddress() {
+		return exStudentAddress;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	public void setExStudentName(String exStudentName) {
+		this.exStudentName = exStudentName;
+	}
+
+	public void setExAccountType(String exAccountType) {
+		this.exAccountType = exAccountType;
+	}
+
+	public void setExBranch(String exBranch) {
+		this.exBranch = exBranch;
+	}
+
+	public void setExAccountNumber(String exAccountNumber) {
+		this.exAccountNumber = exAccountNumber;
+	}
+
+	public void setExIfscCode(String exIfscCode) {
+		this.exIfscCode = exIfscCode;
+	}
+
+	public void setExBankAddress(String exBankAddress) {
+		this.exBankAddress = exBankAddress;
+	}
+
+	public void setExStudentAddress(String exStudentAddress) {
+		this.exStudentAddress = exStudentAddress;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	@Override
+	public String toString() {
+		return "StudentBankDetails [id=" + id + ", studentadmission=" + studentadmission + ", exPassBookPath="
+				+ exPassBookPath + ", exRollNo=" + exRollNo + ", exStudentName=" + exStudentName + ", exAccountType="
+				+ exAccountType + ", exBranch=" + exBranch + ", exAccountNumber=" + exAccountNumber + ", exIfscCode="
+				+ exIfscCode + ", exBankAddress=" + exBankAddress + ", exStudentAddress=" + exStudentAddress
+				+ ", exCreateDate=" + exCreateDate + "]";
+	}
+
+}

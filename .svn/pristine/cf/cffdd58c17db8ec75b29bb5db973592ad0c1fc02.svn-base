@@ -1,0 +1,72 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.ExamAcademicYearProgrammes;
+import com.niftem.app.entity.ExamAnnouncement;
+
+public interface ExamAnnouncementRepository extends CrudRepository<ExamAnnouncement, Long>{
+	
+	
+	List<ExamAnnouncement> findByExIsDelete(boolean b);
+
+	List<ExamAnnouncement> findByExNameAndExIsDeleteAndAcademicYearIdAndProgrammeYearId(String exname , boolean is_delete , Long academicid , Long programyearid);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_exam_announcement set ex_is_delete = ?1 , ex_is_active = ?2 where id =?3", nativeQuery = true)
+	int deleteExamAnnouncement(boolean ex_is_delete, boolean ex_is_active, Long id);
+	
+	
+   @Modifying
+   @Transactional
+    @Query(value = "update ex_exam_announcement set ex_name = ?1 , ex_is_active = ?2,ex_end_term_exam_start_date = ?3 , ex_end_term_exam_end_date = ?4 ,ex_mid_term_exam_start_date=?5 ,ex_mid_term_exam_end_date=?6 , ex_description=?7,ex_update_date=?8 , ex_is_live=?9 where id =?10", nativeQuery = true)
+	int updateExamAnnouncement(String exName, Boolean exIsActive, Date endDetailStartDate, Date endDetailStartDate2,
+			Date midDetailStartDate, Date midDetailsEndDate, String desp, Date date, Boolean exIsLive, Long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_exam_announcement set ex_start_time = ?1 , ex_end_time = ?2 where id =?3", nativeQuery = true)
+	int updateStarttimeEndTime(Date start_time, Date end_time, Long id);
+
+	List<ExamAnnouncement> findByIdAndExIsDelete(Long id, boolean delete);
+	
+
+	Optional<ExamAnnouncement> findByIdAndExIsDeleteAndExIsActive(Long examAnnouncement, boolean b, boolean c);
+
+	Optional<ExamAnnouncement> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, Long examAnnouncement);
+
+	Optional<ExamAnnouncement> findByExIsDeleteAndExIsActiveAndExName(boolean b, boolean c, String string);
+
+	
+	List<ExamAnnouncement> findByExNameAndExIsDeleteAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDegreeId(
+			String trim, boolean b, Long academicYear, Long programmeYear, Long semester, Long degree);
+
+	List<ExamAnnouncement> findByAcademicYearIdAndExIsActiveAndExIsDelete(Long academicYear, boolean b, boolean c);
+
+	List<ExamAnnouncement> findByExIsLive(boolean b);
+
+	List<ExamAnnouncement> findByAcademicYearIdAndExIsActiveAndExIsDeleteAndDegreeIdAndProgrammesId(Long academicYear,
+			boolean b, boolean c, Long degree, Long programmes);
+
+	List<ExamAnnouncement> findByAcademicYearIdAndExIsActiveAndExIsDeleteAndProgrammesIdAndSemesterIdIn(Long academicYear,
+			boolean b, boolean c, Long program , List dataList123);
+
+//	Optional<ExamAnnouncement> findByProgrammesIdAndDegreeIdAndProgrammeYearAndSemesterIdAndAcademicYearIdAndExIsDeleteAndExIsActive(
+//			Long examAnnouncement, boolean b, boolean c);
+	 
+
+	Optional<ExamAnnouncement> findByIdAndExIsDeleteAndExIsActiveAndSemesterId(Long examAnnouncement, boolean b, boolean c , Long sem);
+
+	
+	List<ExamAnnouncement> findByAcademicYearIdAndExIsActiveAndExIsDeleteAndProgrammesIdAndSemesterId(Long academicYear,
+			boolean b, boolean c, Long program ,Long sem);
+}

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="keyAnswer" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="019bd3c7-d6f4-40e9-97bc-46b13a08176a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sample DB"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="course" class="java.lang.String"/>
+	<parameter name="university" class="java.lang.String"/>
+	<parameter name="credithour" class="java.lang.String"/>
+	<parameter name="coursecode" class="java.lang.String"/>
+	<parameter name="examanouncment" class="java.lang.String"/>
+	<parameter name="version1" class="java.lang.String"/>
+	<parameter name="version2" class="java.lang.String"/>
+	<parameter name="sem" class="java.lang.String"/>
+	<parameter name="acdemic" class="java.lang.String"/>
+	<parameter name="examdate" class="java.sql.Timestamp"/>
+	<parameter name="acdemicid" class="java.lang.String"/>
+	<parameter name="courseid" class="java.lang.String"/>
+	<parameter name="examid" class="java.lang.String"/>
+	<parameter name="degreeid" class="java.lang.String"/>
+	<parameter name="logo" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+
+ e.ex_question_num as QnNO,
+ e.exkey_answer as "V-1",
+ e1.exkey_answer as "V-2",
+ e2.exkey_answer as "V-3",
+  e.id
+
+    FROM (SELECT DISTINCT  ex_question_num,id,exkey_answer
+
+	    	FROM    ex_question_paper f
+
+    where	 f.exam_announcement_id=$P{examid} and
+			 f.academic_year_id=$P{acdemicid} and courses_id=$P{courseid} and degree_id=$P{degreeid} and f.extype='1' group BY f.ex_question_num
+
+		   )e
+	left Join ex_question_paper_version e1 on e1.question_paper_id = e.id and e1.ex_version=$P{version1}
+	left Join ex_question_paper_version e2 on e2.question_paper_id = e.id and e2.ex_version=$P{version2}]]>
+	</queryString>
+	<field name="QnNO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="QnNO"/>
+	</field>
+	<field name="V-1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="V-1"/>
+	</field>
+	<field name="V-2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="V-2"/>
+	</field>
+	<field name="V-3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="V-3"/>
+	</field>
+	<group name="QnNO">
+		<groupExpression><![CDATA[$F{QnNO}]]></groupExpression>
+	</group>
+	<group name="V-1">
+		<groupExpression><![CDATA[$F{V-1}]]></groupExpression>
+	</group>
+	<group name="V-2">
+		<groupExpression><![CDATA[$F{V-2}]]></groupExpression>
+	</group>
+	<group name="V-3">
+		<groupExpression><![CDATA[$F{V-3}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="110" splitType="Stretch">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="5" y="90" width="540" height="20" uuid="8e2707b3-01e4-4613-be7b-be02a115b873"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{coursecode}+"  "+$P{course}+"  "+$P{credithour}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Column" isBlankWhenNull="true">
+				<reportElement x="2" y="0" width="551" height="20" isRemoveLineWhenBlank="true" uuid="341d8669-ba89-4767-be8d-8f913be8f400"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{university}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd.MM.yyyy" isBlankWhenNull="true">
+				<reportElement x="475" y="40" width="78" height="20" uuid="1fb5d8c8-a362-4dc5-9f4f-a7ffd2d85c75"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{examdate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="391" y="40" width="80" height="20" uuid="19ea55f9-75a5-4df5-804b-683bd1c7eac9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date Of Exam:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="2" y="60" width="551" height="20" uuid="a1fa50f8-a74c-40c1-a46a-6e053a0baac8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Key Answers For "+$P{examanouncment}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd.MM.yyyy" isBlankWhenNull="true">
+				<reportElement x="158" y="20" width="110" height="20" uuid="ed0f1360-47db-441c-8288-b087ea030087"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sem}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd.MM.yyyy" isBlankWhenNull="true">
+				<reportElement x="280" y="20" width="120" height="20" uuid="4a02bfe9-892a-43a6-ab9d-7a3c6bb7e34c"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{acdemic}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="270" y="20" width="10" height="20" uuid="f8625be0-f7d6-448c-b6ee-bfbffac37787"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<image onErrorType="Blank">
+				<reportElement positionType="Float" x="80" y="20" width="70" height="40" uuid="24003f90-6adf-410f-a098-7ac883e533e1"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="120" y="0" width="40" height="28" uuid="f4afcefc-d4c9-41e4-9409-18efc390f71a"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Qn.No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="0" width="80" height="28" uuid="264e60d1-e011-4c7d-a2d3-973f39134004"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[V-1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="0" width="80" height="28" uuid="7c3d788f-6536-4cee-ac90-df9ded993802"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[V-2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="0" width="80" height="28" uuid="85fcaaa5-8258-4f02-8194-4b9e7f907c22"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[V-3]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="240" y="0" width="80" height="25" uuid="59ed7f7d-0571-44c7-a139-6fda1e9830d3"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{V-2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="0" width="40" height="25" isRemoveLineWhenBlank="true" uuid="7930d041-167b-4515-84c0-52c45baa3b60">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{QnNO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="160" y="0" width="80" height="25" uuid="78e68ace-03b4-4916-b732-b5673c463c68"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{V-1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="320" y="0" width="80" height="25" uuid="52154064-0b25-4915-b7bb-e5ece679e98c"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{V-3}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="26">
+			<staticText>
+				<reportElement x="351" y="10" width="202" height="16" uuid="c60c7efd-db33-4309-ba68-8e0df4a92fc5"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[CONTROLLER OF EXAMINATIONS]]></text>
+			</staticText>
+			<break>
+				<reportElement x="0" y="0" width="99" height="1" uuid="fbceb1d7-e78a-4a7b-b309-c2e2af9e2a39">
+					<printWhenExpression><![CDATA[$F{QnNO}.equals(21)]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+	</pageFooter>
+</jasperReport>

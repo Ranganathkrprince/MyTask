@@ -1,0 +1,247 @@
+package com.niftem.app.repository;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.CoursesType;
+import com.niftem.app.entity.TeacherCourseMapping;
+
+@Repository
+@Service
+@Transactional
+public interface TeacherCourseMappingRepository extends CrudRepository<TeacherCourseMapping, Long>{
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_teacher_course_mapping set ex_is_delete = ?1 , ex_is_active = ?2 where id =?3", nativeQuery = true)
+	int deleteTeacherCourseMapping(boolean ex_is_delete, boolean ex_is_active, Long id);
+
+	List<TeacherCourseMapping> findByExIsDelete(boolean b);
+
+
+	@Query(value = "SELECT sp.ex_name , sp.ex_employee_id , sp.ex_email , st.ex_name as stafftype , cm.staff_type_id as stafftypeid , cm.staffpersonal_id as staffid FROM ex_teacher_course_mapping cm  ,  ex_teacher_course_mapping_courses cmd , ex_staff_personal sp , ex_staff_type st where cm.staffpersonal_id = sp.id AND cm.staff_type_id = st.id and cm.id = cmd.ex_teache_course_mapping_id and cm.programmes_id = ?1 AND cmd.courses_id =?2 AND cm.colleges_id =?3 AND   cm.academic_year_id =?4 And cm.staff_type_id=?5  and cm.degree_id =?6 and cm.ex_is_delete=?7 group by cm.staffpersonal_id", nativeQuery = true)
+	ArrayList<Object[]> getstafffList(Long programmes, Long courses, Long colleges, Long academicYear, Long staffType,
+			Long degree, boolean b);
+
+	
+	@Query(value = "select * from ex_teacher_course_mapping where staffpersonal_id = ?1 group by academic_year_id order by academic_year_id desc", nativeQuery = true)
+	ArrayList<TeacherCourseMapping> getAcademicYearForTeacher(Long staff );
+	
+	@Query(value = "select * from ex_teacher_course_mapping where staffpersonal_id = ?1 and academic_year_id = ?2 and programmes_id = ?3 group by semester_id ", nativeQuery = true)
+	ArrayList<TeacherCourseMapping> getExamForTeacher(Long staff , Long academic_year_id , Long program);
+	
+	@Query(value = "select * from ex_teacher_course_mapping where staffpersonal_id = ?1 and academic_year_id = ?2 and programmes_id = ?3  and semester_id =?4    group by section_id  ", nativeQuery = true)
+	ArrayList<TeacherCourseMapping> getSectionForTeacher(Long staff , Long academic_year_id , Long program , Long semester_id);
+	
+
+	List<TeacherCourseMapping> findByCoursesIdIn(List<Long> courses);
+
+	List<TeacherCourseMapping> findByCoursesIdInAndStaffpersonalIdAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndExIsDeleteAndExIsActive(
+			List<Long> courses, Long staff, Long colleges, Long degree, Long programmes, Long department, boolean b ,boolean c);
+	
+	List<TeacherCourseMapping> findByCoursesIdAndStaffpersonalIdAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndExIsDeleteAndExIsActive(
+			Long  courses, Long staff, Long colleges, Long degree, Long programmes, Long department, boolean b ,boolean c);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_teacher_course_mapping set  colleges_id =?1,ex_is_active = ?2 ,ex_update_date=?3,staffpersonal_id=?4, staff_type_id=?5, academic_year_id=?6,programme_year_id=?7,degree_id=?8,semester_id=?9 ,department_id=?11 ,stream_id=?12 ,programmes_id=?13,coursetype_id=?14,section_id=?15   where id = ?10", nativeQuery = true)
+	int UpdateTeacherCourse(Long colleges, Boolean exIsActive, Date date, Long staff, Long staffType, Long academicYear,
+			Long programmeYear, Long degree, Long semester, Long id, Long department, Long stream, Long programmes,Long colnumber, Long section);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "delete from ex_teacher_course_mapping_courses where ex_teache_course_mapping_id = ?1", nativeQuery = true)
+	int deleteOldRecords(Long ex_teache_course_mapping_id);
+
+	
+	@Modifying
+	@Transactional	
+	@Query(value = "insert into ex_teacher_course_mapping_courses(ex_teache_course_mapping_id,courses_id)values(?1,?2)", nativeQuery = true)
+	int insertupdatedCourses(Long id, Long courses);
+
+//	@Query(value = "SELECT s.ex_courses_code  FROM  ex_teacher_course_mapping t INNER JOIN ex_teacher_course_mapping_courses c ON t.id = c.ex_teache_course_mapping_id   INNER JOIN ex_courses s  ON c.courses_id =s.id where c.courses_id  IN?1 and t.ex_is_delete =?2 and t.ex_is_active =?3 and t.colleges_id =?4 and t.academic_year_id =?5 and t.programme_year_id =?6 and t.semester_id =?7  and t.staffpersonal_id =?8 and  t.staff_type_id =?9 and  t.programmes_id = ?10 and t.section_id=?11 ", nativeQuery = true)
+//	ArrayList<String> checkDuplicationCourseImport(List<Object> convertcourselist, boolean delete, boolean active, Long college,
+//			Long academicyear, Long programmyear, Long semester, Long staffpersonal, Long stafftype, Long programmes, Long section);
+
+
+	@Query(value = "SELECT s.ex_courses_code  FROM  ex_teacher_course_mapping t INNER JOIN ex_teacher_course_mapping_courses c ON t.id = c.ex_teache_course_mapping_id   INNER JOIN ex_courses s  ON c.courses_id =s.id where c.courses_id  IN?1 and t.ex_is_delete =?2 and t.ex_is_active =?3 and t.colleges_id =?4 and t.academic_year_id =?5 and t.programme_year_id =?6 and t.semester_id =?7  and t.staffpersonal_id =?8 and  t.staff_type_id =?9 and  t.programmes_id = ?10 and t.section_id=?11 and t.coursetype_id =?12 ", nativeQuery = true)
+	ArrayList<String> checkDuplicationCourseImport(List<Object> convertcourselist, boolean delete, boolean active, Long college,
+			Long academicyear, Long programmyear, Long semester, Long staffpersonal, Long stafftype, Long programmes, Long section,Long Coursetypeid);
+
+	
+	List<TeacherCourseMapping> findByExIsDeleteAndExIsActiveAndProgrammesIdInAndSemsterIdInAndDegreeIdInAndCollegesIdInAndAcademicYearIdInAndProgrammeYearIdIn(
+			boolean b, boolean c, List<Long> program, List<Long> semester, List<Long> degree, List<Long> college,List<Long> academic , List<Long> programyear);
+
+	
+	List<TeacherCourseMapping> findByCoursesIdInAndStaffpersonalIdAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndExIsDeleteAndExIsActiveAndCourseType(
+			List<Long> courses, Long staff, Long colleges, Long degree, Long programmes, Long department, boolean b,
+			boolean c, Optional<CoursesType> coursesType);
+
+	List<TeacherCourseMapping> findByCoursesIdInAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndExIsDeleteAndExIsActive(
+			List<Long> courses, Long colleges, Long degree, Long programmes, Long department, boolean b, boolean c);
+
+	List<TeacherCourseMapping> findByCoursesIdInAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndExIsDeleteAndExIsActiveAndCourseType(
+			List<Long> courses, Long colleges, Long degree, Long programmes, Long department, boolean b, boolean c,
+			Optional<CoursesType> coursesType);
+
+	List<TeacherCourseMapping> findByCoursesIdAndDepartmentIdAndAcademicYearIdAndCollegesIdAndDegreeIdAndProgrammeYearIdAndSemsterId(
+			Long courses, Long department, Long academicYear, Long colleges, Long degree, Long id, Long semester);
+
+	
+
+	List<TeacherCourseMapping> findByCoursesIdInAndStaffpersonalIdAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndExIsDeleteAndExIsActiveAndCourseTypeAndSectionId(
+			List<Long> courses, Long staff, Long colleges, Long degree, Long programmes, Long department, boolean b,
+			boolean c,Optional<CoursesType> coursesType, Long section);
+
+	List<TeacherCourseMapping> findByCoursesIdAndDepartmentIdAndAcademicYearIdAndCollegesIdAndDegreeIdAndProgrammeYearIdAndSemsterIdAndSectionId(
+			Long courses, Long department, Long academicYear, Long colleges, Long degree, Long id, Long semester,
+			Long section);
+	
+	List<TeacherCourseMapping> findByCoursesIdAndDepartmentIdAndAcademicYearIdAndCollegesIdAndDegreeIdAndProgrammeYearIdAndSemsterIdAndSectionIdAndStaffpersonalIdAndRegistrationTypeId(
+			Long courses, Long department, Long academicYear, Long colleges, Long degree, Long programyear, Long semester,
+			Long section , Long staff , Long rtype);
+
+	@Query(value ="SELECT cmd.courses_id , c.ex_courses_code,c.ex_name, cd.ex_credit_hour_title , s.id , s.ex_name as secname,z.ex_identifier FROM ex_teacher_course_mapping cm  ,ex_teacher_course_mapping_courses cmd ,ex_credit_hours cd ,ex_courses c , ex_section s,ex_batch z   where c.batch_id=z.id AND s.id = cm.section_id AND  c.id=cmd.courses_id and  c.credit_hours_id =cd.id and cm.id = cmd.ex_teache_course_mapping_id and cm.programmes_id = ?1  AND cm.colleges_id =?2 AND   cm.academic_year_id =?3 And cm.staff_type_id=?4  and cm.degree_id =?5 and cm.ex_is_delete=?6 and cm.staffpersonal_id=?7 and cm.programme_year_id=?8 and cm.semester_id=?9 and cm.registration_type_id = ?10 AND cm.stream_id = ?11 AND cm.department_id = ?12 AND cm.ex_is_active = 1 and cm.section_id = ?13 group by cmd.courses_id", nativeQuery = true)
+	ArrayList<Object[]> getcourseList(Long program, Long college, Long academic, Long stafftype, Long degree, boolean delete, Long staff, Long programyaer, Long semester, Long registration, Long stream, Long department , Long section);
+
+	@Query(value = "SELECT  sp.ex_name, sp.ex_employee_id , sp.ex_contact_details , st.ex_name as stafftype , cm.staff_type_id as stafftypeid , cm.staffpersonal_id as staffid FROM ex_teacher_course_mapping cm  ,ex_teacher_course_mapping_courses cmd , ex_staff_personal sp , ex_staff_type st where cm.staffpersonal_id = sp.id AND cm.staff_type_id = st.id  and cm.id = cmd.ex_teache_course_mapping_id and cm.programmes_id = ?1 AND cmd.courses_id =?2 AND cm.degree_id =?3 AND cm.programme_year_id =?4 AND cm.academic_year_id =?5  and cm.semester_id=?6 group by cm.staffpersonal_id", nativeQuery = true)
+	ArrayList<Object[]> getTeacherList(Long programmes, Long course, Long degree, Long programeyera,
+			Long academicYear, Long semester);
+	
+	
+	@Query(value ="SELECT cmd.courses_id , c.ex_courses_code,c.ex_name, cd.ex_credit_hour_title FROM ex_teacher_course_mapping cm  ,ex_teacher_course_mapping_courses cmd ,ex_credit_hours cd ,ex_courses c  where   c.id=cmd.courses_id and  c.credit_hours_id =cd.id and cm.id = cmd.ex_teache_course_mapping_id and cm.programmes_id = ?1  AND cm.colleges_id =?2 AND   cm.academic_year_id =?3 And cm.staff_type_id=?4  and cm.degree_id =?5 and cm.ex_is_delete=?6 and cm.staffpersonal_id=?7 and cm.programme_year_id=?8 and cm.semester_id=?9 and cm.registration_type_id = ?10 AND cm.stream_id = ?11 AND cm.department_id = ?12 AND cm.ex_is_active = 1", nativeQuery = true)
+	ArrayList<Object[]> getSyllabusOnStaffId(Long program, Long college, Long academic, Long stafftype, Long degree, boolean delete, Long staff, Long programyaer, Long semester, Long registration, Long stream, Long department);
+
+	List<TeacherCourseMapping> findByCoursesIdInAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndExIsDeleteAndExIsActiveAndCourseTypeAndSectionId(
+		List<Long> courses, Long colleges, Long degree, Long programmes, Long department, boolean b, boolean c,
+			Optional<CoursesType> coursesType, Long section);
+	
+	
+	@Query(value ="SELECT courses_id from ex_teacher_course_mapping_courses  where ex_teache_course_mapping_id = ?1", nativeQuery = true)
+	ArrayList<Object[]> getCoursemapping(Long id);
+	
+	
+	@Query(value ="SELECT c1.ex_identifier AS clg,c2.ex_name AS degree,c3.ex_identifier AS pgm,\r\n" + 
+			"c4.ex_identifier AS dept,c5.ex_identifier AS stream ,c6.ex_identifier AS acy ,c7.ex_name AS py,c8.ex_name AS sem,\r\n" + 
+			"c9.ex_credit_hour_title AS ch,a.ex_courses_code AS cc, a.ex_name AS cn,GROUP_CONCAT(c.ex_name) AS cnn,\r\n" + 
+			"\r\n" + 
+			"case when a.ex_is_satisfactory=1 then 'YES' ELSE 'NO' END  AS satisfactory ,\r\n" + 
+			"case when a.ex_is_project=1 then 'YES' ELSE 'NO' END  AS project,\r\n" + 
+			"case when a.ex_is_seminar=1 then 'YES' ELSE 'NO' END  AS seminar,\r\n" + 
+			"case when a.ex_is_elective=1 then 'YES' ELSE 'NO' END  AS elective,\r\n" + 
+			"case when  c12.ex_name IS  NULL then 'Teacher Not Mapped' ELSE c12.ex_name END  AS sname,\r\n" + 
+			"c12.ex_employee_id AS empid,c12.ex_login_name AS lname,\r\n" + 
+			"c12.ex_contact_details AS cndetails,c12.ex_email AS email,\r\n" + 
+			"c13.ex_name AS sectionname\r\n" + 
+			"\r\n" + 
+			"FROM ex_courses a LEFT JOIN ex_courses_coursestype b ON a.id=b.courses_id \r\n" + 
+			"LEFT JOIN ex_coursestype c ON c.id=b.courses_type\r\n" + 
+			"LEFT JOIN ex_colleges c1 ON c1.id=a.collage_id\r\n" + 
+			"LEFT JOIN ex_degree c2 ON c2.id=a.degree_id\r\n" + 
+			"LEFT JOIN ex_programmes c3 ON c3.id=a.programmes_id\r\n" + 
+			"LEFT JOIN ex_department c4 ON c4.id=a.department_id\r\n" + 
+			"LEFT JOIN ex_stream c5 ON c5.id=a.stream_id\r\n" + 
+			"LEFT JOIN ex_academic_year c6 ON c6.id=a.academic_year_id\r\n" + 
+			"LEFT JOIN ex_programme_year c7 ON c7.id=a.programmeyear_id\r\n" + 
+			"LEFT JOIN ex_semester c8 ON c8.id=a.semester_id  \r\n" + 
+			"LEFT JOIN ex_credit_hours c9 ON c9.id=a.credit_hours_id\r\n" + 
+			"LEFT JOIN ex_teacher_course_mapping_courses c10 ON c10.courses_id=a.id\r\n" + 
+			"LEFT JOIN ex_teacher_course_mapping c11 ON c11.id=c10.ex_teache_course_mapping_id\r\n" + 
+			"LEFT JOIN ex_staff_personal c12 ON c12.id=c11.staffpersonal_id\r\n" + 
+			"LEFT JOIN ex_section c13 ON c13.id=c11.section_id\r\n" + 
+			"WHERE a.programmes_id IN ?1 AND a.semester_id IN ?2 AND a.degree_id IN ?3 AND a.collage_id IN ?4 AND a.academic_year_id IN ?5 AND a.programmeyear_id IN ?6 \r\n" + 
+			" GROUP BY a.id ORDER BY a.academic_year_id, a.department_id,a.ex_courses_code,c11.staffpersonal_id ", nativeQuery = true)
+	List<Object[]> getteachermappeddeatils(List<Long> programmes, List<Long> semester, List<Long> degree,
+			List<Long> colleges, List<Long> academicYear, List<Long> programmeYear);
+
+	List<TeacherCourseMapping> findByIdAndCoursesIdInAndStaffpersonalIdAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndExIsDeleteAndExIsActiveAndCourseTypeAndSectionId(
+			Long id, List<Long> courses, Long staff, Long colleges, Long degree, Long programmes, Long department,
+			boolean b, boolean c, Optional<CoursesType> coursesType, Long section);
+
+	
+	
+	@Query(value ="SELECT a2.ex_identifier AS clg,a3.ex_name AS deg,a4.ex_identifier AS pgm,a5.ex_identifier AS dept,e.ex_identifier as batch,a6.ex_identifier AS ay,a8.ex_name as py,a7.ex_name AS se,c.ex_credit_hour_title,h.ex_name as def, CASE WHEN i.ex_name IS NULL THEN 'TEACHER NOT MAPPED' ELSE i.ex_name END  AS staffname,b.ex_courses_code,b.ex_name As abc,\r\n" + 
+			"case when j.ex_assignment_marks IS NULL then 'pending' ELSE 'submitted' END AS assing,\r\n" + 
+			"case when j.ex_quiz_marks IS NULL then 'pending' ELSE 'submitted' END AS quiz,\r\n" + 
+			"case when j.ex_case_study IS NULL then 'pending' ELSE 'submitted' END AS Casestudy,\r\n" + 
+			"case when j.ex_attendence_marks IS NULL then 'pending' ELSE 'submitted' END AS at, a9.ex_name as section,i.ex_contact_details AS cnt,i.ex_email as email\r\n" + 
+			"FROM ex_courses_registration a\r\n" + 
+			"LEFT JOIN ex_courses b ON a.courses_id=b.id\r\n" + 
+			"LEFT JOIN ex_credit_hours c ON c.id=b.credit_hours_id\r\n" + 
+			"LEFT JOIN ex_courses_coursestype d ON d.courses_id=a.courses_id\r\n" + 
+			"LEFT JOIN ex_coursestype h ON h.id=d.courses_type\r\n" + 
+			"LEFT JOIN ex_batch e ON e.id=b.batch_id\r\n" + 
+			"LEFT JOIN ex_teacher_course_mapping_courses f ON f.courses_id=a.courses_id\r\n" + 
+			"LEFT JOIN ex_teacher_course_mapping g ON g.id=f.ex_teache_course_mapping_id\r\n" + 
+			"LEFT JOIN ex_staff_personal i ON i.id=g.staffpersonal_id\r\n" + 
+			"LEFT JOIN ex_mid_term_marks j ON j.courses_id=a.courses_id AND j.student_admission_id=a.student_admission_id\r\n" + 
+			"\r\n" + 
+			"LEFT JOIN ex_colleges a2 ON a2.id=b.collage_id\r\n" + 
+			"LEFT JOIN ex_degree a3 ON a3.id=b.degree_id\r\n" + 
+			"LEFT JOIN ex_programmes a4 ON a4.id=b.programmes_id\r\n" + 
+			"LEFT JOIN ex_department a5 ON a5.id=b.department_id\r\n" + 
+			"LEFT  JOIN ex_academic_year a6 ON a6.id=a.academicyear_id\r\n" +
+			"LEFT JOIN ex_semester a7 ON a7.id=b.semester_id\r\n"+
+			"LEFT JOIN ex_programme_year a8 ON a8.id=a.programmeyear_id\r\n" + 
+			"LEFT JOIN ex_section a9 ON a9.id=j.section_id \r\n" + 
+			"WHERE a.programmes_id IN ?1 AND a.semester_id IN ?2 AND a.degree_id IN ?3 AND a.colleges_id IN ?4 AND a.academicyear_id IN ?5 AND a.programmeyear_id IN ?6 AND  d.courses_type=?7\r\n" + 
+			"GROUP BY a.courses_id ORDER BY e.id,a.courses_id,a.department_id", nativeQuery = true)
+	List<Object[]> getteachermappeddeatilsNiftem(List<Long> programmes, List<Long> semester, List<Long> degree,
+			List<Long> colleges, List<Long> academicYear, List<Long> programmeYear,Long coursesType);
+
+	
+	
+	
+	
+	@Query(value ="SELECT a2.ex_identifier AS clg,a3.ex_name AS deg,a4.ex_identifier AS pgm,a5.ex_identifier AS dept,e.ex_identifier as batch,a6.ex_identifier AS ay,a8.ex_name as py,a7.ex_name AS se,c.ex_credit_hour_title,h.ex_name as def,CASE WHEN i.ex_name IS NULL THEN 'TEACHER NOT MAPPED' ELSE i.ex_name END  AS staffname,b.ex_courses_code,b.ex_name As abc,\r\n" + 
+			"case when j.ex_practical_record_marks IS NULL then 'pending' ELSE 'submitted' END AS pr,\r\n" + 
+			"case when j.ex_practical_learning IS NULL then 'pending' ELSE 'submitted' END AS pl,\r\n" + 
+			"case when k.ex_lab_experiment IS NULL then 'pending' ELSE 'submitted' END AS Lab,\r\n" + 
+			"case when k.ex_viva IS NULL then 'pending' ELSE 'submitted' END AS viva, a9.ex_name as section,i.ex_contact_details AS cnt,i.ex_email as email\r\n" + 
+			"FROM ex_courses_registration a\r\n" + 
+			"LEFT JOIN ex_courses b ON a.courses_id=b.id\r\n" + 
+			"LEFT JOIN ex_credit_hours c ON c.id=b.credit_hours_id\r\n" + 
+			"LEFT JOIN ex_courses_coursestype d ON d.courses_id=a.courses_id\r\n" + 
+			"LEFT JOIN ex_coursestype h ON h.id=d.courses_type\r\n" + 
+			"LEFT JOIN ex_batch e ON e.id=b.batch_id\r\n" + 
+			"LEFT JOIN ex_teacher_course_mapping_courses f ON f.courses_id=a.courses_id\r\n" + 
+			"LEFT JOIN ex_teacher_course_mapping g ON g.id=f.ex_teache_course_mapping_id\r\n" + 
+			"LEFT JOIN ex_staff_personal i ON i.id=g.staffpersonal_id\r\n" + 
+			"LEFT JOIN ex_mid_term_marks j ON j.courses_id=a.courses_id AND j.student_admission_id=a.student_admission_id\r\n" + 
+			"LEFT JOIN ex_exam_barcodes k ON k.courses_id=a.courses_id AND k.student_admission_id=a.student_admission_id\r\n" + 
+			"LEFT JOIN ex_colleges a2 ON a2.id=b.collage_id\r\n" + 
+			"LEFT JOIN ex_degree a3 ON a3.id=b.degree_id\r\n" + 
+			"LEFT JOIN ex_programmes a4 ON a4.id=b.programmes_id\r\n" + 
+			"LEFT JOIN ex_department a5 ON a5.id=b.department_id\r\n" + 
+			"LEFT  JOIN ex_academic_year a6 ON a6.id=a.academicyear_id\r\n" +
+			"LEFT JOIN ex_semester a7 ON a7.id=b.semester_id\r\n"+
+			"LEFT JOIN ex_programme_year a8 ON a8.id=a.programmeyear_id\r\n" + 
+			"LEFT JOIN ex_section a9 ON a9.id=j.section_id \r\n" + 
+			"WHERE a.programmes_id IN ?1 AND a.semester_id IN ?2 AND a.degree_id IN ?3 AND a.colleges_id IN ?4 AND a.academicyear_id IN ?5 AND a.programmeyear_id IN ?6 AND  d.courses_type=?7\r\n" + 
+			"GROUP BY a.courses_id ORDER BY e.id,a.courses_id,a.department_id", nativeQuery = true)
+	List<Object[]> getteachermappeddeatilsExam(List<Long> programmes, List<Long> semester, List<Long> degree,
+			List<Long> colleges, List<Long> academicYear, List<Long> programmeYear, Long coursesType);
+
+
+	@Query(value ="SELECT cmd.courses_id , c.ex_courses_code,c.ex_name, cd.ex_credit_hour_title, d.ex_name as ctname  FROM ex_teacher_course_mapping cm  ,ex_teacher_course_mapping_courses cmd ,ex_credit_hours cd ,ex_courses c , ex_coursestype d WHERE cm.coursetype_id=d.id and c.id=cmd.courses_id and  c.credit_hours_id =cd.id and cm.id = cmd.ex_teache_course_mapping_id and   cm.academic_year_id =?1  and cm.ex_is_delete = 0 and cm.staffpersonal_id=?2  AND cm.ex_is_active = 1 group by cm.id", nativeQuery = true)
+	ArrayList<Object[]> getSyllabusOnStaffIdDash( Long academic, Long staff);
+	
+	
+	@Query(value ="SELECT cmd.courses_id , c.ex_courses_code,c.ex_name, cd.ex_credit_hour_title , cm.section_id FROM ex_teacher_course_mapping cm  ,ex_teacher_course_mapping_courses cmd ,ex_credit_hours cd ,ex_courses c  where   c.id=cmd.courses_id and  c.credit_hours_id =cd.id and cm.id = cmd.ex_teache_course_mapping_id   and cm.ex_is_delete = 0 and cm.staffpersonal_id=?1  AND cm.ex_is_active = 1 group by cm.id", nativeQuery = true)
+	ArrayList<Object[]> getSyllabusOnStaffIdReport( Long staff);
+
+	List<TeacherCourseMapping> findByProgrammesIdAndDepartmentIdAndExIsDeleteAndExIsActiveAndCourseTypeAndSectionId(
+			Long programmes, Long department, boolean b, boolean c, CoursesType coursesType, Long section);
+
+}

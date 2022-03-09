@@ -1,0 +1,18 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.AboutFeedBackScaleMapping;
+import com.niftem.app.entity.FeedBackScale;
+
+public interface AboutFeedBackScaleMappingRepository extends CrudRepository< AboutFeedBackScaleMapping, Long>{
+
+	List<AboutFeedBackScaleMapping> findByAboutFeedBackId(Long id);
+
+	void deleteByAboutFeedBackId(Long id);
+
+
+
+}

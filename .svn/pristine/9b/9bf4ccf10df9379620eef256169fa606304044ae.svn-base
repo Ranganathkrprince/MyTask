@@ -1,0 +1,319 @@
+package com.niftem.app.repository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.Batch;
+import com.niftem.app.entity.Courses;
+import com.niftem.app.entity.CoursesRegistration;
+import com.niftem.app.entity.SemesterRegistration;
+import com.niftem.app.entity.SupplementaryRegistration;
+
+
+public interface CoursesRegistrationRepository extends CrudRepository< CoursesRegistration, Long>{
+
+	@Query(value ="SELECT * FROM ex_courses_registration  where  academicyear_id = ?1 and colleges_id =?2  and degree_id = ?3  and programmeyear_id = ?4 and programmes_id = ?5 AND semester_id = ?6 AND  registration_type_id =?7 AND stream_id = ?8", nativeQuery = true)
+	ArrayList <CoursesRegistration>getStudentForAttendance(Long  academicyear_id  , Long college ,Long degree , Long programyear , Long program , Long semester_id  , Long registrationtype , Long stream );
+
+	@Query(value ="SELECT * FROM ex_courses_registration  where  academicyear_id = ?1 and colleges_id =?2  and degree_id = ?3  and programmeyear_id = ?4 and programmes_id = ?5 AND semester_id = ?6 AND  registration_type_id =?7 AND student_admission_id = ?8 And courses_id=?9 ", nativeQuery = true)
+	ArrayList <CoursesRegistration>validateClassAttendance(Long  academicyear_id  , Long college ,Long degree , Long programyear , Long program , Long semester_id  , Long registrationtype , Long studentid, Long courses);
+
+	
+	@Query(value ="SELECT * FROM ex_courses_registration where  exam_announcement_id = ?1 and registration_type_id = ?2 and programmes_id  = ?3 AND department_id = ?4 group by courses_id", nativeQuery = true)
+	ArrayList <CoursesRegistration>getSupplyCourses(Long   exam  , Long registration , Long program , Long department_id);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_courses_registration set ex_is_attendence=?1 , ex_attendence_precentage=?7   where academicyear_id=?4 and semester_id=?6 and programmeyear_id=?5 and student_admission_id=?3 and courses_id=?2 ", nativeQuery = true)
+	int updateattendec(Boolean isattendednce, Long id, Object studentid, Long academicYear, Long programmeYear, Long semester, Float percentage);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_courses_registration set ex_is_practical_attendence=?1 , ex_practical_attendence_precentage=?7   where academicyear_id=?4 and semester_id=?6 and programmeyear_id=?5 and student_admission_id=?3 and courses_id=?2 ", nativeQuery = true)
+	int updateattendecPractical(Boolean isattendednce, Long id, Object studentid, Long academicYear, Long programmeYear, Long semester, Float percentage);
+
+	
+	@Query(value ="SELECT coalesce(max(ch.id), 0) FROM ex_courses_registration ch", nativeQuery = true)
+	Long getMaxId();
+
+
+
+	List<CoursesRegistration> findByAcademicYearIdAndProgrammesIdAndCollegesIdAndDegreeIdAndCoursesId(Long academicYear,
+			Long programmes, Long colleges, Long degree, Long courses);
+
+	List<CoursesRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndExIsAttendenceAndCoursesId(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department, boolean d, Long courses);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_courses_registration set ex_is_delete = ?1 , ex_is_active = ?2 , ex_is_eligible=?3  where colleges_id = ?4 and degree_id=?5 and programmes_id =?6 and department_id=?7 and student_admission_id=?8 and programmeyear_id=?9 and semester_id=?10 and courses_id in?11 ", nativeQuery = true)
+	int updatecourses(boolean b, boolean c, int hod, Long colleges, Long degree, Long programmes, Long department,
+			Long studentid, Long programyear, Long semester, List<Long> cours);
+
+	
+
+	List<CoursesRegistration> findByExIsDeleteAndExIsActiveAndCoursesIdAndStudentadmissionId(boolean b, boolean c,
+			Long id, Long id2);
+
+	List<CoursesRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndCoursesId(
+			boolean delete, boolean active, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department, Long courses);
+	
+	
+	List<CoursesRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndCoursesIdAndRegistrationId(
+			boolean delete, boolean active, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department, Long courses , Long registration);
+	
+@Query(value ="SELECT * FROM ex_courses_registration sa , ex_semester_registration sem  where sem.student_admission_id = sa.student_admission_id and sa.student_admission_id >= ?1 and sa.student_admission_id<= ?2 and sa.colleges_id = ?3 and sa.programmes_id =?4  and sa.courses_id = ?5 and sa.academicyear_id =?6 and sa.registration_type_id = ?7 and sa.degree_id = ?8 and sa.exam_announcement_id =?9 "
+		+ " and sem.ex_is_library_approve = 1  and sem.ex_is_accounts_approve = 1 and sem.ex_is_computerlab_approve = 1 and sem.ex_is_dean_approve = 1 and sem.ex_is_examination_approve = 1 and sem.ex_is_it_department_approve = 1 and sem.ex_is_mentor_approve = 1 and sa.semester_id = ?10 and sa.semester_id = sem.semester_id", nativeQuery = true)
+List<CoursesRegistration> getStudentBetween(Long id, Long id2, Long colleges, Long programmes, Long courses,
+		Long academicYear, Long registrationType, Long degree , Long exam_announcement_id , Long semestr);
+
+
+
+List<CoursesRegistration> findByStudentadmissionIdAndProgrammesIdAndExIsActiveAndExIsDeleteAndRegistrationIdAndSemesterIdAndProgrammeYearIdAndAcademicYearIdAndDepartmentId(
+		Long id, Long programmes, boolean b, boolean c, Long retypefro, Long semester, Long programmeYear,
+		Long academicYear, Long department);
+
+
+	
+List<CoursesRegistration> findByStudentadmissionIdAndAcademicYearIdAndRegistrationIdAndExamAnnouncementId(
+		Long student, Long academic,  Long registration, Long examination);
+
+List<CoursesRegistration> findByStudentadmissionIdAndAcademicYearIdAndRegistrationIdAndExamAnnouncementIdAndCoursesId(Long student, Long academic,  Long registration, Long examination , Long courses);
+	
+
+List<CoursesRegistration> findByStudentadmissionIdAndAcademicYearIdAndRegistrationIdAndCoursesId(Long student, Long academic,  Long registration,  Long courses);
+
+List<CoursesRegistration> findByStudentadmissionIdAndRegistrationIdAndCoursesId(Long student,  Long registration,  Long courses);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_courses_registration set order_id =?1 where courses_id in ?2 AND registration_type_id =?3 AND  student_admission_id =?4", nativeQuery = true)
+	int updateSupplyRevelOrderId(String orderid , List<Long> courses,Long registration_id, Long studentid);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_courses_registration set ex_is_paid = ?1 where order_id =?2", nativeQuery = true)
+	int orderIdStatus(boolean status, String order_id);
+
+	
+	/*@Query(value ="SELECT  r.student_admission_id as studentid, s.ex_enrollement_no,s.ex_roll_no,r.courses_id  as coursesid ,c.ex_courses_code"
+			+ "  FROM  ex_courses_registration r ,ex_student_admission s  ,courses c   where r.student_admission_id = s.id ,r.courses_id = c.id  "
+			+ "	AND r.degree_id = ?1 AND  r.academicyear_id =?2 AND r.programmes_id = ?3 AND  r.courses_id = ?4 AND r.programmeyear_id = ?5 AND  r.semester_id = ?6 AND r.colleges_id = ?7  " , nativeQuery = true)
+	
+	List<Object[]> getDetails(Long degree, Long academicYear, Long programmes, Long courses, Long programmeYear,
+			Long semester, Long colleges);
+*/
+	
+	@Query(value ="SELECT * FROM ex_courses_registration where ex_is_delete =?1 and ex_is_active = ?2 and academicyear_id = ?3 and semester_id  = ?4 AND courses_id = ?5 order by student_admission_id", nativeQuery = true)
+	ArrayList <CoursesRegistration>getcoursesList(boolean b,
+			boolean c, Long academicYear, Long semester, Long courses);
+	
+
+
+	List<CoursesRegistration> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndSemesterIdAndCoursesIdOrderByStudentadmissionIdAsc(boolean b,
+			boolean c, Long academicYear, Long semester, Long courses);
+
+	List<CoursesRegistration> findByProgrammesIdAndExIsActiveAndExIsDeleteAndRegistrationIdAndCoursesIdAndProgrammeYearIdAndSemesterId(
+			Long programmes, boolean b, boolean c, Long registrationType, Long programmeyear, CoursesRepository courses,
+			Long semester);
+
+	List<CoursesRegistration> findByStudentadmissionIdAndAcademicYearIdAndExIsActiveAndExIsDelete(Long id,
+			Long academicYear, boolean b, boolean c);
+
+	@Query(value ="SELECT s.ex_roll_no as studentid , c.ex_name  as courses_name ,s.ex_name ,r.semester_id ,s.section_id , c.ex_courses_code ,ch.ex_credit_hour_title, s.id FROM  ex_courses_registration r ,ex_student_admission s  , ex_student_personal sp ,ex_courses c ,ex_credit_hours ch  where " + 
+			"        r.student_admission_id = s.id  AND c.id = r.courses_id AND ch.id = c.credit_hours_id AND s.id = sp.student_admission_id    	AND r.degree_id = ?1 AND  r.academicyear_id =?2 AND r.programmes_id = ?3 AND  r.courses_id = ?4 AND r.programmeyear_id = ?5 AND  r.semester_id = ?6 AND r.colleges_id = ?7  AND s.section_id = ?8 AND r.department_id=?9 and r.registration_type_id IN (1,5) order by s.ex_roll_no " , nativeQuery = true)
+	List<Object[]> getDetails(Long degree, Long academicYear, Long programmes, Long courses, Long programmeYear,
+			Long semester, Long colleges, Long section, Long department);
+
+	List<CoursesRegistration> findByStudentadmissionIdAndAcademicYearIdAndExIsActiveAndExIsDeleteAndCoursesId(Long id,
+			Long academicYear, boolean b, boolean c, Long id2);
+
+	
+
+	List<CoursesRegistration> findByProgrammesIdAndExIsActiveAndExIsDeleteAndRegistrationIdAndProgrammeYearIdAndSemesterIdAndAcademicYearIdAndStudentadmissionIdOrderByCoursesId(
+			Long programmes, boolean b, boolean c, Long registrationType, Long programmeyear,Long semester , Long acaademic , Long student);
+
+	
+	List<CoursesRegistration> findByProgrammesIdAndExIsActiveAndExIsDeleteAndRegistrationIdAndSemesterIdAndProgrammeYearIdAndAcademicYearIdAndDepartmentIdAndStudentadmissionId(
+			Long programmes, boolean b, boolean c, Long retypefro, Long semester, Long programmeYear, Long academicYear,
+			Long department, Long id);
+
+	List<CoursesRegistration> findByProgrammesIdAndExIsActiveAndExIsDeleteAndRegistrationIdAndSemesterIdAndProgrammeYearIdAndAcademicYearIdAndDepartmentId(
+			Long programmes, boolean b, boolean c, Long retypefro, Long semester, Long programmeYear, Long academicYear,
+			Long department);
+
+	
+
+	List<CoursesRegistration> findByExIsDeleteAndSemesterIdAndProgrammeYearIdAndAcademicYearIdAndDepartmentIdAndStudentadmissionId(
+			boolean b, Long semester, Long programmeYear, Long academicYear, Long department, Long student);
+
+
+	
+
+	List<CoursesRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndRegistrationIdAndCoursesIdAndStudentadmissionIdAndExamAnnouncementId(
+			boolean b, boolean c, Long programmes, Long degree, Long academicYear, Long programmeYear, Long semester,
+			Long registrationType, Long course, Long id, Long examAnnouncement);
+
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "delete from ex_courses_registration where student_admission_id=?1 AND  courses_id IN ?2", nativeQuery = true)
+	int deleteCourse(Long student , List<Long> courses);
+
+	List<CoursesRegistration> findByIdIn(List<Long> courses);
+
+	List<CoursesRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndRegistrationIdAndCoursesIdInAndStudentadmissionIdAndExamAnnouncementId(
+			boolean b, boolean c, Long programmes, Long degree, Long academicYear, Long programmeYear, Long semester,
+			Long registrationType, List<Long> courses, Long id, Long examAnnouncement);
+
+	
+
+
+	List<CoursesRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndCoursesIdInAndExIsRegistrationAndStudentadmissionId(
+			boolean b, boolean c, Long programmes, Long degree, Long academicYear, Long programmeYear, Long semester,
+			Long id, boolean d, Long id2);
+
+	
+
+	List<CoursesRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndCoursesIdAndStudentadmissionId(
+			boolean b, boolean c, Long programmes, Long degree, Long academicYear, Long programmeYear, Long semester,
+			Long id, Long id2);
+
+	
+	
+	List<CoursesRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionIdAndCoursesIdIn(
+			boolean b, boolean c, Long programmes, Long degree, Long academicYear, Long programmeYear, Long semester,
+			Long id, Long id2);
+
+	List<CoursesRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionId(
+			boolean b, boolean c, Long programmes, Long degree, Long academicYear, Long programmeYear, Long semester,
+			Long id);
+
+	List<CoursesRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionIdAndCoursesId(
+			boolean b, boolean c, Long programmes, Long degree, Long academicYear, Long programmeYear, Long semester,
+			Long id, Long id2);
+
+	List<CoursesRegistration> findByCoursesIdAndStudentadmissionId(Long id, Long id2);
+	
+	
+	@Query(value = "SELECT * FROM ex_courses_registration a LEFT JOIN ex_courses_coursestype b ON b.courses_id=a.courses_id LEFT JOIN ex_coursestype c ON c.id=b.courses_type WHERE  a.colleges_id=?1 AND a.degree_id=?2 AND\r\n" + 
+			" a.programmes_id=?3 AND a.department_id=?4 AND  a.academicyear_id=?5\r\n" + 
+			"AND a.programmeyear_id=?6 AND a.semester_id=?7 AND a.stream_id=?8 AND a.exam_announcement_id=?9 AND a.courses_id=?10 AND c.id=1 ORDER BY a.student_admission_id ", nativeQuery = true)
+	List<CoursesRegistration> TheoryIA(Long colleges, Long degree, Long programmes, Long department,
+			Long academicYear, Long programmeYear, Long semester, Long stream, Long examAnnouncement,Long courses);
+	
+	
+	
+	@Query(value = "SELECT * FROM ex_courses_registration a LEFT JOIN ex_courses_coursestype b ON b.courses_id=a.courses_id LEFT JOIN ex_coursestype c ON c.id=b.courses_type WHERE  a.colleges_id=?1 AND a.degree_id=?2 AND\r\n" + 
+			" a.programmes_id=?3 AND a.department_id=?4 AND  a.academicyear_id=?5\r\n" + 
+			"AND a.programmeyear_id=?6 AND a.semester_id=?7 AND a.stream_id=?8 AND a.exam_announcement_id=?9 AND a.courses_id=?10 AND c.id=2 ORDER BY a.student_admission_id ", nativeQuery = true)
+	List<CoursesRegistration> PracticalIA(Long colleges, Long degree, Long programmes, Long department,
+			Long academicYear, Long programmeYear, Long semester, Long stream, Long examAnnouncement, Long courses);
+
+	Optional<CoursesRegistration> findByExIsDeleteAndExIsActiveAndCoursesIdAndStudentadmissionId(boolean b, boolean c,
+			String CourseCode, Long id);
+
+	
+
+	@Query(value = "SELECT * FROM ex_courses_registration a LEFT JOIN ex_courses_coursestype b ON b.courses_id=a.courses_id LEFT JOIN ex_coursestype c ON c.id=b.courses_type WHERE  a.colleges_id=?1 AND a.degree_id=?2 AND\r\n" + 
+			" a.programmes_id=?3 AND a.department_id=?4 AND  a.academicyear_id=?5\r\n" + 
+			"AND a.programmeyear_id=?6 AND a.semester_id=?7 AND a.stream_id=?8 AND a.exam_announcement_id=?9 AND a.courses_id=?10 AND c.id=1 ORDER BY a.student_admission_id ", nativeQuery = true)
+	List<CoursesRegistration> TheoryBtechIA(Long colleges, Long degree, Long programmes, Long department,
+			Long academicYear, Long programmeYear, Long semester, Long stream, Long examAnnouncement, Long courses);
+
+	
+	@Query(value = "SELECT * FROM ex_courses_registration a,ex_courses_coursestype b,ex_courses c WHERE a.courses_id=b.courses_id AND a.courses_id=c.id AND b.courses_id=c.id"+
+			"    AND a.colleges_id=?1 AND a.degree_id=?2 AND a.programmes_id=?3 AND a.department_id=?4 AND a.ex_is_delete=?5 AND a.ex_is_active=?6\r\n" + 
+			" AND  b.courses_type IN ?7 AND  a.programmeyear_id=?8 AND a.semester_id=?9 AND a.stream_id=?10 AND  a.academicyear_id=?11  \r\n" + 
+			" GROUP BY a.courses_id\r\n" + 
+			" ORDER BY c.ex_name,a.courses_id ", nativeQuery = true)
+	List<CoursesRegistration> getcourselistBasedOnAy(Long colleges, Long degree, Long programmes, Long department,
+			boolean b, boolean c, List<Long> coursesTypeId, Long programmeYear, Long semester, Long stream, Long academicYear);
+
+	List<CoursesRegistration> findByStudentadmissionIdAndCoursesIdIn(Long student, List<Long> courses);
+
+	List<CoursesRegistration> findByStudentadmissionIdAndCoursesIdIn(String exRollNo, List<Long> courses);
+
+	List<CoursesRegistration> findByProgrammesIdAndExIsActiveAndExIsDeleteAndRegistrationIdAndProgrammeYearIdAndSemesterIdAndAcademicYearIdAndStudentadmissionId(
+			Long id, boolean b, boolean c, Long id2, Long id3, Long id4, Long id5, Long id6);
+
+	
+	
+	
+	@Query(value ="SELECT * FROM ex_courses_registration a ,ex_student_admission b\r\n" + 
+			"WHERE a.student_admission_id=b.id\r\n" + 
+			" AND a.programmes_id=?1 AND a.registration_type_id=?2 AND a.programmeyear_id=?3\r\n" + 
+			" AND a.semester_id=?4 AND a.academicyear_id=?5 AND a.student_admission_id=?6 AND b.batch_id=?7", nativeQuery = true)
+	List<CoursesRegistration> SemesterRegistrationdetails(Long id, Long id2, Long id3, Long id4,
+			Long id5, Long id6,Batch batch);
+
+	List<CoursesRegistration> findByStudentadmissionIdAndCoursesId(Long id, Long courses);
+
+	
+	
+	@Query(value ="SELECT * FROM ex_courses_registration a WHERE a.student_admission_id=?1 AND a.id in?2", nativeQuery = true)
+	Optional<CoursesRegistration> getdata(Long id, List<Long> courses);
+
+	
+	
+	@Query(value ="SELECT * FROM ex_courses_registration a ,ex_courses b \r\n" + 
+			"WHERE a.courses_id=b.id AND a.programmes_id=?1 AND a.ex_is_active=?2 AND a.ex_is_delete=?3 AND \r\n" + 
+			"a.registration_type_id=?4 AND a.programmeyear_id=?5 AND a.semester_id=?6 AND a.academicyear_id=?7\r\n" + 
+			"AND a.student_admission_id=?8\r\n" + 
+			"ORDER BY b.ex_subject_code,b.ex_name,a.courses_id", nativeQuery = true)
+	List<CoursesRegistration> getrecorddetails(Long id, boolean b, boolean c, Long id2, Long id3, Long id4, Long id5,
+			Long id6);
+	
+
+	@Query(value ="SELECT count(id) FROM ex_courses_registration a WHERE a.courses_id=?1 and academicyear_id = ?2", nativeQuery = true)
+	Long getStudentcount(Long id , Long academic);
+
+	
+	@Query(value ="SELECT c.ex_name, b.batch_id FROM ex_courses_registration a,ex_student_admission b,ex_batch c WHERE b.batch_id=c.id AND a.student_admission_id=b.id AND a.academicyear_id=?1 AND a.semester_id=?2 AND a.programmes_id=?3 GROUP BY  b.batch_id", nativeQuery = true)
+	ArrayList<Object[]> GetBatchrecords(Long academicYear, Long semester, Long programmes);
+	
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "select * FROM ex_courses_registration s  WHERE s.programmes_id = ?1 AND s.academicyear_id = ?2 AND s.department_id = ?3"
+			+ " AND  s.semester_id = ?4 AND s.programmeyear_id = ?5 AND s.courses_id = ?7 AND  s.student_admission_id NOT IN  (SELECT p.student_id FROM ex_seat_arrangement p  WHERE p.programmes_id = ?1 AND p.academicyear_id = ?2 AND p.department_id = ?3 AND  p.semester_id  = ?4 AND p.programmeyear_id = ?5 AND p.courses_id = ?7)  order by s.student_admission_id limit ?6", nativeQuery = true)
+ 	List<CoursesRegistration> getStudentForSeat(Long programmes, Long academivc,Long department,Long sem, Long prgramyesr , int limit , Long courses);
+
+	List<CoursesRegistration> findByRegistrationIdAndExIsDeleteAndExIsActiveAndStudentadmissionProgrammesIdInAndCollegesIdInAndDegreeIdInAndAcademicYearIdInAndSemesterIdInAndStudentadmissionDepartmentIdInAndProgrammeYearIdInOrderByStudentadmissionIdAsc(
+			Long reg ,  boolean b, boolean c, List<Long> programmes, List<Long> colleges, List<Long> degree,
+			List<Long> academicYear, List<Long> semester, List<Long> department, List<Long> programmeYear);
+
+	List<CoursesRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndRegistrationIdAndStudentadmissionId(
+			boolean b, boolean c, Long programmes, Long degree, Long academicYear, Long programmeYear, Long semester,
+			Long registrationType, Long studentadmission);
+
+
+
+			List<CoursesRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndRegistrationIdAndStudentadmissionIdAndCoursesIdIn(
+			boolean b, boolean c, Long programmes, Long degree, Long academicYear, Long programmeYear, Long semester,
+			Long registrationType, Long studentadmission, List<Long> coursesId);
+
+
+
+
+			@Modifying
+			@Transactional
+			@Query(value = "UPDATE ex_courses_registration a SET a.ex_is_paid=1 , a.order_id =?11  WHERE a.ex_is_delete=?9 AND a.ex_is_active=?10 AND a.programmes_id=?1 AND a.degree_id=?2 AND a.academicyear_id=?3 AND a.programmeyear_id=?4 AND a.semester_id=?5 AND a.registration_type_id=?6 AND a.student_admission_id=?7 AND a.courses_id IN ?8", nativeQuery = true)
+			int updates( Long programmes, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long registrationType, Long studentadmission, List<Long> coursesId,boolean b, boolean c , String orderid);
+
+
+}

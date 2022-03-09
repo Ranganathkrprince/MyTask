@@ -1,0 +1,198 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "ex_university")
+public class University {		
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+    private String exName;
+	
+	@Column(columnDefinition="TEXT")
+	private String exDescription;
+	
+	private String exIdentifier;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+	
+	private String exAddress;
+
+	private String exEmail;
+	
+	private String exTelephone;
+
+	private String exFax;
+	
+	private String exPlace;
+	
+	private Integer  exPincode;
+
+	private String exLocalName;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	public String photo;
+	
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+
+
+	public String getExAddress() {
+		return exAddress;
+	}
+
+	public void setExAddress(String exAddress) {
+		this.exAddress = exAddress;
+	}
+
+	public String getExEmail() {
+		return exEmail;
+	}
+
+	public void setExEmail(String exEmail) {
+		this.exEmail = exEmail;
+	}
+
+	public String getExTelephone() {
+		return exTelephone;
+	}
+
+	public void setExTelephone(String exTelephone) {
+		this.exTelephone = exTelephone;
+	}
+
+	public String getExFax() {
+		return exFax;
+	}
+
+	public void setExFax(String exFax) {
+		this.exFax = exFax;
+	}
+
+	public String getExPlace() {
+		return exPlace;
+	}
+
+	public void setExPlace(String exPlace) {
+		this.exPlace = exPlace;
+	}
+
+	public Integer getExPincode() {
+		return exPincode;
+	}
+
+	public void setExPincode(Integer exPincode) {
+		this.exPincode = exPincode;
+	}
+
+	public String getExLocalName() {
+		return exLocalName;
+	}
+
+	public void setExLocalName(String exLocalName) {
+		this.exLocalName = exLocalName;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	public String getExIdentifier() {
+		return exIdentifier;
+	}
+
+	public void setExIdentifier(String exIdentifier) {
+		this.exIdentifier = exIdentifier;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	@Override
+	public String toString() {
+		return "University [id=" + id + ", exName=" + exName + ", exDescription=" + exDescription + ", exIdentifier="
+				+ exIdentifier + ", exIsActive=" + exIsActive + ", exAddress=" + exAddress + ", exEmail=" + exEmail
+				+ ", exTelephone=" + exTelephone + ", exFax=" + exFax + ", exPlace=" + exPlace + ", exPincode="
+				+ exPincode + ", exLocalName=" + exLocalName + ", exIsDelete=" + exIsDelete + ", exCreateDate="
+				+ exCreateDate + ", exUpdateDate=" + exUpdateDate + ", photo=" + photo + "]";
+	}	
+}

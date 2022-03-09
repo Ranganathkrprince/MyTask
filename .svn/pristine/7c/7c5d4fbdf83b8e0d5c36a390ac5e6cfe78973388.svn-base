@@ -1,0 +1,135 @@
+package com.niftem.app.model;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+
+public class ApplicationVersionRequest {
+
+	private Long id;
+	
+	
+	@NotEmpty@NotNull@NotBlank(message = "please enter applicationType")
+    private String exAppType;
+    
+	@NotEmpty@NotNull@NotBlank(message = "please enter applicationVersion")
+    private String exVersion;
+	
+    
+    @Column(columnDefinition="TEXT")
+    private String exDescription;
+    
+    
+    
+    @NotNull(message = "please enter duedate")
+	private String exDueDate;
+
+    private Long user;
+	
+	private Boolean exIsActive;
+	
+	private Boolean exIsDelete;
+	
+	private Date exCreateDate;
+	
+	private Date exUpdateDate;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExAppType() {
+		return exAppType;
+	}
+
+	public void setExAppType(String exAppType) {
+		this.exAppType = exAppType;
+	}
+
+	public String getExVersion() {
+		return exVersion;
+	}
+
+	public void setExVersion(String exVersion) {
+		this.exVersion = exVersion;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+
+	
+	public String getExDueDate() {
+		return exDueDate;
+	}
+
+	public void setExDueDate(String exDueDate) {
+		this.exDueDate = exDueDate;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	@Override
+	public String toString() {
+		return "ApplicationVersionRequest [id=" + id + ", exAppType=" + exAppType + ", exVersion=" + exVersion
+				+ ", exDescription=" + exDescription + ", exDueDate=" + exDueDate + ", user=" + user + ", exIsActive="
+				+ exIsActive + ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate="
+				+ exUpdateDate + "]";
+	}
+
+	
+
+
+
+}

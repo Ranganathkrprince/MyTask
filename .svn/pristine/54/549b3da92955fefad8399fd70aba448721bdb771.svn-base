@@ -1,0 +1,15 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.ExamTimeTable;
+import com.niftem.app.entity.QpSetterLog;
+
+public interface QpSetterLogRepository extends CrudRepository<QpSetterLog, Long>{
+
+	List<QpSetterLog> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndDegreeIdAndCoursesId(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long degree , Long course);
+
+}

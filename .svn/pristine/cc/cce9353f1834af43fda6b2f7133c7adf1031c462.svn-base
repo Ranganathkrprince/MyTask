@@ -1,0 +1,32 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.AcademicCalenderLog;
+
+public interface AcademicCalenderLogRepository extends CrudRepository<AcademicCalenderLog, Long>{
+
+	List<AcademicCalenderLog> findByAcademicCalenderId(long id);
+	
+	
+	@Query(value = "select * from  ex_academic_calender_log where academic_calender_id =?1 and ex_is_update =  1 order by ex_serial_nnumber  ", nativeQuery = true)
+	List<AcademicCalenderLog> getRecord(long id);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_academic_calender_log set ex_proposed_dates =?1 , ex_is_update = 1 where id =?2  ", nativeQuery = true)
+	int updateProposedDate(String ex_proposed_dates , long id);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_academic_calender_log set ex_serial_nnumber =?1 , ex_is_update = 1  where id =?2  ", nativeQuery = true)
+	int updateSerialNumber(String ex_serial_nnumber , long id);
+}

@@ -1,0 +1,125 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_class_timetable_days")
+public class ClassTimeTableDays {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Temporal(TemporalType.TIME)
+	@Column(columnDefinition = "TIME")
+	private Date exEndTime;
+
+	@Temporal(TemporalType.TIME)
+	@Column(columnDefinition = "TIME")
+	private Date exStartTime;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "class_timetable_id", nullable = false)
+	private ClassTimeTable classtimetable;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "week_days_id", nullable = false)
+	private WeekDays weekdays;
+	
+	private String exDayName;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "courses_id", nullable = false)
+	private Courses courses;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "room_id", nullable = false)
+	private RoomMaster room;
+
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Date getExEndTime() {
+		return exEndTime;
+	}
+
+	public void setExEndTime(Date exEndTime) {
+		this.exEndTime = exEndTime;
+	}
+
+	public Date getExStartTime() {
+		return exStartTime;
+	}
+
+	public void setExStartTime(Date exStartTime) {
+		this.exStartTime = exStartTime;
+	}
+
+	public ClassTimeTable getClasstimetable() {
+		return classtimetable;
+	}
+
+	public void setClasstimetable(ClassTimeTable classtimetable) {
+		this.classtimetable = classtimetable;
+	}
+
+	public WeekDays getWeekdays() {
+		return weekdays;
+	}
+
+	public void setWeekdays(WeekDays weekdays) {
+		this.weekdays = weekdays;
+	}
+
+	public String getExDayName() {
+		return exDayName;
+	}
+
+	public void setExDayName(String exDayName) {
+		this.exDayName = exDayName;
+	}
+	
+	
+
+	public RoomMaster getRoom() {
+		return room;
+	}
+
+	public void setRoom(RoomMaster room) {
+		this.room = room;
+	}
+
+	public Courses getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+
+	@Override
+	public String toString() {
+		return "ClassTimeTableDays [id=" + id + ", exEndTime=" + exEndTime + ", exStartTime=" + exStartTime
+				+ ", classtimetable=" + classtimetable + ", weekdays=" + weekdays + ", exDayName=" + exDayName
+				+ ", courses=" + courses + ", room=" + room + "]";
+	}
+
+	
+}

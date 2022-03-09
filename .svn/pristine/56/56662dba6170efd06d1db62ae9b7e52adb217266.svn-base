@@ -1,0 +1,56 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Colleges;
+import com.niftem.app.entity.Degree;
+import com.niftem.app.model.DegreeRequest;
+
+public interface DegreeRepository extends CrudRepository<Degree, Long> {
+
+	List<Degree> findByExIsDelete(Boolean deletee);
+
+	Optional<Degree> findByExIsDeleteAndExIsActiveAndId(Boolean deletee, Boolean active, Long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_degree set ex_is_delete = ?1 ,ex_is_active = ?2  where id =?3", nativeQuery = true)
+	int deleteDegree(Boolean exIsDelete, Boolean is_active, Long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_degree set ex_name = ?1 ,ex_description = ?2  , ex_is_active =?3 ,ex_update_date =?4 where id =?5", nativeQuery = true)
+	int updateDegreeRecord(String exName, String exDescription, Boolean exIsActive, Date date, Long id);
+
+	@Query(value = "select * from ex_degree where ex_is_delete=?1 and ex_is_active=?2 and ex_name =?3", nativeQuery = true)
+	Optional<Degree> findByExIsDeleteAndExIsActiveAndExNames(Boolean deletee, Boolean active, String ex_name);
+
+	List<Degree> findByExNameAndExIsDelete(String exName, boolean isDelete);
+	
+
+	Optional<Degree> findByIdAndExIsDeleteAndExIsActive(Long colleges, boolean b, boolean c);
+	
+	Optional<Degree> findByExNameAndExIsDeleteAndExIsActive(String trim, boolean b, boolean c);
+
+	Optional<Degree> findByIdAndExIsDeleteAndExIsActive(Colleges colleges, boolean b, boolean c);
+
+	Optional<Degree> findByIdAndExIsDeleteAndExIsActive(Degree degree, boolean b, boolean c);
+
+	Optional<Degree> findByExIsDeleteAndExIsActiveAndExName(boolean b, boolean c, String trim);
+
+	Optional<Degree> findByExIsDeleteAndId(boolean b, Long id);
+
+	Optional<Degree> findByExIsDeleteAndExIsActiveAndIdIn(boolean b, boolean c, List<Long> degree);
+
+	
+
+	//Optional<Degree> findByIdAndExIsDeleteAndExIsActive(Long colleges, boolean b, boolean c);
+
+}

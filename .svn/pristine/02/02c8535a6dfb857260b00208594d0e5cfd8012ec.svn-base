@@ -1,0 +1,33 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.NotificationTemplate;
+
+public interface NotificationTemplateRepository extends CrudRepository<NotificationTemplate, Long> {
+
+	List<NotificationTemplate> findByCategoryIdAndExIsActiveAndExIsDelete(Long categoryId, boolean b, boolean c);
+
+	List<NotificationTemplate> findByExIsDelete(boolean b);
+
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_notification_template set ex_is_delete = ?1 ,ex_is_active = ?2 where id =?3", nativeQuery = true)
+
+	int deleteTemplate(Boolean exIsDelete, Boolean is_active, Long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_notification_template  set message = ?1 , ex_update_date = ?2  , title = ?3  where id =?4", nativeQuery = true)
+
+	int updateTemplatRecord(String message, Date date, String title, Long id);
+
+}

@@ -1,0 +1,191 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_qp_upload")
+public class QuestionPaperUpload {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String exQpUrl;
+	private String exAnswerKeyUrl;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "Courses_id", nullable = false)
+	private Courses courses;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicYear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "examAnnouncement_id", nullable = false)
+	private ExamAnnouncement examAnnouncement;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExQpUrl() {
+		return exQpUrl;
+	}
+
+	public String getExAnswerKeyUrl() {
+		return exAnswerKeyUrl;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public Courses getCourses() {
+		return courses;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExQpUrl(String exQpUrl) {
+		this.exQpUrl = exQpUrl;
+	}
+
+	public void setExAnswerKeyUrl(String exAnswerKeyUrl) {
+		this.exAnswerKeyUrl = exAnswerKeyUrl;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "QuestionPaperUpload [id=" + id + ", exQpUrl=" + exQpUrl + ", exAnswerKeyUrl=" + exAnswerKeyUrl
+				+ ", programmes=" + programmes + ", courses=" + courses + ", academicYear=" + academicYear
+				+ ", examAnnouncement=" + examAnnouncement + ", department=" + department + ", degree=" + degree
+				+ ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate
+				+ ", exUpdateDate=" + exUpdateDate + ", user=" + user + "]";
+	}
+
+
+}

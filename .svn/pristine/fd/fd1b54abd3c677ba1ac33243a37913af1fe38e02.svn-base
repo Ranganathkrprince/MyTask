@@ -1,0 +1,77 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.LateRegistration;
+
+@Repository
+@Service
+@Transactional
+public interface LateRegistrationRepository extends CrudRepository<LateRegistration, Long>{
+
+	List<LateRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndStudentadmissionId(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department, Long student);
+
+	List<LateRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndExIsHod(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department, int i);
+
+	List<LateRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndExIsMentor(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department, int i);
+
+	List<LateRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndExIsDean(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department, int i);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_late_registration set ex_is_delete = ?1 , ex_is_active = ?2 , ex_is_dean=?3 ,ex_is_mentor=?4 where colleges_id = ?5 and degree_id=?6 and programmes_id =?7 and academicYear_id=?8 and programmeyear_id=?9 and semester_id=?10 and department_id=?11 and student_admission_id=?12 and ex_is_approve_type=?13", nativeQuery = true)
+	int updatedrecord(boolean b, boolean c, Integer a, Integer b2, Long colleges, Long degree, Long programmes,
+			Long academicYear, Long programmeYear, Long semester, Long department, Long student, Integer approvtype);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_late_registration set ex_is_delete = ?1 , ex_is_active = ?2 , ex_is_hod=?3 ,ex_is_mentor=?4 where colleges_id = ?5 and degree_id=?6 and programmes_id =?7 and academicYear_id=?8 and programmeyear_id=?9 and semester_id=?10 and department_id=?11 and student_admission_id=?12 and ex_is_approve_type=?13", nativeQuery = true)
+	int updatedrecordHod(boolean b, boolean c, Integer hod, int Integer, Long colleges, Long degree, Long programmes,
+			Long academicYear, Long programmeYear, Long semester, Long department, Long col, Integer approvtype);
+
+	List<LateRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndStudentadmissionIdAndExIsApproveType(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department, Long student, Integer exIsApproveType);
+
+	List<LateRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndStudentadmissionIdAndExIsApproveTypeAndCoursesId(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department, Long student, Integer exIsApproveType, Long courses);
+
+	List<LateRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndExIsMentorAndExIsApproveType(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department, int i, Integer exIsApproveType);
+
+	List<LateRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndExIsDeanAndExIsApproveType(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department, int i, Integer exIsApproveType);
+
+	List<LateRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndExIsHodAndExIsApproveType(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department, int i, Integer exIsApproveType);
+
+	List<LateRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndExIsMentorAndExIsApproveTypeAndMentorId(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department, int i, Integer exIsApproveType, Long mentor);
+
+	//int updatedrecord(boolean delete , boolean active, Integer dean , Integer mentor , Long colleges, Long degree);
+
+	
+	List<LateRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionIdAndExIsApproveType(
+			boolean b, boolean c, Long programmes,  Long academicYear, Long programmeYear,
+			Long semester, Long sudent, int approvetype);
+}

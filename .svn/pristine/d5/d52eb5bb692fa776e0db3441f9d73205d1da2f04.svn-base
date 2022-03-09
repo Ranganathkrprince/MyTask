@@ -1,0 +1,46 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.CreditHours;
+
+public interface CreditHoursRepository extends CrudRepository<CreditHours, Long>{
+	
+	List<CreditHours> findByExCreditHourTitleAndExIsDelete(String title, Boolean is_delete);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_credit_hours set ex_credit_hour_practical = ?1,ex_credit_hour_lecture=?2 ,ex_credit_hour_title=?3 ,ex_external_marks =?4 , ex_external_passing_marks = ?5 , ex_is_active = ?6 , ex_no_of_topics =?7 , ex_passing_grade_points = ?8 , ex_total_marks = ?9 ,ex_update_date=?10 , ex_name = ?11,ex_total_credit_hour=?12, ex_credit_hour_tutorials=?13 where id =?14", nativeQuery = true)
+	int updateCreditHoursRecord(Double exCreditHourPractical, Double exCreditHourLecture, String exCreditHourTitle,
+	Double exExternalMarks, Double exExternalPassingMarks, Boolean exIsActive, Double exNoOfTopics,
+	Double exPassingGradePoints, Double exTotalMarks, Date date, String exName, Double exTotalCreditHour,
+	Double exCreditHourTutorials, Long id);
+
+
+
+	List<CreditHours> findByExIsDelete(Boolean is_delete);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_credit_hours set ex_is_delete = ?1 ,ex_is_active = ?2 where id =?3", nativeQuery = true)
+	int deleteCreditHours(Boolean exIsDelete, Boolean is_active , Long id);
+
+	Optional<CreditHours> findByExIsDeleteAndExIsActiveAndId(Boolean delete, Boolean active, Long creditHours);
+	Optional<CreditHours> findByExIsDeleteAndExIsActiveAndExCreditHourTitle(Boolean delete, Boolean active, String CreditHourTitle);
+
+	Optional<CreditHours> findByExIsDeleteAndId(boolean b, Long id);
+
+	@Query(value = "select * from ex_credit_hours where ex_credit_hour_practical NOT IN (0) AND ex_credit_hour_lecture = 0 and ex_is_delete = 0", nativeQuery = true)
+	List<CreditHours> getPractticalHour();
+	
+	@Query(value = "select * from ex_credit_hours where ex_credit_hour_lecture NOT IN (0) AND ex_credit_hour_practical = 0 and ex_is_delete = 0", nativeQuery = true)
+	List<CreditHours> getTutorialHour();
+	}
+

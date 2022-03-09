@@ -1,0 +1,18 @@
+package com.niftem.app.service;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.niftem.app.model.Login;
+
+public interface LoginService {
+
+	Map<String, Object> login(Login authenticationRequest,  HttpServletRequest request) ;
+	
+	public UserDetails loadUserByUsernameAndType(String username ,String userType );
+	
+
+}

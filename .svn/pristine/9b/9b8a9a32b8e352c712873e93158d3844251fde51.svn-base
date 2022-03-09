@@ -1,0 +1,41 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Colleges;
+import com.niftem.app.entity.Hostel;
+
+public interface HostelRepository  extends CrudRepository<Hostel, Long>{
+
+	Optional<Hostel> findByExHostelCodeAndExIsDeleteAndExIsActive(String hostelCode, Boolean Delete, Boolean Active);
+
+	List<Hostel> findByExIsDelete(Boolean Delete);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_hostel set ex_is_delete = ?1 , ex_is_active = ?2 where id =?3", nativeQuery = true)
+	int updateHostel(Boolean exIsDelete, Boolean is_active, Long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_hostel set ex_hostel_address = ?1 , ex_hostel_capacity = ?2 , ex_hostel_code = ?3 , ex_hostel_incharge = ?4,ex_name=?5 ,ex_hostel_type =?6 ,colleges_id=?7  ,ex_is_active =?8, ex_update_date=?9 ,ex_telephone=?10 , single_room = ?12 , double_room = ?13 , triple_room = ?13   where id =?11", nativeQuery = true)
+	int updateHosteldetails(String hostelAddress, String hostelCapacity,String hostelCode, String hostelIncharge, String hostelName,String hostelType, Colleges colleges, Boolean exIsActive,Date date, String telephone, Long id , Integer single , Integer exdouble , Integer
+			  tripl);
+
+	Optional<Hostel> findByExIsDeleteAndExIsActiveAndExName(Boolean exIsDelete, Boolean is_active, String hostelName);
+
+	
+	List<Hostel> findByCollegesIdAndExIsActiveAndExIsDelete(Long colleges, boolean is_active, boolean exIsDelete);
+
+	Optional<Hostel> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, Long hostel);
+
+	Optional<Hostel> findByIdAndExIsDeleteAndExIsActive(Long hostel, boolean b, boolean c);
+
+}

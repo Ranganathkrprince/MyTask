@@ -1,0 +1,13 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.niftem.app.entity.Settings;
+
+public interface SettingsRepository extends JpaRepository<Settings  , Long>{
+
+	List<Settings> findByExKeyName(String name);
+
+}

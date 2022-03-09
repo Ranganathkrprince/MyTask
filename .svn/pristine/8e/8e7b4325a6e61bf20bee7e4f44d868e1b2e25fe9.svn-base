@@ -1,0 +1,363 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_student_personal")
+public class Studentpersonal {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	
+	private String exDateOfBirth;
+
+	private String exContactDetails;
+	private String exGender;
+	private String exNationality;
+	private String exNativeState;;
+	private String exReligion;
+	private String exMotherTounge;
+	private Double exWeight;
+	private Double exHeight;
+	private String exBloodGroup;
+
+	private String exAdhaarNumber;
+	private String exEmailId;
+	private String exIdentificationMark;
+
+	private String exFatherName;
+	private String exFatherNameInHindi;
+	private String exParentContactDetails;
+	private String exFatherOccupation;
+	private Double exAnnualIncome;
+	private String exMotherName;
+	private String exMotherNameInHindi;
+	
+	@Column(columnDefinition="TEXT")
+	private String exPermanentAddress;
+	
+	@Column(columnDefinition="TEXT")
+	private String exPresentAddress;
+	private String exLocalGurdian;
+	private String exlocalGurdianInHindi;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "student_admission_id", nullable = false)
+	private Studentadmission studentadmission;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	@Column(columnDefinition = "Integer DEFAULT 0")
+	private Integer exIsPersonalDetailsApprove;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
+	
+	
+	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Integer getExIsPersonalDetailsApprove() {
+		return exIsPersonalDetailsApprove;
+	}
+
+	public void setExIsPersonalDetailsApprove(Integer exIsPersonalDetailsApprove) {
+		this.exIsPersonalDetailsApprove = exIsPersonalDetailsApprove;
+	}
+
+	/*@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+*/
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	/*public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}*/
+
+	/*public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+*/
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExMotherTounge() {
+		return exMotherTounge;
+	}
+
+	public void setExMotherTounge(String exMotherTounge) {
+		this.exMotherTounge = exMotherTounge;
+	}
+
+	public String getExReligion() {
+		return exReligion;
+	}
+
+	public void setExReligion(String exReligion) {
+		this.exReligion = exReligion;
+	}
+
+	public String getExGender() {
+		return exGender;
+	}
+
+	public void setExGender(String exGender) {
+		this.exGender = exGender;
+	}
+
+	public String getExBloodGroup() {
+		return exBloodGroup;
+	}
+
+	public void setExBloodGroup(String exBloodGroup) {
+		this.exBloodGroup = exBloodGroup;
+	}
+
+	public String getExAdhaarNumber() {
+		return exAdhaarNumber;
+	}
+
+	public void setExAdhaarNumber(String exAdhaarNumber) {
+		this.exAdhaarNumber = exAdhaarNumber;
+	}
+
+	public String getExNationality() {
+		return exNationality;
+	}
+
+	public void setExNationality(String exNationality) {
+		this.exNationality = exNationality;
+	}
+
+	
+
+	public String getExDateOfBirth() {
+		return exDateOfBirth;
+	}
+
+	public void setExDateOfBirth(String exDateOfBirth) {
+		this.exDateOfBirth = exDateOfBirth;
+	}
+
+	public String getExFatherName() {
+		return exFatherName;
+	}
+
+	public void setExFatherName(String exFatherName) {
+		this.exFatherName = exFatherName;
+	}
+
+	public String getExMotherName() {
+		return exMotherName;
+	}
+
+	public void setExMotherName(String exMotherName) {
+		this.exMotherName = exMotherName;
+	}
+
+	public String getExContactDetails() {
+		return exContactDetails;
+	}
+
+	public void setExContactDetails(String exContactDetails) {
+		this.exContactDetails = exContactDetails;
+	}
+
+	public Double getExWeight() {
+		return exWeight;
+	}
+
+	public void setExWeight(Double exWeight) {
+		this.exWeight = exWeight;
+	}
+
+	public String getExEmailId() {
+		return exEmailId;
+	}
+
+	public void setExEmailId(String exEmailId) {
+		this.exEmailId = exEmailId;
+	}
+
+	public Double getExHeight() {
+		return exHeight;
+	}
+
+	public void setExHeight(Double double1) {
+		this.exHeight = double1;
+	}
+
+	public String getExFatherNameInHindi() {
+		return exFatherNameInHindi;
+	}
+
+	public void setExFatherNameInHindi(String exFatherNameInHindi) {
+		this.exFatherNameInHindi = exFatherNameInHindi;
+	}
+
+	public String getExParentContactDetails() {
+		return exParentContactDetails;
+	}
+
+	public void setExParentContactDetails(String exParentContactDetails) {
+		this.exParentContactDetails = exParentContactDetails;
+	}
+
+	public Double getExAnnualIncome() {
+		return exAnnualIncome;
+	}
+
+	public void setExAnnualIncome(Double exAnnualIncome) {
+		this.exAnnualIncome = exAnnualIncome;
+	}
+
+	public String getExMotherNameInHindi() {
+		return exMotherNameInHindi;
+	}
+
+	public void setExMotherNameInHindi(String exMotherNameInHindi) {
+		this.exMotherNameInHindi = exMotherNameInHindi;
+	}
+
+	public String getExPermanentAddress() {
+		return exPermanentAddress;
+	}
+
+	public void setExPermanentAddress(String exPermanentAddress) {
+		this.exPermanentAddress = exPermanentAddress;
+	}
+
+	public String getExPresentAddress() {
+		return exPresentAddress;
+	}
+
+	public void setExPresentAddress(String exPresentAddress) {
+		this.exPresentAddress = exPresentAddress;
+	}
+
+	public String getExLocalGurdian() {
+		return exLocalGurdian;
+	}
+
+	public void setExLocalGurdian(String exLocalGurdian) {
+		this.exLocalGurdian = exLocalGurdian;
+	}
+
+	public String getExlocalGurdianInHindi() {
+		return exlocalGurdianInHindi;
+	}
+
+	public void setExlocalGurdianInHindi(String exlocalGurdianInHindi) {
+		this.exlocalGurdianInHindi = exlocalGurdianInHindi;
+	}
+
+	public String getExIdentificationMark() {
+		return exIdentificationMark;
+	}
+
+	public void setExIdentificationMark(String exIdentificationMark) {
+		this.exIdentificationMark = exIdentificationMark;
+	}
+
+	public String getExNativeState() {
+		return exNativeState;
+	}
+
+	public void setExNativeState(String exNativeState) {
+		this.exNativeState = exNativeState;
+	}
+
+	public String getExFatherOccupation() {
+		return exFatherOccupation;
+	}
+
+	public void setExFatherOccupation(String exFatherOccupation) {
+		this.exFatherOccupation = exFatherOccupation;
+	}
+
+	@Override
+	public String toString() {
+		return "Studentpersonal [id=" + id + ", exDateOfBirth=" + exDateOfBirth + ", exContactDetails="
+				+ exContactDetails + ", exGender=" + exGender + ", exNationality=" + exNationality + ", exNativeState="
+				+ exNativeState + ", exReligion=" + exReligion + ", exMotherTounge=" + exMotherTounge + ", exWeight="
+				+ exWeight + ", exHeight=" + exHeight + ", exBloodGroup=" + exBloodGroup + ", exAdhaarNumber="
+				+ exAdhaarNumber + ", exEmailId=" + exEmailId + ", exIdentificationMark=" + exIdentificationMark
+				+ ", exFatherName=" + exFatherName + ", exFatherNameInHindi=" + exFatherNameInHindi
+				+ ", exParentContactDetails=" + exParentContactDetails + ", exFatherOccupation=" + exFatherOccupation
+				+ ", exAnnualIncome=" + exAnnualIncome + ", exMotherName=" + exMotherName + ", exMotherNameInHindi="
+				+ exMotherNameInHindi + ", exPermanentAddress=" + exPermanentAddress + ", exPresentAddress="
+				+ exPresentAddress + ", exLocalGurdian=" + exLocalGurdian + ", exlocalGurdianInHindi="
+				+ exlocalGurdianInHindi + ", studentadmission=" + studentadmission + ", exCreateDate=" + exCreateDate
+				+ ", exUpdateDate=" + exUpdateDate + ", exIsPersonalDetailsApprove=" + exIsPersonalDetailsApprove
+				+ ", user=" + user + "]";
+	}
+
+	
+	
+
+
+}

@@ -1,0 +1,121 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+@Entity
+@Table(name = "ex_student_penalty_details")
+public class StudentPenaltyDetails {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String name;
+	
+	private String exRollNo;
+	
+    @ManyToOne( optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "student_admission_id", nullable = false)
+	private Studentadmission studentadmission;
+    
+    @ManyToOne( optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "approvetype_id", nullable = false)
+	private ApproveType approvetype;
+    
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date createDate;	
+	private String remark;		
+	private Boolean isPaid;	
+	private String documentPath;
+	private String orderId;
+	private Double amount;
+	public Long getId() {
+		return id;
+	}
+	public String getName() {
+		return name;
+	}
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+	public ApproveType getApprovetype() {
+		return approvetype;
+	}
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public Boolean getIsPaid() {
+		return isPaid;
+	}
+	public String getDocumentPath() {
+		return documentPath;
+	}
+	public String getOrderId() {
+		return orderId;
+	}
+	public Double getAmount() {
+		return amount;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+	public void setApprovetype(ApproveType approvetype) {
+		this.approvetype = approvetype;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	public void setIsPaid(Boolean isPaid) {
+		this.isPaid = isPaid;
+	}
+	public void setDocumentPath(String documentPath) {
+		this.documentPath = documentPath;
+	}
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+	@Override
+	public String toString() {
+		return "StudentPenaltyDetails [id=" + id + ", name=" + name + ", exRollNo=" + exRollNo + ", studentadmission="
+				+ studentadmission + ", approvetype=" + approvetype + ", createDate=" + createDate + ", remark="
+				+ remark + ", isPaid=" + isPaid + ", documentPath=" + documentPath + ", orderId=" + orderId
+				+ ", amount=" + amount + "]";
+	}
+	
+	
+}

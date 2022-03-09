@@ -1,0 +1,27 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.QuestionPaperVersion;
+
+public interface QuestionPaperVersionRepository  extends CrudRepository <QuestionPaperVersion, Long> {
+
+	List<QuestionPaperVersion> findByAcademicYearIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndExVersionInAndProgrammesIdAndDepartmentId(
+			Long academicYear, Long courses, Long degree, Long examAnnouncement, List<String> versionList,
+			Long programmes, Long department);
+
+	@Query(value = "SELECT * FROM ex_question_paper_version where academic_year_id=?1 and courses_id=?2 and degree_id=?3 and exam_announcement_id=?4 and ex_version=?5 and department_id =?6 and programmes_id=?7  group by question_paper_pattern_id", nativeQuery = true)
+	List<QuestionPaperVersion> getpatterns( Long academicYear, Long courses, Long degree,
+			Long examAnnouncement, String exVersion, Long department, Long programmes);
+
+	List<QuestionPaperVersion> findByAcademicYearIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndQuestionPaperPatternIdAndExVersionAndDepartmentIdAndProgrammesId(
+			Long academicYear, Long courses, Long degree, Long examAnnouncement, Long id, String exVersion,
+			Long department, Long programmes);
+
+	List<QuestionPaperVersion> findByAcademicYearIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndExQuestionNumAndExType(
+			Long academicYear, Long courses, Long degree, Long examAnnouncement, int exQuestionNum, String string);
+
+}

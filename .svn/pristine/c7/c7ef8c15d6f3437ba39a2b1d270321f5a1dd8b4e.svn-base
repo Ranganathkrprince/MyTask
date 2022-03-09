@@ -1,0 +1,60 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name = "ex_about_feedback_scale")
+public class AboutFeedBackScaleMapping {
+	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "about_feed_back_id", nullable = false)
+	private AboutFeedBack aboutFeedBack;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "scale_id", nullable = false)
+	private Scale scale;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public AboutFeedBack getAboutFeedBack() {
+		return aboutFeedBack;
+	}
+
+	public void setAboutFeedBack(AboutFeedBack aboutFeedBack) {
+		this.aboutFeedBack = aboutFeedBack;
+	}
+
+	public Scale getScale() {
+		return scale;
+	}
+
+	public void setScale(Scale scale) {
+		this.scale = scale;
+	}
+
+	@Override
+	public String toString() {
+		return "AboutFeedBackScaleMapping [id=" + id + ", aboutFeedBack="
+				+ aboutFeedBack + ", scale=" + scale + "]";
+	}
+
+
+}

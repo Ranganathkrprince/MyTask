@@ -1,0 +1,172 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotNull;
+
+import org.springframework.web.multipart.MultipartFile;
+
+public class LateRegistrationRequest {
+	
+	
+	@NotNull(message = "academicYear is required")
+    private Long academicYear;    
+
+	@NotNull(message = "colleges is required")
+	 private Long colleges; 
+	
+	@NotNull(message = "degree is required")
+	private Long degree;
+	
+	@NotNull(message = "programmes is required")
+	private Long programmes; 
+	
+	@NotNull(message = "department is required")
+	private Long department; 
+	
+	
+	@NotNull(message = "semester is required")
+	private Long semester; 
+
+	@NotNull(message = "student is required")
+	private Long student; 
+	
+	@NotNull(message = "programmeYear is required")
+    private Long programmeYear; 
+	   
+	@NotNull(message = "remark is required")
+    private String exremark; 
+    
+    private MultipartFile exdocument;
+    
+	@NotNull(message = "exIsApproveType is required")
+    private Integer exIsApproveType;
+
+	
+	 private Long courses;
+	 
+	 private Long coursesType;
+
+	 private Long mentor;
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public Long getColleges() {
+		return colleges;
+	}
+
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+
+	public Long getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+	public Long getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+
+	public Long getSemester() {
+		return semester;
+	}
+
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+
+	public Long getStudent() {
+		return student;
+	}
+
+	public void setStudent(Long student) {
+		this.student = student;
+	}
+
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public String getExremark() {
+		return exremark;
+	}
+
+	public void setExremark(String exremark) {
+		this.exremark = exremark;
+	}
+
+	public MultipartFile getExdocument() {
+		return exdocument;
+	}
+
+	public void setExdocument(MultipartFile exdocument) {
+		this.exdocument = exdocument;
+	}
+
+	public Integer getExIsApproveType() {
+		return exIsApproveType;
+	}
+
+	public void setExIsApproveType(Integer exIsApproveType) {
+		this.exIsApproveType = exIsApproveType;
+	}
+
+	public Long getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+
+	public Long getCoursesType() {
+		return coursesType;
+	}
+
+	public void setCoursesType(Long coursesType) {
+		this.coursesType = coursesType;
+	}
+
+	public Long getMentor() {
+		return mentor;
+	}
+
+	public void setMentor(Long mentor) {
+		this.mentor = mentor;
+	}
+
+	@Override
+	public String toString() {
+		return "LateRegistrationRequest [academicYear=" + academicYear + ", colleges=" + colleges + ", degree=" + degree
+				+ ", programmes=" + programmes + ", department=" + department + ", semester=" + semester + ", student="
+				+ student + ", programmeYear=" + programmeYear + ", exremark=" + exremark + ", exdocument=" + exdocument
+				+ ", exIsApproveType=" + exIsApproveType + ", courses=" + courses + ", coursesType=" + coursesType
+				+ ", mentor=" + mentor + "]";
+	}
+
+	
+	
+}

@@ -1,0 +1,319 @@
+package com.niftem.app.model;
+
+public class StudentProfile {
+
+	private Long id;
+	
+	private String exDetailsQualification;
+	
+	private Double exPercentageOfMarks;
+	
+	private String exDocumentPath;
+	
+	private String exName;
+	private String exNameInHindi;
+	
+	private String exDateOfBirth;
+
+	private String exContactDetails;
+	private String exGender;
+	private String exNationality;
+	private String exNativeState;;
+	private String exReligion;
+	private String exMotherTounge;
+	private Double exWeight;
+	private Double exHeight;
+	private String exBloodGroup;
+
+	private String exAdhaarNumber;
+	private String exEmailId;
+	private String exIdentificationMark;
+
+	private String exFatherName;
+	private String exFatherNameInHindi;
+	
+	private String exParentContactDetails;
+	
+	private String exFatherOccupation;
+	
+	private Double exAnnualIncome;
+	
+	private String exMotherName;
+	private String exMotherNameInHindi;
+	
+	private String exRollNo;
+	
+	private String exPermanentAddress;
+	
+	private String exPresentAddress;
+	
+	private String exLocalGurdian;
+	
+	private String exlocalGurdianInHindi;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExDetailsQualification() {
+		return exDetailsQualification;
+	}
+
+	public Double getExPercentageOfMarks() {
+		return exPercentageOfMarks;
+	}
+
+	public String getExDocumentPath() {
+		return exDocumentPath;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public String getExNameInHindi() {
+		return exNameInHindi;
+	}
+
+	public String getExDateOfBirth() {
+		return exDateOfBirth;
+	}
+
+	public String getExContactDetails() {
+		return exContactDetails;
+	}
+
+	public String getExGender() {
+		return exGender;
+	}
+
+	public String getExNationality() {
+		return exNationality;
+	}
+
+	public String getExNativeState() {
+		return exNativeState;
+	}
+
+	public String getExReligion() {
+		return exReligion;
+	}
+
+	public String getExMotherTounge() {
+		return exMotherTounge;
+	}
+
+	public Double getExWeight() {
+		return exWeight;
+	}
+
+	public Double getExHeight() {
+		return exHeight;
+	}
+
+	public String getExBloodGroup() {
+		return exBloodGroup;
+	}
+
+	public String getExAdhaarNumber() {
+		return exAdhaarNumber;
+	}
+
+	public String getExEmailId() {
+		return exEmailId;
+	}
+
+	public String getExIdentificationMark() {
+		return exIdentificationMark;
+	}
+
+	public String getExFatherName() {
+		return exFatherName;
+	}
+
+	public String getExFatherNameInHindi() {
+		return exFatherNameInHindi;
+	}
+
+	public String getExParentContactDetails() {
+		return exParentContactDetails;
+	}
+
+	public String getExFatherOccupation() {
+		return exFatherOccupation;
+	}
+
+	public Double getExAnnualIncome() {
+		return exAnnualIncome;
+	}
+
+	public String getExMotherName() {
+		return exMotherName;
+	}
+
+	public String getExMotherNameInHindi() {
+		return exMotherNameInHindi;
+	}
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public String getExPermanentAddress() {
+		return exPermanentAddress;
+	}
+
+	public String getExPresentAddress() {
+		return exPresentAddress;
+	}
+
+	public String getExLocalGurdian() {
+		return exLocalGurdian;
+	}
+
+	public String getExlocalGurdianInHindi() {
+		return exlocalGurdianInHindi;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExDetailsQualification(String exDetailsQualification) {
+		this.exDetailsQualification = exDetailsQualification;
+	}
+
+	public void setExPercentageOfMarks(Double exPercentageOfMarks) {
+		this.exPercentageOfMarks = exPercentageOfMarks;
+	}
+
+	public void setExDocumentPath(String exDocumentPath) {
+		this.exDocumentPath = exDocumentPath;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public void setExNameInHindi(String exNameInHindi) {
+		this.exNameInHindi = exNameInHindi;
+	}
+
+	public void setExDateOfBirth(String exDateOfBirth) {
+		this.exDateOfBirth = exDateOfBirth;
+	}
+
+	public void setExContactDetails(String exContactDetails) {
+		this.exContactDetails = exContactDetails;
+	}
+
+	public void setExGender(String exGender) {
+		this.exGender = exGender;
+	}
+
+	public void setExNationality(String exNationality) {
+		this.exNationality = exNationality;
+	}
+
+	public void setExNativeState(String exNativeState) {
+		this.exNativeState = exNativeState;
+	}
+
+	public void setExReligion(String exReligion) {
+		this.exReligion = exReligion;
+	}
+
+	public void setExMotherTounge(String exMotherTounge) {
+		this.exMotherTounge = exMotherTounge;
+	}
+
+	public void setExWeight(Double exWeight) {
+		this.exWeight = exWeight;
+	}
+
+	public void setExHeight(Double exHeight) {
+		this.exHeight = exHeight;
+	}
+
+	public void setExBloodGroup(String exBloodGroup) {
+		this.exBloodGroup = exBloodGroup;
+	}
+
+	public void setExAdhaarNumber(String exAdhaarNumber) {
+		this.exAdhaarNumber = exAdhaarNumber;
+	}
+
+	public void setExEmailId(String exEmailId) {
+		this.exEmailId = exEmailId;
+	}
+
+	public void setExIdentificationMark(String exIdentificationMark) {
+		this.exIdentificationMark = exIdentificationMark;
+	}
+
+	public void setExFatherName(String exFatherName) {
+		this.exFatherName = exFatherName;
+	}
+
+	public void setExFatherNameInHindi(String exFatherNameInHindi) {
+		this.exFatherNameInHindi = exFatherNameInHindi;
+	}
+
+	public void setExParentContactDetails(String exParentContactDetails) {
+		this.exParentContactDetails = exParentContactDetails;
+	}
+
+	public void setExFatherOccupation(String exFatherOccupation) {
+		this.exFatherOccupation = exFatherOccupation;
+	}
+
+	public void setExAnnualIncome(Double exAnnualIncome) {
+		this.exAnnualIncome = exAnnualIncome;
+	}
+
+	public void setExMotherName(String exMotherName) {
+		this.exMotherName = exMotherName;
+	}
+
+	public void setExMotherNameInHindi(String exMotherNameInHindi) {
+		this.exMotherNameInHindi = exMotherNameInHindi;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	public void setExPermanentAddress(String exPermanentAddress) {
+		this.exPermanentAddress = exPermanentAddress;
+	}
+
+	public void setExPresentAddress(String exPresentAddress) {
+		this.exPresentAddress = exPresentAddress;
+	}
+
+	public void setExLocalGurdian(String exLocalGurdian) {
+		this.exLocalGurdian = exLocalGurdian;
+	}
+
+	public void setExlocalGurdianInHindi(String exlocalGurdianInHindi) {
+		this.exlocalGurdianInHindi = exlocalGurdianInHindi;
+	}
+
+	@Override
+	public String toString() {
+		return "StudentProfile [id=" + id + ", exDetailsQualification=" + exDetailsQualification
+				+ ", exPercentageOfMarks=" + exPercentageOfMarks + ", exDocumentPath=" + exDocumentPath + ", exName="
+				+ exName + ", exNameInHindi=" + exNameInHindi + ", exDateOfBirth=" + exDateOfBirth
+				+ ", exContactDetails=" + exContactDetails + ", exGender=" + exGender + ", exNationality="
+				+ exNationality + ", exNativeState=" + exNativeState + ", exReligion=" + exReligion
+				+ ", exMotherTounge=" + exMotherTounge + ", exWeight=" + exWeight + ", exHeight=" + exHeight
+				+ ", exBloodGroup=" + exBloodGroup + ", exAdhaarNumber=" + exAdhaarNumber + ", exEmailId=" + exEmailId
+				+ ", exIdentificationMark=" + exIdentificationMark + ", exFatherName=" + exFatherName
+				+ ", exFatherNameInHindi=" + exFatherNameInHindi + ", exParentContactDetails=" + exParentContactDetails
+				+ ", exFatherOccupation=" + exFatherOccupation + ", exAnnualIncome=" + exAnnualIncome
+				+ ", exMotherName=" + exMotherName + ", exMotherNameInHindi=" + exMotherNameInHindi + ", exRollNo="
+				+ exRollNo + ", exPermanentAddress=" + exPermanentAddress + ", exPresentAddress=" + exPresentAddress
+				+ ", exLocalGurdian=" + exLocalGurdian + ", exlocalGurdianInHindi=" + exlocalGurdianInHindi + "]";
+	}
+	
+}

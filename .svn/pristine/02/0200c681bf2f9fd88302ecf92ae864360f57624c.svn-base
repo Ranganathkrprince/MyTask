@@ -1,0 +1,132 @@
+package com.niftem.app.model;
+
+import java.util.Date;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class QuestionPaperTopicRequest {
+	private Long id;
+
+	@NotNull(message = "Please provide a exIsActive 0/1")
+	 private Boolean exIsActive;
+	
+	private Boolean exIsDelete;
+	private Long user;
+	
+	private Date exCreateDate;
+
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a QPType")
+	private String exQpTopic;
+
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide Identifier")
+    private String exIdentifier;
+	
+
+	private Date exUpdateDate;
+
+
+	private String exDescription;
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+
+	public Long getUser() {
+		return user;
+	}
+
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+
+	public String getExQpTopic() {
+		return exQpTopic;
+	}
+
+
+	public void setExQpTopic(String exQpTopic) {
+		this.exQpTopic = exQpTopic;
+	}
+
+
+	public String getExIdentifier() {
+		return exIdentifier;
+	}
+
+
+	public void setExIdentifier(String exIdentifier) {
+		this.exIdentifier = exIdentifier;
+	}
+
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+
+	
+	
+	 @Override
+		public String toString() {
+			return "QuestionPaperTopicRequest [id=" + id + ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete
+					+ ", user=" + user + ", exCreateDate=" + exCreateDate + ", exQpTopic=" + exQpTopic + ", exIdentifier="
+					+ exIdentifier + ", exUpdateDate=" + exUpdateDate + ", exDescription=" + exDescription + "]";
+		}
+
+}

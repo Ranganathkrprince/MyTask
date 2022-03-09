@@ -1,0 +1,28 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Dashboard;
+
+@Repository
+public interface DashboardRepository extends JpaRepository<Dashboard, Long> {
+
+	List<Dashboard> findByUserIdAndExIsDeleteAndExIsActive(Long user, boolean b, boolean c);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_dashboard_count set academic_year = ?1,colleges=?2 ,programmes = ?3,programme_year=?4  ,semester = ?5,start_date=?6 ,end_date = ?7,ex_update_date=?8  ,degree=?9 , courses = ?11 where user_id =?10", nativeQuery = true)
+
+	int updaterecords(String academicYear, String college,  String programmes, String programmeYear,
+			String semester, Object object, Object object2, Date date,  String degree,Long user, String courses);
+
+	List<Dashboard> findByExIsDeleteAndExIsActive(boolean b, boolean c);
+
+}

@@ -1,0 +1,394 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_semester_registration")
+public class SemesterRegistration {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "stream_id", nullable = true)
+	private Stream stream;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "student_admission_id", nullable = false)
+	private Studentadmission studentadmission;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "registrationtype_id", nullable = false)
+	private RegistrationType registrationType;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_admitted_date", columnDefinition = "DATETIME")
+	private Date exAdmittedDate;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsPaid;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsRegistration;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsApproved;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exSemesterStatus;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsHostelApprove;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsLibraryApprove;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsEligible;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsAttendence;
+
+	private Float exAttendencePrecentage;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDeanApprove;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsExaminationApprove;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsItDepartmentApprove;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsComputerlabApprove;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsAccountsApprove;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsMentorApprove;
+
+	public Long getId() {
+		return id;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public Stream getStream() {
+		return stream;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public RegistrationType getRegistrationType() {
+		return registrationType;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public Date getExAdmittedDate() {
+		return exAdmittedDate;
+	}
+
+	public Boolean getExIsPaid() {
+		return exIsPaid;
+	}
+
+	public Boolean getExIsRegistration() {
+		return exIsRegistration;
+	}
+
+	public Boolean getExIsApproved() {
+		return exIsApproved;
+	}
+
+	public Boolean getExSemesterStatus() {
+		return exSemesterStatus;
+	}
+
+	public Boolean getExIsHostelApprove() {
+		return exIsHostelApprove;
+	}
+
+	public Boolean getExIsLibraryApprove() {
+		return exIsLibraryApprove;
+	}
+
+	public Boolean getExIsEligible() {
+		return exIsEligible;
+	}
+
+	public Boolean getExIsAttendence() {
+		return exIsAttendence;
+	}
+
+	public Float getExAttendencePrecentage() {
+		return exAttendencePrecentage;
+	}
+
+	public Boolean getExIsDeanApprove() {
+		return exIsDeanApprove;
+	}
+
+	public Boolean getExIsExaminationApprove() {
+		return exIsExaminationApprove;
+	}
+
+	public Boolean getExIsItDepartmentApprove() {
+		return exIsItDepartmentApprove;
+	}
+
+	public Boolean getExIsComputerlabApprove() {
+		return exIsComputerlabApprove;
+	}
+
+	public Boolean getExIsAccountsApprove() {
+		return exIsAccountsApprove;
+	}
+
+	public Boolean getExIsMentorApprove() {
+		return exIsMentorApprove;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public void setStream(Stream stream) {
+		this.stream = stream;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setRegistrationType(RegistrationType registrationType) {
+		this.registrationType = registrationType;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setExAdmittedDate(Date exAdmittedDate) {
+		this.exAdmittedDate = exAdmittedDate;
+	}
+
+	public void setExIsPaid(Boolean exIsPaid) {
+		this.exIsPaid = exIsPaid;
+	}
+
+	public void setExIsRegistration(Boolean exIsRegistration) {
+		this.exIsRegistration = exIsRegistration;
+	}
+
+	public void setExIsApproved(Boolean exIsApproved) {
+		this.exIsApproved = exIsApproved;
+	}
+
+	public void setExSemesterStatus(Boolean exSemesterStatus) {
+		this.exSemesterStatus = exSemesterStatus;
+	}
+
+	public void setExIsHostelApprove(Boolean exIsHostelApprove) {
+		this.exIsHostelApprove = exIsHostelApprove;
+	}
+
+	public void setExIsLibraryApprove(Boolean exIsLibraryApprove) {
+		this.exIsLibraryApprove = exIsLibraryApprove;
+	}
+
+	public void setExIsEligible(Boolean exIsEligible) {
+		this.exIsEligible = exIsEligible;
+	}
+
+	public void setExIsAttendence(Boolean exIsAttendence) {
+		this.exIsAttendence = exIsAttendence;
+	}
+
+	public void setExAttendencePrecentage(Float exAttendencePrecentage) {
+		this.exAttendencePrecentage = exAttendencePrecentage;
+	}
+
+	public void setExIsDeanApprove(Boolean exIsDeanApprove) {
+		this.exIsDeanApprove = exIsDeanApprove;
+	}
+
+	public void setExIsExaminationApprove(Boolean exIsExaminationApprove) {
+		this.exIsExaminationApprove = exIsExaminationApprove;
+	}
+
+	public void setExIsItDepartmentApprove(Boolean exIsItDepartmentApprove) {
+		this.exIsItDepartmentApprove = exIsItDepartmentApprove;
+	}
+
+	public void setExIsComputerlabApprove(Boolean exIsComputerlabApprove) {
+		this.exIsComputerlabApprove = exIsComputerlabApprove;
+	}
+
+	public void setExIsAccountsApprove(Boolean exIsAccountsApprove) {
+		this.exIsAccountsApprove = exIsAccountsApprove;
+	}
+
+	public void setExIsMentorApprove(Boolean exIsMentorApprove) {
+		this.exIsMentorApprove = exIsMentorApprove;
+	}
+
+	@Override
+	public String toString() {
+		return "SemesterRegistration [id=" + id + ", academicYear=" + academicYear + ", colleges=" + colleges
+				+ ", degree=" + degree + ", programmes=" + programmes + ", department=" + department + ", stream="
+				+ stream + ", semester=" + semester + ", studentadmission=" + studentadmission + ", programmeYear="
+				+ programmeYear + ", registrationType=" + registrationType + ", exIsActive=" + exIsActive
+				+ ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate
+				+ ", exAdmittedDate=" + exAdmittedDate + ", exIsPaid=" + exIsPaid + ", exIsRegistration="
+				+ exIsRegistration + ", exIsApproved=" + exIsApproved + ", exSemesterStatus=" + exSemesterStatus
+				+ ", exIsHostelApprove=" + exIsHostelApprove + ", exIsLibraryApprove=" + exIsLibraryApprove
+				+ ", exIsEligible=" + exIsEligible + ", exIsAttendence=" + exIsAttendence + ", exAttendencePrecentage="
+				+ exAttendencePrecentage + ", exIsDeanApprove=" + exIsDeanApprove + ", exIsExaminationApprove="
+				+ exIsExaminationApprove + ", exIsItDepartmentApprove=" + exIsItDepartmentApprove
+				+ ", exIsComputerlabApprove=" + exIsComputerlabApprove + ", exIsAccountsApprove=" + exIsAccountsApprove
+				+ ", exIsMentorApprove=" + exIsMentorApprove + "]";
+	}
+
+
+	
+}

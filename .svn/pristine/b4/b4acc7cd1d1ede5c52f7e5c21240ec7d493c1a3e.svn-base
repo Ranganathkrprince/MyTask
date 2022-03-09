@@ -1,0 +1,40 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ex_week_days")
+public class WeekDays {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private String exName;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	@Override
+	public String toString() {
+		return "WeekDays [id=" + id + ", exName=" + exName + "]";
+	}
+	
+}

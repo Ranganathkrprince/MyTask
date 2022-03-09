@@ -1,0 +1,53 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ex_approve_type")
+public class ApproveType {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+    private String exName;
+    
+    private String exIdentifier;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public String getExIdentifier() {
+		return exIdentifier;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public void setExIdentifier(String exIdentifier) {
+		this.exIdentifier = exIdentifier;
+	}
+
+	@Override
+	public String toString() {
+		return "ApproveType [id=" + id + ", exName=" + exName + ", exIdentifier=" + exIdentifier + "]";
+	}
+
+
+	
+   
+}

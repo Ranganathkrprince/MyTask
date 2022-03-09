@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="college-rpt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="90005b79-1b15-4016-8ebc-4b9d4b68c61e">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<parameter name="academicYear" class="java.lang.String"/>
+	<parameter name="examannouncement" class="java.lang.String"/>
+	<parameter name="degree" class="java.lang.String"/>
+	<parameter name="programme" class="java.lang.String"/>
+	<parameter name="department" class="java.lang.String"/>
+	<parameter name="delete" class="java.lang.Boolean"/>
+	<parameter name="createdBy" class="java.lang.String"/>
+	<parameter name="exExamType" class="java.lang.String"/>
+	<parameter name="university" class="java.lang.String"/>
+	<parameter name="type" class="java.lang.String"/>
+	<parameter name="registrationType" class="java.lang.String"/>
+	<parameter name="logo" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="programmeIdentifier" class="java.lang.String"/>
+	<parameter name="semester" class="java.lang.String"/>
+	<parameter name="streamM" class="java.lang.String"/>
+	<parameter name="todayAsString" class="java.lang.String"/>
+	<parameter name="Coe" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Narender" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Monthofthename" class="java.lang.String"/>
+	<parameter name="logo1" class="Object"/>
+	<parameter name="emblem" class="Object"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+ (SELECT DISTINCT p.ex_name FROM ex_exam_timetable e ,ex_department p WHERE e.department_id=  $P{department}   and p.id=e.department_id) AS depart,
+ 
+ 
+      d.ex_name as degreename,
+      p.ex_name as programmename,
+      e.ex_start_date,
+      ex.ex_name as exam,
+      e.ex_start_time,
+      e.ex_end_time,
+      DAYNAME(e.ex_start_date) as daynames,
+      concat(c.ex_courses_code, ' ', '(', h.ex_credit_hour_title,')') as "course1"
+			
+    FROM ( SELECT DISTINCT  ex_start_date,exam_announcement_id,ex_start_time,ex_end_time,programmes_id,degree_id
+
+	    	FROM    ex_exam_timetable f
+
+     where	 f.exam_announcement_id=$P{examannouncement} AND f.programmes_id=$P{programme} AND f.degree_id=$P{degree} AND f.department_id=$P{department}   and
+			 f.academicyear_id=$P{academicYear} and registration_type_id=$P{registrationType} and ex_is_update ='1' and ex_exam_type=$P{exExamType} group by ex_start_date
+
+		   )e
+	left Join ex_exam_timetable e1 on e1.ex_start_date = e.ex_start_date and e1.department_id= $P{department}   
+	
+  LEFT JOIN ex_courses c ON c.id = e1.courses_id
+ 
+
+  LEFT JOIN ex_credit_hours h ON h.id = c.credit_hours_id AND c.id = e1.courses_id
+ 
+  LEFT JOIN ex_exam_announcement ex ON ex.id = e.exam_announcement_id
+   LEFT JOIN ex_programmes p ON p.id = e.programmes_id
+    LEFT JOIN ex_degree d ON d.id = e.degree_id ORDER BY e1.ex_start_date asc]]>
+	</queryString>
+	<field name="depart" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="depart"/>
+	</field>
+	<field name="ex_start_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ex_start_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ex_exam_timetable_details"/>
+	</field>
+	<field name="ex_start_time" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ex_start_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ex_exam_timetable_details"/>
+	</field>
+	<field name="ex_end_time" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="ex_end_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ex_exam_timetable_details"/>
+	</field>
+	<field name="exam" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="exam"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ex_exam_announcement"/>
+	</field>
+	<field name="daynames" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="daynames"/>
+	</field>
+	<field name="course1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="course1"/>
+	</field>
+	<field name="Field_1" class="java.lang.String"/>
+	<field name="coursenames" class="java.lang.String"/>
+	<field name="endtime" class="java.lang.String"/>
+	<group name="depart">
+		<groupExpression><![CDATA[$F{depart}]]></groupExpression>
+	</group>
+	<group name="ex_start_time">
+		<groupExpression><![CDATA[$F{ex_start_time}]]></groupExpression>
+	</group>
+	<group name="ex_end_time">
+		<groupExpression><![CDATA[$F{ex_end_time}]]></groupExpression>
+	</group>
+	<group name="ex_start_date">
+		<groupExpression><![CDATA[$F{ex_start_date}]]></groupExpression>
+	</group>
+	<group name="exam">
+		<groupExpression><![CDATA[$F{exam}]]></groupExpression>
+	</group>
+	<group name="daynames">
+		<groupExpression><![CDATA[$F{daynames}]]></groupExpression>
+	</group>
+	<group name="course1">
+		<groupExpression><![CDATA[$F{course1}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="271" splitType="Stretch">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="50" y="177" width="491" height="30" backcolor="#E0DADA" uuid="64b2b1ed-1d95-4076-9f2a-2b6c37c218e7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{programme}+" "+" ( " + $P{programmeIdentifier} + "  ) " + " - " + $P{semester}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="255" width="60" height="16" backcolor="#FACEA0" uuid="d4157d6c-d327-4b3a-9c92-cb59e388c6b8"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" mode="Opaque" x="60" y="255" width="70" height="16" backcolor="#FACEA0" uuid="87c7ec68-9667-42e5-96c5-1c9011b7c1d9"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Day]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" mode="Opaque" x="243" y="255" width="72" height="16" backcolor="#FACEA0" uuid="799d9acd-3c20-4f8a-a6b0-bff62b9f5967"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Course Code"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="50" y="205" width="491" height="23" backcolor="#E0DADA" uuid="9b46939c-6d67-4f5d-863d-cd87e749f642"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{department}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="50" y="132" width="491" height="40" uuid="285a8be1-2e64-41f2-a84d-cf853f3177a5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DATE SHEET FOR  "+$P{type}+" EXAMINATION "+" : "+$P{Monthofthename}+" - "+$P{academicYear}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" mode="Opaque" x="130" y="255" width="113" height="16" backcolor="#FACEA0" uuid="7a9e4cc6-2af4-4433-b3e5-aa9e4e817f51"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Time"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" mode="Opaque" x="315" y="255" width="236" height="16" backcolor="#FACEA0" uuid="a2aee0e8-8fe2-4227-90b3-d708a884bf75"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Course Title"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="51" y="227" width="491" height="26" backcolor="#E0DADA" uuid="ddcb5759-db89-4f15-8d40-5587a720f42b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{streamM}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="83" width="546" height="20" uuid="c13d5ed9-37ba-436f-b1fd-2191808e34f2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Deemed to be University (De-novo Category) under Section-3 of the UGC Act, 1956
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="104" width="551" height="23" uuid="98b674be-1760-440c-9495-82139e0b800e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="14" isBold="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Kundli, Sonepat, Haryana (India) - 131028]]></text>
+			</staticText>
+			<image onErrorType="Blank">
+				<reportElement positionType="Float" x="211" y="2" width="128" height="45" uuid="54b76dd7-bf47-4748-94aa-be0b79825cda">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo1}]]></imageExpression>
+			</image>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="3" y="53" width="553" height="30" forecolor="#229C28" uuid="d5e33a61-1d2c-45fc-9fbf-095f71633aba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{university}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="437" y="1" width="119" height="49" uuid="3dd35844-bfea-457b-a940-43c32553e442">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{emblem}]]></imageExpression>
+			</image>
+			<image onErrorType="Blank">
+				<reportElement positionType="Float" x="10" y="3" width="120" height="44" uuid="c639b88f-6c99-473b-af3f-e765ca85660e"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="243" y="0" width="72" height="22" uuid="1a93ec9b-48a5-4943-9295-68ec1943842d"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{course1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="60" y="0" width="70" height="22" uuid="ceabfdf6-2d0a-4bbe-b717-bad22a006cf3"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{daynames}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="60" height="22" uuid="e14539a2-b8ae-432c-9280-ea3720fd3c35"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Field_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="130" y="0" width="113" height="22" uuid="7d7976a0-8e05-4e56-889c-9dfb7dfc1c80"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ex_start_time} + " - " + $F{endtime}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="315" y="0" width="236" height="22" uuid="758e855d-ca0e-4c49-9b92-855bfdb52cee">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph firstLineIndent="4" rightIndent="0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{coursenames}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="210">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="1" y="15" width="106" height="30" uuid="5dacec3a-2d50-4cf6-8e6f-3ada704662be"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Downloaded Time :"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="105" y="16" width="144" height="30" uuid="6cba06f2-abb8-4870-8ec0-dcb2bd8a7527"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{todayAsString}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="94" y="159" width="451" height="30" uuid="97c2110b-9dc7-4450-8a76-342ba2a89114"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" This is a computer generated report "]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="21" y="158" width="78" height="30" uuid="8162dc81-833b-4336-93f8-2f4a0ec2953e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Disclaimer  :"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="437" y="52" width="108" height="77" uuid="b4e886a9-6a2c-457b-8bc6-ded3d3d0b62f"/>
+				<imageExpression><![CDATA[$P{Coe}]]></imageExpression>
+			</image>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="380" y="127" width="162" height="18" uuid="bf0e81b0-272a-452d-8382-a410d026b491"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Controller of Examination"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="22" y="128" width="96" height="18" uuid="a807aeff-adfa-41be-bddc-1cb54168fbf3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Prepared by"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="11" y="60" width="108" height="77" uuid="6a77ed69-dd93-45cb-bb6d-83e5abe8d15f"/>
+				<imageExpression><![CDATA[$P{Narender}]]></imageExpression>
+			</image>
+		</band>
+	</summary>
+</jasperReport>

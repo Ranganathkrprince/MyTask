@@ -1,0 +1,178 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_certificates_log")
+
+public class CertificatesLog {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
+	private String exFileName;
+
+	private String exUrl;
+
+	
+	
+	private String exRollNo ;
+	
+
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "student_id", nullable = true)
+	private Studentadmission studentadmission;
+	
+	
+
+	@ManyToOne( optional = true)
+	 @JoinColumn(name = "academicyear_id", nullable = true)
+	 private AcademicYear academicyear; 
+	   
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+	  
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExFileName() {
+		return exFileName;
+	}
+
+	public void setExFileName(String exFileName) {
+		this.exFileName = exFileName;
+	}
+
+	public String getExUrl() {
+		return exUrl;
+	}
+
+	public void setExUrl(String exUrl) {
+		this.exUrl = exUrl;
+	}
+
+
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+
+	public AcademicYear getAcademicyear() {
+		return academicyear;
+	}
+
+	public void setAcademicyear(AcademicYear academicyear) {
+		this.academicyear = academicyear;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	@Override
+	public String toString() {
+		return "CertificatesLog [id=" + id + ", exFileName=" + exFileName + ", exUrl=" + exUrl + ", exRollNo="
+				+ exRollNo + ", studentadmission=" + studentadmission + ", academicyear=" + academicyear + ", colleges="
+				+ colleges + ", programmes=" + programmes + ", degree=" + degree + ", user=" + user + ", exCreateDate="
+				+ exCreateDate + "]";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

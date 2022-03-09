@@ -1,0 +1,177 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_account_approve")
+public class AccountApprove {
+		
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "student_admission_id", nullable = false)
+	private Studentadmission studentadmission;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear;
+	
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+	
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsPaid;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
+	
+	private String exRollNo;
+
+	public Long getId() {
+		return id;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Boolean getExIsPaid() {
+		return exIsPaid;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExIsPaid(Boolean exIsPaid) {
+		this.exIsPaid = exIsPaid;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	
+	
+}

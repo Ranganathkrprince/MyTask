@@ -1,0 +1,189 @@
+package com.niftem.app.validation;
+
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.Colleges;
+import com.niftem.app.entity.Courses;
+import com.niftem.app.entity.Degree;
+import com.niftem.app.entity.ExamAnnouncement;
+import com.niftem.app.entity.ProgrammeYear;
+import com.niftem.app.entity.Programmes;
+import com.niftem.app.entity.RegistrationType;
+import com.niftem.app.entity.Semster;
+import com.niftem.app.util.AutoManager;
+
+@Component
+public class CommonValidations extends AutoManager {
+	private static Logger logger = LoggerFactory.getLogger("master-log");
+	private static Logger excellog = LoggerFactory.getLogger("excel-log");
+	
+	
+	  public Object printCellValue(int cellType, Cell cell) { String strCellValue =
+	  null; switch (cell.getCellType()) { case Cell.CELL_TYPE_BOOLEAN: strCellValue
+	  = new String(new Boolean(cell.getBooleanCellValue()).toString()); break; case
+	  Cell.CELL_TYPE_STRING: strCellValue= cell.getStringCellValue(); break; case
+	  Cell.CELL_TYPE_NUMERIC: if (DateUtil.isCellDateFormatted(cell)) {
+	  SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	  strCellValue= dateFormat.format(cell.getDateCellValue()); } else { Double
+	  value = cell.getNumericCellValue(); Long longValue = value.longValue();
+	  strCellValue = new String(longValue.toString()); } break; case
+	  Cell.CELL_TYPE_FORMULA: strCellValue= cell.getCellFormula(); break; case
+	 Cell.CELL_TYPE_BLANK: strCellValue= ""; break; } return strCellValue; }
+	 
+	
+	
+	public Workbook getWorkbook(FileInputStream inputStream, String excelFilePath) throws IOException {
+		Workbook workbook = null;
+		if (excelFilePath.endsWith("xlsx")) {
+			workbook = new XSSFWorkbook(inputStream);
+		} else if (excelFilePath.endsWith("xls")) {
+			workbook = new HSSFWorkbook(inputStream);
+		} else {
+			throw new IllegalArgumentException("The specified file is not Excel file");
+		}
+		return workbook;
+	}
+
+	public Object getCellValue(Cell cell) {
+		switch (cell.getCellType()) {
+		case Cell.CELL_TYPE_STRING:
+			return cell.getStringCellValue();
+
+		case Cell.CELL_TYPE_NUMERIC:
+			return cell.getNumericCellValue();
+
+		case Cell.CELL_TYPE_FORMULA:
+			return cell.getStringCellValue();
+
+		case Cell.CELL_TYPE_BLANK:
+			return cell.getStringCellValue();
+
+		default:
+			return null;
+		}
+	}
+	
+	public boolean isNumeric(String strNum) {
+	    if (strNum == null) {
+	        return false;
+	    }
+	    try {
+	        double d = Double.parseDouble(strNum);
+	    } catch (NumberFormatException nfe) {
+	        return false;
+	    }
+	    return true;
+	}
+	
+	public Date checkDate(String value) {
+		Date date  = null;
+		try {			
+			if(isNumeric(value) && !value.trim().equals("NA")) {
+				double doublevalue = Double.parseDouble(value.toString());						
+				date = DateUtil.getJavaDate((double) doublevalue );						
+			}else if(!value.toString().trim().equals("NA")) {
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+				date=dateFormat.parse(value.toString());
+			}else {
+				date = null;
+			}
+			return date;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return date;
+		
+	}
+
+	public Date checkTime(String value) {
+			Date date  = null;
+			try {			
+				if(isNumeric(value) && !value.trim().equals("NA")) {
+					double doublevalue = Double.parseDouble(value.toString());
+					logger.info("?????????????????????????timedoublevalue"+doublevalue);
+					logger.info("?????????????????????????value"+value);
+					
+					String s = String.format("%06d", doublevalue);   
+					DateFormat format = new SimpleDateFormat("HH:MM");
+					date = format.parse(s);
+					logger.info("?????????????????????????time"+date);
+				}else if(!value.toString().trim().equals("NA")) {
+					SimpleDateFormat dateFormat = new SimpleDateFormat("HH:MM");
+					date=dateFormat.parse(value.toString());
+					logger.info("????????????date????????????time"+date);
+
+				}else {
+					date = null;
+				}
+				return date;
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return date;
+			
+		}
+
+	/*
+	 * public Map<String, String> getSupplyProgramSemAcademic(ProgrammeYear
+	 * programmeyear, Semster semester,AcademicYear academicyear) {
+	 * 
+	 * Map<String, String> info = new LinkedHashMap<>(); try { long
+	 * currentprogramYear = 0; Boolean is_programroman = false , is_semesterroman =
+	 * false; Boolean checkprogramyear
+	 * =romanToNumber.numberOrRoman(programmeyear.getExName());
+	 * if(!checkprogramyear) { currentprogramYear =
+	 * romanToNumber.romanToDecimal(programmeyear.getExName()); is_programroman =
+	 * true; }else { currentprogramYear = Long.parseLong(programmeyear.getExName());
+	 * } long currentsemester = 0; Boolean checksemester =
+	 * romanToNumber.numberOrRoman(semester.getExName()); if(!checksemester) {
+	 * currentsemester = romanToNumber.romanToDecimal(semester.getExName());
+	 * is_semesterroman = true; }else { currentsemester =
+	 * Long.parseLong(semester.getExName()); } // check Supplymentry is present or
+	 * Not long lastevenoddsem =
+	 * currentsemester;romanToNumber.getLastEvenOddSemester(currentsemester); long
+	 * lastevenoddprogram =
+	 * romanToNumber.getLastEvenOddProgramYear(currentprogramYear);
+	 * 
+	 * String programyearname = "" , semestername = "" , lastevenoddsemname ,
+	 * lastevenoddprogramname;
+	 * 
+	 * if(is_programroman){ // convert Program Year to Roman lastevenoddprogramname
+	 * = romanToNumber.LongToRoman(lastevenoddprogram); }else {
+	 * lastevenoddprogramname =Long.toString(lastevenoddprogram); }
+	 * 
+	 * if(is_semesterroman){ // convert Semester to Roman lastevenoddsemname =
+	 * romanToNumber.LongToRoman(lastevenoddsem); }else { lastevenoddsemname =
+	 * Long.toString(lastevenoddsem); } List<AcademicYear> academic =
+	 * super.academicYear.getLastAcademic(true,false,academicyear.getExYear()); if
+	 * (academic.size() <=0) { info.put("status", "2"); info.put("message",
+	 * "AcademicYear Id not Present for Supplymentry"); return info; }
+	 * 
+	 * info.put("supplysem", lastevenoddsemname); info.put("supplyprogramyear",
+	 * lastevenoddprogramname); info.put("supplyacademic",
+	 * academic.get(0).getExYear()); info.put("status", "1"); info.put("message",
+	 * "success");
+	 * 
+	 * }catch(Exception e) { e.printStackTrace(); } return info; }
+	 */
+
+}

@@ -1,0 +1,105 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ex_nodues_mapping")
+public class NoDuesMapping {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "config_id", nullable = false)
+	private NoDuesConfiguration config;
+	
+	private String approveType;
+	
+	@Column(columnDefinition = "BOOLEAN DEFAULT false") 
+	private Boolean exIsApprove;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "student_admission_id", nullable = false)
+	private Studentadmission studentadmission;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "approvetype_id", nullable = false)
+	private ApproveType apprtype;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
+
+	public Long getId() {
+		return id;
+	}
+
+	public NoDuesConfiguration getConfig() {
+		return config;
+	}
+
+	public String getApproveType() {
+		return approveType;
+	}
+
+	public Boolean getExIsApprove() {
+		return exIsApprove;
+	}
+
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+
+	public ApproveType getApprtype() {
+		return apprtype;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setConfig(NoDuesConfiguration config) {
+		this.config = config;
+	}
+
+	public void setApproveType(String approveType) {
+		this.approveType = approveType;
+	}
+
+	public void setExIsApprove(Boolean exIsApprove) {
+		this.exIsApprove = exIsApprove;
+	}
+
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+
+	public void setApprtype(ApproveType apprtype) {
+		this.apprtype = apprtype;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "NoDuesMapping [id=" + id + ", config=" + config + ", approveType=" + approveType + ", exIsApprove="
+				+ exIsApprove + ", studentadmission=" + studentadmission + ", apprtype=" + apprtype + ", user=" + user
+				+ "]";
+	}
+
+}

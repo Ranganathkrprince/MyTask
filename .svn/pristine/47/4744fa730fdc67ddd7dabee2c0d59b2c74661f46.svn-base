@@ -1,0 +1,940 @@
+package com.niftem.app.implementation;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.niftem.app.entity.PrivilegesModules;
+import com.niftem.app.entity.Role;
+import com.niftem.app.entity.User;
+import com.niftem.app.model.PrivilegesFeaturesRequest;
+import com.niftem.app.model.PrivilegesRequest;
+import com.niftem.app.model.RoleRequest;
+import com.niftem.app.repository.PrivillageFeaturesRepository;
+import com.niftem.app.repository.PrivillageModuleRepository;
+import com.niftem.app.repository.PrivillageRepository;
+import com.niftem.app.repository.RoleRepository;
+import com.niftem.app.service.RoleService;
+import com.niftem.app.util.CommonHelper;
+
+@Service
+@Transactional
+public class RoleImp implements  RoleService {
+
+private static Logger logger = LoggerFactory.getLogger("master-log");
+
+	
+	@Autowired
+	private RoleRepository RoleRepository;
+	
+	@Autowired
+	private PrivillageModuleRepository PrivillageModuleRepository;
+	
+	@Autowired
+	private PrivillageFeaturesRepository  PrivillageFeaturesRepository;
+	
+	@Autowired
+	private PrivillageRepository PrivillageRepository;
+	
+	@Autowired
+	private CommonHelper CommonHelper;
+	
+	@Override
+	public Map<String, String> saveRole(RoleRequest role) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			if (role.getExRoleName() == null || role.getExRoleName().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Role name is required");
+				return info;
+			}
+			
+			if (role.getExIsActive() == null) {
+				info.put("status", "2");
+				info.put("message", "IsActive is required 0/1");
+				return info;
+			}
+						
+			List<Role> tasks = new ArrayList();
+			tasks = RoleRepository.findByExNameAndExIsDeleteAndExIsActive(role.getExRoleName().trim() , false,true);
+			if (tasks.size() > 0) {
+				info.put("status", "2");
+				info.put("message", "Role name already exists");
+				return info;
+			}
+		
+			User userid =CommonHelper.getuser(role.getUser()) ;
+			String Description=role.toString();			
+		    Boolean audit = CommonHelper.saveauditlogdetails(false , Description ,userid, 49L);	
+		    Date date = new Date();
+			Role roles=new Role();
+			roles.setExCreateDate(date);
+			roles.setExIsDelete(false);
+			roles.setExIsActive(role.getExIsActive());
+			roles.setExName(role.getExRoleName());
+			RoleRepository.save(roles);
+			
+			info.put("status", "1");
+			info.put("message", "Role created successfully");
+			info.put("id", roles.getId().toString());
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, String> updateRole(RoleRequest role) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			if (role.getExRoleName() == null || role.getExRoleName().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Role name is required");
+				return info;
+			}
+			
+			if (role.getExIsActive() == null) {
+				info.put("status", "2");
+				info.put("message", "IsActive is required 0/1");
+				return info;
+			}
+			
+			Optional<Role> Role =RoleRepository.findById(role.getId());
+			if (!Role.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Role id not present");
+				return info;
+			}
+			
+			List<Role> tasks = new ArrayList();
+			tasks = RoleRepository.findByExNameAndExIsDelete(role.getExRoleName().trim() , false);
+			if (tasks.size() > 0 && tasks.get(0).getId() != role.getId()) {
+				info.put("status", "2");
+				info.put("message", "Role name already exists");
+				return info;
+			}
+			Date date = new Date();	
+			User userid =CommonHelper.getuser(role.getUser()) ;
+			String Description=role.toString();			
+		    Boolean audit = CommonHelper.saveauditlogdetails(false , Description ,userid, 49L);	
+			int retval = RoleRepository.updateRoleRecord(role.getExRoleName(), role.getExIsActive() ,date ,role.getId());
+			if (retval == 1) {
+				info.put("status", "1");
+				info.put("message", "Role updated successfully");
+				return info;
+			} else {
+				info.put("status", "2");
+				info.put("message", "Role id not present");
+				return info;
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getRole() {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List<Role> tasks = RoleRepository.findByExIsDelete(false);
+			if(tasks.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "Roles not created");
+				return info;
+			}else {
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("details", tasks);
+				return info;
+			}
+			
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+
+	@Override
+	public Map<String, String> deleteRole(Long id) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			Optional<Role> task = RoleRepository.findById(id);
+			if (task.isPresent()) {
+				if(task.get().getExIsDelete()) {
+					info.put("status", "2");
+					info.put("message", "Role already deleted");
+					return info;										
+				}			
+				int result = RoleRepository.updateRole(true, false, task.get().getId());
+				if (result == 0) {
+					info.put("status", "2");
+					info.put("message", "Something went wrong");
+					return info;
+				}
+				info.put("status", "1");
+				info.put("message", "Role deleted successfully");
+				return info;
+			}
+			info.put("status", "2");
+			info.put("message", "Role id not present");
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+	/*
+	@Override
+	public Map<String, String> savePrivilegesModules(PrivilegesModules module) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			if (module.getExPrivilegeModule() == null || module.getExPrivilegeModule().trim().length() == 0) {
+				info.put("status", "2");
+				info.put("message", "PrivilegeModule name is required");
+				return info;
+			}
+			
+			if (module.getExIsActive() == null) {
+				info.put("status", "2");
+				info.put("message", "IsActive is required 0/1");
+				return info;
+			}
+						
+			List<PrivilegesModules> tasks = new ArrayList();
+			tasks = PrivillageModuleRepository.findByExPrivilegeModuleAndExIsDeleteAndExIsActive(module.getExPrivilegeModule().trim() , false,true);
+			if (tasks.size() > 0) {
+				info.put("status", "2");
+				info.put("message", "PrivilegeModule name already exists");
+				return info;
+			}
+			
+			
+			Date date = new Date();
+			module.setExCreateDate(date);
+			module.setExIsDelete(false);
+			module.setExIsActive(module.getExIsActive());
+			module.setExPrivilegeModule(module.getExPrivilegeModule());
+			PrivillageModuleRepository.save(module);
+			
+			info.put("status", "1");
+			info.put("message", "PrivillageModule created successfully");
+			info.put("id", module.getId().toString());
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, String> updatePrivilegesModules(PrivilegesModules module) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			if (module.getExPrivilegeModule() == null || module.getExPrivilegeModule().trim().length() == 0) {
+				info.put("status", "2");
+				info.put("message", "PrivilegesModule name is required");
+				return info;
+			}
+			
+			if (module.getExIsActive() == null) {
+				info.put("status", "2");
+				info.put("message", "IsActive is required 0/1");
+				return info;
+			}
+			
+			Optional<PrivilegesModules> modules =PrivillageModuleRepository.findById(module.getId());
+			if (!modules.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "PrivilegesModules id not present");
+				return info;
+			}
+			
+			List<Role> tasks = new ArrayList();
+			tasks = PrivillageModuleRepository.findByExPrivilegeModuleAndExIsDelete(module.getExPrivilegeModule().trim() , false);
+			if (tasks.size() > 0 && tasks.get(0).getId() != module.getId()) {
+				info.put("status", "2");
+				info.put("message", "PrivilegesModules name already exists");
+				return info;
+			}
+			
+			
+			Date date = new Date();
+			int retval = PrivillageModuleRepository.updatePrivilegeModuleRecord(module.getExPrivilegeModule(), module.getExIsActive() ,date ,module.getId());
+			if (retval == 1) {
+				info.put("status", "1");
+				info.put("message", "PrivillageModule updated successfully");
+				return info;
+			} else {
+				info.put("status", "2");
+				info.put("message", "PrivillageModule id not present");
+				return info;
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getPrivilegesModules() {
+		List<PrivilegesModules> tasks = new ArrayList();
+		try {
+			tasks = PrivillageModuleRepository.findByExIsDelete(false);
+			//return tasks;
+		} catch (Exception e) {
+			logger.error("Exception occured," + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+		}
+		return null;
+	}
+
+
+	@Override
+	public Map<String, String> deletePrivilegesModules(Long id) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			Optional<PrivilegesModules> task = PrivillageModuleRepository.findById(id);
+			if (task.isPresent()) {
+				if(task.get().getExIsDelete()) {
+					info.put("status", "2");
+					info.put("message", "PrivilegesModules already deleted");
+					return info;										
+				}			
+				int result = PrivillageModuleRepository.updatePrivilegesModules(true, false, task.get().getId());
+				if (result == 0) {
+					info.put("status", "2");
+					info.put("message", "Something went wrong");
+					return info;
+				}
+				info.put("status", "1");
+				info.put("message", "PrivilegesModules deleted successfully");
+				return info;
+			}
+			info.put("status", "2");
+			info.put("message", "PrivilegesModules id not present");
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, String> savePrivilegesFeatures(
+			PrivilegesFeaturesRequest request) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			if (request.getExFeaturename() == null||request.getExFeaturename().trim().length() == 0) {
+				info.put("status", "2");
+				info.put("message", "Featurename  is required");
+				return info;
+			}
+			
+			if (request.getPrivilegesModules() == null) {
+				info.put("status", "2");
+				info.put("message", "PrivilegesModules is required ");
+				return info;
+			}
+			if (request.getExIsActive() == null) {
+				info.put("status", "2");
+				info.put("message", "IsActive is required 0/1");
+				return info;
+			}
+			
+			Optional<PrivilegesModules> moduleresult = PrivillageModuleRepository.findByIdAndExIsDeleteAndExIsActive(request.getPrivilegesModules(),false, true);
+				if (!moduleresult.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "PrivillageModule not present");
+				return info;
+			}
+			
+			
+			List<PrivilegesFeatures> tasks = new ArrayList();
+			tasks = PrivillageFeaturesRepository.findByExFeaturenameAndExIsDeleteAndExIsActiveAndPrivilegesModulesId(request.getExFeaturename().trim() , false,true,moduleresult.get().getId());
+			if (tasks.size() > 0) {
+				info.put("status", "2");
+				info.put("message", "PrivilegesFeatures name already exists");
+				return info;
+			}
+		
+		    Date date = new Date();
+			PrivilegesFeatures features = new PrivilegesFeatures();
+			features.setExCreateDate(date);
+			features.setExIsDelete(false);
+			features.setExIsActive(request.getExIsActive());
+			features.setExFeaturename(request.getExFeaturename());
+			features.setPrivilegesModules(moduleresult.get());
+			PrivillageFeaturesRepository.save(features);
+			info.put("status", "1");
+			info.put("message", "PrivillageFeatures created successfully.");
+			info.put("id", features.getId().toString());
+			return info;
+			
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Somethings went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, String> updatePrivilegesFeatures(
+			PrivilegesFeaturesRequest request) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+
+			if (request.getExFeaturename() == null ||request.getExFeaturename().trim().length() == 0) {
+				info.put("status", "2");
+				info.put("message", "Featurename  is required");
+				return info;
+			}
+			
+			if (request.getPrivilegesModules() == null) {
+				info.put("status", "2");
+				info.put("message", "PrivilegesModules is required ");
+				return info;
+			}
+			if (request.getExIsActive() == null) {
+				info.put("status", "2");
+				info.put("message", "IsActive is required 0/1");
+				return info;
+			}
+			Optional<PrivilegesFeatures> Colleges = PrivillageFeaturesRepository.findById(request.getId());
+			if (!Colleges.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "PrivilegesFeatures id not present");
+				return info;
+			}
+			Optional<PrivilegesModules> moduleresult = PrivillageModuleRepository.findByIdAndExIsDeleteAndExIsActive(request.getPrivilegesModules(),false, true);
+				if (!moduleresult.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "PrivillageModule not present");
+				return info;
+			}
+				
+				List<PrivilegesFeatures> tasks = new ArrayList();
+				tasks = PrivillageFeaturesRepository.findByExFeaturenameAndExIsDeleteAndExIsActiveAndPrivilegesModulesId(request.getExFeaturename().trim() , false,true,moduleresult.get().getId());
+				if (tasks.size() > 0) {
+					info.put("status", "2");
+					info.put("message", "PrivilegesFeatures name already exists");
+					return info;
+				}
+			Date date = new Date();
+						int retval = PrivillageFeaturesRepository.updatePrivilegesFeaturesStatus(request.getExFeaturename(),
+					request.getPrivilegesModules(), request.getExIsActive() ,date,request.getId());
+			if (retval == 1) {
+				info.put("status", "1");
+				info.put("message", "PrivilegesFeatures updated successfully");
+			} else {
+				info.put("status", "2");
+				info.put("message", "PrivilegesFeatures id not present");
+			}
+
+		
+			logger.info("Response : " + info);
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object>getPrivilegesFeatures() {
+		List<PrivilegesFeatures> tasks = new ArrayList();
+		try {
+			List<PrivilegesFeatures> task = PrivillageFeaturesRepository.findByExIsDelete(false);
+			List dataList = new LinkedList();
+			for (PrivilegesFeatures e : task) {
+				Map<Object, Object> data = new HashMap<Object, Object>();
+				data.put("id", e.getId());
+				data.put("exFeaturename", e.getExFeaturename());
+				data.put("exPrivilegesModules", e.getPrivilegesModules().getExPrivilegeModule());
+				data.put("exPrivilegesModulesId", e.getPrivilegesModules().getId());
+				data.put("exIsActive", e.getExIsActive());
+				data.put("exIsDelete", e.getExIsDelete());
+				dataList.add(data);
+			}
+			//return dataList;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+		}
+		return null;
+	}
+
+	@Override
+	public Map<String, String> deletePrivilegesFeatures(Long id) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			Optional<PrivilegesFeatures> task = PrivillageFeaturesRepository.findById(id);
+			if (task.isPresent()) {				
+				if(task.get().getExIsDelete()) {
+					info.put("status", "2");
+					info.put("message", "PrivilegesFeatures already deleted");
+					return info;										
+				}
+
+				int result = PrivillageFeaturesRepository.updatePrivilegesFeatures(true, false, task.get().getId());
+				if (result == 0) {
+					info.put("status", "2");
+					info.put("message", "Something went wrong");
+					return info;
+				}
+				info.put("status", "1");
+				info.put("message", "PrivilegesFeatures deleted successfully");
+				return info;
+			}
+			info.put("status", "2");
+			info.put("message", "PrivilegesFeatures id not present ");
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			e.printStackTrace();
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+
+	
+
+	@Override
+	public Map<String, String> updatePrivileges(PrivilegesRequest request) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			if (request.getAddrole() == null ||request.getAddrole().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Addrole  is required o/1");
+				return info;
+			}
+			
+			if (request.getApproverole() == null ||request.getApproverole().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Approverole  is required 0/1");
+				return info;
+			}
+			
+			if (request.getDeleterole() == null ||request.getDeleterole().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Deleterole  is required 0/1");
+				return info;
+			}
+			
+			if (request.getViewrole() == null ||request.getViewrole().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Viewrole  is required 0/1");
+				return info;
+			}
+			if (request.getUpdaterole() == null ||request.getUpdaterole().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Updaterole  is required 0/1");
+				return info;
+			}
+
+			if (request.getPrivilegesFeatures() == null) {
+				info.put("status", "2");
+				info.put("message", "PrivilegesFeatures is required ");
+				return info;
+			}
+			if (request.getRole() == null) {
+				info.put("status", "2");
+				info.put("message", "Role is required ");
+				return info;
+			}
+			if (request.getExIsActive() == null) {
+				info.put("status", "2");
+				info.put("message", "IsActive is required 0/1");
+				return info;
+			}
+			
+			Optional<PrivilegesFeatures> moduleresult = PrivillageFeaturesRepository.findByIdAndExIsDeleteAndExIsActive(request.getPrivilegesFeatures(),false, true);
+				if (!moduleresult.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "PrivilegesFeatures not present");
+				return info;
+			}
+			
+				Optional<Role> roleresult = RoleRepository.findByIdAndExIsDeleteAndExIsActive(request.getRole(),false, true);
+				if (!roleresult.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Role not present");
+				return info;
+			}
+			Optional<Privileges> Privileges = PrivillageRepository.findById(request.getId());
+				if (!Privileges.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Privileges id not present");
+					return info;
+				}
+				
+				
+				Date date = new Date();
+				int retval = PrivillageRepository.updatePrivileges(request.getAddrole(),request.getApproverole(),request.getUpdaterole(), request.getDeleterole(), request.getViewrole(), request.getPrivilegesFeatures(),request.getRole(),request.getExIsActive() ,date,request.getId());
+	if (retval == 1) {
+		info.put("status", "1");
+		info.put("message", "Privileges updated successfully");
+	} else {
+		info.put("status", "2");
+		info.put("message", "Privileges id not present");
+	}
+
+logger.info("Response : " + info);
+	return info;
+				
+				
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Somethings went wrong");
+			return info;
+		}
+	}
+
+
+	}
+
+	@Override
+	public Map<String, String> saveallPrivileges(PrivilegesRequest request){
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			if (request.getAddrole() == null ||request.getAddrole().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Addrole  is required o/1");
+				return info;
+			}
+			
+			if (request.getApproverole() == null ||request.getApproverole().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Approverole  is required 0/1");
+				return info;
+			}
+			
+			if (request.getDeleterole() == null ||request.getDeleterole().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Deleterole  is required 0/1");
+				return info;
+			}
+			
+			if (request.getUpdaterole() == null ||request.getUpdaterole().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Updaterole  is required 0/1");
+				return info;
+			}
+
+			if (request.getPrivilegesFeatures() == null) {
+				info.put("status", "2");
+				info.put("message", "PrivilegesFeatures is required ");
+				return info;
+			}
+			if (request.getRole() == null) {
+				info.put("status", "2");
+				info.put("message", "Role is required ");
+				return info;
+			}
+			if (request.getExIsActive() == null) {
+				info.put("status", "2");
+				info.put("message", "IsActive is required 0/1");
+				return info;
+			}
+			
+				Optional<Role> roleresult = RoleRepository.findByIdAndExIsDeleteAndExIsActive(request.getRole(),false, true);
+				if (!roleresult.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Role not present");
+				return info;
+			}	
+				
+			
+			    String listfeatures1[] = request.getPrivilegesFeatures().split(",");	        	    
+		        String listadd1[] = request.getAddrole().split(",");	        	     
+		        String listupdate1[] = request.getUpdaterole().split(",");	        	   
+		        String listapprove1[] =request.getApproverole().split(",");	        	    
+		        String listdelete1[] = request.getDeleterole() .split(",");
+		        Date date = new Date();
+		        
+		        ArrayList<Privileges> arr = PrivillageRepository.findByRoleId(request.getRole());
+		        
+		  		if(arr.size() > 0) {
+						PrivillageRepository.deletePrivilageByRoleid(request.getRole());						 
+						for(int i=0; i<listfeatures1.length && i<listadd1.length && i<listupdate1.length && i<listapprove1.length && i<listdelete1.length; i++){
+							PrivillageRepository.insertPrivlages(request.getRole(), listfeatures1[i], listadd1[i],listapprove1[i] , listdelete1[i] ,listupdate1[i],request.getExIsActive(),false,date);
+	    	        }						
+					}else {
+						for(int i=0; i<listfeatures1.length && i<listadd1.length && i<listupdate1.length && i<listapprove1.length && i<listdelete1.length; i++){
+							PrivillageRepository.insertPrivlages(request.getRole(), listfeatures1[i], listadd1[i],listapprove1[i] , listdelete1[i] ,listupdate1[i],request.getExIsActive(),false,date);
+	    	        }
+					} 
+					info.put("status", "1");
+					info.put("message", "Privillage created successfully.");
+					
+					return info;
+		
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			e.printStackTrace();
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+		
+	}
+	@Override
+	public Map<String, Object> getPrivileges( Long roleid) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		List<Privileges> tasks = new ArrayList();
+		try {
+			List<Privileges> task = PrivillageRepository.findByRoleIdAndExIsDelete(roleid,false);
+			if(task.size()>0){
+			
+			List dataList = new LinkedList();
+			for (Privileges e : task) {
+				Map<Object, Object> data = new HashMap<Object, Object>();
+				data.put("id", e.getId());
+				data.put("addrole", e.getAddrole());
+				data.put("approverole", e.getApproverole());
+				data.put("updaterole", e.getUpdaterole() );
+				data.put("deleterole", e.getDeleterole() );
+				data.put("privilegesFeatures", e.getPrivilegesFeatures().getExFeaturename() );
+				data.put("exIsActive", e.getExIsActive());
+				data.put("exIsDelete", e.getExIsDelete());
+				dataList.add(data);
+			}
+			info.put("status", "1");
+			info.put("message", "sucess");
+			info.put("role", task.get(0).getRole().getExName());
+			info.put("privillage", dataList);
+			return info;}
+			else{
+				info.put("status", "2");
+				info.put("message", "No Record Found");
+				return info;
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+		
+	}
+
+	@Override
+	public Map<String, String> deletePrivileges(Long id) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			Optional<Privileges> task = PrivillageRepository.findById(id);
+			if (task.isPresent()) {				
+				if(task.get().getExIsDelete()) {
+					info.put("status", "2");
+					info.put("message", "Privileges already deleted");
+					return info;										
+				}
+
+				int result = PrivillageRepository.updatePrivileges(true, false, task.get().getId());
+				if (result == 0) {
+					info.put("status", "2");
+					info.put("message", "Something went wrong");
+					return info;
+				}
+				info.put("status", "1");
+				info.put("message", "Privileges deleted successfully");
+				return info;
+			}
+			info.put("status", "2");
+			info.put("message", "Privileges id not present ");
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			e.printStackTrace();
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}*/
+
+	/*
+	 * @Override public Map<String, String> saveRole(RoleRequest role) { // TODO
+	 * Auto-generated method stub return null; }
+	 * 
+	 * @Override public Map<String, String> updateRole(RoleRequest role) { // TODO
+	 * Auto-generated method stub return null; }
+	 * 
+	 * @Override public Map<String, Object> getRole() { // TODO Auto-generated
+	 * method stub return null; }
+	 * 
+	 * @Override public Map<String, String> deleteRole(Long id) { // TODO
+	 * Auto-generated method stub return null; }
+	 */
+
+	@Override
+	public Map<String, String> savePrivilegesModules(PrivilegesModules module) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String> updatePrivilegesModules(PrivilegesModules module) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getPrivilegesModules() {
+		List<PrivilegesModules> tasks = new ArrayList();
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			tasks = PrivillageModuleRepository.findByExIsDelete(false);
+			if(tasks.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "Privileges not created");
+				return info;
+			}else {
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("details", tasks);
+				return info;
+			}
+		} catch (Exception e) {
+			logger.error("Exception occured," + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+		
+	}
+
+	@Override
+	public Map<String, String> deletePrivilegesModules(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String> savePrivilegesFeatures(PrivilegesFeaturesRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String> updatePrivilegesFeatures(PrivilegesFeaturesRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getPrivilegesFeatures() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String> deletePrivilegesFeatures(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String> saveallPrivileges(PrivilegesRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getPrivileges(Long roleid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String> deletePrivileges(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,150 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "ex_staff_complaint")
+public class StaffComplaint {
+	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;	
+	private String exTicketNumber;
+	
+	private Integer complaintStatus ;
+	private String exRemark;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a Description")
+	@Column(columnDefinition="TEXT")
+	private String exDescription;
+	
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+		
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "complaint_type_id", nullable = false)
+	private StaffComplaintType complaintType;
+	
+
+	@ManyToOne( optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
+	
+	@ManyToOne( optional = true)
+	@JoinColumn(name = "staff_id", nullable = true)
+	private Staffpersonal staff;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExTicketNumber() {
+		return exTicketNumber;
+	}
+
+	public Integer getComplaintStatus() {
+		return complaintStatus;
+	}
+
+	public String getExRemark() {
+		return exRemark;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public StaffComplaintType getComplaintType() {
+		return complaintType;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public Staffpersonal getStaff() {
+		return staff;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExTicketNumber(String exTicketNumber) {
+		this.exTicketNumber = exTicketNumber;
+	}
+
+	public void setComplaintStatus(Integer complaintStatus) {
+		this.complaintStatus = complaintStatus;
+	}
+
+	public void setExRemark(String exRemark) {
+		this.exRemark = exRemark;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setComplaintType(StaffComplaintType complaintType) {
+		this.complaintType = complaintType;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setStaff(Staffpersonal staff) {
+		this.staff = staff;
+	}
+
+	@Override
+	public String toString() {
+		return "StaffComplaint [id=" + id + ", exTicketNumber=" + exTicketNumber + ", complaintStatus="
+				+ complaintStatus + ", exRemark=" + exRemark + ", exDescription=" + exDescription + ", exCreateDate="
+				+ exCreateDate + ", exUpdateDate=" + exUpdateDate + ", complaintType=" + complaintType + ", user="
+				+ user + ", staff=" + staff + "]";
+	}
+
+
+
+	
+}

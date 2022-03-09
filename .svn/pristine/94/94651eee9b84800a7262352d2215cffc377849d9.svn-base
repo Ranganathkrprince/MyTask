@@ -1,0 +1,80 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "ex_staff_type")
+public class StaffType {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+		
+	
+	private String exName;
+	
+
+	@Column(columnDefinition="TEXT")
+	private String exDescription;
+	
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	@Override
+	public String toString() {
+		return "StaffType [id=" + id + ", exName=" + exName + ", exDescription=" + exDescription + ", exIsActive="
+				+ exIsActive + ", exIsDelete=" + exIsDelete + "]";
+	}
+}

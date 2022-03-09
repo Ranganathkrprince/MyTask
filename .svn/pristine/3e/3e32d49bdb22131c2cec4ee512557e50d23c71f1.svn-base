@@ -1,0 +1,80 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+
+	@Entity
+	@Table(name = "ex_Marks_settings")
+	@EntityListeners(AuditingEntityListener.class)
+	public class MarksSetting {
+		
+	    @Id
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Long id;
+
+	    @NotBlank
+	    private String exName;
+
+	    @NotBlank
+	    private Double exMaxMarks;
+	    
+	    @NotBlank
+	    private Double exWeightage;
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public String getExName() {
+			return exName;
+		}
+
+		public void setExName(String exName) {
+			this.exName = exName;
+		}
+
+		public Double getExMaxMarks() {
+			return exMaxMarks;
+		}
+
+		public void setExMaxMarks(Double exMaxMarks) {
+			this.exMaxMarks = exMaxMarks;
+		}
+
+		public Double getExWeightage() {
+			return exWeightage;
+		}
+
+		public void setExWeightage(Double exWeightage) {
+			this.exWeightage = exWeightage;
+		}
+
+		@Override
+		public String toString() {
+			return "MarksSetting [id=" + id + ", exName=" + exName + ", exMaxMarks=" + exMaxMarks + ", exWeightage="
+					+ exWeightage + "]";
+		}
+
+		
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+
+
+}

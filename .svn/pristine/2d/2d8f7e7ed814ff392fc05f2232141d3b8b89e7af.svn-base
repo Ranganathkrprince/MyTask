@@ -1,0 +1,36 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Role;
+
+public interface RoleRepository extends CrudRepository<Role, Long> {
+
+	Optional<Role> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, Long department);
+
+	List<Role> findByExNameAndExIsDeleteAndExIsActive(String trim, boolean b, boolean c);
+
+	Optional<Role> findByIdAndExIsDeleteAndExIsActive(Long role, boolean b, boolean c);
+
+	List<Role> findByExNameAndExIsDelete(String trim, boolean b);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_role set ex_name = ?1 ,ex_update_date = ?3 ,ex_is_active = ?2  where id =?4", nativeQuery = true)
+	int updateRoleRecord(String exRoleName, Boolean exIsActive, Date date, Long id);
+
+	List<Role> findByExIsDelete(boolean b);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_role set ex_is_delete = ?1 , ex_is_active = ?2 where id =?3", nativeQuery = true)
+	int updateRole(boolean b, boolean c, Long id);
+
+}

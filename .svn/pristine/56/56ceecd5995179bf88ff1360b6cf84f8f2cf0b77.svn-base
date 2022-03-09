@@ -1,0 +1,296 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_semester_progress_report")
+public class SemesterProgressReport {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String exRollNo;
+
+	private String serialNumber;
+	
+	private String marksheetPath;
+	
+	private String declaredOn;
+
+	private Double exTotalCreditHour;
+	private Double exGradePointAv;
+	private Double exTotalGradePoint;
+	private Double exCamuGradePointAv;
+	private Double exTotalCamuGradePoint;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "exam_announcement_id", nullable = true)
+	private ExamAnnouncement examAnnouncement;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "student_admission_id", nullable = false)
+	private Studentadmission studentadmission;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear;;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT true")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public String getSerialNumber() {
+		return serialNumber;
+	}
+
+	public String getMarksheetPath() {
+		return marksheetPath;
+	}
+
+	public String getDeclaredOn() {
+		return declaredOn;
+	}
+
+	public Double getExTotalCreditHour() {
+		return exTotalCreditHour;
+	}
+
+	public Double getExGradePointAv() {
+		return exGradePointAv;
+	}
+
+	public Double getExTotalGradePoint() {
+		return exTotalGradePoint;
+	}
+
+	public Double getExCamuGradePointAv() {
+		return exCamuGradePointAv;
+	}
+
+	public Double getExTotalCamuGradePoint() {
+		return exTotalCamuGradePoint;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+
+	public void setMarksheetPath(String marksheetPath) {
+		this.marksheetPath = marksheetPath;
+	}
+
+	public void setDeclaredOn(String declaredOn) {
+		this.declaredOn = declaredOn;
+	}
+
+	public void setExTotalCreditHour(Double exTotalCreditHour) {
+		this.exTotalCreditHour = exTotalCreditHour;
+	}
+
+	public void setExGradePointAv(Double exGradePointAv) {
+		this.exGradePointAv = exGradePointAv;
+	}
+
+	public void setExTotalGradePoint(Double exTotalGradePoint) {
+		this.exTotalGradePoint = exTotalGradePoint;
+	}
+
+	public void setExCamuGradePointAv(Double exCamuGradePointAv) {
+		this.exCamuGradePointAv = exCamuGradePointAv;
+	}
+
+	public void setExTotalCamuGradePoint(Double exTotalCamuGradePoint) {
+		this.exTotalCamuGradePoint = exTotalCamuGradePoint;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	@Override
+	public String toString() {
+		return "SemesterProgressReport [id=" + id + ", exRollNo=" + exRollNo + ", serialNumber=" + serialNumber
+				+ ", marksheetPath=" + marksheetPath + ", declaredOn=" + declaredOn + ", exTotalCreditHour="
+				+ exTotalCreditHour + ", exGradePointAv=" + exGradePointAv + ", exTotalGradePoint=" + exTotalGradePoint
+				+ ", exCamuGradePointAv=" + exCamuGradePointAv + ", exTotalCamuGradePoint=" + exTotalCamuGradePoint
+				+ ", user=" + user + ", academicYear=" + academicYear + ", examAnnouncement=" + examAnnouncement
+				+ ", colleges=" + colleges + ", department=" + department + ", semester=" + semester + ", degree="
+				+ degree + ", programmes=" + programmes + ", studentadmission=" + studentadmission + ", programmeYear="
+				+ programmeYear + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", exIsActive="
+				+ exIsActive + ", exIsDelete=" + exIsDelete + "]";
+	}
+}

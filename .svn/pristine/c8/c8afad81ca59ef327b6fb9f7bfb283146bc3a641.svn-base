@@ -1,0 +1,37 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Hostel;
+import com.niftem.app.entity.Section;
+
+
+public interface SectionRepository extends CrudRepository<Section, Long>{
+
+	List<Section> findByExNameAndExIsDelete(String exName , Boolean is_delete);
+	List<Section> findByExIsDelete(Boolean is_delete);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_section set ex_name = ?1 , ex_is_active = ?2  where id =?3", nativeQuery = true)
+	int updateSectionRecord(String exName, Boolean exIsActive, Long id);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_section set ex_is_delete = ?1 , ex_is_active = ?2  where id =?3", nativeQuery = true)
+	int deleteSection(Boolean is_delete, Boolean is_active,  Long id);
+	
+	Optional<Section> findByExNameAndExIsActiveAndExIsDelete(String string, boolean isDelete, boolean isActive);
+	
+	Optional<Section> findByExIsDeleteAndExIsActiveAndId(boolean isDelete, boolean isActive, Long section);
+	
+	List<Section> findByExIsDeleteAndExIsActive(boolean b, boolean c);
+	
+	Optional<Section> findByExIsDeleteAndExIsActiveAndExName(boolean b, boolean c, String trim);
+}

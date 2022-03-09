@@ -1,0 +1,468 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+public class EvaluationDetailsRequest {
+	
+	private Long examAnnouncement;
+	private Long academicYear;
+	private Long course;
+	private Long programmes;
+	private Long user;
+	private String otpcode;
+	private Long deparment;
+	private Long registrationType;
+	private Long degree;
+	
+	private Long oldstaffid; // for reallocation 
+	private Long newstaffid;
+	private List<Long> barcodelist;
+	
+	private Long staffid;  //for digital evaluation
+	private String methodType;
+	private String evaluatedtime;
+	private String timetaken;
+	private Double externalMark;
+	private String barcode;
+	public List<String> evaluatedfile ;
+	
+	
+	private Double firstQMarks;
+	private Double secondQMarks;
+	private Double thirdQMarks;
+	private Double fourQMarks;
+	private Double fiveQMarks;
+	private Double sixQMarks;
+	private Double sevenQMarks;
+	private Double eightQMarks;
+	private Double nineQMarks;
+	private Double tenQMarks;
+	private Double elevenQMarks;
+	private Double twelveQMarks;
+	private Double thirteenQMarks;
+	private Double fourteenQMarks;
+	private Double fifteenQMarks;
+	private Double sixteenQMarks;
+	private Double seventeenQMarks;
+	private Double eighteenQMarks;
+	private Double ninteenQMarks;
+	private Double twentyQMarks;
+	private Double twentyoneQMarks;
+	private Double twentytwoQMarks;
+	private Double twentythreeQMarks;
+	private Double twentyfourQMarks;
+	private Double twentyfiveQMarks;
+	private Double twentysixQMarks;
+	private Double twentysevenQMarks;
+	private Double twentyeightQMarks;
+	private Double twentynineQMarks;
+	private Double thirtyQMarks;
+	private Double thirtyoneQMarks;
+	private Double thirtytwoQMarks;
+	private Double thirtythreeQMarks;
+	private Double thirtyfourQMarks;
+	private Double thirtyfiveQMarks;
+	private Double thirtysixQMarks;
+	private Double thirtysevenQMarks;
+	private Double thirtyeightQMarks;
+	private Double thirtynineQMarks;
+	private Double fortyQMarks;
+	private Long semester;
+	private Long programmeYear;
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public Long getCourse() {
+		return course;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public String getOtpcode() {
+		return otpcode;
+	}
+	public Long getDeparment() {
+		return deparment;
+	}
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public Long getOldstaffid() {
+		return oldstaffid;
+	}
+	public Long getNewstaffid() {
+		return newstaffid;
+	}
+	public List<Long> getBarcodelist() {
+		return barcodelist;
+	}
+	public Long getStaffid() {
+		return staffid;
+	}
+	public String getMethodType() {
+		return methodType;
+	}
+	public String getEvaluatedtime() {
+		return evaluatedtime;
+	}
+	public String getTimetaken() {
+		return timetaken;
+	}
+	public Double getExternalMark() {
+		return externalMark;
+	}
+	public String getBarcode() {
+		return barcode;
+	}
+	public List<String> getEvaluatedfile() {
+		return evaluatedfile;
+	}
+	public Double getFirstQMarks() {
+		return firstQMarks;
+	}
+	public Double getSecondQMarks() {
+		return secondQMarks;
+	}
+	public Double getThirdQMarks() {
+		return thirdQMarks;
+	}
+	public Double getFourQMarks() {
+		return fourQMarks;
+	}
+	public Double getFiveQMarks() {
+		return fiveQMarks;
+	}
+	public Double getSixQMarks() {
+		return sixQMarks;
+	}
+	public Double getSevenQMarks() {
+		return sevenQMarks;
+	}
+	public Double getEightQMarks() {
+		return eightQMarks;
+	}
+	public Double getNineQMarks() {
+		return nineQMarks;
+	}
+	public Double getTenQMarks() {
+		return tenQMarks;
+	}
+	public Double getElevenQMarks() {
+		return elevenQMarks;
+	}
+	public Double getTwelveQMarks() {
+		return twelveQMarks;
+	}
+	public Double getThirteenQMarks() {
+		return thirteenQMarks;
+	}
+	public Double getFourteenQMarks() {
+		return fourteenQMarks;
+	}
+	public Double getFifteenQMarks() {
+		return fifteenQMarks;
+	}
+	public Double getSixteenQMarks() {
+		return sixteenQMarks;
+	}
+	public Double getSeventeenQMarks() {
+		return seventeenQMarks;
+	}
+	public Double getEighteenQMarks() {
+		return eighteenQMarks;
+	}
+	public Double getNinteenQMarks() {
+		return ninteenQMarks;
+	}
+	public Double getTwentyQMarks() {
+		return twentyQMarks;
+	}
+	public Double getTwentyoneQMarks() {
+		return twentyoneQMarks;
+	}
+	public Double getTwentytwoQMarks() {
+		return twentytwoQMarks;
+	}
+	public Double getTwentythreeQMarks() {
+		return twentythreeQMarks;
+	}
+	public Double getTwentyfourQMarks() {
+		return twentyfourQMarks;
+	}
+	public Double getTwentyfiveQMarks() {
+		return twentyfiveQMarks;
+	}
+	public Double getTwentysixQMarks() {
+		return twentysixQMarks;
+	}
+	public Double getTwentysevenQMarks() {
+		return twentysevenQMarks;
+	}
+	public Double getTwentyeightQMarks() {
+		return twentyeightQMarks;
+	}
+	public Double getTwentynineQMarks() {
+		return twentynineQMarks;
+	}
+	public Double getThirtyQMarks() {
+		return thirtyQMarks;
+	}
+	public Double getThirtyoneQMarks() {
+		return thirtyoneQMarks;
+	}
+	public Double getThirtytwoQMarks() {
+		return thirtytwoQMarks;
+	}
+	public Double getThirtythreeQMarks() {
+		return thirtythreeQMarks;
+	}
+	public Double getThirtyfourQMarks() {
+		return thirtyfourQMarks;
+	}
+	public Double getThirtyfiveQMarks() {
+		return thirtyfiveQMarks;
+	}
+	public Double getThirtysixQMarks() {
+		return thirtysixQMarks;
+	}
+	public Double getThirtysevenQMarks() {
+		return thirtysevenQMarks;
+	}
+	public Double getThirtyeightQMarks() {
+		return thirtyeightQMarks;
+	}
+	public Double getThirtynineQMarks() {
+		return thirtynineQMarks;
+	}
+	public Double getFortyQMarks() {
+		return fortyQMarks;
+	}
+	public Long getSemester() {
+		return semester;
+	}
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setCourse(Long course) {
+		this.course = course;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public void setOtpcode(String otpcode) {
+		this.otpcode = otpcode;
+	}
+	public void setDeparment(Long deparment) {
+		this.deparment = deparment;
+	}
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public void setOldstaffid(Long oldstaffid) {
+		this.oldstaffid = oldstaffid;
+	}
+	public void setNewstaffid(Long newstaffid) {
+		this.newstaffid = newstaffid;
+	}
+	public void setBarcodelist(List<Long> barcodelist) {
+		this.barcodelist = barcodelist;
+	}
+	public void setStaffid(Long staffid) {
+		this.staffid = staffid;
+	}
+	public void setMethodType(String methodType) {
+		this.methodType = methodType;
+	}
+	public void setEvaluatedtime(String evaluatedtime) {
+		this.evaluatedtime = evaluatedtime;
+	}
+	public void setTimetaken(String timetaken) {
+		this.timetaken = timetaken;
+	}
+	public void setExternalMark(Double externalMark) {
+		this.externalMark = externalMark;
+	}
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
+	}
+	public void setEvaluatedfile(List<String> evaluatedfile) {
+		this.evaluatedfile = evaluatedfile;
+	}
+	public void setFirstQMarks(Double firstQMarks) {
+		this.firstQMarks = firstQMarks;
+	}
+	public void setSecondQMarks(Double secondQMarks) {
+		this.secondQMarks = secondQMarks;
+	}
+	public void setThirdQMarks(Double thirdQMarks) {
+		this.thirdQMarks = thirdQMarks;
+	}
+	public void setFourQMarks(Double fourQMarks) {
+		this.fourQMarks = fourQMarks;
+	}
+	public void setFiveQMarks(Double fiveQMarks) {
+		this.fiveQMarks = fiveQMarks;
+	}
+	public void setSixQMarks(Double sixQMarks) {
+		this.sixQMarks = sixQMarks;
+	}
+	public void setSevenQMarks(Double sevenQMarks) {
+		this.sevenQMarks = sevenQMarks;
+	}
+	public void setEightQMarks(Double eightQMarks) {
+		this.eightQMarks = eightQMarks;
+	}
+	public void setNineQMarks(Double nineQMarks) {
+		this.nineQMarks = nineQMarks;
+	}
+	public void setTenQMarks(Double tenQMarks) {
+		this.tenQMarks = tenQMarks;
+	}
+	public void setElevenQMarks(Double elevenQMarks) {
+		this.elevenQMarks = elevenQMarks;
+	}
+	public void setTwelveQMarks(Double twelveQMarks) {
+		this.twelveQMarks = twelveQMarks;
+	}
+	public void setThirteenQMarks(Double thirteenQMarks) {
+		this.thirteenQMarks = thirteenQMarks;
+	}
+	public void setFourteenQMarks(Double fourteenQMarks) {
+		this.fourteenQMarks = fourteenQMarks;
+	}
+	public void setFifteenQMarks(Double fifteenQMarks) {
+		this.fifteenQMarks = fifteenQMarks;
+	}
+	public void setSixteenQMarks(Double sixteenQMarks) {
+		this.sixteenQMarks = sixteenQMarks;
+	}
+	public void setSeventeenQMarks(Double seventeenQMarks) {
+		this.seventeenQMarks = seventeenQMarks;
+	}
+	public void setEighteenQMarks(Double eighteenQMarks) {
+		this.eighteenQMarks = eighteenQMarks;
+	}
+	public void setNinteenQMarks(Double ninteenQMarks) {
+		this.ninteenQMarks = ninteenQMarks;
+	}
+	public void setTwentyQMarks(Double twentyQMarks) {
+		this.twentyQMarks = twentyQMarks;
+	}
+	public void setTwentyoneQMarks(Double twentyoneQMarks) {
+		this.twentyoneQMarks = twentyoneQMarks;
+	}
+	public void setTwentytwoQMarks(Double twentytwoQMarks) {
+		this.twentytwoQMarks = twentytwoQMarks;
+	}
+	public void setTwentythreeQMarks(Double twentythreeQMarks) {
+		this.twentythreeQMarks = twentythreeQMarks;
+	}
+	public void setTwentyfourQMarks(Double twentyfourQMarks) {
+		this.twentyfourQMarks = twentyfourQMarks;
+	}
+	public void setTwentyfiveQMarks(Double twentyfiveQMarks) {
+		this.twentyfiveQMarks = twentyfiveQMarks;
+	}
+	public void setTwentysixQMarks(Double twentysixQMarks) {
+		this.twentysixQMarks = twentysixQMarks;
+	}
+	public void setTwentysevenQMarks(Double twentysevenQMarks) {
+		this.twentysevenQMarks = twentysevenQMarks;
+	}
+	public void setTwentyeightQMarks(Double twentyeightQMarks) {
+		this.twentyeightQMarks = twentyeightQMarks;
+	}
+	public void setTwentynineQMarks(Double twentynineQMarks) {
+		this.twentynineQMarks = twentynineQMarks;
+	}
+	public void setThirtyQMarks(Double thirtyQMarks) {
+		this.thirtyQMarks = thirtyQMarks;
+	}
+	public void setThirtyoneQMarks(Double thirtyoneQMarks) {
+		this.thirtyoneQMarks = thirtyoneQMarks;
+	}
+	public void setThirtytwoQMarks(Double thirtytwoQMarks) {
+		this.thirtytwoQMarks = thirtytwoQMarks;
+	}
+	public void setThirtythreeQMarks(Double thirtythreeQMarks) {
+		this.thirtythreeQMarks = thirtythreeQMarks;
+	}
+	public void setThirtyfourQMarks(Double thirtyfourQMarks) {
+		this.thirtyfourQMarks = thirtyfourQMarks;
+	}
+	public void setThirtyfiveQMarks(Double thirtyfiveQMarks) {
+		this.thirtyfiveQMarks = thirtyfiveQMarks;
+	}
+	public void setThirtysixQMarks(Double thirtysixQMarks) {
+		this.thirtysixQMarks = thirtysixQMarks;
+	}
+	public void setThirtysevenQMarks(Double thirtysevenQMarks) {
+		this.thirtysevenQMarks = thirtysevenQMarks;
+	}
+	public void setThirtyeightQMarks(Double thirtyeightQMarks) {
+		this.thirtyeightQMarks = thirtyeightQMarks;
+	}
+	public void setThirtynineQMarks(Double thirtynineQMarks) {
+		this.thirtynineQMarks = thirtynineQMarks;
+	}
+	public void setFortyQMarks(Double fortyQMarks) {
+		this.fortyQMarks = fortyQMarks;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	@Override
+	public String toString() {
+		return "EvaluationDetailsRequest [examAnnouncement=" + examAnnouncement + ", academicYear=" + academicYear
+				+ ", course=" + course + ", programmes=" + programmes + ", user=" + user + ", otpcode=" + otpcode
+				+ ", deparment=" + deparment + ", registrationType=" + registrationType + ", degree=" + degree
+				+ ", oldstaffid=" + oldstaffid + ", newstaffid=" + newstaffid + ", barcodelist=" + barcodelist
+				+ ", staffid=" + staffid + ", methodType=" + methodType + ", evaluatedtime=" + evaluatedtime
+				+ ", timetaken=" + timetaken + ", externalMark=" + externalMark + ", barcode=" + barcode
+				+ ", evaluatedfile=" + evaluatedfile + ", firstQMarks=" + firstQMarks + ", secondQMarks=" + secondQMarks
+				+ ", thirdQMarks=" + thirdQMarks + ", fourQMarks=" + fourQMarks + ", fiveQMarks=" + fiveQMarks
+				+ ", sixQMarks=" + sixQMarks + ", sevenQMarks=" + sevenQMarks + ", eightQMarks=" + eightQMarks
+				+ ", nineQMarks=" + nineQMarks + ", tenQMarks=" + tenQMarks + ", elevenQMarks=" + elevenQMarks
+				+ ", twelveQMarks=" + twelveQMarks + ", thirteenQMarks=" + thirteenQMarks + ", fourteenQMarks="
+				+ fourteenQMarks + ", fifteenQMarks=" + fifteenQMarks + ", sixteenQMarks=" + sixteenQMarks
+				+ ", seventeenQMarks=" + seventeenQMarks + ", eighteenQMarks=" + eighteenQMarks + ", ninteenQMarks="
+				+ ninteenQMarks + ", twentyQMarks=" + twentyQMarks + ", twentyoneQMarks=" + twentyoneQMarks
+				+ ", twentytwoQMarks=" + twentytwoQMarks + ", twentythreeQMarks=" + twentythreeQMarks
+				+ ", twentyfourQMarks=" + twentyfourQMarks + ", twentyfiveQMarks=" + twentyfiveQMarks
+				+ ", twentysixQMarks=" + twentysixQMarks + ", twentysevenQMarks=" + twentysevenQMarks
+				+ ", twentyeightQMarks=" + twentyeightQMarks + ", twentynineQMarks=" + twentynineQMarks
+				+ ", thirtyQMarks=" + thirtyQMarks + ", thirtyoneQMarks=" + thirtyoneQMarks + ", thirtytwoQMarks="
+				+ thirtytwoQMarks + ", thirtythreeQMarks=" + thirtythreeQMarks + ", thirtyfourQMarks="
+				+ thirtyfourQMarks + ", thirtyfiveQMarks=" + thirtyfiveQMarks + ", thirtysixQMarks=" + thirtysixQMarks
+				+ ", thirtysevenQMarks=" + thirtysevenQMarks + ", thirtyeightQMarks=" + thirtyeightQMarks
+				+ ", thirtynineQMarks=" + thirtynineQMarks + ", fortyQMarks=" + fortyQMarks + ", semester=" + semester
+				+ ", programmeYear=" + programmeYear + "]";
+	}
+
+	
+	
+}

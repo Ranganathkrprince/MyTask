@@ -1,0 +1,173 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.StudentadmissionLog;
+import com.niftem.app.entity.Studentpersonal;
+
+public interface StudentadmissionLogRepository extends CrudRepository<StudentadmissionLog, Long>{
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "insert into  ex_student_admission_log set ex_email_id =?1,ex_contact_details=?2, student_admission_id =?3,ex_adhaar_number=?4,ex_blood_group=?5,ex_date_of_birth=?6,ex_father_name=?7,ex_father_name_in_hindi=?8,ex_mother_name=?9,ex_mother_name_in_hindi=?10,ex_local_gurdian=?11,exlocal_gurdian_in_hindi=?12,ex_permanent_address=?13,ex_present_address=?14,ex_gender=?15,ex_height=?16,ex_mother_tounge=?17,ex_nationality=?18,ex_weight=?19,ex_native_state=?20,ex_religion=?21,ex_name=?22,ex_name_in_hindi=?23,ex_create_date=?24,ex_roll_no=?25,ex_annual_income=?26,ex_parent_contact_details=?27,ex_enrollement_no =?28, ex_is_active =1 , ex_is_delete =0,ex_permanentcity = ?29,ex_permanentstate =?30,expostalcode=?31,excounrty =?32,ex_presentcity =?33, ex_presentstate =?34 , ex_presentpostalcode =?35 ,ex_presentcounrty =?36," + 
+			"ex_tenth_year_of_pass = ?37 ,ex_tenth_scholl_name = ?38 , ex_tenth_percentage_of_marks = ?39 , ex_tenth_medium = ?40, ex_tenth_board_of_pass = ?41 ,ex_twelveth_year_of_pass = ?42 ,ex_twelveth_percentage_of_marks = ?43 , ex_twelveth_medium = ?44 , ex_twelveth_collage_name = ?45 ,ex_twelveth_board_of_pass = ?46, ex_ug_year_of_pass = ?47 , ex_ug_percentage_of_marks = ?48 , ex_ug_medium = ?49 ,ex_ug_collage_name = ?50 , ex_ug_board_of_pass = ?51 ,ex_pg_board_of_pass = ?52 ,ex_pg_collage_name = ?53 , ex_pg_medium = ?54 , ex_pg_percentage_of_marks = ?55 , ex_pg_year_of_pass = ?56 ,"
+			+ " ex_minority_category= ?57 , ex_personwith_disability = ?58 , ex_others_board_of_pass = ?59, ex_others_collage_name = ?60 , ex_others_medium  = ?61 , ex_others_percentage_of_marks = ?62 , ex_others_year_of_pass = ?63,"
+			+ "guardian_email_id = ?64 , guardian_conatct = ?65 , guardia_pincode = ?66 , guardian_address  = ?67,"
+			+ "father_contact = ?68 , father_email_id = ?69 , father_office_address = ?70 , mother_annual_income = ?71,"
+			+ "mother_contact = ?72 , mother_email_id = ?73 , mother_occupation = ?74 ,mother_office_address = ?75,\r\n" + 
+			" ex_gate_score = ?76 , ex_studied_isbiology = ?77 ", nativeQuery = true)
+	int updateStudentpersonalbystudent(String exEmailId, String exContactDetails, Long id, String exAdhaarNumber,
+		String exBloodGroup, String exDateOfBirth, String exFatherName, String exFatherNameInHindi, String exMotherName,
+		String exMotherNameInHindi, String exLocalGurdian, String exlocalGurdianInHindi, String exPermanentAddress,
+		String exPresentAddress, String exGender, Double exHeight, String exMotherTounge, String exNationality,
+		Double exWeight, String exNativeState, String exReligion, String exName, String exNameInHindi, Date date,
+		String exRollNo, Double exAnnualIncome, String exParentContactDetails, String exEnrollementNo ,String exPermanentcity, String exPermanentstate, String expostalcode,
+		String excounrty, String exPresentcity, String exPresentstate, String exPresentpostalcode,
+		String exPresentcounrty,
+		 String exTenthYearOfPass,
+			String exTenthSchollName, String exTenthPercentageOfMarks, String exTenthMedium, String exTenthBoardOfPass,
+			String exTwelvethYearOfPass, String exTwelvethPercentageOfMarks, String exTwelvethMedium,
+			String exTwelvethCollageName, String exTwelvethBoardOfPass, String exUgYearOfPass, String exUgPercentageOfMarks,
+			String exUgMedium, String exUgCollageName, String exUgBoardOfPass, String exPgBoardOfPass,
+			String exPgCollageName, String exPgMedium, String exPgPercentageOfMarks, String exPgYearOfPass,
+			
+			String exMinorityCategory, String exPersonwithDisability, String exOthersBoardOfPass,
+			String exOthersCollageName, String exOthersMedium, String exOthersPercentageOfMarks, String exOthersYearOfPass,
+			String guardianEmailId, String guardianConatct, String guardiaPincode, String guardianAddress,
+			String fatherContact, String fatherEmailId, String fatherOfficeAddress, String motherAnnualIncome,
+			String motherContact, String motherEmailId, String motherOccupation, String motherOfficeAddress,
+			String exGateScore, String studiedIsbiology);
+
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update   ex_student_admission_log s , ex_student_personal p  set s.ex_email_id =?1,s.ex_contact_details=?2,s.ex_adhaar_number=?4,s.ex_blood_group=?5,s.ex_date_of_birth=?6,s.ex_father_name=?7,s.ex_father_name_in_hindi=?8,s.ex_mother_name=?9,s.ex_mother_name_in_hindi=?10,s.ex_local_gurdian=?11,s.exlocal_gurdian_in_hindi=?12,s.ex_permanent_address=?13,s.ex_present_address=?14,s.ex_gender=?15,s.ex_height=?16,s.ex_mother_tounge=?17,s.ex_nationality=?18,s.ex_weight=?19,s.ex_native_state=?20,s.ex_religion=?21,s.ex_name=?22,s.ex_name_in_hindi=?23,s.ex_update_date=?24,s.ex_roll_no=?25,s.ex_annual_income=?26,s.ex_parent_contact_details=?27 ,s.ex_enrollement_no =?28 ,s.ex_permanentcity = ?29,s.ex_permanentstate =?30,s.expostalcode=?31,s.excounrty =?32,s.ex_presentcity =?33,s.ex_presentstate =?34 , s.ex_presentpostalcode =?35 ,s.ex_presentcounrty =?36,"
+			+ "ex_tenth_year_of_pass = ?37 ,ex_tenth_scholl_name = ?38 , ex_tenth_percentage_of_marks = ?39 , ex_tenth_medium = ?40, ex_tenth_board_of_pass = ?41 ,ex_twelveth_year_of_pass = ?42 ,ex_twelveth_percentage_of_marks = ?43 , ex_twelveth_medium = ?44 , ex_twelveth_collage_name = ?45 ,ex_twelveth_board_of_pass = ?46, ex_ug_year_of_pass = ?47 , ex_ug_percentage_of_marks = ?48 , ex_ug_medium = ?49 ,ex_ug_collage_name = ?50 , ex_ug_board_of_pass = ?51 ,ex_pg_board_of_pass = ?52 ,ex_pg_collage_name = ?53 , ex_pg_medium = ?54 , ex_pg_percentage_of_marks = ?55 , ex_pg_year_of_pass = ?56,"
+			+ "s.ex_minority_category = ?57 , s.ex_personwith_disability = ?58 , s.ex_others_board_of_pass = ?59, s.ex_others_collage_name = ?60 , s.ex_others_medium  = ?61 , s.ex_others_percentage_of_marks = ?62 , s.ex_others_year_of_pass = ?63, s.guardian_email_id = ?64 , s.guardian_conatct = ?65 , s.guardia_pincode = ?66 , s.guardian_address  = ?67, s.father_contact = ?68 , s.father_email_id = ?69 ,s.father_office_address = ?70 , s.mother_annual_income = ?71,s.mother_contact = ?72 , s.mother_email_id = ?73 ,s.mother_occupation = ?74 ,s.mother_office_address = ?75, s.ex_gate_score = ?76 ,s.ex_studied_isbiology = ?77 ,p.ex_is_personal_details_approve = 0  where s.student_admission_id =?3 and s.student_admission_id =p.student_admission_id ", nativeQuery = true)
+	int updateStudent(String exEmailId, String exContactDetails, Long id, String exAdhaarNumber, String exBloodGroup,
+			String exDateOfBirth, String exFatherName, String exFatherNameInHindi, String exMotherName,
+			String exMotherNameInHindi, String exLocalGurdian, String exlocalGurdianInHindi, String exPermanentAddress,
+			String exPresentAddress, String exGender, Double exHeight, String exMotherTounge, String exNationality,
+			Double exWeight, String exNativeState, String exReligion, String exName, String exNameInHindi, Date date,
+			String exRollNo, Double exAnnualIncome, String exParentContactDetails, String enrollment,String exPermanentcity, String exPermanentstate, String expostalcode,
+			String excounrty, String exPresentcity, String exPresentstate, String exPresentpostalcode,
+			String exPresentcounrty,
+			 String exTenthYearOfPass,
+				String exTenthSchollName, String exTenthPercentageOfMarks, String exTenthMedium, String exTenthBoardOfPass,
+				String exTwelvethYearOfPass, String exTwelvethPercentageOfMarks, String exTwelvethMedium,
+				String exTwelvethCollageName, String exTwelvethBoardOfPass, String exUgYearOfPass, String exUgPercentageOfMarks,
+				String exUgMedium, String exUgCollageName, String exUgBoardOfPass, String exPgBoardOfPass,
+				String exPgCollageName, String exPgMedium, String exPgPercentageOfMarks, String exPgYearOfPass,
+	
+				String exMinorityCategory, String exPersonwithDisability, String exOthersBoardOfPass,
+				String exOthersCollageName, String exOthersMedium, String exOthersPercentageOfMarks, String exOthersYearOfPass,
+				String guardianEmailId, String guardianConatct, String guardiaPincode, String guardianAddress,
+				String fatherContact, String fatherEmailId, String fatherOfficeAddress, String motherAnnualIncome,
+				String motherContact, String motherEmailId, String motherOccupation, String motherOfficeAddress,
+				String exGateScore, String studiedIsbiology);
+
+	List<StudentadmissionLog> findByStudentadmissionId(Long id);
+
+List<StudentadmissionLog> findByExIsDelete(boolean b);
+
+
+
+List<StudentadmissionLog> findByExIsDeleteAndStudentadmissionId(boolean b, Long studentadmission);
+
+
+
+Optional<StudentadmissionLog> findByStudentadmissionIdAndExIsDelete(Long studentadmission, boolean b);
+
+
+
+
+List<StudentadmissionLog> findByStudentadmissionExIsActiveAndStudentadmissionId(boolean b, Long id);
+
+
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update   ex_student_admission_log s , ex_student_personal p  set s.ex_email_id =?1,s.ex_contact_details=?2,s.ex_adhaar_number=?4,s.ex_blood_group=?5,s.ex_date_of_birth=?6,s.ex_father_name=?7,s.ex_father_name_in_hindi=?8,s.ex_mother_name=?9,s.ex_mother_name_in_hindi=?10,s.ex_local_gurdian=?11,s.exlocal_gurdian_in_hindi=?12,s.ex_permanent_address=?13,s.ex_present_address=?14,s.ex_gender=?15,s.ex_height=?16,s.ex_mother_tounge=?17,s.ex_nationality=?18,s.ex_weight=?19,s.ex_native_state=?20,s.ex_religion=?21,s.ex_name=?22,s.ex_name_in_hindi=?23,s.ex_update_date=?24,s.ex_roll_no=?25,s.ex_annual_income=?26,s.ex_parent_contact_details=?27 ,s.ex_enrollement_no =?28 ,s.ex_permanentcity = ?29,s.ex_permanentstate =?30,s.expostalcode=?31,s.excounrty =?32,s.ex_presentcity =?33,s.ex_presentstate =?34 , s.ex_presentpostalcode =?35 ,s.ex_presentcounrty =?36,"
+		+ "ex_tenth_year_of_pass = ?37 ,ex_tenth_scholl_name = ?38 , ex_tenth_percentage_of_marks = ?39 , ex_tenth_medium = ?40, ex_tenth_board_of_pass = ?41 ,ex_twelveth_year_of_pass = ?42 ,ex_twelveth_percentage_of_marks = ?43 , ex_twelveth_medium = ?44 , ex_twelveth_collage_name = ?45 ,ex_twelveth_board_of_pass = ?46, ex_ug_year_of_pass = ?47 , ex_ug_percentage_of_marks = ?48 , ex_ug_medium = ?49 ,ex_ug_collage_name = ?50 , ex_ug_board_of_pass = ?51 ,ex_pg_board_of_pass = ?52 ,ex_pg_collage_name = ?53 , ex_pg_medium = ?54 , ex_pg_percentage_of_marks = ?55 , ex_pg_year_of_pass = ?56,"
+		+ "s.ex_minority_category = ?57 , s.ex_personwith_disability = ?58 , s.ex_others_board_of_pass = ?59, s.ex_others_collage_name = ?60 , s.ex_others_medium  = ?61 , s.ex_others_percentage_of_marks = ?62 , s.ex_others_year_of_pass = ?63, s.guardian_email_id = ?64 , s.guardian_conatct = ?65 , s.guardia_pincode = ?66 , s.guardian_address  = ?67, s.father_contact = ?68 , s.father_email_id = ?69 ,s.father_office_address = ?70 , s.mother_annual_income = ?71,s.mother_contact = ?72 , s.mother_email_id = ?73 ,s.mother_occupation = ?74 ,s.mother_office_address = ?75, s.ex_gate_score = ?76 ,s.ex_studied_isbiology = ?77 ,p.ex_is_personal_details_approve = 0 where s.student_admission_id =?3 and s.student_admission_id =p.student_admission_id ", nativeQuery = true)
+int updateStudentbyadmin(String exEmailId, String exContactDetails, Long id, String exAdhaarNumber, String exBloodGroup,
+		String exDateOfBirth, String exFatherName, String exFatherNameInHindi, String exMotherName,
+		String exMotherNameInHindi, String exLocalGurdian, String exlocalGurdianInHindi, String exPermanentAddress,
+		String exPresentAddress, String exGender, Double exHeight, String exMotherTounge, String exNationality,
+		Double exWeight, String exNativeState, String exReligion, String exName, String exNameInHindi, Date date,
+		String exRollNo, Double exAnnualIncome, String exParentContactDetails, String exEnrollementNo,
+		String exPermanentcity, String exPermanentstate, String expostalcode, String excounrty, String exPresentcity,
+		String exPresentstate, String exPresentpostalcode, String exPresentcounrty, String exTenthYearOfPass,
+		String exTenthSchollName, String exTenthPercentageOfMarks, String exTenthMedium, String exTenthBoardOfPass,
+		String exTwelvethYearOfPass, String exTwelvethPercentageOfMarks, String exTwelvethMedium,
+		String exTwelvethCollageName, String exTwelvethBoardOfPass, String exUgYearOfPass, String exUgPercentageOfMarks,
+		String exUgMedium, String exUgCollageName, String exUgBoardOfPass, String exPgBoardOfPass,
+		String exPgCollageName, String exPgMedium, String exPgPercentageOfMarks, String exPgYearOfPass,
+		String exMinorityCategory, String exPersonwithDisability, String exOthersBoardOfPass,
+		String exOthersCollageName, String exOthersMedium, String exOthersPercentageOfMarks, String exOthersYearOfPass,
+		String guardianEmailId, String guardianConatct, String guardiaPincode, String guardianAddress,
+		String fatherContact, String fatherEmailId, String fatherOfficeAddress, String motherAnnualIncome,
+		String motherContact, String motherEmailId, String motherOccupation, String motherOfficeAddress,
+		String exGateScore, String exStudiedIsbiology);
+
+
+
+
+
+
+
+
+
+
+@Modifying
+@Transactional
+@Query(value = "UPDATE ex_student_admission_log a \r\n" + 
+		"SET a.father_contact=?1 , a.father_email_id=?2 ,a.father_office_address=?3 , a.guardia_pincode=?4, \r\n" + 
+		"a.guardian_address =?5 , a.guardian_conatct=?6 , a.guardian_email_id =?7 , a.ex_permanentcity =?8,\r\n" + 
+		"a.ex_personwith_disability=?9 , a.ex_pg_collage_name=?10 , a.ex_pg_percentage_of_marks=?11,\r\n" + 
+		"a.ex_presentcounrty=?12 , a.ex_presentstate=?13 , a.mother_annual_income=?14 , a.mother_contact=?15 ,\r\n" + 
+		"a.mother_email_id =?16 , a.mother_occupation =?17 , a.mother_office_address =?18 , a.ex_gate_score=?19,\r\n" + 
+		"a.ex_minority_category=?20 , a.ex_permanentstate =?21 , a.ex_pg_board_of_pass =?22 , a.ex_pg_medium =?23 ,\r\n" + 
+		"a.ex_presentcity =?24 , a.ex_presentpostalcode =?25 , a.ex_studied_isbiology=?26, a.ex_tenth_board_of_pass =?27,\r\n" + 
+		"a.ex_tenth_medium=?28 , a.ex_tenth_percentage_of_marks =?29 , a.ex_tenth_scholl_name =?30 , a.ex_tenth_year_of_pass=?31,\r\n" + 
+		"a.ex_twelveth_board_of_pass =?32 , a.ex_twelveth_collage_name=?33 , a.ex_twelveth_medium=?34,\r\n" + 
+		"a.ex_twelveth_percentage_of_marks=?35 , a.ex_twelveth_year_of_pass =?36 , a.ex_ug_board_of_pass =?37, a.ex_ug_collage_name=?38,\r\n" + 
+		"a.ex_ug_medium=?39 , a.ex_ug_percentage_of_marks =?40 , a.ex_ug_year_of_pass =?41, a.excounrty =?42\r\n" + 
+		"WHERE a.student_admission_id =?43", nativeQuery = true)
+int updaterecordss(String trim, String trim2, String trim3, String trim4, String trim5, String trim6, String trim7,
+		String trim8, String trim9, String trim10, String trim11, String trim12, String trim13, String trim14,
+		String trim15, String trim16, String trim17, String trim18, String trim19, String trim20, String trim21,
+		String trim22, String trim23, String trim24, String trim25, String trim26, String trim27, String trim28,
+		String trim29, String trim30, String trim31, String trim32, String trim33, String trim34, String trim35,
+		String trim36, String trim37, String trim38, String trim39, String trim40, String trim41, String trim42,
+		 Long id);
+
+
+@Query(value = "SELECT * FROM ex_student_admission_log a, ex_student_admission b WHERE a.student_admission_id=b.id AND b.colleges_id =?1 AND b.degree_id=?2 AND b.programmes_id IN ?3 GROUP BY a.ex_tenth_board_of_pass", nativeQuery = true)
+List<StudentadmissionLog> getboardrecords(Long collegesId, Long degree, List<Long> programmesId);
+
+
+
+@Query(value = "SELECT * FROM ex_student_admission_log a, ex_student_admission b , ex_student_personal c  WHERE a.student_admission_id=b.id AND c.student_admission_id=b.id AND b.colleges_id =?1 AND b.degree_id=?2 AND b.programmes_id IN ?3 GROUP BY a.ex_minority_category", nativeQuery = true)
+List<StudentadmissionLog> getminoritycategory(Long colleges, Long degree, List<Long> programmesId);
+
+
+@Query(value = "SELECT * FROM ex_student_admission_log a where  a.ex_tenth_board_of_pass IS not null and a.ex_tenth_board_of_pass != '' GROUP BY a.ex_tenth_board_of_pass", nativeQuery = true)
+List<StudentadmissionLog> getStudentboards();
+
+	@Query(value = "SELECT * FROM ex_student_admission_log a where  a.ex_mother_tounge IS not null and a.ex_mother_tounge != '' GROUP BY a.ex_mother_tounge", nativeQuery = true)
+	List<StudentadmissionLog> getmothertongue();
+
+}

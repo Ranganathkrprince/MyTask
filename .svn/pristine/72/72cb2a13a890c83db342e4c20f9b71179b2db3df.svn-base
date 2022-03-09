@@ -1,0 +1,27 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.AssignHostel;
+
+public interface AssignHostelRepository extends CrudRepository<AssignHostel, Long>{
+
+	List<AssignHostel> findByStudentadmissionIdAndExIsPresent(Long student, int present);
+	
+	List<AssignHostel> findByExRoomNumberAndExRoomTypeAndExIsPresent(String roomnumber,  String roomtype , int present);
+
+	
+	List<AssignHostel> findByBatchIdAndHostelIdAndExIsPresent(Long batch , Long hostel, int present);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_assign_hostel set ex_is_present = 0  where id =?1", nativeQuery = true)	
+	int updateHostel( Long id);
+}

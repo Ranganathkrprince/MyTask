@@ -1,0 +1,44 @@
+package com.niftem.app.repository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Category;
+import com.niftem.app.entity.FeeCategory;
+
+public interface FeeCategoryRepository  extends CrudRepository<FeeCategory, Long>{
+
+	List<FeeCategory> findByExNameAndExIsDeleteAndFeeheadmasterId(String exName, boolean b , long headmaster);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_fee_category set ex_name = ?1, ex_is_Active = ?2 where id =?3", nativeQuery = true)
+
+	int Update(String exName, Long id, Boolean exIsActive);
+
+	List<FeeCategory> findByExIsDelete(boolean b);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_fee_category set ex_is_delete = ?1 ,ex_is_Active =?2  where id =?3", nativeQuery = true)
+
+	int deleteFeeCategory(Boolean exIsDelete, Boolean is_active, Long id);
+
+	
+	@Query(value = "SELECT *  FROM ex_fee_category WHERE ex_name IN ?1 and  ex_is_delete = ?2 and ex_is_active=?3", nativeQuery = true)
+	
+	ArrayList<Object[]> Feecategory(List<String> categoryList, boolean b, boolean c);
+
+	Optional<FeeCategory> findByExNameAndExIsDeleteAndExIsActive(String caty, boolean b, boolean c);
+
+	Optional<FeeCategory> findByExIsDeleteAndExIsActiveAndId(boolean delete, boolean active, Long exFeeCategory);
+
+	Optional<FeeCategory> findByExNameAndExIsDeleteAndExIsActiveAndFeeheadmasterId(String caty, boolean b, boolean c , Long id);
+
+}

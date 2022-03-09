@@ -1,0 +1,30 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.AccountApprove;
+
+public interface AccountApproveRepository extends CrudRepository<AccountApprove, Long>{
+
+	
+	List<AccountApprove> findByAcademicYearIdAndDepartmentIdAndStudentadmissionIdAndProgrammeYearIdAndSemesterId (Long academic, Long dpt, Long suddent , Long progrmyer , Long sem);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_account_approve set ex_is_paid = 1 , user_id =?2  where id IN ?1", nativeQuery = true)
+	int updateAllApproval(List<Long> list , Long user);	
+
+	
+	List<AccountApprove> findByAcademicYearIdAndStudentadmissionIdAndProgrammeYearIdAndSemesterIdAndExIsPaid(Long academic, Long suddent , Long progrmyer , Long sem , boolean ispaid);
+
+	
+	List<AccountApprove> findBySemesterIdAndStudentadmissionId(Long semester, Long studentid);
+	
+	List<AccountApprove> findBySemesterIdAndStudentadmissionIdAndExIsPaid(Long semester, Long studentid , boolean paid);
+}

@@ -1,0 +1,251 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_elective_group")
+public class ElectiveGroup {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private String exGroupName;
+	
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "academic_year_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+	
+	 @ManyToOne( optional = false)
+	 @JoinColumn(name = "semester_id", nullable = false)
+	 private Semster  semester ; 
+	 
+	 @ManyToOne( optional = false)
+	 @JoinColumn(name = "department_id", nullable = false)
+	 private Department  department ; 
+	 @ManyToOne( optional = false)
+	 @JoinColumn(name = "batch_id", nullable = false)
+	 private Batch  batch ; 
+	 
+	 
+	 @ManyToOne( optional = false)
+	 @JoinColumn(name = "programme_year_id", nullable = false)
+	 private ProgrammeYear  programmeYear ;
+
+	 
+	 @ManyToOne( optional = false)
+	 @JoinColumn(name = "user_id", nullable = false)
+	 private User  user ;
+
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public Department getDepartment() {
+		return department;
+	}
+
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+
+	public Batch getBatch() {
+		return batch;
+	}
+
+
+	public void setBatch(Batch batch) {
+		this.batch = batch;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public String getExGroupName() {
+		return exGroupName;
+	}
+
+
+	public void setExGroupName(String exGroupName) {
+		this.exGroupName = exGroupName;
+	}
+
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+
+	
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	} 
+	
+	
+	
+	@Override
+	public String toString() {
+		return "ElectiveGroup [id=" + id + ", exGroupName=" + exGroupName + ", exIsActive=" + exIsActive
+				+ ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate
+				+ ", academicYear=" + academicYear + ", colleges=" + colleges + ", degree=" + degree + ", programmes="
+				+ programmes + ", semester=" + semester + ", department=" + department + ", batch=" + batch
+				+ ", programmeYear=" + programmeYear + ", user=" + user + "]";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+}

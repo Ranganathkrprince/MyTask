@@ -1,0 +1,249 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_seat_arrangement")
+public class SeatArrangement {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "student_id", nullable = false)
+	private Studentadmission studentAdmission;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "room_id", nullable = true)
+	private RoomMaster room;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "invigilator", nullable = false)
+	private InvigilatorDuty invigilatorduty;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	private Integer row;
+	private String exRollNo;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "batch_id", nullable = false)
+	private Batch batch;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "courses_id", nullable = false)
+	private Courses courses;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exStartDate;
+	
+	private Long exExamType;
+	private String exSemesterType;
+	public Long getId() {
+		return id;
+	}
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+	public Colleges getColleges() {
+		return colleges;
+	}
+	public Semster getSemester() {
+		return semester;
+	}
+	public Studentadmission getStudentAdmission() {
+		return studentAdmission;
+	}
+	public Degree getDegree() {
+		return degree;
+	}
+	public User getUser() {
+		return user;
+	}
+	public RoomMaster getRoom() {
+		return room;
+	}
+	public Department getDepartment() {
+		return department;
+	}
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+	public InvigilatorDuty getInvigilatorduty() {
+		return invigilatorduty;
+	}
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+	public Integer getRow() {
+		return row;
+	}
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public Batch getBatch() {
+		return batch;
+	}
+	public Courses getCourses() {
+		return courses;
+	}
+	public Date getExStartDate() {
+		return exStartDate;
+	}
+	public Long getExExamType() {
+		return exExamType;
+	}
+	public String getExSemesterType() {
+		return exSemesterType;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+	public void setStudentAdmission(Studentadmission studentAdmission) {
+		this.studentAdmission = studentAdmission;
+	}
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public void setRoom(RoomMaster room) {
+		this.room = room;
+	}
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public void setInvigilatorduty(InvigilatorDuty invigilatorduty) {
+		this.invigilatorduty = invigilatorduty;
+	}
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+	public void setRow(Integer row) {
+		this.row = row;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	public void setBatch(Batch batch) {
+		this.batch = batch;
+	}
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+	public void setExStartDate(Date exStartDate) {
+		this.exStartDate = exStartDate;
+	}
+	public void setExExamType(Long exExamType) {
+		this.exExamType = exExamType;
+	}
+	public void setExSemesterType(String exSemesterType) {
+		this.exSemesterType = exSemesterType;
+	}
+	@Override
+	public String toString() {
+		return "SeatArrangement [id=" + id + ", academicYear=" + academicYear + ", colleges=" + colleges + ", semester="
+				+ semester + ", studentAdmission=" + studentAdmission + ", degree=" + degree + ", user=" + user
+				+ ", room=" + room + ", department=" + department + ", programmes=" + programmes + ", programmeYear="
+				+ programmeYear + ", invigilatorduty=" + invigilatorduty + ", exIsActive=" + exIsActive
+				+ ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate
+				+ ", row=" + row + ", exRollNo=" + exRollNo + ", batch=" + batch + ", courses=" + courses
+				+ ", exStartDate=" + exStartDate + ", exExamType=" + exExamType + ", exSemesterType=" + exSemesterType
+				+ "]";
+	}
+	
+}

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="barcodeSheet" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f3cfca69-b6cb-46de-80bd-b5112f5e238e">
+	<parameter name="university" class="java.lang.String"/>
+	<parameter name="college" class="java.lang.String"/>
+	<parameter name="coursesCode" class="java.lang.String"/>
+	<parameter name="creditHour" class="java.lang.String"/>
+	<parameter name="examAnnouncement" class="java.lang.String"/>
+	<parameter name="examDate" class="java.lang.String"/>
+	<parameter name="courses" class="java.lang.String"/>
+	<parameter name="registration" class="java.lang.String"/>
+	<parameter name="logo" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="exStudentId" class="java.lang.String"/>
+	<field name="exStudentName" class="java.lang.String"/>
+	<field name="exBarcode" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="73" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="80" y="10" width="471" height="20" uuid="0d7b6e28-d8aa-4889-9f8f-c2dc746800ac">
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{registration}+"  "+$P{examAnnouncement}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="80" y="40" width="470" height="20" uuid="a1c35f85-3e67-4cf3-b8f2-05691c407774"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{coursesCode}+" - "+$P{courses}+" -"+"("+$P{creditHour}+")"]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement positionType="Float" x="0" y="10" width="80" height="60" uuid="2ff0aa2d-fa28-46b7-8c7c-24435b9b4116"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="83">
+			<staticText>
+				<reportElement x="0" y="23" width="50" height="60" uuid="1106dd73-44dd-43f3-bc70-69d039bc8105"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[SI.No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="23" width="70" height="60" uuid="8134a354-eb50-4bae-be56-226a6ff972bc"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ID.No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="404" y="23" width="146" height="60" uuid="65c2dea8-7dca-4a31-88f9-e5e7ff6c438a"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Copy3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="23" width="140" height="60" uuid="501ef07b-478b-49d7-9883-5607dfe6ca63"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Copy 1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="23" width="144" height="60" uuid="efc84c71-2436-4ad1-8d51-81d7c4798621"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Copy 2]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="62" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="50" height="61" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="5ce1dfa4-8d94-4d1e-a5d4-54c615ea36a2"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="50" y="0" width="70" height="61" isRemoveLineWhenBlank="true" uuid="ed4b05bb-a51c-483c-9374-59286ef17f3a"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{exStudentId}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="120" y="61" width="430" height="1" uuid="ee64e9da-d007-4ebf-9ed1-5295fd0220f5">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="550" y="0" width="1" height="61" uuid="e068ab16-ba39-4da6-a69a-408f6707a913">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="404" y="0" width="1" height="61" uuid="e2a146f2-a46e-4428-bd97-8f46d1775e6e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="260" y="0" width="1" height="62" uuid="bde89ef5-5cc4-4e55-bbe4-9a3d02f15ff3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<componentElement>
+				<reportElement x="411" y="11" width="131" height="44" uuid="635613a2-764a-4ebf-b1bb-4db5fead2acd"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="USD4" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{exBarcode}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<componentElement>
+				<reportElement x="270" y="11" width="131" height="44" uuid="60a18f87-34b1-496f-b632-8d81ed3f5833"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="USD4" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{exBarcode}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<componentElement>
+				<reportElement x="124" y="13" width="131" height="44" uuid="d68f17b6-d28d-49f5-bdd5-6520c6aabb17"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="USD4" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{exBarcode}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+		</band>
+	</detail>
+</jasperReport>

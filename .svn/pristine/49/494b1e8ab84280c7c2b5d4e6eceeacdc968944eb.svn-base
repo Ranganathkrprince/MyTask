@@ -1,0 +1,97 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_invigilator_date_allocation")
+public class InvigilatorDateAllocation {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
+    @ManyToOne( optional = false)
+    @JoinColumn(name = "invigilator_id", nullable = false)
+    private InvigilatorAllocation invigilator; 
+    
+	@Temporal(TemporalType.TIME)
+	@Column(columnDefinition = "TIME")
+	private Date exStartTime;
+	
+	@Temporal(TemporalType.TIME)
+	@Column(columnDefinition = "TIME")
+	private Date exEndTime;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exStartDate;
+
+	private String exRoomNumber;
+	
+	private String exCustomField3;
+	private String exCustomField4;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public InvigilatorAllocation getInvigilator() {
+		return invigilator;
+	}
+	public void setInvigilator(InvigilatorAllocation invigilator) {
+		this.invigilator = invigilator;
+	}
+	public Date getExStartTime() {
+		return exStartTime;
+	}
+	public void setExStartTime(Date exStartTime) {
+		this.exStartTime = exStartTime;
+	}
+	public Date getExEndTime() {
+		return exEndTime;
+	}
+	public void setExEndTime(Date exEndTime) {
+		this.exEndTime = exEndTime;
+	}
+	public Date getExStartDate() {
+		return exStartDate;
+	}
+	public void setExStartDate(Date exStartDate) {
+		this.exStartDate = exStartDate;
+	}
+	public String getExRoomNumber() {
+		return exRoomNumber;
+	}
+	public void setExRoomNumber(String exRoomNumber) {
+		this.exRoomNumber = exRoomNumber;
+	}
+	public String getExCustomField3() {
+		return exCustomField3;
+	}
+	public void setExCustomField3(String exCustomField3) {
+		this.exCustomField3 = exCustomField3;
+	}
+	public String getExCustomField4() {
+		return exCustomField4;
+	}
+	public void setExCustomField4(String exCustomField4) {
+		this.exCustomField4 = exCustomField4;
+	}
+	@Override
+	public String toString() {
+		return "InvigilatorDateAllocation [id=" + id + ", invigilator=" + invigilator + ", exStartTime=" + exStartTime
+				+ ", exEndTime=" + exEndTime + ", exStartDate=" + exStartDate + ", exRoomNumber=" + exRoomNumber
+				+ ", exCustomField3=" + exCustomField3 + ", exCustomField4=" + exCustomField4 + "]";
+	}
+}

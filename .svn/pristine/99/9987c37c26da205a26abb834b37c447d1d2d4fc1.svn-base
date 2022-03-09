@@ -1,0 +1,97 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ex_feeTypeMasterMapping")
+public class FeeTypeMaster {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "feetype_id", nullable = false)
+	private FeeType feetype;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "feemaster_id", nullable = false)
+	private FeeMaster feemaster;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public FeeType getFeetype() {
+		return feetype;
+	}
+
+	public void setFeetype(FeeType feetype) {
+		this.feetype = feetype;
+	}
+
+	public FeeMaster getFeemaster() {
+		return feemaster;
+	}
+
+	public void setFeemaster(FeeMaster feemaster) {
+		this.feemaster = feemaster;
+	}
+
+	@Override
+	public String toString() {
+		return "FeeTypeMaster [id=" + id + ", feetype=" + feetype + ", feemaster=" + feemaster + "]";
+	}
+	
+	
+/*	private Long feeTypeId;
+	
+	private Long masterId;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	
+
+	public Long getMasterId() {
+		return masterId;
+	}
+
+	public void setMasterId(Long masterId) {
+		this.masterId = masterId;
+	}
+
+	public Long getFeeTypeId() {
+		return feeTypeId;
+	}
+
+	public void setFeeTypeId(Long feeTypeId) {
+		this.feeTypeId = feeTypeId;
+	}
+
+	@Override
+	public String toString() {
+		return "FeeTypeMaster [id=" + id + ", feeTypeId=" + feeTypeId + ", masterId=" + masterId + "]";
+	}
+*/
+	
+		
+	
+	
+}

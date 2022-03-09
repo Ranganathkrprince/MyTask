@@ -1,0 +1,15 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.CertificateType;
+
+public interface CertificateTypeRepository extends CrudRepository< CertificateType, Long>{
+
+	@Query(value = "select * from ex_certificate_type", nativeQuery = true)
+	List<CertificateType> getAll();
+
+}

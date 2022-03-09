@@ -1,0 +1,129 @@
+package com.niftem.app.service;
+
+import java.io.File;
+import java.util.Map;
+
+import com.niftem.app.controller.CommonController;
+import com.niftem.app.model.AcademicClenderForPdfRequest;
+import com.niftem.app.model.CertificatesRequest;
+import com.niftem.app.model.ClassTimeTablePdfRequest;
+import com.niftem.app.model.CommonRequest;
+import com.niftem.app.model.CoursesCoverageRequest;
+import com.niftem.app.model.CoursesRequest;
+import com.niftem.app.model.ExamAttendanceRequest;
+import com.niftem.app.model.ExamTimeTableRequest;
+import com.niftem.app.model.FeedbackRequest;
+import com.niftem.app.model.GradeReportRequest;
+import com.niftem.app.model.InternalMarksRequest;
+import com.niftem.app.model.QuestionpaperRequest;
+import com.niftem.app.model.ReportRequest;
+import com.niftem.app.model.SemesterEligibility;
+
+public interface PdfService {
+
+	Map<String, Object> generateAcademicCalenderPdf(AcademicClenderForPdfRequest request);
+
+	Map<String, Object> generateClassTimeTablePdf(ClassTimeTablePdfRequest request);
+
+	Map<String, Object> getExamTimeTablePdf(ExamTimeTableRequest request);
+
+
+	Map<String, Object> generateQuestionPaperPdf(QuestionpaperRequest request);
+
+	//Map<String, Object> getExamTimeTableOnDatePdf(InternalMarksRequest request);
+
+	Map<String, Object> generateBarcodeSheet(ExamAttendanceRequest request);
+
+	Map<String, Object> generateAttendenceSheet(ExamAttendanceRequest request);
+
+	Map<String, Object> generateIndexingPdf(QuestionpaperRequest request);
+
+	Map<String, Object> generateGradeReportPdf(GradeReportRequest request);
+
+	Map<String, Object> generateSemesterReportPdf(GradeReportRequest request);
+
+	Map<String, Object> generateFeeReceiptPdf(String orderid, Long user);
+
+	Map<String, Object> generateMigGradeReportPdf(GradeReportRequest request);
+
+
+
+	Map<String, Object> generateMigSemesterReportPdf(GradeReportRequest request);
+
+	Map<String, Object> generateKeyAnserPdf(QuestionpaperRequest request);
+
+	Map<String, Object> generateHallTicketPdf(SemesterEligibility request);
+
+	Map<String, Object> generateInternalMarksPdf(InternalMarksRequest request);
+
+	Map<String, Object> generateFeedbackPdf(FeedbackRequest request);
+
+	Map<String, Object> generateMigTranscriptReportPdf(GradeReportRequest request);
+
+
+	Map<String, Object> generateEligibleListPdf(SemesterEligibility request);
+
+	Map<String, Object> generateMarksPdf(String barcode);
+
+	Map<String, Object> generatePdcPdf(CertificatesRequest request);
+
+	Map<String, Object> generateTRancriptOgpaPdf(CertificatesRequest request);
+
+	Map<String, Object> generateBulkSemesterReportPdf(GradeReportRequest request);
+
+	Map<String, Object> generateMigrationPdf(CertificatesRequest request);
+
+	File downloadgradeReport(String string);
+
+	String allowallspecialcharcter(String name);
+
+	Map<String, Object> generateBulkPDCPdf(CertificatesRequest request);
+
+	Map<String, Object> generateBulkMigrationPdf(CertificatesRequest request);
+
+	Map<String, Object> generateBulkFeedbackPdf(FeedbackRequest request);
+
+	Map<String, Object> generateDegreePdf(CertificatesRequest request);
+
+	Map<String, Object> generateCourseWisePdf(CertificatesRequest request);
+
+	Map<String, Object> generateMigrationCompletionPdf(CertificatesRequest request);
+
+	Map<String, Object> getStudentCertificates(CommonRequest request);
+
+	Map<String, Object> academicCalenderPdfForStudent(AcademicClenderForPdfRequest request);
+
+	Map<String, Object> generateInternalMarks(InternalMarksRequest request);
+
+	Map<String, Object> getRegisterCoursesList(CommonRequest request);
+
+	Map<String, Object> getStudentadmissiondetailsPdf(ReportRequest request);
+
+	Map<String, Object> getOverallmarksPdfPdf(CommonRequest request);
+
+	Map<String, Object> getStudentAddressAndContactDetailspdf(ReportRequest request);
+
+	Map<String, Object> getTermWiseSubjectspdf(CoursesRequest request);
+
+	Map<String, Object> getTransactionpdf(ReportRequest request);
+
+	Map<String, Object> generateCourseCoveragepdf(CoursesCoverageRequest request);
+
+	Map<String, Object> generateCourseProgressionpdf(CoursesCoverageRequest request);
+
+	Map<String, Object> generatestudentstatusReportPdf(ReportRequest request);
+
+	Map<String, Object> generateTotalStudentFeePaidDetailsPdf(ReportRequest request);
+
+	Map<String, Object> generateNoduesDetailsPdf(ReportRequest request);
+
+	Map<String, Object> generateSeatingplanPdf(InternalMarksRequest request);
+
+//	Map<String, Object> generateAgriculturePdf(CertificatesRequest request);
+
+	
+
+	
+
+
+}

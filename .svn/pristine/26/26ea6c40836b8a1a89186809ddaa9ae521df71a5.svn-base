@@ -1,0 +1,151 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_teaching_summary")
+public class TeachingSummary {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
+	private int exTeachingDays;
+	
+	private String exHolidayDates;
+	
+	private String exYear;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "month_name_id", nullable = false)
+	private MonthName monthname; 
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "academicYear_id", nullable = false)
+	private AcademicYear academicYear;
+	
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+    private Boolean exIsActive;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+	
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsEven;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public int getExTeachingDays() {
+		return exTeachingDays;
+	}
+
+	public void setExTeachingDays(int exTeachingDays) {
+		this.exTeachingDays = exTeachingDays;
+	}
+
+	public String getExHolidayDates() {
+		return exHolidayDates;
+	}
+
+	public void setExHolidayDates(String exHolidayDates) {
+		this.exHolidayDates = exHolidayDates;
+	}
+
+	public String getExYear() {
+		return exYear;
+	}
+
+	public void setExYear(String exYear) {
+		this.exYear = exYear;
+	}
+
+	public MonthName getMonthname() {
+		return monthname;
+	}
+
+	public void setMonthname(MonthName monthname) {
+		this.monthname = monthname;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Boolean getExIsEven() {
+		return exIsEven;
+	}
+
+	public void setExIsEven(Boolean exIsEven) {
+		this.exIsEven = exIsEven;
+	}
+
+	@Override
+	public String toString() {
+		return "TeachingSummary [id=" + id + ", exTeachingDays=" + exTeachingDays + ", exHolidayDates=" + exHolidayDates
+				+ ", exYear=" + exYear + ", monthname=" + monthname + ", academicYear=" + academicYear
+				+ ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", exIsActive=" + exIsActive
+				+ ", exIsDelete=" + exIsDelete + ", exIsEven=" + exIsEven + "]";
+	}
+}

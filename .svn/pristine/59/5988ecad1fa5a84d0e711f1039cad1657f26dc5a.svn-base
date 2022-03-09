@@ -1,0 +1,187 @@
+package com.niftem.app.model;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class UniversityRequest {
+	
+	
+private Long id;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a name")
+    private String exName;
+	
+	@Column(columnDefinition="TEXT")
+	private String exDescription;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a Identifier")
+	private String exIdentifier;
+	
+	@NotNull(message = "Address  is required")
+	private String exAddress;
+	
+	@NotNull(message = "Please provide a exIsActive 0/1")
+	private Boolean exIsActive;
+
+	private Boolean exIsDelete;
+	
+	@NotNull(message = "localname  is required")
+	private String exLocalName;
+	
+	@NotNull(message = "Email  is required")
+	private String exEmail;
+
+	@NotNull(message = "Telephone  is required")
+	private String exTelephone;
+
+	@NotNull(message = "Fax  is required")
+	private String exFax;
+	
+	@NotNull(message = "Place  is required")
+	private String exPlace;
+	
+	@NotNull(message = "Please provide a Pincode")
+	private Integer  exPincode;
+	
+	public String getExAddress() {
+		return exAddress;
+	}
+
+	public void setExAddress(String exAddress) {
+		this.exAddress = exAddress;
+	}
+
+	public String getExLocalName() {
+		return exLocalName;
+	}
+
+	public void setExLocalName(String exLocalName) {
+		this.exLocalName = exLocalName;
+	}
+
+	public String getExEmail() {
+		return exEmail;
+	}
+
+	public void setExEmail(String exEmail) {
+		this.exEmail = exEmail;
+	}
+
+	public String getExTelephone() {
+		return exTelephone;
+	}
+
+	public void setExTelephone(String exTelephone) {
+		this.exTelephone = exTelephone;
+	}
+
+	public String getExFax() {
+		return exFax;
+	}
+
+	public void setExFax(String exFax) {
+		this.exFax = exFax;
+	}
+
+	public String getExPlace() {
+		return exPlace;
+	}
+
+	public void setExPlace(String exPlace) {
+		this.exPlace = exPlace;
+	}
+
+	public Integer getExPincode() {
+		return exPincode;
+	}
+
+	public void setExPincode(Integer exPincode) {
+		this.exPincode = exPincode;
+	}
+
+	public String photo;
+	
+	public Long user;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	public String getExIdentifier() {
+		return exIdentifier;
+	}
+
+	public void setExIdentifier(String exIdentifier) {
+		this.exIdentifier = exIdentifier;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "UniversityRequest [id=" + id + ", exName=" + exName + ", exDescription=" + exDescription
+				+ ", exIdentifier=" + exIdentifier + ", exAddress=" + exAddress + ", exIsActive=" + exIsActive
+				+ ", exIsDelete=" + exIsDelete + ", exLocalName=" + exLocalName + ", exEmail=" + exEmail
+				+ ", exTelephone=" + exTelephone + ", exFax=" + exFax + ", exPlace=" + exPlace + ", exPincode="
+				+ exPincode + ", photo=" + photo + ", user=" + user + "]";
+	}
+	
+	
+
+}

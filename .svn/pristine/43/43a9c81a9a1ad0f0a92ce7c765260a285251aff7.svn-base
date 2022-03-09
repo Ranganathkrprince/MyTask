@@ -1,0 +1,225 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_questionPaperPattern")
+public class QuestionPaperPattern {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "Courses_id", nullable = false)
+	private Courses courses;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicYear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "examAnnouncement_id", nullable = false)
+	private ExamAnnouncement examAnnouncement;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "questionPaperTopic_id", nullable = false)
+	private QuestionPaperTopic questionPaperTopic;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "questionPaperType_id", nullable = false)
+	private QuestionPaperType questionPaperType;
+
+	private Double exEndNo;
+
+	private Double exStartNo;
+
+	private Double exEachQuestionMark;
+
+	private Double exNoOfQuestion;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public Courses getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public QuestionPaperTopic getQuestionPaperTopic() {
+		return questionPaperTopic;
+	}
+
+	public void setQuestionPaperTopic(QuestionPaperTopic questionPaperTopic) {
+		this.questionPaperTopic = questionPaperTopic;
+	}
+
+	public QuestionPaperType getQuestionPaperType() {
+		return questionPaperType;
+	}
+
+	public void setQuestionPaperType(QuestionPaperType questionPaperType) {
+		this.questionPaperType = questionPaperType;
+	}
+
+	public Double getExEndNo() {
+		return exEndNo;
+	}
+
+	public void setExEndNo(Double exEndNo) {
+		this.exEndNo = exEndNo;
+	}
+
+	public Double getExStartNo() {
+		return exStartNo;
+	}
+
+	public void setExStartNo(Double exStartNo) {
+		this.exStartNo = exStartNo;
+	}
+
+	public Double getExEachQuestionMark() {
+		return exEachQuestionMark;
+	}
+
+	public void setExEachQuestionMark(Double exEachQuestionMark) {
+		this.exEachQuestionMark = exEachQuestionMark;
+	}
+
+	public Double getExNoOfQuestion() {
+		return exNoOfQuestion;
+	}
+
+	public void setExNoOfQuestion(Double exNoOfQuestion) {
+		this.exNoOfQuestion = exNoOfQuestion;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	@Override
+	public String toString() {
+		return "QuestionPaperPattern [id=" + id + ", programmes=" + programmes + ", courses=" + courses
+				+ ", academicYear=" + academicYear + ", examAnnouncement=" + examAnnouncement + ", department="
+				+ department + ", degree=" + degree + ", questionPaperTopic=" + questionPaperTopic
+				+ ", questionPaperType=" + questionPaperType + ", exEndNo=" + exEndNo + ", exStartNo=" + exStartNo
+				+ ", exEachQuestionMark=" + exEachQuestionMark + ", exNoOfQuestion=" + exNoOfQuestion + ", exIsActive="
+				+ exIsActive + ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate="
+				+ exUpdateDate + "]";
+	}
+
+}

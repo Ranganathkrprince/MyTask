@@ -1,0 +1,122 @@
+package com.niftem.app.model;
+
+import java.util.Date;
+
+public class LogReportRequest {
+
+	private String startDate;
+	
+	private String endDate;
+
+
+	private Long programmes;
+	
+	private Long Colleges;
+	
+	private Long Department;
+	
+	private Long degree;
+	
+	private Long semester;
+	
+	private Long academicYear;
+	
+	private Long programmeYear;
+	
+	private String methodType;
+	
+	
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+	public Long getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+	public Long getSemester() {
+		return semester;
+	}
+
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public Long getColleges() {
+		return Colleges;
+	}
+
+	public void setColleges(Long colleges) {
+		Colleges = colleges;
+	}
+
+	public Long getDepartment() {
+		return Department;
+	}
+
+	public void setDepartment(Long department) {
+		Department = department;
+	}
+
+	public String getMethodType() {
+		return methodType;
+	}
+
+	public void setMethodType(String methodType) {
+		this.methodType = methodType;
+	}
+
+	@Override
+	public String toString() {
+		return "LogReportRequest [startDate=" + startDate + ", endDate=" + endDate + ", programmes=" + programmes
+				+ ", Colleges=" + Colleges + ", Department=" + Department + ", degree=" + degree + ", semester="
+				+ semester + ", academicYear=" + academicYear + ", programmeYear=" + programmeYear + ", methodType="
+				+ methodType + "]";
+	}
+
+	
+	
+
+
+	
+}

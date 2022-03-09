@@ -1,0 +1,29 @@
+package com.niftem.app.service;
+
+import java.util.Map;
+
+import org.springframework.ui.ModelMap;
+
+import com.niftem.app.model.InitiatePayment;
+import com.niftem.app.model.LivePaymentResponse;
+import com.niftem.app.model.PaymentResponse;
+
+public interface PaymentService {
+
+	Map<String, Object> onlinePayInit(InitiatePayment request);
+
+	Map<String, Object> initiatePayment(InitiatePayment request);
+
+	Map<String, Object> updatePaymentStatus(PaymentResponse request);
+	
+	//
+	
+	Map<String, Object> initiateLivePayment(InitiatePayment request , ModelMap model);
+	
+	Map<String, Object> updateLivePaymentStatus(LivePaymentResponse request);
+	Map<String, Object> checkTransaction(String  request);
+	
+	Map<String, Object> initiatePaymentForNoDue(InitiatePayment request , ModelMap model);
+	
+	Map<String, Object> nodupaymentResponse(LivePaymentResponse request);
+}

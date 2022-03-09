@@ -1,0 +1,70 @@
+package com.niftem.app.controller;
+
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.niftem.app.model.Count;
+import com.niftem.app.service.DashBoardService;
+
+@RestController
+
+@RequestMapping("/api/dashboard/")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+public class DashboardController {
+	private static Logger logger = LoggerFactory.getLogger("master-log");
+
+	@Autowired
+	private DashBoardService dashBoardService;
+	
+	
+	@PostMapping(value = "/create")
+	public Map<String, String> saveDashboardCount(@RequestBody Count request) {		
+			logger.info("saveDashboardCount Request : "+request.toString());
+			return dashBoardService.saveDashboardCount(request);
+	}
+	
+	@PostMapping(value = "/count/get")
+	public Map<String, Object> getDashboardCount(@RequestBody Count request) {		
+			logger.info("getDashboardCount Request : "+request.toString());
+			return dashBoardService.displayDashboardCount(request);
+	}
+	
+	@PostMapping(value = "/update")
+	public Map<String, String> updateDashboardCount(@RequestBody Count request) {		
+			logger.info("updateDashboardCount Request : "+request.toString());
+			return dashBoardService.updateDashboardCount(request);
+	}
+	
+	@PostMapping(value = "/getCountOnAcademicYear")
+	public Map<String, Object> getCountOnAcademicYear(@RequestBody Count request) {		
+			return dashBoardService.getCountOnAcademicYear(request);
+	}
+	
+	
+	@PostMapping(value = "/getCountOnProgram")
+	public Map<String, Object> getCountOnProgram(@RequestBody Count request) {		
+			return dashBoardService.getCountOnProgram(request);
+	}	
+	
+	
+	@PostMapping(value = "/getCountOnGender")
+	public Map<String, Object> getCountOnGender(@RequestBody Count request) {		
+			return dashBoardService.getCountOnGender(request);
+	}	
+	
+	
+//	@PostMapping(value = "/get")
+//	public Map<String, Object> getDashboard(@RequestBody Count request) {		
+//			logger.info("getDashboard Request : "+request.toString());
+//			return dashBoardService.getDashboard(request);
+//	}
+	
+}

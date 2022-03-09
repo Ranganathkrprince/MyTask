@@ -1,0 +1,452 @@
+package com.niftem.app.util;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
+
+import com.niftem.app.dao.AcademicDao;
+//import com.niftem.app.repository.AcademicYearRepository;
+//import com.niftem.app.repository.DegreeRepository;
+//import com.niftem.app.repository.DepartmentRepository;
+//import com.niftem.app.repository.InternalMarksRepository;
+//import com.niftem.app.repository.ProgrammesRepository;
+import com.niftem.app.repository.*;
+//import com.niftem.app.validation.CommonValidations;
+import com.niftem.app.validation.CommonValidations;
+
+@Component
+public class AutoManager {
+
+	@Autowired
+	public CoursesCoverageRepository CourseCoverage;
+	
+	@Autowired
+	public UniversityRepository university;
+
+	@Autowired
+	public CollegesRepository colleges;
+
+	@Autowired
+	public CategoryRepository category;
+
+	@Autowired
+	public DegreeRepository degree;
+
+	@Autowired
+	public DepartmentRepository department;
+
+	@Autowired
+	public AcademicYearRepository academicYear;
+
+	@Autowired
+	public FeeTypeRepository feeType;
+
+	@Autowired
+	public SemsterRepository semester;
+
+	@Autowired
+	public SectionRepository section;
+
+	@Autowired
+	public ProgrammesRepository programmes;
+
+	@Autowired
+	public CourseGroupRepository courseGroup;
+
+	@Autowired
+	public CoursesRepository courses;
+
+	@Autowired
+	public CourseGroupMappingRepository courseGroupMapping;
+
+	@Autowired
+	public CreditHoursRepository creditHours;
+
+	@Autowired
+	public EvaluationTypeRepository evaluationType;
+
+	@Autowired
+	public StaffTypeRepository staffType;
+
+	@Autowired
+	public RegistrationTypeRepository registrationType;
+
+	@Autowired
+	public HostelFeeTypeRepository hostelFeeType;
+
+	@Autowired
+	public RoomMasterRepository roomMaster;
+
+	@Autowired
+	public DesignationRepository designation;
+
+	@Autowired
+	public UserRepository user;
+
+	@Autowired
+	public ExamAnnouncementRepository examAnnouncement;
+
+	@Autowired
+	public SemesterConfigurationRepository semesterRegistrationConfiguration;
+
+	@Autowired
+	public AccessLogsRepository accessLogs;
+
+	@Autowired
+	public FeeMasterRepository feeMaster;
+
+	@Autowired
+	public FeeTypeMasterRepository feeTypeMaster;
+
+	@Autowired
+	public FeeMasterProgrameMappingRepository feeMasterProgrameMapping;
+
+	@Autowired
+	public FeemasterCollegeMappingRepository feemasterCollegeMapping;
+
+	@Autowired
+	public FeeMasterCategoryMappingRepository feeMasterCategoryMapping;
+
+	@Autowired
+	public StaffpersonalRepository staffpersonal;
+
+	@Autowired
+	public StaffEmpDetailsRepository staffEmpDetails;
+
+	@Autowired
+	public StudentIdSettingRepository studentIdSetting;
+
+	@Autowired
+	public HostelRepository hostel;
+
+	@Autowired
+	public StudentpersonalRepository studentpersonal;
+
+	@Autowired
+	public StudentadmissionRepository studentadmission;
+
+	@Autowired
+	public SemesterRegistrationRepository semesterRegistration;
+
+	@Autowired
+	public CommonValidations commonValidations;
+
+	@Autowired
+	public AboutFeedBackRepository aboutFeedBack;
+
+	@Autowired
+	public AboutFeedBackScaleMappingRepository aboutFeedBackScaleMapping;
+
+	@Autowired
+	public FeedBackRepository feedBack;
+
+	@Autowired
+	public ScaleRepository scale;
+
+	@Autowired
+	public FeedBackScaleRepository feedBackScale;
+
+	@Autowired
+	public TeacherCourseMappingRepository teacherCourseMapping;
+
+
+
+	@Autowired
+	public ExamTimeTableRepository examtimetable;
+
+	@Autowired
+	public RomanToNumber romanToNumber;
+
+	@Autowired
+	public SettingsRepository settings;
+
+	@Autowired
+	public CommonHelper commonHelper;
+
+	@Autowired
+	@Qualifier("jdbcTemplate")
+	public JdbcTemplate jdbcTemplate;
+
+	@Autowired
+	public ResourceLoader resourceLoader;
+
+	@Autowired
+	public ExamTimeTableLogsRepository examTimeTableLogs;
+
+
+
+	@Autowired
+	public ExamAcademicYearProgrammesRepository examAcademicYearProgrammes;
+
+	@Autowired
+	public EncryptionAndDecryption EncryptionAndDecryption;
+
+	@Autowired
+	public ExamAttendanceRepository examAttendance;
+
+	@Autowired
+	public ProgrammesRepository programme;
+
+	@Autowired
+	public StreamRepository stream;
+
+	@Autowired
+
+	public CoursesTypeRepository coursestype;
+	@Autowired
+
+	public AcademicCalenderActivityRepository academiccalenderactivity;
+
+	@Autowired
+	public ProgrammeYearRepository programmeYear;
+
+	@Autowired
+	public BatchRepository batch;
+
+	@Autowired
+	public ProgramTypeRepository programtype;
+
+	@Autowired
+	public StudentEnrollementNoRepository studentEnrollment;
+
+	@Autowired
+	public StudentRollNoRepository studentRollNo;
+
+	@Autowired
+	public RoleRepository role;
+
+	@Autowired
+	public AcademicCalenderRepository academicCalender;
+
+	@Autowired
+	public ElectiveGroupRepository electiveGroup;
+
+	@Autowired
+	public ElectiveCoursesGroupRepository electiveCoursesGroup;
+	@Autowired
+	public ClassTimeTableRepository classtimetable;
+
+	@Autowired
+	public WeekDaysRepository weekdays;
+
+	@Autowired
+	public ClassTimeTableDaysRepository timetabledays;
+
+	@Autowired
+	public MentorRepository mentor;
+
+	@Autowired
+	public CoursesRegistrationRepository coursesRegistration;
+
+	@Autowired
+	public DashboardRepository dashboardRepository;
+	
+	@Autowired
+	public LateRegistrationRepository lateRegistration;
+
+	@Autowired
+	public AuditLogRepository auditLogRepository;
+
+	@Autowired
+	public MonthNameRepository monthname;
+
+	@Autowired
+	public TeachingSummaryRepository teachingsummary;
+
+	@Autowired
+	public PrivillageFeaturesRepository privillageFeaturesRepository;
+
+	@Autowired
+	public FeeHeadMasterRepository feeHeadMaster;
+
+	@Autowired
+	public FeeCategoryRepository feecategory;
+
+	@Autowired
+	public ClassAttendanceRepository classattend;
+
+	@Autowired
+	public QuestionPaperTypeRepository questionpaperType;
+
+	@Autowired
+	public QuestionPaperTopicRepository QuestionPaperTopic;
+
+	@Autowired
+	public QuestionPaperPatternRepository QuestionPaperPattern;
+
+	@Autowired
+	public InvigilatorAllocationRepository InvigilatorAllocation;
+
+	@Autowired
+	public InvigilatorAllocationDateRepository InvigilatorDateAllocation;
+
+	@Autowired
+	public ExamBarcodesRepository exambarcode;
+
+	@Autowired
+	public ExamBarcodesRepository ExamBarcodes;
+
+	@Autowired
+	public AcademicDao accademicdao;
+
+
+	
+	@Autowired
+	public MidTermMarkRepository midtermmarksMarks;
+
+	@Autowired
+	public ExamAtttendanceLogRepository attendancelog;
+	
+	@Autowired
+	public QuestionPaperRepository QuestionpaperRepository;
+
+	@Autowired
+	public QuestionPaperRepository QuestionPaper;
+
+	
+	@Autowired
+	public QuestionOptionMappingRepository QuestionOptionMappingRepository;
+	
+
+	@Autowired
+	public QuestionPaperLogRepository  questionPaperLog;
+	
+	@Autowired
+	public  QuestionPaperVersionRepository QuestionPaperVersion;
+	
+	@Autowired
+	public TransactionRepository transactionRepository;
+	
+	
+	@Autowired
+	public ExamAtttendanceLogRepository examAtttendanceLog;
+	
+	
+	@Autowired
+	public GradeReportRepository gradeReport;
+	
+	
+	@Autowired
+	public MarksSettingRepository marksSetting;
+	
+	
+	@Autowired
+	public GradeReportLogRepository GradeReportLog;
+
+	@Autowired
+	public ComplaintRepository complaintRepository;
+	
+	@Autowired
+	public ComplaintTypeRepository complaintTypeRepository;
+	
+	@Autowired
+	public SemesterProgressReportRepository semesterProgressReport;
+	
+	
+	@Autowired
+	public LetterGradeSettingRepository LetterGradeSetting;
+	
+	
+
+	@Autowired
+	public PenaltyConfigurationRepository penaltyconfig;
+	
+	
+
+	@Autowired
+	public 	NotificationCategoryRepository	 notificationcat;
+	
+	
+	@Autowired
+	public NotificationTemplateRepository notificationTemplate;
+	
+	@Autowired
+	public PushAlertNotificationRepository alertnotification;
+	
+	
+	
+	@Autowired
+	public HostelConfigurationRepository HostelConfigurationRepository;
+	
+	@Autowired
+	public PushAlertLogRepository pushalertlog;
+
+	@Autowired
+	public UnzipUtility unzipUtility;
+	
+	@Autowired
+	public SupplementaryRegistrationRepository supplyregister;
+	@Autowired
+	public EvaluationDetailsRepository evaluationDetails;
+	
+	@Autowired
+	public EvaluatorSelectionRepository EvaluatorSelection;
+	
+	
+	@Autowired
+	public ExternalMarksRepository externalMarksRepository;
+	
+	@Autowired
+	public EvaluatorListRepository expertlist;
+
+	@Autowired
+	public CertificatesLogRepository certificatelog;
+
+	@Autowired
+	public OGPARepository ogpa;
+
+	@Autowired
+	public ApproveTypeRepository approvetype;
+	
+	@Autowired
+	public NoDuesMappingRepository noDuesMappingRepository;
+	
+	@Autowired
+	public InternalMarksConfigurationRepository internalMarksConfiguration;
+	
+	@Autowired
+	public CustomerSmsLogRepository customersms;
+
+	@Autowired
+	public StudentadmissionLogRepository studentadmissionLog;
+
+	@Autowired
+	public SeatArrangementRepository seatArrangement;
+	
+	@Autowired
+	public StudentDocumentRepository studentDocument;
+	
+	@Autowired
+	public DocumentTypeRepository documentType;
+	
+	@Autowired
+	public CertificateTypeRepository certificate;
+	
+	@Autowired
+	public StudentCertificateRepository certificaterepo;
+	
+	@Autowired
+	public NoDuePenaltyRepository noDuePenalty;
+	
+	
+	@Autowired
+	public AssignHostelRepository assignHostelRepository;
+	
+	@Autowired
+	public PublishResultRepository publish;
+			
+	@Autowired
+	public ApplicationVersionRepository appversion;
+	
+	@Autowired
+	public ModuleMappingRepository module;
+	
+	@Autowired
+	public AcademicCalenderLogRepository academicCalenderLog;
+	
+	@Autowired
+	public FeedbackConfigurationRepository feedbackConfiguration ;
+	
+}

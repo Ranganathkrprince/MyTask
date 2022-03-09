@@ -1,0 +1,55 @@
+package com.niftem.app.repository;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Privileges;
+
+
+	public interface PrivillageRepository extends CrudRepository<Privileges, Long>{
+		
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_privileges set addrole = ?1  , approverole =?2,updaterole=?3,deleterole=?4,viewrole=?5,privileges_features_id=?6,  role_id=?7,ex_is_active = ?8 , ex_update_date = ?9  where id = ?10", nativeQuery = true)
+		int updatePrivileges(Boolean addrole, Boolean approverole,Boolean updaterole, Boolean deleterole, Boolean viewrole,Long privilegesFeatures, Long role, Boolean exIsActive,Date date, Long id);
+
+		List<Privileges> findByExIsDelete(Boolean delete);
+
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_privileges set ex_is_delete = ?1  ,ex_is_active = ?2  where id =?3", nativeQuery = true)
+		int updatePrivileges(Boolean delete, Boolean active, Long id);
+
+		ArrayList<Privileges> findByRoleId(long role);
+
+		@Modifying
+		@Transactional
+		@Query(value = "delete FROM ex_privileges where role_id = ?1", nativeQuery = true)
+		  void  deletePrivilageByRoleid(long role);
+
+		
+		@Modifying
+		@Transactional	
+		@Query(value = "insert into ex_privileges(role_id,privileges_features_id,addrole,approverole,deleterole,updaterole,ex_is_active,ex_is_delete,ex_create_date)values(?1,?2,?3,?4,?5,?6,?7,?8,?9)", nativeQuery = true)
+	    void insertPrivlages(long role , String listfeatures1 , String listadd1 ,String listapprove1,String listdelete1, String listupdate1, Boolean active, Boolean delete ,Date createdate);
+
+		List<Privileges> findByRoleIdAndExIsDelete(Long id, Boolean delete);
+		
+		
+
+		@Query(value = "select * from ex_privileges pri ,ex_privileges_features featur  where pri.role_id = ?1 and pri.privileges_features_id=featur.id group by featur.privileges_modules_id", nativeQuery = true)
+		ArrayList<Privileges> getRolesForUser(Long id);
+
+		List<Privileges> findByRoleIdAndExIsDeleteAndPrivilegesFeaturesId(
+				Long id, boolean delete, Long privillagefeature);
+		
+		@Query(value = "select  *  from ex_privileges pri ,ex_privileges_features featur  where pri.role_id = ?1 and pri.privileges_features_id=featur.id and featur.privileges_modules_id=?2 order by pri.privileges_features_id", nativeQuery = true)
+		List<Privileges> findByRoleIdAndExIsDeleteAndPrivilegesFeaturesIdAndPrivilegesModuleIdss(
+				Long id, Long module);
+}

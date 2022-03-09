@@ -1,0 +1,119 @@
+package com.niftem.app.service;
+
+import java.util.Map;
+
+import com.niftem.app.entity.ComplaintType;
+import com.niftem.app.entity.CustomerSmsLog;
+import com.niftem.app.model.AssignHostelRequest;
+import com.niftem.app.model.CommonRequest;
+import com.niftem.app.model.ComplaintRequest;
+import com.niftem.app.model.ComplaintTypeRequest;
+import com.niftem.app.model.EvaluationDetailsRequest;
+import com.niftem.app.model.InitiatePayment;
+import com.niftem.app.model.ModuleMappingRequest;
+import com.niftem.app.model.NoduR;
+import com.niftem.app.model.Regulation;
+import com.niftem.app.model.SemesterEligibility;
+import com.niftem.app.model.SemesterRegistrationConfigurationRequest;
+import com.niftem.app.model.SemesterRegistrationRequest;
+import com.niftem.app.model.StudentBankDetailsRequest;
+
+public interface HelpDeskService {
+	Map<String, String> saveComplaintType(ComplaintTypeRequest request);
+
+	Map<String, Object> getComplaintType(ComplaintType request);
+
+	Map<String, Object> registerComplain(ComplaintRequest request);
+
+	Map<String, Object> updateComplaintStatus(ComplaintRequest request);
+
+	Map<String, Object> getComplainList(ComplaintRequest request);
+
+	Map<String, Object> getComplainListOnStatus(ComplaintRequest request);
+
+	Map<String, Object> getComplaitHistory(ComplaintRequest request);
+
+	 Map<String, Object> updateComplaintType(ComplaintTypeRequest request);
+
+	 Map<String, Object> deleteComplaintType(ComplaintTypeRequest request);
+
+	Map<String, Object> sendRemark(ComplaintRequest request);
+
+	Map<String, String> getOtp(EvaluationDetailsRequest request);
+
+	Map<String, String> validateOtp(EvaluationDetailsRequest request);
+
+	Map<String, Object> getComplainOnStatusAndRole(ComplaintRequest request);
+
+	Map<String, Object> getStudentForPayment(SemesterRegistrationRequest request);
+
+	Map<String, Object> paymentApprove(SemesterEligibility request);
+
+	Map<String, Object> validatePayment(SemesterEligibility request);
+
+	Map<String, Object> createRegulation(Regulation request);
+
+	Map<String, Object> getRegulation(Regulation request);
+
+	Map<String, Object> updateRegulation(Regulation request);
+
+	Map<String, Object> deleteRegulation(Regulation request);
+
+	Map<String, Object> studentCertificateRequest(CommonRequest request);
+
+	Map<String, Object> getAllCertificate(CommonRequest request);
+
+	Map<String, Object> getCertificateByStudent(CommonRequest request);
+
+	Map<String, Object> assignCertificate(CommonRequest request);
+
+	Map<String, Object> assignHostel(AssignHostelRequest request);
+
+	Map<String, Object> getHostelAllocatedStudent(AssignHostelRequest request);
+
+	Map<String, Object> vacatedHostel(AssignHostelRequest request);
+
+	Map<String, Object> updateBankDetailsByStudent(StudentBankDetailsRequest request);
+
+	Map<String, Object> getBankDetailsByStudent(StudentBankDetailsRequest request);
+
+	Map<String, Object> getBankDetailsByAdmin(StudentBankDetailsRequest request);
+
+	Map<String, Object> updateBankDetailsByAdmin(StudentBankDetailsRequest request);
+
+	Map<String, Object> saveModule(ModuleMappingRequest request);
+
+	Map<String, Object> getModule(ModuleMappingRequest request);
+
+	Map<String, Object> changeStudyStatus(StudentBankDetailsRequest request);
+
+	Map<String, Object> changeMarksheet(CommonRequest request);
+
+	Map<String, Object> getStudentDetailsForPenlty(NoduR request);
+
+	Map<String, Object> updateStudentPenlty(NoduR request);
+
+	Map<String, Object> getListPenaltyByStudent(NoduR request);
+
+	Map<String, String> saveStaffComplaintType(ComplaintTypeRequest request);
+
+	Map<String, Object> getStaffComplaintType(ComplaintType request);
+
+	Map<String, Object> updateStaffComplaintType(ComplaintTypeRequest request);
+
+	Map<String, Object> deleteStaffComplaintType(ComplaintTypeRequest request);
+
+	Map<String, Object> registerComplainByStaff(ComplaintRequest request);
+
+	Map<String, Object> updateComplaintStatusForStaff(ComplaintRequest request);
+
+	Map<String, Object> getComplainListForStaff(ComplaintRequest request);
+
+	Map<String, Object> getComplainListOnStatusStaff(ComplaintRequest request);
+
+	Map<String, Object> getComplainHistoryStaff(ComplaintRequest request);
+
+
+
+
+}

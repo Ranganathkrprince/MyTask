@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="employee-rpt" pageWidth="595" pageHeight="842" columnWidth="553" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="244989f7-3890-4993-8aa8-20bbbe332a9d">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<parameter name="createdBy" class="java.lang.String"/>
+	<field name="empNo" class="java.lang.Long"/>
+	<field name="empName" class="java.lang.String"/>
+	<field name="job" class="java.lang.String"/>
+	<field name="salary" class="java.lang.Long"/>
+	<field name="manager" class="java.lang.Long"/>
+	<field name="hireDate" class="java.util.Date"/>
+	<field name="commission" class="java.lang.Long"/>
+	<field name="deptNo" class="java.lang.Long"/>
+	<background>
+		<band height="80" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="16" width="80" height="30" uuid="0ae3daeb-55ea-41e6-a6e1-c5acd3d187ac"/>
+				<textElement rotation="None">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{createdBy}]]></textFieldExpression>
+			</textField>
+		</band>
+	</background>
+	<title>
+		<band height="98" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="50" width="520" height="48" forecolor="#2B2630" backcolor="#AF7CDE" uuid="a194df99-b14b-4be1-83ac-22f071e6878e"/>
+				<textElement textAlignment="Center">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Employee Report]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="41" width="61" height="20" uuid="5b245410-d296-4cf5-be9f-9727ee4b5cc4"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Emp No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="61" y="41" width="61" height="20" uuid="816a9122-fa47-42e8-a6d0-c8637eeed405"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Emp Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="122" y="41" width="61" height="20" uuid="29ed3898-6148-4e37-b347-f636ac21cbc4"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Job]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="183" y="41" width="62" height="20" uuid="b13ef8f1-9d7c-43e5-84b3-1c9a89d1221e"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Salary]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="245" y="41" width="61" height="20" uuid="a4302066-1231-407d-8ff8-62660aebef95"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Manager]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="306" y="41" width="73" height="20" uuid="b2ba25dd-593c-4db3-89c4-bc8f1548ef60"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hire Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="41" width="87" height="20" uuid="af46bb2a-b71c-4624-8210-fb27e9ded03f"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Commission]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="466" y="41" width="89" height="20" uuid="fb3d6ab9-c0d1-4db4-98f0-fd11ddfab7eb"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dept No]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="61" height="20" uuid="f50f43f7-48d4-471d-86fa-1b84679f2c59"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{empNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="0" width="61" height="20" uuid="622b899a-1fbe-4966-b1a7-b636a647c99c"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{empName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="122" y="0" width="61" height="20" uuid="1aeb5ab7-341e-4fde-b2a8-66e9a3a6fcbd"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{job}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="183" y="0" width="62" height="20" uuid="c04975f0-7a22-4280-92db-fd592069d2cb"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{salary}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="245" y="0" width="61" height="20" uuid="eb7e5e77-f03f-4d47-86ee-03435975a5f7"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{manager}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="306" y="0" width="73" height="20" uuid="c95c3833-66e3-407e-ae25-b2a2475a9319"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{hireDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="379" y="0" width="87" height="20" uuid="b8f6da0a-85b6-42a4-ac6d-b0853959ca82"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{commission}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="466" y="0" width="89" height="20" uuid="ebd67c22-4c11-42ac-8fac-d93268d36159"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{deptNo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

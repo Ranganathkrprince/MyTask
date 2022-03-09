@@ -1,0 +1,31 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.EvaluatorList;
+
+public interface EvaluatorListRepository extends CrudRepository<EvaluatorList, Long> {
+
+	List<EvaluatorList> findByExIsDelete(boolean b);
+
+	List<EvaluatorList> findByExUserNameAndExPasswordAndExIsDelete(String userName, String dcrypt, Boolean is_delete);
+
+	Optional<EvaluatorList> findByIdAndExIsDeleteAndExIsActive(Long expertId, boolean b, boolean c);
+
+	List<EvaluatorList> findByExIsActiveAndExIsDelete(boolean b, boolean c);
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_export_list set ex_photo = ?1 where id =?2", nativeQuery = true)
+	
+	int updatePhoto(String imagepath, Long id);
+	
+	
+	
+
+}

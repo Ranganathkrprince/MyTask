@@ -1,0 +1,45 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.StudentRollNo;
+
+public interface StudentRollNoRepository extends CrudRepository<StudentRollNo, Long>{
+
+	
+	Optional<StudentRollNo> findByExIsDeleteAndExIsActiveAndCollegesId(boolean b, boolean c, Long colleges);
+
+	List<StudentRollNo> findByExIsDelete(boolean b);
+
+	Optional<StudentRollNo> findByExIsDeleteAndExIsActiveAndCollegesIdAndExName(boolean b, boolean c, Long colleges,
+			String exName);
+
+	Optional<StudentRollNo> findByExIsDeleteAndExIsActiveAndCollegesIdAndDegreeId(boolean b, boolean c, Long colleges,
+			Long degree);
+
+	Optional<StudentRollNo> findByExIsDeleteAndExIsActiveAndCollegesIdAndDegreeIdAndExIdStartWith(boolean b, boolean c,
+			Long colleges, Long degree, String exIdStartWith);
+	
+	
+	Optional<StudentRollNo> findByExIsDeleteAndExIsActiveAndCollegesIdAndDegreeIdAndExNameContaining(boolean b, boolean c,
+			Long colleges, Long degree, String exIdStartWith);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_student_rollno set ex_is_delete = ?1 , ex_is_active = ?2 where id =?3", nativeQuery = true)
+	int deleteStudentRollNo(Boolean exIsDelete, Boolean is_active, Long id);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_student_rollno set ex_id_start_with = ?1 ,ex_is_active = ?2  , ex_name =?3 ,ex_update_date =?4 , colleges_id =?5 , degree_id =?6 where id =?7", nativeQuery = true)
+	int updateStudentRollNo(String ex_id_start_with, Boolean ex_is_active, String ex_name, Date date,Long colleges_id,Long degree_id ,Long id);
+}

@@ -1,0 +1,11 @@
+package com.niftem.app.dto;
+
+public interface NoDueDTO {	
+	 Long getId();
+	 String getRemark();
+	 String getapproveType();
+	 Double getAmount();
+	 Boolean getisPaid();
+	 Boolean getisApprove();
+	
+}

@@ -1,0 +1,41 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.GradeReportLog;
+
+public interface GradeReportLogRepository extends CrudRepository<GradeReportLog, Long>{
+
+	
+
+	List<GradeReportLog> findByExamAnnouncementIdAndAcademicYearIdAndCollegesIdAndProgrammesIdAndExReportTypeAndDegreeIdAndCoursesIdAndSemesterIdAndExReportCategoryAndDepartmentId(
+			Long examAnnouncement, Long academicYear, Long colleges, Long programmes, String string, Long degree,
+			Long courses, Long semester, String string2, Long department);
+
+	List<GradeReportLog> findByExamAnnouncementIdAndAcademicYearIdAndCollegesIdAndProgrammesIdAndExReportTypeAndDegreeIdAndSemesterIdAndExReportCategoryAndDepartmentIdAndBatchId(
+			Long examAnnouncement, Long academicYear, Long colleges, Long programmes, String string, Long degree,
+			Long semester, String string2, Long department , Long batch);
+
+	List<GradeReportLog> findByExamAnnouncementIdAndAcademicYearIdAndCollegesIdAndProgrammesIdAndExReportTypeAndDegreeIdAndCoursesIdAndSemesterIdAndExReportCategoryAndDepartmentIdAndSectionIdIn(
+			Long examAnnouncement, Long academicYear, Long colleges, Long programmes, String string, Long degree,
+			Long courses, Long semester, String string2, Long department, List<Long> list);
+
+	List<GradeReportLog> findByAcademicYearIdAndCollegesIdAndProgrammesIdAndExReportTypeAndDegreeIdAndSemesterIdAndExReportCategoryAndDepartmentId(
+			Long academicYear, Long colleges, Long programmes, String string, Long degree, Long semester,
+			String string2, Long department);
+
+	
+
+	List<GradeReportLog> findByAcademicYearIdAndCollegesIdAndProgrammesIdAndExReportTypeAndDegreeIdAndCoursesIdAndSemesterIdAndExReportCategoryAndDepartmentIdAndSectionIdIn(
+			Long academicYear, Long colleges, Long programmes, String string, Long degree, Long courses, Long semester,
+			String string2, Long department, List<Long> list);
+
+
+
+
+	
+	
+
+}

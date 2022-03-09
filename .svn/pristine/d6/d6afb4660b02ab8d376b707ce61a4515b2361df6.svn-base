@@ -1,0 +1,195 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_nodues_configuration")
+public class NoDuesConfiguration {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+
+
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "batch_id", nullable = false)
+	private Batch batch;
+
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_nodues_configuration_approve_type", joinColumns = {
+			@JoinColumn(name = "noduse_id", referencedColumnName = "id", nullable = false, updatable = true) }, inverseJoinColumns = {
+					@JoinColumn(name = "approve_id", referencedColumnName = "id", nullable = false, updatable = false) })
+	private List<ApproveType> approvetype = new LinkedList<>();
+
+	public Long getId() {
+		return id;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Batch getBatch() {
+		return batch;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public List<ApproveType> getApprovetype() {
+		return approvetype;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setBatch(Batch batch) {
+		this.batch = batch;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	public void setApprovetype(List<ApproveType> approvetype) {
+		this.approvetype = approvetype;
+	}
+
+	@Override
+	public String toString() {
+		return "NoDuesConfiguration [id=" + id + ", academicYear=" + academicYear + ", colleges=" + colleges
+				+ ", degree=" + degree + ", programmes=" + programmes + ", department=" + department
+				+ ", programmeYear=" + programmeYear + ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete
+				+ ", exCreateDate=" + exCreateDate + ", batch=" + batch + ", semester=" + semester + ", approvetype="
+				+ approvetype + "]";
+	}
+
+	
+}

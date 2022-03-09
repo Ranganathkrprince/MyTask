@@ -1,0 +1,105 @@
+package com.niftem.app.model;
+
+import org.springframework.web.multipart.MultipartFile;
+
+public class BookletUploadRequest {
+	
+	
+
+	 private Long academicYear; 
+	 private Long examAnnouncement; 
+	 private Long course; 
+	 private Long colleges;
+	 private Long programmes;
+	 private Long registrationType;
+	 private Long user;
+	 private Long degree;
+	 private Long department;
+		private MultipartFile exBooklet;
+		 private Long semster; 
+			private Long programmeYear;
+			
+	public Long getProgrammeYear() {
+				return programmeYear;
+			}
+			public void setProgrammeYear(Long programmeYear) {
+				this.programmeYear = programmeYear;
+			}
+	public Long getSemster() {
+			return semster;
+		}
+		public void setSemster(Long semster) {
+			this.semster = semster;
+		}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public Long getCourse() {
+		return course;
+	}
+	public void setCourse(Long course) {
+		this.course = course;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public Long getDepartment() {
+		return department;
+	}
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+	public MultipartFile getExBooklet() {
+		return exBooklet;
+	}
+	public void setExBooklet(MultipartFile exBooklet) {
+		this.exBooklet = exBooklet;
+	}
+	@Override
+	public String toString() {
+		return "BookletUploadRequest [academicYear=" + academicYear + ", examAnnouncement=" + examAnnouncement
+				+ ", course=" + course + ", colleges=" + colleges + ", programmes=" + programmes + ", registrationType="
+				+ registrationType + ", user=" + user + ", degree=" + degree + ", department=" + department
+				+ ", exBooklet=" + exBooklet + ", semster=" + semster + ", programmeYear=" + programmeYear + "]";
+	}
+	
+	 
+	 
+
+}

@@ -1,0 +1,222 @@
+package com.niftem.app.service;
+
+import java.io.ByteArrayInputStream;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONObject;
+
+import com.niftem.app.dao.EligiBilityResponse;
+import com.niftem.app.entity.AccessLogs;
+import com.niftem.app.entity.AuditLog;
+import com.niftem.app.entity.Batch;
+import com.niftem.app.entity.ClassAttendance;
+import com.niftem.app.entity.Courses;
+import com.niftem.app.entity.CoursesRegistration;
+import com.niftem.app.entity.CreditHours;
+import com.niftem.app.entity.Designation;
+import com.niftem.app.entity.EvaluatorList;
+import com.niftem.app.entity.ExamAnnouncement;
+import com.niftem.app.entity.Hostel;
+import com.niftem.app.entity.InvigilatorDuty;
+import com.niftem.app.entity.SemesterRegistration;
+import com.niftem.app.entity.StaffEmpDetails;
+import com.niftem.app.entity.Studentpersonal;
+import com.niftem.app.model.BatchRequest;
+import com.niftem.app.model.BookletStaffRequest;
+import com.niftem.app.model.BookletUploadRequest;
+import com.niftem.app.model.ClassTimeTableRequest;
+import com.niftem.app.model.CommonRequest;
+import com.niftem.app.model.CoursesRequest;
+import com.niftem.app.model.CreateStaffRequest;
+import com.niftem.app.model.CreditHoursRquest;
+import com.niftem.app.model.CriteriaRequest;
+import com.niftem.app.model.DesignationRequest;
+import com.niftem.app.model.EvaluatorSelectionRequest;
+import com.niftem.app.model.ExamAnnouncementRequest;
+import com.niftem.app.model.ExportListRequest;
+import com.niftem.app.model.HostelRequest;
+import com.niftem.app.model.InternalMarksRequest;
+import com.niftem.app.model.LogReportRequest;
+import com.niftem.app.model.OrderTransactionReport;
+import com.niftem.app.model.ReportRequest;
+import com.niftem.app.model.SeatArrangementRequest;
+import com.niftem.app.model.SemesterEligibility;
+import com.niftem.app.model.StudentDynamicRequest;
+
+public interface ExcellService {
+
+	//List<TeacherCourseMapping> validateTeacherCourseMappingReport(ReportRequest request);
+
+	List<SemesterRegistration> validationSemesterRegistrationReport(ReportRequest request);
+
+	List<Studentpersonal> validateStudentReport(ReportRequest request);
+
+	List<Courses> validateCoursesReport(CoursesRequest request);
+
+	List<AuditLog> validateAuditLogReport(LogReportRequest request);
+
+	List<StaffEmpDetails> validateStaffReport(CreateStaffRequest request);
+
+	List<Batch> validateBatchReport(BatchRequest request);
+
+	//List<CreditHours> validateCreditHoursReport(CreditHoursRquest request);
+
+	List<Hostel> validateHostelReport(HostelRequest request);
+
+	List<Designation> validateDesignationReport(DesignationRequest request);
+
+	List<ExamAnnouncement> validateExamAnnouncementReport(ExamAnnouncementRequest request);
+
+	List<Object[]> validateMidtermMarksReport(ReportRequest request);
+
+	List<Object[]> validateExamAttendanceReport(ReportRequest request);
+
+	List<Object[]> validateExamTimeTableLog(LogReportRequest request);
+
+	List<ClassAttendance> studentForAttendance(ClassTimeTableRequest request);
+
+	List<Object[]> validateGradeReportLog(ReportRequest request);
+
+	List<Object[]> semesterReportLogReport(ReportRequest request);
+
+	//List<GradeReport> gradeReport(ReportRequest request);
+
+	//List<Staffpersonal> validationStaffReport(ReportRequest request);
+
+	List<Batch> validationBatchReport(ReportRequest request);
+
+	
+
+	List<Object[]> auditLogReport(ReportRequest request);
+
+	JSONObject answerBookletUploadStatus(BookletUploadRequest request);
+
+	ByteArrayInputStream answerBookletUploadStatus(JSONObject value);
+
+	JSONObject evaluatorSelectionStatus(EvaluatorSelectionRequest request);
+
+	ByteArrayInputStream evaluatorSelectionStatus(JSONObject value);
+
+	JSONObject bookletAllocationStatus(BookletStaffRequest request);
+
+	ByteArrayInputStream bookletAllocationStatus(JSONObject value);
+
+	JSONObject bookletReAllocationStatus(BookletStaffRequest request);
+
+	ByteArrayInputStream bookletReAllocationStatus(JSONObject value);
+
+	JSONObject evaluationStatus(BookletStaffRequest request);
+
+	ByteArrayInputStream evaluationStatus(JSONObject value);
+
+	List<Object[]> validateExcelTransactionList1(ReportRequest request);
+
+	
+
+	List<EvaluatorList> validateexpertListReport(ExportListRequest request);
+
+	List<Object[]> validateTopperlistReportList1(ReportRequest request);
+
+	
+	List<Object[]> validatecriteriaReportlistReportList1(CriteriaRequest request);
+
+	List<Object[]> validategoldMeritReportlistReportList1(CriteriaRequest request);
+
+	List<Object[]> validateTransactionReportlistReportList1(OrderTransactionReport request);
+
+	JSONObject backlogReport(OrderTransactionReport request);
+
+	ByteArrayInputStream backlogReport(JSONObject value);
+
+	//List<Object[]> validateExcelQuestionPaper(OrderTransactionReport request);
+
+	//ByteArrayInputStream questionPaperReportToExcel(List<Object[]> questionPaperReport);
+
+	List<Object[]> validatequestionPaperReportlistReportList1(OrderTransactionReport request);
+
+	List<Object[]> validateexcelInvigilatorAllocationReportlistReport(ReportRequest request);
+	List<AccessLogs> accessLogs(ReportRequest request);
+
+	ByteArrayInputStream semesterRegistrationReport(List<SemesterRegistration> semester);
+
+	List<Object[]> overallMarksReport(CommonRequest request);
+
+	List<EligiBilityResponse> eligiblitylist(SemesterEligibility request, List<String> approve);
+
+	ByteArrayInputStream eligiblitylistReport(JSONObject value);
+
+	List<Studentpersonal> semesterNotRegistrationReport(ReportRequest request);
+
+	List<Object[]> validateMasterOfAllReport(ReportRequest request);
+
+	List<CreditHours> validatecreditHoursReportNewReport(CreditHoursRquest request);
+
+	List<Object[]> NewBatchReport(CommonRequest request);
+
+	List<Object[]> SubmittedReport(CommonRequest request);
+
+	List<SemesterRegistration> validatesemRegistration(ReportRequest request);
+
+	List<Object[]> validateSupplyReport(ReportRequest request);
+
+	List<Object[]> validateteachercoursemapreport(ReportRequest request);
+
+
+	Map<String, Object> getExcelForInternal(InternalMarksRequest request);
+
+
+	List<CoursesRegistration> validatesemcrRegistration(List<SemesterRegistration> student);
+
+	List<Courses> validatesemcrccRegistration(List<SemesterRegistration> student);
+
+	//List<Studentpersonal> gradeReportGrade(List<GradeReport> semester);
+
+	List<Object[]> validateGradeReport(ReportRequest request);
+
+	List<Object[]> validateStaffReport(ReportRequest request);
+	
+	List<CoursesRegistration> validateIATheoryMarksReport(CommonRequest request);
+
+	List<CoursesRegistration> validateIAPracticalMarksReport(CommonRequest request);
+
+	List<CoursesRegistration> validateIATheoryMarksBtechReport(CommonRequest request);
+
+	List<Object[]> overallMarksReportMtechMba(CommonRequest request);
+
+	List<Object[]> MarksheetUploadStatus(CommonRequest request);
+
+	List<Object[]> MarksheetUploadStatusMtechMba(CommonRequest request);
+
+	List<Object[]> validateStudentsDocumentsUploadstatus(CommonRequest request);
+
+	List<Object[]> validateteachercoursemapreportSample(ReportRequest request);
+
+	List<Object[]> validateteachercoursemapreportSamples(ReportRequest request);
+
+	List<SemesterRegistration> validationSemesterRegistration(ReportRequest request);
+
+	ByteArrayInputStream semesterRegistration(List<SemesterRegistration> semester);
+
+	List<Object[]> BankdetailsReport(ReportRequest request);
+
+	List<InvigilatorDuty> invigolatorReport(SeatArrangementRequest request);
+	
+	List<InvigilatorDuty> invigolatorReportWithExamHall(SeatArrangementRequest request);
+
+	List<Studentpersonal> validateCompletestudentAdmissionReport(ReportRequest request);
+
+
+	List<Object[]> studentDynamicReport(StudentDynamicRequest request);
+
+	List<CoursesRegistration> validationSupplysemesterRegistrationReport(ReportRequest request);
+
+
+
+	ByteArrayInputStream SupplysemesterRegistrationReport(List<CoursesRegistration> semester);
+
+	List<SemesterRegistration> validationapprovalReport(ReportRequest request);
+
+
+	
+}

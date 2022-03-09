@@ -1,0 +1,92 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class StudentIdSettingRequest {
+	
+	@NotNull(message = "Please provide colleges")
+	private Long colleges;
+	
+	@NotNull(message = "Please provide programmes")
+	private Long programmes;
+	
+	private Long id;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide exIdValue")
+	private String exIdValue;
+	
+	@NotNull(message = "Please provide academicyear")
+	private Long academicYear;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide exStartWith")
+	private String exStartWith;
+	
+	@NotNull(message = "Please provide a exIsActive 0/1")
+	private Boolean exIsActive;
+
+	public Long getColleges() {
+		return colleges;
+	}
+
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExIdValue() {
+		return exIdValue;
+	}
+
+	public void setExIdValue(String exIdValue) {
+		this.exIdValue = exIdValue;
+	}
+
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public String getExStartWith() {
+		return exStartWith;
+	}
+
+	public void setExStartWith(String exStartWith) {
+		this.exStartWith = exStartWith;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	@Override
+	public String toString() {
+		return "StudentIdSettingRequest [colleges=" + colleges + ", programmes=" + programmes + ", id=" + id
+				+ ", exIdValue=" + exIdValue + ", academicYear=" + academicYear + ", exStartWith=" + exStartWith
+				+ ", exIsActive=" + exIsActive + "]";
+	}
+	
+}

@@ -1,0 +1,70 @@
+package com.niftem.app.model;
+
+public class AssignHostelRequest {
+
+	private String exRoomNumber;
+	private String exRoomType;
+	private String exRemark;		
+	private String exRollNo;	
+	private Long user;		
+	private Long batch;
+	private Long hostel;
+	private Long id;
+	public String getExRoomNumber() {
+		return exRoomNumber;
+	}
+	public String getExRoomType() {
+		return exRoomType;
+	}
+	public String getExRemark() {
+		return exRemark;
+	}
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public Long getBatch() {
+		return batch;
+	}
+	public Long getHostel() {
+		return hostel;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setExRoomNumber(String exRoomNumber) {
+		this.exRoomNumber = exRoomNumber;
+	}
+	public void setExRoomType(String exRoomType) {
+		this.exRoomType = exRoomType;
+	}
+	public void setExRemark(String exRemark) {
+		this.exRemark = exRemark;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public void setBatch(Long batch) {
+		this.batch = batch;
+	}
+	public void setHostel(Long hostel) {
+		this.hostel = hostel;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	@Override
+	public String toString() {
+		return "AssignHostelRequest [exRoomNumber=" + exRoomNumber + ", exRoomType=" + exRoomType + ", exRemark="
+				+ exRemark + ", exRollNo=" + exRollNo + ", user=" + user + ", batch=" + batch + ", hostel=" + hostel
+				+ ", id=" + id + "]";
+	}
+	
+	
+	
+}

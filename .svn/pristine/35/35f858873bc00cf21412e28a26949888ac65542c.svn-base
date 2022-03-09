@@ -1,0 +1,199 @@
+package com.niftem.app.model;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.Colleges;
+import com.niftem.app.entity.Degree;
+import com.niftem.app.entity.ProgrammeYear;
+import com.niftem.app.entity.Programmes;
+import com.niftem.app.entity.RegistrationType;
+import com.niftem.app.entity.Semster;
+
+public class SemesterRegistrationConfigurationRequest {
+			
+	    private Long id;	
+		
+		private Boolean exIsActive;
+		
+		private String exStartDate;
+		
+		private String exEndDate;
+		
+		private Integer exStatus;
+		private Integer feedbackType;
+		
+		private String exExtendDate;
+		
+		@NotNull(message = "degree is required")
+		private Long degree;
+		
+		@NotNull(message = "colleges is required")
+		private Long colleges;
+		
+		@NotNull(message = "programmes is required")
+		private Long programmes; 
+		
+		@NotNull(message = "academicYear is required")
+		private Long academicYear;
+		
+		@NotNull(message = "programmeYear is required")
+		private Long programmeYear; 
+	
+		@NotNull(message = "semester is required")
+		private Long semester;
+		
+		@NotNull(message = "registrationType is required")
+	    private Long registrationType;
+		
+		@NotNull(message = "examAnnouncement is required")
+	    private Long examAnnouncement;
+		 private Long user;		 
+		 private Long batch;	 
+		 private Integer compulsory;
+		private Integer notCompulsory;
+		private Long department;
+		public Long getId() {
+			return id;
+		}
+		public Boolean getExIsActive() {
+			return exIsActive;
+		}
+		public String getExStartDate() {
+			return exStartDate;
+		}
+		public String getExEndDate() {
+			return exEndDate;
+		}
+		public Integer getExStatus() {
+			return exStatus;
+		}
+		public Integer getFeedbackType() {
+			return feedbackType;
+		}
+		public String getExExtendDate() {
+			return exExtendDate;
+		}
+		public Long getDegree() {
+			return degree;
+		}
+		public Long getColleges() {
+			return colleges;
+		}
+		public Long getProgrammes() {
+			return programmes;
+		}
+		public Long getAcademicYear() {
+			return academicYear;
+		}
+		public Long getProgrammeYear() {
+			return programmeYear;
+		}
+		public Long getSemester() {
+			return semester;
+		}
+		public Long getRegistrationType() {
+			return registrationType;
+		}
+		public Long getExamAnnouncement() {
+			return examAnnouncement;
+		}
+		public Long getUser() {
+			return user;
+		}
+		public Long getBatch() {
+			return batch;
+		}
+		public Integer getCompulsory() {
+			return compulsory;
+		}
+		public Integer getNotCompulsory() {
+			return notCompulsory;
+		}
+		public Long getDepartment() {
+			return department;
+		}
+		public void setId(Long id) {
+			this.id = id;
+		}
+		public void setExIsActive(Boolean exIsActive) {
+			this.exIsActive = exIsActive;
+		}
+		public void setExStartDate(String exStartDate) {
+			this.exStartDate = exStartDate;
+		}
+		public void setExEndDate(String exEndDate) {
+			this.exEndDate = exEndDate;
+		}
+		public void setExStatus(Integer exStatus) {
+			this.exStatus = exStatus;
+		}
+		public void setFeedbackType(Integer feedbackType) {
+			this.feedbackType = feedbackType;
+		}
+		public void setExExtendDate(String exExtendDate) {
+			this.exExtendDate = exExtendDate;
+		}
+		public void setDegree(Long degree) {
+			this.degree = degree;
+		}
+		public void setColleges(Long colleges) {
+			this.colleges = colleges;
+		}
+		public void setProgrammes(Long programmes) {
+			this.programmes = programmes;
+		}
+		public void setAcademicYear(Long academicYear) {
+			this.academicYear = academicYear;
+		}
+		public void setProgrammeYear(Long programmeYear) {
+			this.programmeYear = programmeYear;
+		}
+		public void setSemester(Long semester) {
+			this.semester = semester;
+		}
+		public void setRegistrationType(Long registrationType) {
+			this.registrationType = registrationType;
+		}
+		public void setExamAnnouncement(Long examAnnouncement) {
+			this.examAnnouncement = examAnnouncement;
+		}
+		public void setUser(Long user) {
+			this.user = user;
+		}
+		public void setBatch(Long batch) {
+			this.batch = batch;
+		}
+		public void setCompulsory(Integer compulsory) {
+			this.compulsory = compulsory;
+		}
+		public void setNotCompulsory(Integer notCompulsory) {
+			this.notCompulsory = notCompulsory;
+		}
+		public void setDepartment(Long department) {
+			this.department = department;
+		}
+		@Override
+		public String toString() {
+			return "SemesterRegistrationConfigurationRequest [id=" + id + ", exIsActive=" + exIsActive
+					+ ", exStartDate=" + exStartDate + ", exEndDate=" + exEndDate + ", exStatus=" + exStatus
+					+ ", feedbackType=" + feedbackType + ", exExtendDate=" + exExtendDate + ", degree=" + degree
+					+ ", colleges=" + colleges + ", programmes=" + programmes + ", academicYear=" + academicYear
+					+ ", programmeYear=" + programmeYear + ", semester=" + semester + ", registrationType="
+					+ registrationType + ", examAnnouncement=" + examAnnouncement + ", user=" + user + ", batch="
+					+ batch + ", compulsory=" + compulsory + ", notCompulsory=" + notCompulsory + ", department="
+					+ department + "]";
+		}
+
+
+		
+}

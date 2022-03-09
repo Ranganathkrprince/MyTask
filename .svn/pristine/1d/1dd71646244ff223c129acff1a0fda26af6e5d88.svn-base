@@ -1,0 +1,109 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotNull;
+
+public class StudentRollNoRequest {
+	 private Long id;
+	    
+		@NotNull(message = "Please select format")	
+		private String exName;
+		
+		@NotNull(message = "Please provide a exIsActive 0/1")	
+	    private Boolean exIsActive;
+
+		private boolean exIsDelete;
+		
+		@NotNull(message = "Please select degree")	
+		private Long degree;
+		
+		
+		
+		@NotNull(message = "Please select colleges")
+		private Long colleges;
+		
+		@NotNull(message = "Please provide exIdValue")	
+		private String exIdStartWith;
+
+		
+		private Long user;
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public String getExName() {
+			return exName;
+		}
+
+		public void setExName(String exName) {
+			this.exName = exName;
+		}
+
+	
+		public Long getDegree() {
+			return degree;
+		}
+
+		public void setDegree(Long degree) {
+			this.degree = degree;
+		}
+
+		
+		public Long getColleges() {
+			return colleges;
+		}
+
+		public void setColleges(Long colleges) {
+			this.colleges = colleges;
+		}
+
+		public Boolean getExIsActive() {
+			return exIsActive;
+		}
+
+		public void setExIsActive(Boolean exIsActive) {
+			this.exIsActive = exIsActive;
+		}
+
+		public boolean isExIsDelete() {
+			return exIsDelete;
+		}
+
+		public void setExIsDelete(boolean exIsDelete) {
+			this.exIsDelete = exIsDelete;
+		}
+
+		public Long getUser() {
+			return user;
+		}
+
+		public void setUser(Long user) {
+			this.user = user;
+		}
+
+		public String getExIdStartWith() {
+			return exIdStartWith;
+		}
+
+		public void setExIdStartWith(String exIdStartWith) {
+			this.exIdStartWith = exIdStartWith;
+		}
+
+		@Override
+		public String toString() {
+			return "StudentRollNoRequest [id=" + id + ", exName=" + exName + ", exIsActive=" + exIsActive
+					+ ", exIsDelete=" + exIsDelete + ", degree=" + degree + ", colleges=" + colleges
+					+ ", exIdStartWith=" + exIdStartWith + ", user=" + user + "]";
+		}
+
+	
+		
+		
+	
+		
+
+}

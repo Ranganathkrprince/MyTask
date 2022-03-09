@@ -1,0 +1,46 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.QuestionPaperType;
+import com.niftem.app.model.QuestionPaperTypeRequest;
+@Repository
+@Service
+@Transactional
+public interface QuestionPaperTypeRepository extends CrudRepository<QuestionPaperType, Long>{
+
+	void save(QuestionPaperTypeRequest questionPaperType);
+
+	List<QuestionPaperType> findByExQpTypeAndExIsDelete(String QPtype, boolean b);
+
+	List<QuestionPaperType> findByExIsDelete(boolean b);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_question_paper_type set ex_is_delete = ?1 ,ex_is_active =?2  where id =?3", nativeQuery = true)
+	int deleteQuestionPaperType(Boolean exIsDelete, Boolean is_active, Long id);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_question_paper_type set ex_qp_type = ?1 ,ex_description =?2 , ex_is_active =?3  , ex_update_date =?4  where id =?5", nativeQuery = true)
+	int updateQuestionPaperType(String exQpType, String exDescription, Boolean exIsActive, Date date, Long id);
+
+	Optional<QuestionPaperType> findByIdAndExIsDeleteAndExIsActive(Long questionPaperType, boolean b, boolean c);
+
+
+
+	List<QuestionPaperType> findByExIsActive(boolean b);
+
+
+
+}

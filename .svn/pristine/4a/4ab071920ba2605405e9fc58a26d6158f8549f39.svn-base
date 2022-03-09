@@ -1,0 +1,44 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.ProgramType;
+@Repository
+
+public interface ProgramTypeRepository  extends CrudRepository<ProgramType, Long> {
+	List<ProgramType> findByExNameAndExIsDelete(String trim, boolean b);
+
+	List<ProgramType> findByExIsDelete(boolean b);
+	
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_programtype set ex_is_delete = ?1  ,ex_is_active = ?2  where id =?3", nativeQuery = true)
+	int deleteProgramType(Boolean exIsDelete, Boolean is_active, Long id);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_programtype set ex_name = ?1 ,ex_is_active =?2 , ex_description =?3  , ex_update_date = ?4 where id =?5", nativeQuery = true)
+	
+	int updateProgramTypeRecord(String exName, Boolean exIsActive, String exDescription, Date date, Long id);
+
+	Optional<ProgramType> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, Long batch);
+
+//newly added
+	//Optional<ProgramType> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, String trim);
+
+	Optional<ProgramType> findByExNameAndExIsDeleteAndExIsActive(String trim, boolean b, boolean c);
+
+	
+
+}

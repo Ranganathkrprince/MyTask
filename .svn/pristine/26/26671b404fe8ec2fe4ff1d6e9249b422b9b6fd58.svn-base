@@ -1,0 +1,424 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+@Entity
+@Table(name = "ex_ordertransaction")
+@EntityListeners(AuditingEntityListener.class)
+public class OrderTransaction {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String name;
+	private String mobile;
+	private String email;
+	
+    private String nodueid;
+	private String ipAddress;
+	
+	private String serialnumber;
+	
+	@Column(columnDefinition="TEXT")
+	private String address;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date txnDate;
+	
+	private Double txnAmount;
+	private String paymentstatus;
+	private String orderId;
+	
+	private String exRollNo;
+	private String exReceiptpath;
+
+	private String mihpayId;
+    private String mode;
+    
+    private String queryStatus;
+	private String discount;
+    private String offer;
+    private String productInfo;
+    
+    private String lastName;
+    
+    private String error;
+    private String errorMessage;
+    
+    private String bankCode;
+    
+	private String pgType;
+    private String bankRefNum;
+    
+    private String cardNumber;
+    
+    private String unmappedstatus;
+	
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean paymentSource;
+	
+	@ManyToOne(optional = false ,fetch = FetchType.LAZY)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	 @OneToMany(fetch = FetchType.LAZY)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = false ,fetch = FetchType.LAZY)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear;
+
+	@ManyToOne(optional = false ,fetch = FetchType.LAZY)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	@ManyToOne(optional = false ,fetch = FetchType.LAZY)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+
+	@ManyToOne(optional = false ,fetch = FetchType.LAZY)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+	
+	@ManyToOne(optional = false ,fetch = FetchType.LAZY)
+	@JoinColumn(name = "registration_type_id", nullable = false)
+	private RegistrationType registration;
+
+	@ManyToOne(optional = true ,fetch = FetchType.LAZY)
+	@JoinColumn(name = "feemaster_id", nullable = true)
+	private FeeMaster feemaster;
+	
+    @ManyToOne( optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "student_admission_id", nullable = false)
+	private Studentadmission studentadmission;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getNodueid() {
+		return nodueid;
+	}
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+	public String getSerialnumber() {
+		return serialnumber;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public Date getTxnDate() {
+		return txnDate;
+	}
+
+	public Double getTxnAmount() {
+		return txnAmount;
+	}
+
+	public String getPaymentstatus() {
+		return paymentstatus;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public String getMihpayId() {
+		return mihpayId;
+	}
+
+	public String getMode() {
+		return mode;
+	}
+
+	public String getQueryStatus() {
+		return queryStatus;
+	}
+
+	public String getDiscount() {
+		return discount;
+	}
+
+	public String getOffer() {
+		return offer;
+	}
+
+	public String getProductInfo() {
+		return productInfo;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public String getBankCode() {
+		return bankCode;
+	}
+
+	public String getPgType() {
+		return pgType;
+	}
+
+	public String getBankRefNum() {
+		return bankRefNum;
+	}
+
+	public String getCardNumber() {
+		return cardNumber;
+	}
+
+	public String getUnmappedstatus() {
+		return unmappedstatus;
+	}
+
+	public Boolean getPaymentSource() {
+		return paymentSource;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public RegistrationType getRegistration() {
+		return registration;
+	}
+
+	public FeeMaster getFeemaster() {
+		return feemaster;
+	}
+
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setNodueid(String nodueid) {
+		this.nodueid = nodueid;
+	}
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+
+	public void setSerialnumber(String serialnumber) {
+		this.serialnumber = serialnumber;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public void setTxnDate(Date txnDate) {
+		this.txnDate = txnDate;
+	}
+
+	public void setTxnAmount(Double txnAmount) {
+		this.txnAmount = txnAmount;
+	}
+
+	public void setPaymentstatus(String paymentstatus) {
+		this.paymentstatus = paymentstatus;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	public void setMihpayId(String mihpayId) {
+		this.mihpayId = mihpayId;
+	}
+
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
+
+	public void setQueryStatus(String queryStatus) {
+		this.queryStatus = queryStatus;
+	}
+
+	public void setDiscount(String discount) {
+		this.discount = discount;
+	}
+
+	public void setOffer(String offer) {
+		this.offer = offer;
+	}
+
+	public void setProductInfo(String productInfo) {
+		this.productInfo = productInfo;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+
+	public void setBankCode(String bankCode) {
+		this.bankCode = bankCode;
+	}
+
+	public void setPgType(String pgType) {
+		this.pgType = pgType;
+	}
+
+	public void setBankRefNum(String bankRefNum) {
+		this.bankRefNum = bankRefNum;
+	}
+
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
+	}
+
+	public void setUnmappedstatus(String unmappedstatus) {
+		this.unmappedstatus = unmappedstatus;
+	}
+
+	public void setPaymentSource(Boolean paymentSource) {
+		this.paymentSource = paymentSource;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setRegistration(RegistrationType registration) {
+		this.registration = registration;
+	}
+
+	public void setFeemaster(FeeMaster feemaster) {
+		this.feemaster = feemaster;
+	}
+
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+	
+	
+
+	public String getExReceiptpath() {
+		return exReceiptpath;
+	}
+
+	public void setExReceiptpath(String exReceiptpath) {
+		this.exReceiptpath = exReceiptpath;
+	}
+
+	@Override
+	public String toString() {
+		return "OrderTransaction [id=" + id + ", name=" + name + ", mobile=" + mobile + ", email=" + email
+				+ ", nodueid=" + nodueid + ", ipAddress=" + ipAddress + ", serialnumber=" + serialnumber + ", address="
+				+ address + ", txnDate=" + txnDate + ", txnAmount=" + txnAmount + ", paymentstatus=" + paymentstatus
+				+ ", orderId=" + orderId + ", exRollNo=" + exRollNo + ", exReceiptpath=" + exReceiptpath + ", mihpayId="
+				+ mihpayId + ", mode=" + mode + ", queryStatus=" + queryStatus + ", discount=" + discount + ", offer="
+				+ offer + ", productInfo=" + productInfo + ", lastName=" + lastName + ", error=" + error
+				+ ", errorMessage=" + errorMessage + ", bankCode=" + bankCode + ", pgType=" + pgType + ", bankRefNum="
+				+ bankRefNum + ", cardNumber=" + cardNumber + ", unmappedstatus=" + unmappedstatus + ", paymentSource="
+				+ paymentSource + ", academicYear=" + academicYear + ", programmeYear=" + programmeYear + ", semester="
+				+ semester + ", degree=" + degree + ", programmes=" + programmes + ", registration=" + registration
+				+ ", feemaster=" + feemaster + ", studentadmission=" + studentadmission + "]";
+	}
+}

@@ -1,0 +1,290 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.niftem.app.entity.StaffType;
+
+public class CommonRequest {
+
+	@NotNull(message = "Please provide a Degree")
+	private Long degree;
+	@NotNull(message = "Please provide a Colleges")
+	private Long colleges;
+	@NotNull(message = "Please select a Colleges")
+	private List<Long> collegesId;
+	
+	@NotNull(message = "Please select a ProgrammesId")
+	private List<Long> programmesId;
+	
+	@NotNull(message = "Please provide a Department")
+	private Long department;
+	@NotNull(message = "Please provide a Programmes")
+	private Long programmes;
+	@NotNull(message = "Please provide a stream")
+	private Long stream;
+	@NotNull(message = "Please provide a course")
+	private Long courses;
+	@NotNull(message = "Please provide a academicYear")
+	private Long academicYear;
+
+	@NotNull(message = "Please provide a roomMaster")
+	private Long roomMaster;
+	@NotNull(message = "Please provide a StudentAdmission")
+	private Long studentadmission;
+	@NotNull(message = "Please provide a StaffPersonal")
+	private Long staffpersonal;
+	private Long examAnnouncement;
+	private Long registrationType;
+	private Long coursesType;
+	private Long programmeYear;
+	private Long semester;
+	private Long student;
+	private Long stafftype;
+	
+	private String exAmount;
+	private String exRollNo;
+	private String exDescription;
+	
+	private MultipartFile exFeereceipt;
+	
+	private List<Long> courseTypeList;
+	private List<Long> coursesId;
+	private List<Long> staffPersonalId;
+	private Long section;
+	private Long id;
+	private Long documentType;
+	private Long certificateType;
+
+	@NotNull(message = "Please provide a Mentor")
+	private Long mentor;
+
+	@NotNull(message = "Please provide a batch")
+	private Long batch;
+	private List<Long> coursesTypeId;	
+	private Long user;
+	public Long getDegree() {
+		return degree;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public List<Long> getCollegesId() {
+		return collegesId;
+	}
+	public List<Long> getProgrammesId() {
+		return programmesId;
+	}
+	public Long getDepartment() {
+		return department;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public Long getStream() {
+		return stream;
+	}
+	public Long getCourses() {
+		return courses;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public Long getRoomMaster() {
+		return roomMaster;
+	}
+	public Long getStudentadmission() {
+		return studentadmission;
+	}
+	public Long getStaffpersonal() {
+		return staffpersonal;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+	public Long getCoursesType() {
+		return coursesType;
+	}
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public Long getSemester() {
+		return semester;
+	}
+	public Long getStudent() {
+		return student;
+	}
+	public Long getStafftype() {
+		return stafftype;
+	}
+	public String getExAmount() {
+		return exAmount;
+	}
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public String getExDescription() {
+		return exDescription;
+	}
+	public List<Long> getCourseTypeList() {
+		return courseTypeList;
+	}
+	public List<Long> getCoursesId() {
+		return coursesId;
+	}
+	public List<Long> getStaffPersonalId() {
+		return staffPersonalId;
+	}
+	public Long getSection() {
+		return section;
+	}
+	public Long getId() {
+		return id;
+	}
+	public Long getDocumentType() {
+		return documentType;
+	}
+	public Long getCertificateType() {
+		return certificateType;
+	}
+	public Long getMentor() {
+		return mentor;
+	}
+	public Long getBatch() {
+		return batch;
+	}
+	public List<Long> getCoursesTypeId() {
+		return coursesTypeId;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public void setCollegesId(List<Long> collegesId) {
+		this.collegesId = collegesId;
+	}
+	public void setProgrammesId(List<Long> programmesId) {
+		this.programmesId = programmesId;
+	}
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public void setStream(Long stream) {
+		this.stream = stream;
+	}
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setRoomMaster(Long roomMaster) {
+		this.roomMaster = roomMaster;
+	}
+	public void setStudentadmission(Long studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+	public void setStaffpersonal(Long staffpersonal) {
+		this.staffpersonal = staffpersonal;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+	public void setCoursesType(Long coursesType) {
+		this.coursesType = coursesType;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+	public void setStudent(Long student) {
+		this.student = student;
+	}
+	public void setStafftype(Long stafftype) {
+		this.stafftype = stafftype;
+	}
+	public void setExAmount(String exAmount) {
+		this.exAmount = exAmount;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+	public void setCourseTypeList(List<Long> courseTypeList) {
+		this.courseTypeList = courseTypeList;
+	}
+	public void setCoursesId(List<Long> coursesId) {
+		this.coursesId = coursesId;
+	}
+	public void setStaffPersonalId(List<Long> staffPersonalId) {
+		this.staffPersonalId = staffPersonalId;
+	}
+	public void setSection(Long section) {
+		this.section = section;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setDocumentType(Long documentType) {
+		this.documentType = documentType;
+	}
+	public void setCertificateType(Long certificateType) {
+		this.certificateType = certificateType;
+	}
+	public void setMentor(Long mentor) {
+		this.mentor = mentor;
+	}
+	public void setBatch(Long batch) {
+		this.batch = batch;
+	}
+	public void setCoursesTypeId(List<Long> coursesTypeId) {
+		this.coursesTypeId = coursesTypeId;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	
+	public MultipartFile getExFeereceipt() {
+		return exFeereceipt;
+	}
+
+public void setExFeereceipt(MultipartFile exFeereceipt) {
+		this.exFeereceipt = exFeereceipt;
+	}
+@Override
+public String toString() {
+	return "CommonRequest [degree=" + degree + ", colleges=" + colleges + ", collegesId=" + collegesId
+			+ ", programmesId=" + programmesId + ", department=" + department + ", programmes=" + programmes
+			+ ", stream=" + stream + ", courses=" + courses + ", academicYear=" + academicYear + ", roomMaster="
+			+ roomMaster + ", studentadmission=" + studentadmission + ", staffpersonal=" + staffpersonal
+			+ ", examAnnouncement=" + examAnnouncement + ", registrationType=" + registrationType + ", coursesType="
+			+ coursesType + ", programmeYear=" + programmeYear + ", semester=" + semester + ", student=" + student
+			+ ", stafftype=" + stafftype + ", exAmount=" + exAmount + ", exRollNo=" + exRollNo + ", exDescription="
+			+ exDescription + ", exFeereceipt=" + exFeereceipt + ", courseTypeList=" + courseTypeList + ", coursesId="
+			+ coursesId + ", staffPersonalId=" + staffPersonalId + ", section=" + section + ", id=" + id
+			+ ", documentType=" + documentType + ", certificateType=" + certificateType + ", mentor=" + mentor
+			+ ", batch=" + batch + ", coursesTypeId=" + coursesTypeId + ", user=" + user + "]";
+}
+
+}

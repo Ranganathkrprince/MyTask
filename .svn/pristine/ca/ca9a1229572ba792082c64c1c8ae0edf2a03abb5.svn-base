@@ -1,0 +1,36 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.PrivilegesModules;
+import com.niftem.app.entity.Role;
+
+public interface PrivillageModuleRepository extends CrudRepository< PrivilegesModules, Long>{
+
+	List<PrivilegesModules> findByExPrivilegeModuleAndExIsDeleteAndExIsActive(String PrivilegesModules, Boolean delete, Boolean active);
+	List<Role> findByExPrivilegeModuleAndExIsDelete(String PrivilegesModules, Boolean delete );
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_privileges_modules set ex_privilege_module = ?1  , ex_is_active =?2  , ex_update_date = ?3 where id =?4", nativeQuery = true)
+	int updatePrivilegeModuleRecord(String exPrivilegeModule,Boolean exIsActive, Date date, Long id);
+	
+	List<PrivilegesModules> findByExIsDelete(Boolean delete);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_privileges_modules set ex_is_delete = ?1  ,ex_is_active = ?2  where id =?3", nativeQuery = true)
+	int updatePrivilegesModules(Boolean delete, Boolean active, Long id);
+	
+	Optional<PrivilegesModules> findByIdAndExIsDeleteAndExIsActive(Long privilegesModules,  Boolean delete, Boolean active);
+
+	
+
+}

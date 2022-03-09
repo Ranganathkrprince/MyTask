@@ -1,0 +1,15 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.CourseGroupMapping;
+
+
+public interface CourseGroupMappingRepository  extends CrudRepository<CourseGroupMapping, Long>{
+
+	List<CourseGroupMapping> findByCourseGroupId(Long id);
+
+	void deleteByCourseGroupId(Long id);
+}

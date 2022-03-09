@@ -1,0 +1,294 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.aspectj.asm.internal.ProgramElement;
+
+
+@Entity
+@Table(name = "ex_user")
+public class User {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	
+    private String exMobile;
+	
+	
+	private String exEmail;
+    
+	
+	private String exName;
+	
+	
+	private String exUserName;
+	
+	
+	private String exPassword;
+	
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsAdmin;
+	
+	private String exPhoto;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_user_collage",joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = true)},
+	inverseJoinColumns = {  @JoinColumn(name = "collage_id", referencedColumnName = "id", nullable = false, updatable = false)})
+	private List<Colleges> college = new LinkedList<>();
+	
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_user_degree",joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true, updatable = true)},
+	inverseJoinColumns = {  @JoinColumn(name = "degree_id", referencedColumnName = "id", nullable = true, updatable = false)})
+	private List<Degree> degree = new LinkedList<>();
+	
+	
+	
+	@ManyToOne( optional = true)
+	@JoinColumn(name = "role_id", nullable = true)
+	private Role role;  
+	
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_user_programmes",joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true, updatable = true)},
+	inverseJoinColumns = {  @JoinColumn(name = "programmes_id", referencedColumnName = "id", nullable = true, updatable = false)})
+	private List<Programmes> programmes; 
+	
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_user_department",joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true, updatable = true)},
+	inverseJoinColumns = {  @JoinColumn(name = "department_id", referencedColumnName = "id", nullable = true, updatable = false)})
+	private List<Department> department; 
+	
+	@Temporal(TemporalType.TIME)
+	@Column(columnDefinition = "TIME")
+	private Date exEndTime;
+
+	@Temporal(TemporalType.TIME)
+	@Column(columnDefinition = "TIME")
+	private Date exStartTime;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exEndDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exStartDate;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExMobile() {
+		return exMobile;
+	}
+
+	public String getExEmail() {
+		return exEmail;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public String getExUserName() {
+		return exUserName;
+	}
+
+	public String getExPassword() {
+		return exPassword;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public Boolean getExIsAdmin() {
+		return exIsAdmin;
+	}
+
+	public String getExPhoto() {
+		return exPhoto;
+	}
+
+	public List<Colleges> getCollege() {
+		return college;
+	}
+
+	public List<Degree> getDegree() {
+		return degree;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public List<Programmes> getProgrammes() {
+		return programmes;
+	}
+
+	public List<Department> getDepartment() {
+		return department;
+	}
+
+	public Date getExEndTime() {
+		return exEndTime;
+	}
+
+	public Date getExStartTime() {
+		return exStartTime;
+	}
+
+	public Date getExEndDate() {
+		return exEndDate;
+	}
+
+	public Date getExStartDate() {
+		return exStartDate;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExMobile(String exMobile) {
+		this.exMobile = exMobile;
+	}
+
+	public void setExEmail(String exEmail) {
+		this.exEmail = exEmail;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public void setExUserName(String exUserName) {
+		this.exUserName = exUserName;
+	}
+
+	public void setExPassword(String exPassword) {
+		this.exPassword = exPassword;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setExIsAdmin(Boolean exIsAdmin) {
+		this.exIsAdmin = exIsAdmin;
+	}
+
+	public void setExPhoto(String exPhoto) {
+		this.exPhoto = exPhoto;
+	}
+
+	public void setCollege(List<Colleges> college) {
+		this.college = college;
+	}
+
+	public void setDegree(List<Degree> degree) {
+		this.degree = degree;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public void setProgrammes(List<Programmes> programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setDepartment(List<Department> department) {
+		this.department = department;
+	}
+
+	public void setExEndTime(Date exEndTime) {
+		this.exEndTime = exEndTime;
+	}
+
+	public void setExStartTime(Date exStartTime) {
+		this.exStartTime = exStartTime;
+	}
+
+	public void setExEndDate(Date exEndDate) {
+		this.exEndDate = exEndDate;
+	}
+
+	public void setExStartDate(Date exStartDate) {
+		this.exStartDate = exStartDate;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", exMobile=" + exMobile + ", exEmail=" + exEmail + ", exName=" + exName
+				+ ", exUserName=" + exUserName + ", exPassword=" + exPassword + ", exIsActive=" + exIsActive
+				+ ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate
+				+ ", exIsAdmin=" + exIsAdmin + ", exPhoto=" + exPhoto + ", college=" + college + ", degree=" + degree
+				+ ", role=" + role + ", programmes=" + programmes + ", department=" + department + ", exEndTime="
+				+ exEndTime + ", exStartTime=" + exStartTime + ", exEndDate=" + exEndDate + ", exStartDate="
+				+ exStartDate + "]";
+	}
+}

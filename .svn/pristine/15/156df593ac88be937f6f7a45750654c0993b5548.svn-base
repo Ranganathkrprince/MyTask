@@ -1,0 +1,75 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Colleges;
+import com.niftem.app.entity.Department;
+import com.niftem.app.entity.Designation;
+
+public interface DesignationRepository extends CrudRepository<Designation, Long>{
+
+	Optional<Designation> findByExIsDeleteAndExIsActiveAndId(boolean is_delete, boolean is_active , Long id);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_designation set ex_is_delete = ?1 ,ex_is_active=?2 where id =?3", nativeQuery = true)
+	int deleteDesignation(Boolean exIsDelete, Boolean exIsActive, Long id);
+
+	List<Designation> findByExIsDelete(Boolean is_delete);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_designation set ex_name = ?1,ex_description =?2 , ex_is_active =?3  ,ex_update_date = ?4 where id =?5", nativeQuery = true)
+	int updateDesignationRecord(String exName, String exDescription, Boolean is_active ,Date ex_update_date ,Long id);
+
+	List<Designation> findByDepartmentIdInAndExIsDeleteAndExIsActive(List<Long> department, boolean delete, boolean active);
+
+	List<Designation> findByExNameAndExIsDeleteAndDepartmentId(String exName,boolean delete, Long department);
+
+	Optional<Designation> findByExIsDeleteAndExIsActiveAndExNameAndDepartmentId(boolean isDelete, boolean isActive,
+			String stringCellValue, Long department);
+	
+    //newly added
+	/*Optional<Designation> findByExIsDeleteAndExIsActiveAndIdAndDepartmentId(boolean b, boolean c, Long designation,
+			Long id);*/
+
+	
+
+	Optional<Designation> findByExIsDeleteAndExIsActiveAndIdAndDepartmentId(boolean b, boolean c,
+			Long designationId, Long departmentid);
+	
+
+	List<Designation> findByExNameAndExIsDeleteAndExIsActive(String trim, boolean b, boolean c);
+
+	List<Designation> findByExNameInAndExIsDeleteAndExIsActive(List<String> desigList, boolean delete, boolean active);
+
+	Optional<Designation> findByExNameAndExIsDeleteAndExIsActive(Designation dser, boolean delete, boolean active);
+
+	List<Designation> findByExNameAndExIsDeleteAndExIsActiveAndDepartmentId(String exName, boolean delete, boolean active,
+			Long departmentId);
+
+	List<Designation> findByExIsDeleteAndExIsActiveAndIdInAndDepartmentId(boolean delete, boolean active, List<Long> designation,
+			Long id);
+
+	List<Designation> findByExNameInAndExIsDeleteAndExIsActiveAndDepartmentId(List<String> desigList, boolean delete,
+			boolean active, Long departmentid);
+
+	Optional<Designation> findByIdAndExIsDeleteAndExIsActive(Long col, boolean b, boolean c);
+
+	@Modifying
+	@Transactional
+	@Query(value = "delete from ex_designation_department  where designation_id =?1", nativeQuery = true)
+	void deleteDesi(Long id);
+	
+	@Modifying
+	@Transactional	
+	@Query(value = "insert into ex_designation_department(designation_id,department)values(?1,?2)", nativeQuery = true)
+	int saveDeptDesi(Long designation_id, Long department);
+}

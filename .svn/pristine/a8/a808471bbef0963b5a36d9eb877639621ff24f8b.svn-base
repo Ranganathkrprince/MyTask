@@ -1,0 +1,1274 @@
+package com.niftem.app.util;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataValidationConstraint;
+import org.apache.poi.ss.usermodel.DataValidationConstraint.ValidationType;
+import org.apache.poi.xssf.usermodel.XSSFDataValidationConstraint;
+import org.apache.poi.xssf.usermodel.XSSFDataValidationHelper;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.AuditLog;
+import com.niftem.app.entity.GradeReport;
+import com.niftem.app.entity.LetterGradeSetting;
+import com.niftem.app.entity.MarksSetting;
+import com.niftem.app.entity.MidTermMarks;
+import com.niftem.app.entity.PrivilegesFeatures;
+import com.niftem.app.entity.ProgrammeYear;
+import com.niftem.app.entity.Semster;
+import com.niftem.app.entity.Settings;
+import com.niftem.app.entity.User;
+import com.niftem.app.model.SemesterEligibility;
+
+
+@Component
+public class CommonHelper extends AutoManager{
+
+	private static Logger logger = LoggerFactory.getLogger("master-log");
+
+	public Map<String, String>  getSupplyProgramSemAcademic(ProgrammeYear programmeYear , Semster semster  , AcademicYear academicYear) {
+		Map<String, String> info = new LinkedHashMap<>();	
+		
+		return info;
+	}
+	
+	public String getSettingValue(String name) {
+		try {
+			List<Settings> settingpath = super.settings.findByExKeyName(name);
+			if(settingpath.size()>0) {
+				return settingpath.get(0).getExKeyValue();
+			}else {
+				return "NA";
+			}			
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			return "NA";
+		}
+	}
+	
+	
+	
+	public File downloadPDF(String url) {
+		try {
+			//String fileName = "examTimeTable.pdf";    
+	        String  DIRECTORY =super.commonHelper.getSettingValue("DOCUMENT_PATH");
+	        File file = new File(DIRECTORY+url);
+			return file;
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			return null;
+		}        
+	}
+	
+	public String allowallspecialcharcter(String name) {
+		try {
+		 String fileName = name;
+    	 String userAgent = "user-agent";
+    	 boolean isInternetExplorer = (userAgent.indexOf("MSIE") > -1);
+    	 byte[] fileNameBytes = fileName.getBytes((isInternetExplorer) ? ("windows-1250") : ("utf-8"));
+    	 String dispositionFileName = "";
+    	for (byte b: fileNameBytes) dispositionFileName += (char)(b & 0xff);
+
+    	    String disposition = "attachment; filename=\"" + dispositionFileName + "\"";
+    	  return disposition;
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+
+	        }
+		return name;
+	}
+	
+	
+		
+	public User getuser( Long request) {
+	try {
+	User userid=null;			
+	if (request == null || request.equals("")) {
+		userid=null;
+	} else {
+		List<User> userresult =super.user.findByIdAndExIsDelete(request, false);
+		if (userresult.size() <= 0) {		
+			return null;
+		}
+		userid=userresult.get(0);
+	}	
+	return userid;
+	}catch(Exception e) {
+		logger.error("Exception occured" + e);
+		StringWriter errors = new StringWriter();
+		e.printStackTrace(new PrintWriter(errors));
+		logger.error(errors.toString());
+	}
+	return null;
+	
+	}
+
+	//=================
+	
+	  public DataValidationConstraint createNumericConstraint(int validationType, int operatorType, String formula1, String formula2) {
+	        if( validationType==ValidationType.INTEGER) {
+	            return createIntegerConstraint(operatorType, formula1, formula2);
+	        } else if ( validationType==ValidationType.DECIMAL) {
+	            return createDecimalConstraint(operatorType, formula1, formula2);
+	        } else if ( validationType==ValidationType.TEXT_LENGTH) {
+	            return createTextLengthConstraint(operatorType, formula1, formula2);
+	        }
+	        return null;
+	    }
+	
+
+		private DataValidationConstraint createTextLengthConstraint(int operatorType, String formula1, String formula2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+		private DataValidationConstraint createDecimalConstraint(int operatorType, String formula1, String formula2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+		private DataValidationConstraint createIntegerConstraint(int operatorType, String formula1, String formula2) {
+		
+			return null;
+		}
+
+	  
+	//=====================
+	
+	
+	
+	
+	public Boolean getEvenorOddsem(Integer sem) {
+		try {
+		    if (sem % 2 == 0) {
+               return true;		      
+		    }
+		    else {
+		    	return false;
+		  }
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+		} 
+		return false;
+		    
+		}
+
+	public  Boolean saveauditlogdetails(boolean recordType, String description, User userid, long privillagefetureid) {
+		try {
+			Date date = new Date();		 
+			List<PrivilegesFeatures> privalage =super.privillageFeaturesRepository.findByIdAndExIsActiveAndExIsDelete(privillagefetureid,true,false);
+			logger.info("????????????privalage???????????"+privalage.size());
+			if(privalage.size()<=0)
+            {
+            	return false;	
+            }			
+			AuditLog auditlog = new AuditLog();
+			auditlog.setExCreateDate(date);
+			auditlog.setExDescription(description.toString());
+			auditlog.setExRecordType(recordType);
+			auditlog.setUser(userid);
+			auditlog.setPrivilegesFeatures(privalage.get(0));
+			auditlog.setPrivilegesModules(privalage.get(0).getPrivilegesModules());			
+			super.auditLogRepository.save(auditlog);			
+			return true;
+		
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+		}
+		return false;
+	}	
+	
+	public  List<Date> getDaysBetweenDates(LocalDate temporalAdjuster, LocalDate temporalAdjuster2 ,  List holiday , int teachingday)
+	{		
+		ZoneId defaultZoneId = ZoneId.systemDefault();
+	    List<Date> dates = new ArrayList<Date>();
+	    Calendar calendar = new GregorianCalendar();
+	    Date startdate = Date.from(temporalAdjuster.atStartOfDay(defaultZoneId).toInstant());
+	    Date enddate = Date.from(temporalAdjuster2.atStartOfDay(defaultZoneId).toInstant());
+	    calendar.setTime(startdate);
+	    int teachingcount  = 0;
+	    while (calendar.getTime().before(enddate))
+	    {
+	        Date result = calendar.getTime();
+	        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+	        if(isWorkingDay(dayOfWeek)) {
+	        		int intdate = calendar.get(Calendar.DAY_OF_MONTH);
+	        		if(!holiday.contains(intdate)){
+	        			dates.add(result);
+	        			teachingcount++;
+	        		}	 
+	        }	       
+	        calendar.add(Calendar.DATE, 1);
+	        if(teachingcount == teachingday) {
+	        	break;
+	        }	       
+	    }
+	    return dates;
+	
+	}
+	 private  boolean isWorkingDay(int dayOfWeek) {	         
+	          if ((dayOfWeek == 7) || (dayOfWeek == 1)) {
+	              return false;
+	          }
+	          return true;
+	  }
+	 
+	 public  double getdoubleMarks(String  marks) {	         
+		 	if(!marks.trim().equals("") && !marks.trim().equals("NA") ) {
+		 		return Double.parseDouble(marks);  
+		 	}else {
+		 		return 0.0;
+		 	}
+	 }
+	 
+	 
+	 public static Object getCellValue(Cell cell) {
+			switch (cell.getCellType()) {
+			case Cell.CELL_TYPE_STRING:
+				return cell.getStringCellValue();
+
+			case Cell.CELL_TYPE_NUMERIC:
+				return cell.getNumericCellValue();
+
+			case Cell.CELL_TYPE_FORMULA:
+				return cell.getStringCellValue();
+
+			case Cell.CELL_TYPE_BLANK:
+				return cell.getStringCellValue();
+
+			default:
+				return null;
+			}
+		}
+
+		public boolean isNumeric(String strNum) {
+		    if (strNum == null) {
+		        return false;
+		    }
+		    try {
+		        double d = Double.parseDouble(strNum);
+		    } catch (NumberFormatException nfe) {
+		        return false;
+		    }
+		    return true;
+		}
+		
+		//======
+		public boolean isNumerics(Double strNum) {
+		    if (strNum == null) {
+		        return false;
+		    }
+		    try {
+		        double d =strNum ;
+		    } catch (NumberFormatException nfe) {
+		        return false;
+		    }
+		    return true;
+		}
+		
+		//=====
+		
+		
+	 
+	public  Date checkDate(String value) {
+		Date date  = null;
+		try {			
+			if(isNumeric(value) && !value.trim().equals("NA")) {
+				double doublevalue = Double.parseDouble(value.toString());						
+				date = DateUtil.getJavaDate((double) doublevalue );						
+			}else if(!value.toString().trim().equals("NA")) {
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+				date=dateFormat.parse(value.toString());
+			}else {
+				date = null;
+			}
+			return date;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return date;
+		
+	}
+
+	
+
+	public List<Date> getdaydates(List<Date> totaldate, List dayslist) {
+	
+	    List<Date> dates = new ArrayList<Date>();
+		ZoneId defaultZoneId = ZoneId.systemDefault();
+
+	    long count = 0;
+	    Calendar calendar = new GregorianCalendar();
+
+	   for(int i=0;i<totaldate.size();i++)
+	    {
+		   
+		   Instant instant = totaldate.get(i).toInstant();
+		   LocalDate slocalDate = instant.atZone(defaultZoneId).toLocalDate();
+		   Date startdate = Date.from(slocalDate.atStartOfDay(defaultZoneId).toInstant());
+		   calendar.setTime(startdate);
+		     
+		   SimpleDateFormat formatte = new SimpleDateFormat("EEEE");
+		   String day = formatte.format(calendar.getTime());
+			 if(!dayslist.contains(day)){ 
+				       dates.add(calendar.getTime());   
+			    	   count++;
+			    }
+         }
+	      	
+ 	   System.out.println("////////dates//////////////"+dates);
+
+	    return dates;
+	
+	}
+
+	
+	 public synchronized String genrateOrderId(){
+	     	try {	
+	     		Thread.sleep(1000);
+	     		 SimpleDateFormat f = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+	     		 String orderid = f.format(new Date());
+	     		 return orderid;
+	     	}catch(Exception e) {
+	     		e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				return "NA";
+	     	}
+	  }
+	 
+	 public synchronized double getAmount(String payble){
+		 double amount = 0;
+	     	try {
+	     		 return Double.parseDouble(payble);	
+	     	}catch(Exception e) {
+	     		e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				return amount;
+	     	}
+	  }
+	 
+	 public List<Semster> getNextSem(int identifire) {
+		 List<Semster> nextsemdetails = super.semester.findByExIdentifierAndExIsDeleteAndExIsActive(identifire, false, true);			
+		return  nextsemdetails;		 
+	 }
+	 
+	 public List<ProgrammeYear> getNextProgramYear(int semidentifire , int programyearidentifire) {
+		 if(semidentifire == 1 && programyearidentifire == 1) {
+			return  super.programmeYear.findByExIdentifierAndExIsDeleteAndExIsActive(1, false , true);
+		 }
+		 if(semidentifire == 2 && programyearidentifire == 1) {
+				return  super.programmeYear.findByExIdentifierAndExIsDeleteAndExIsActive(1, false , true);
+		 }
+		 if(semidentifire == 2 && programyearidentifire == 1) {
+				return  super.programmeYear.findByExIdentifierAndExIsDeleteAndExIsActive(1, false , true);
+		 }
+		 
+		 return null;
+	 }
+	
+	 
+		public Boolean validateBTech(SemesterEligibility request) {
+			List<GradeReport> gradereport = super.gradeReport.findByStudentadmissionIdAndCollegesIdAndProgrammesIdAndProgrammeYearIdAndDepartmentIdAndDegreeIdAndExCoursesStatus(
+							request.getStudent(), request.getColleges(),
+							request.getProgrammes(), 
+							request.getProgrammeYear(), request.getDepartment(),
+							request.getDegree(),0);
+			if (gradereport.size() >4 ) {
+
+				return false;
+			}
+			return true; 
+	 }
+
+	public double roundOff(Double grandtotal) {
+		try {
+			Double roundOff = grandtotal/10;
+			
+		//	Double roundOff = grandtotal/10;
+			
+		//	int roundOffValue;
+			
+		//	if (roundOff >= 0.0f) {	// x is positive
+		//		roundOffValue = (int) (roundOff + 0.5);
+		//	} else {			// x is negative
+		//		roundOffValue = (int)(roundOff - 0.5);
+		//	}
+			
+			//return roundOffValue;
+			
+			
+			
+			String[] splitter = roundOff.toString().split("\\.");
+			logger.info("wwwwwwwwwwwwwwwwwwroundOff"+roundOff);
+			logger.info(splitter[1].length()+"roundOffroundOffroundOff>"+roundOff);
+			if(splitter[1].length() <=3) {
+				BigDecimal bd = new BigDecimal(Double.toString(roundOff));
+						    bd = bd.setScale(2, RoundingMode.HALF_UP);
+						    return bd.doubleValue();
+				/*
+				 * double scale = Math.pow(10, 2); double rounded = Math.round(roundOff * scale)
+				 * / scale; return rounded;
+				 */
+			}else {
+				//String letter = Character.toString(splitter[1].charAt(2));		
+					//if(Integer.parseInt(letter) <=4) {
+					//String returnval = splitter[0]+"."+Character.toString(splitter[1].charAt(0))+Character.toString(splitter[1].charAt(1));				
+					//return  Double.valueOf(returnval);
+				//}
+				double scale = Math.pow(10, 3);
+			     double rounded = Math.round(roundOff * scale) / scale;			     			     
+			     BigDecimal bd = new BigDecimal(Double.toString(rounded));
+				    bd = bd.setScale(2, RoundingMode.HALF_UP);
+				    return bd.doubleValue();
+			     // Again round till 2 digit
+				/*
+				 * scale = Math.pow(10, 2); rounded = Math.round(rounded * scale) / scale;
+				 * logger.info("roundedroundedroundedroundedrounded"+rounded); return rounded;
+				 */
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			return 0.0;
+		}
+	}
+
+	public double converToWeightageMarks(Double exMidTermMarks) {
+		Double MidtermMarks=0.0;
+		try {
+			System.out.println(">>>>>>>>>>>>>>>"+exMidTermMarks);
+			List<MarksSetting> settingpath = super.marksSetting.findByExName("MidTerm");
+			if(settingpath.size()>0 && exMidTermMarks!=0.0) {
+				MidtermMarks=(exMidTermMarks/settingpath.get(0).getExMaxMarks())*settingpath.get(0).getExWeightage();
+				return MidtermMarks;
+			}else {
+				return 0.0;
+			}			
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			return 0.0;
+		}
+		
+	}
+
+	public double converEndToWeightageMarks(Double externalmarks) {
+		Double EndtermMarks=0.0;
+		try {
+			List<MarksSetting> settingpath = super.marksSetting.findByExName("EndTerm");
+			if(settingpath.size()>0 && externalmarks!=0.0) {
+				EndtermMarks=(externalmarks/settingpath.get(0).getExMaxMarks())*settingpath.get(0).getExWeightage();
+				return EndtermMarks;
+			}else {
+				return 0.0;
+			}			
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			return 0.0;
+		}
+		
+	}
+	
+	
+	public Boolean checkAttendenceSA(List<MidTermMarks> ispresent) {
+		try{
+			if(ispresent.size() >0) {
+				if(ispresent.get(0).getExMidTermRemarks() !=null && ispresent.get(0).getExMidTermRemarks().equalsIgnoreCase("NA"));
+				return false;
+			}else {
+				return true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			return false;
+		}		
+	}	
+	public Boolean checkPassOrFailed(double grdepoint , Double external_marks , Double Midterm) {
+		try{
+			if(external_marks == null || Midterm == null) {
+				return false;
+			}else {				
+				if(roundOffInt(Midterm+external_marks) <40) {
+					return false;
+				}else {
+					return true;
+				}
+				
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			return false;
+		}		
+	}
+
+	public Object doubleprefixdigit(Double number) {
+		   try {
+		    	if (number == null) {
+			        return "00.00";
+			    }	    	
+		    	NumberFormat formatter = new DecimalFormat("00.00");     	
+			    return formatter.format(number);				
+		    } catch(Exception e) {
+				e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				//return academic;	
+				return "00.00";	
+			}
+	}
+//=====================
+	public Object doubleprefixdigits(Double number) {
+		   try {
+		    	if (number == null) {
+			        return "0.00";
+			    }	    	
+		    	NumberFormat formatter = new DecimalFormat("0.00");     	
+			    return formatter.format(number);				
+		    } catch(Exception e) {
+				e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				//return academic;	
+				return "0.00";	
+			}
+	}
+	//========================
+	//===================
+	public Object doublegradepoint(Double number) {
+		   try {
+		    	if (number == null) {
+			        return "00.00";
+			    }	
+		    	Double newData = new Double(number);
+		    	int value = newData.intValue();
+		    	return  value ;				
+		    } catch(Exception e) {
+				e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());	
+				return "00.00";	
+			}
+	}
+	
+	//=============
+	
+	public String doubledigit(Double number) {
+	    try {
+	    	if (number == null) {
+		        return "0.00";
+		    }	    	
+	    	NumberFormat formatter = new DecimalFormat("#0.00");     	
+		    return formatter.format(number);				
+	    } catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			//return academic;	
+			return "0.00";	
+		}
+	}
+	
+	public Optional<ProgrammeYear> getProgramYaerId(Long number) {
+	    try {	    	
+	    	if(number == 1 || number == 2) {
+	    		return super.programmeYear.findByIdAndExIsActiveAndExIsDelete(1L, true, false);
+	    	}
+	    	if(number == 3 || number == 4) {
+	    		return super.programmeYear.findByIdAndExIsActiveAndExIsDelete(2L, true, false);
+	    	}
+	    	if(number == 5 || number == 6) {
+	    		return super.programmeYear.findByIdAndExIsActiveAndExIsDelete(3L, true, false);
+	    	}
+	    	return super.programmeYear.findByIdAndExIsActiveAndExIsDelete(4L, true, false);
+	    	
+	    			
+	    } catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+		
+		}
+		return null;
+	}
+	
+
+	public Double changeDecimal(Double grandtotal) {
+		try {		
+			String[] splitter = grandtotal.toString().split("\\.");			
+			System.out.println("NIftemmmmmmmm"+splitter.toString()+"Nifteeeeeeeemmmmmmmmmm");
+			if(splitter[1].length() <=3) {//if the decimal value more than 2 then this if condition will work
+				BigDecimal bd = new BigDecimal(Double.toString(grandtotal));
+						    bd = bd.setScale(2, RoundingMode.HALF_UP);
+						    return bd.doubleValue();
+			}else {
+				String letter = Character.toString(splitter[1].charAt(2));		
+				System.out.println("N1111111111111111111111111"+letter);
+				if(Integer.parseInt(letter) <=4) {
+				String returnval = splitter[0]+"."+Character.toString(splitter[1].charAt(0))+Character.toString(splitter[1].charAt(1));				
+				return  Double.valueOf(returnval);
+			}
+				double scale = Math.pow(10, 3);
+			     double rounded = Math.round(grandtotal * scale) / scale;			     			     
+			     BigDecimal bd = new BigDecimal(Double.toString(rounded));
+				    bd = bd.setScale(2, RoundingMode.HALF_UP);
+				    return bd.doubleValue();
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			return 0.0;
+		}
+	}
+
+	//==================================
+	public Double changeDecimals(Double grandtotal) {
+		try {		
+			
+		 //     System.out.println("Double upto 2 decimal places - RoundingMode.DOWN: "+grandtotal);
+			// BigDecimal bdDown=new BigDecimal(grandtotal).setScale(2,RoundingMode.DOWN);
+		   //     System.out.println("Double upto 2 decimal places - RoundingMode.DOWN: "+bdDown.doubleValue());
+			
+			  //  double roundOff = Math.round(grandtotal*100)/100;
+			  //  System.out.println("Double upto 2 decimal places - RoundingMode.DOWN: "+roundOff);
+			  //  return roundOff;
+			
+			double y = Math.floor(grandtotal * 100) / 100;
+			System.out.println("Double upto 2 decimal places - RoundingMode.DOWN: "+y);
+			return y;
+			/*String[] splitter = grandtotal.toString().split("\\.");
+			System.out.println("NIftemmmmmmmm"+Double.parseDouble(splitter[1])+"Nifteeeeeeeemmmmmmmmmm");
+			if(splitter[1].length() <=3) {//if the decimal value more than 2 then this if condition will work
+				BigDecimal bd = new BigDecimal(Double.toString(grandtotal));
+						    bd = bd.setScale(2, RoundingMode.HALF_UP);
+						    return bd.doubleValue();
+			}else {
+				String letter = Character.toString(splitter[1].charAt(2));		
+				System.out.println("N1111111111111111111111111"+letter);
+				if(Integer.parseInt(letter) <=4) {
+				String returnval = splitter[0]+"."+Character.toString(splitter[1].charAt(0))+Character.toString(splitter[1].charAt(1));				
+				return  Double.valueOf(returnval);
+			}
+				double scale = Math.pow(10, 3);
+			     double rounded = Math.round(grandtotal * scale) / scale;			     			     
+			     BigDecimal bd = new BigDecimal(Double.toString(rounded));
+				    bd = bd.setScale(2, RoundingMode.HALF_UP);
+				    return bd.doubleValue();
+			}*/
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			return 0.0;
+		}
+	}
+	
+	//==============================
+	
+	
+	
+	public String getLetterGrade(double newInput , Long registrationtype) {
+		String gradeletter="";
+		int round=0;
+		try {		
+		     if (newInput >= 0.0f) {	// x is positive
+		    	 round = (int) (newInput + 0.5);
+		 		} else {			// x is negative
+		 		 round = (int)(newInput - 0.5);
+		 		}
+			List<LetterGradeSetting> settingpath = super.LetterGradeSetting.findByExMinRangeMarksLessThanEqualAndExMaxRangeMarksGreaterThanEqual(round,round);
+		//	List<LetterGradeSetting> settingpath = super.LetterGradeSetting.findByExPointGradeLessThanEqualAndExPointGradeGreaterThanEqual(round,round);		
+			if(settingpath.size()>0) {
+	    	  gradeletter=settingpath.get(0).getExLetterGrade(); 
+	    	  
+	    	  if(registrationtype !=null && registrationtype ==2) {
+				  // get one grade down 
+				  if(gradeletter.equalsIgnoreCase("P") || gradeletter.equalsIgnoreCase("F")) {
+					  return gradeletter;
+				  }else {					  
+						List<LetterGradeSetting> lattergrade = super.LetterGradeSetting.getPriviousRecord(settingpath.get(0).getId());
+							if(lattergrade.size() >0) {
+								return lattergrade.get(0).getExLetterGrade();
+							}
+				  }
+			  }	
+	      }
+      
+	     logger.info("????????????gradeletter???????????????????"+gradeletter);
+			return gradeletter;
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			return gradeletter;
+		}
+	
+}
+
+	public Integer roundOffInt(double i) {
+		int roundoff =0;
+		try {		
+		     if (i >= 0.0f) {	// x is positive
+		    	 roundoff = (int) (i + 0.5);
+		 		} else {			// x is negative
+		 			roundoff = (int)(i - 0.5);
+		 		}
+
+			return roundoff;
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			return roundoff;
+		}
+	}
+	
+	
+
+	public Boolean checkDoubleOrNot(String number) {
+		 boolean numeric = true;
+	        try {
+	             Double.parseDouble(number);
+	        } catch (NumberFormatException e) {
+	            numeric = false;
+	        }
+	        return numeric;
+	}
+
+	public Boolean checkPassOrFailedforTP(double newInput, Double endtermWeightag, Double internalTotal,
+			Double practicalgrandtotal) {
+		try{
+			if(endtermWeightag == null || internalTotal == null || ( roundOffInt(internalTotal+endtermWeightag) <40)) {
+				return false;
+			}
+			
+			else if(practicalgrandtotal == null || practicalgrandtotal == null || ( practicalgrandtotal <50)) {
+				return false;
+			}
+			
+			else {
+				return true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			return false;
+		}		
+	}
+
+	public Double getPointGrade(String exLetterGrades) {
+		Double round=0.0;
+		try {		
+		    
+
+			List<LetterGradeSetting> settingpath = super.LetterGradeSetting.findByExLetterGrade(exLetterGrades);
+
+			
+			if(settingpath.size()>0) {
+				round=settingpath.get(0).getExPointGrade();
+   
+	      }
+	      
+	     logger.info("-----------PointGrade--------"+round);
+			return round;
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			return round;
+		}
+	}
+
+	public String getLetterGradeSatisfactory(double newInput) {
+		String gradeletter="";
+		int round=0;
+		try {		
+		     logger.info("????????????newInput???????????????????"+newInput);
+		     if (newInput >= 0.0f) {	// x is positive
+		    	 round = (int) (newInput + 0.5);
+		 		} else {			// x is negative
+		 		 round = (int)(newInput - 0.5);
+		 		}
+		     logger.info("????????????round???????????????????"+round);
+
+			List<LetterGradeSetting> settingpath = super.LetterGradeSetting.findByExMinRangeMarksLessThanEqualAndExMaxRangeMarksGreaterThanEqual(round,round);
+		//	List<LetterGradeSetting> settingpath = super.LetterGradeSetting.findByExPointGradeLessThanEqualAndExPointGradeGreaterThanEqual(round,round);
+
+			
+			if(settingpath.size()>0) {
+	    	  gradeletter=settingpath.get(0).getExLetterGrade();
+	 	     logger.info("????????????gradelettersss???????????????????"+gradeletter);
+	      }
+	      if(gradeletter=="F" || gradeletter.equalsIgnoreCase("F")) {
+	    	  
+	    	  gradeletter="F"; 
+	    	  
+	      }
+	      else {
+	    	  gradeletter="S";
+	    	  
+	      }
+			
+			
+			
+			return gradeletter;
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			return gradeletter;
+		}
+	}
+
+	
+	public static Map sendSms(String content , String mobilenumber , String otp) {
+		 Map<String, String> response = new LinkedHashMap<String, String>();
+			HttpURLConnection conn  = null;
+			BufferedReader rd = null;
+			StringBuffer buffer = null;
+		try {
+			  String data = "";   
+			  data += "method=sendMessage"; 	
+			  data += "&userid=2000183809" ;//+ Application.getProperties("User_ID");
+			  data += "&password=UmJTzs" ;//+ Application.getProperties("Password");			 		  
+			  data += "&msg=" + URLEncoder.encode(content, "UTF-8"); 
+			  data += "&send_to=" +   URLEncoder.encode(mobilenumber , "UTF-8"); // a valid 10 digit phone no.  
+			  data += "&v=1.1" ;   
+			  data += "&msg_type=TEXT"; // Can by "FLASH" or  
+			  data += "&auth_scheme=PLAIN"; 			  
+			  String Smsurl = "http://enterprise.smsgupshup.com/GatewayAPI/rest?";//Application.getProperties("SMS_URL");
+			response.put("message", "URL Details: "  +Smsurl+data);
+			logger.debug("sent Response : "+response);
+
+			  URL url = new URL(Smsurl + data);   
+			 // URL url = new URL("" + data);   
+			  conn = (HttpURLConnection)url.openConnection();   
+			  conn.setRequestMethod("GET");  
+			  conn.setDoOutput(true);  
+			  conn.setDoInput(true);  
+			  conn.setUseCaches(false);  
+			  conn.connect();
+			  rd = new BufferedReader(new InputStreamReader(conn.getInputStream())); 
+			  String line; 
+			  
+			  buffer = new StringBuffer();
+			  while ((line = rd.readLine()) != null){  
+				  buffer.append(line).append("\n"); 
+				}  
+			  System.out.println(buffer.toString());  
+			  String returnvalue = buffer.toString();
+			  String[] parts = returnvalue.split("\\|"); 
+			  
+				String status = parts[0];
+				String statuscode = parts[1];
+			//	String returnmessage = parts[2];
+				
+				if(status.trim().equalsIgnoreCase("success")) {
+					response.put("status", "1");
+					response.put("otp", otp);
+					response.put("message", "OTP has been sent to your Mobile");
+					logger.debug("sent Response : "+response);
+					return response;					
+				}				
+				if(statuscode.trim().equalsIgnoreCase("105")) {
+					response.put("status", "2");
+					response.put("message", "The phone number "+mobilenumber+" is not a valid phone number");
+				}else {
+					response.put("status", "2");
+					response.put("message", "Please try after some time");
+				}
+				logger.debug("sent Response : "+response);						
+				return response;
+			
+		}catch(Exception e) {
+			logger.error("Exception occured in SMS Sending : "+e);
+			 StringWriter errors = new StringWriter();
+			 e.printStackTrace(new PrintWriter(errors));
+			 logger.error(errors.toString());
+			response.put("status", "3");
+			response.put("message", "Please try after some time");
+		}
+		 finally{
+			 if (conn != null) {
+				 conn.disconnect();
+		          }
+			 if (rd != null) {
+	              try {
+	            	  rd.close();
+	              } catch (IOException e) {
+	            	StringWriter errors = new StringWriter();
+	  				e.printStackTrace(new PrintWriter(errors));
+	  				
+	              }
+	          }			 
+		  }
+		return response;
+	}
+	
+	
+	public String getwithoutPoint(Double point) {
+		if(point == null ) {
+			return "0";
+		}
+		return String.format("%.0f", point);		
+	}
+	 
+	 public  double getMarks(String payble){
+		 double amount = 0;
+	     	try {
+	     		 return Double.parseDouble(payble);	
+	     	}catch(Exception e) {
+	     		e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				return amount;
+	     	}
+	  }	
+	 
+	 public  Double getMarksValue(String payble){
+		
+	     	try {
+	     		 return Double.parseDouble(payble);	
+	     	}catch(Exception e) {
+	     		e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				return null;
+	     	}
+	  }	
+	 //==============
+	 public  Double getMarksValues(Double payble){
+			
+	     	try {
+	     		 return payble;	
+	     	}catch(Exception e) {
+	     		e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				return null;
+	     	}
+	  }	
+	 
+	 
+	 public static String
+	    convertDoubleToString(double doubleValue)
+	    {
+	  
+	        // Convert double value to String value
+	        // using + operator method
+	        String stringValue = "" + doubleValue;
+	  
+	        return (stringValue);
+	    }
+	 
+	 //============
+	 
+	public long getSem(String rollnumber) {
+		if(rollnumber.equalsIgnoreCase("116026")) {
+			return 8;
+		}
+		if(rollnumber.equalsIgnoreCase("116037")) {
+			return 8;
+		}
+		if(rollnumber.equalsIgnoreCase("116046")) {
+			return 8;
+		}
+		if(rollnumber.equalsIgnoreCase("116054")) {
+			return 8;
+		}
+		if(rollnumber.equalsIgnoreCase("116081")) {
+			return 8;
+		}
+		if(rollnumber.equalsIgnoreCase("116120")) {
+			return 8;
+		}
+		if(rollnumber.equalsIgnoreCase("116127")) {
+			return 8;
+		}
+		if(rollnumber.equalsIgnoreCase("116138")) {
+			return 8;
+		}
+		if(rollnumber.equalsIgnoreCase("116155")) {
+			return 8;
+		}if(rollnumber.equalsIgnoreCase("115053")) {
+			return 8;
+		}
+		if(rollnumber.equalsIgnoreCase("115091")) {
+			return 8;
+		}
+		if(rollnumber.equalsIgnoreCase("114132")) {
+			return 8;
+		}
+		
+		// new batch
+		
+		if(rollnumber.equalsIgnoreCase("117029")) {
+			return 6;
+		}
+		if(rollnumber.equalsIgnoreCase("117042")) {
+			return 6;
+		}
+		if(rollnumber.equalsIgnoreCase("117050")) {
+			return 6;
+		}
+		if(rollnumber.equalsIgnoreCase("117132")) {
+			return 6;
+		}
+		if(rollnumber.equalsIgnoreCase("116033")) {
+			return 6;
+		}
+		if(rollnumber.equalsIgnoreCase("116036")) {
+			return 6;
+		}
+		if(rollnumber.equalsIgnoreCase("116051")) {
+			return 6;
+		}
+		if(rollnumber.equalsIgnoreCase("116060")) {
+			return 6;
+		}
+		if(rollnumber.equalsIgnoreCase("115057")) {
+			return 6;
+		}
+		if(rollnumber.equalsIgnoreCase("115104")) {
+			return 6;
+		}
+		// new batch
+		
+		if(rollnumber.equalsIgnoreCase("118001")) {
+			return 4;
+		}
+		if(rollnumber.equalsIgnoreCase("118024")) {
+			return 4;
+		}
+		if(rollnumber.equalsIgnoreCase("118029")) {
+			return 4;
+		}
+		if(rollnumber.equalsIgnoreCase("118051")) {
+			return 4;
+		}
+		if(rollnumber.equalsIgnoreCase("118057")) {
+			return 4;
+		}
+		if(rollnumber.equalsIgnoreCase("118063")) {
+			return 4;
+		}
+		if(rollnumber.equalsIgnoreCase("118124")) {
+			return 4;
+		}
+		if(rollnumber.equalsIgnoreCase("118138")) {
+			return 4;
+		}
+		if(rollnumber.equalsIgnoreCase("118148")) {
+			return 4;
+		}
+		if(rollnumber.equalsIgnoreCase("117073")) {
+			return 4;
+		}
+		if(rollnumber.equalsIgnoreCase("117150")) {
+			return 4;
+		}
+		
+		return 0;
+	}
+	
+	
+	public  String generateKey(String username, String orderid, String date , int length) throws Exception{
+		
+		String password = username;
+		password = password.concat(orderid);
+		password = password.concat(date);
+    	
+    	
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(password.getBytes());
+        
+        byte byteData[] = md.digest();
+ 
+        //convert the byte to hex format method 1
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        String key = sb.toString().substring(0, length);
+        
+        
+        return new String(key);
+	}
+	
+	public int getRow(int getposision , int count) {		
+		//if(getposision == 0) {
+			if(count >0 && count < 9) {
+				return 1;		
+			}
+			if(count >8 && count < 17) {
+				return 4;		
+			}	
+			
+			if(count >16 && count < 25) {
+				return 7;		
+			}	
+		//}
+		
+		//if(getposision == 1) {
+			if(count >24 && count < 33) {
+				return 2;		
+			}
+			if(count >32 && count < 41) {
+				return 5;		
+			}	
+			
+			if(count >40 && count < 49) {
+				return 8;		
+			}	
+		//}
+		
+		//if(getposision == 2) {
+			if(count >48 && count < 57) {
+				return 3;		
+			}
+			if(count >56 && count < 65) {
+				return 6;		
+			}	
+			
+			if(count >64 && count < 73) {
+				return 9;		
+			}	
+		//}		
+			return 9;		
+	}
+	
+	
+	/*
+	 * public int getRow(int coloum , int count) {
+	 * 
+	 * System.out.println("colum"+coloum); System.out.println("count"+count);
+	 * 
+	 * if(coloum == 1 && (count == 1 || count == 9 || count == 17 || count == 25 ||
+	 * count == 33 || count == 41 || count == 49 || count == 57 || count == 65)) {
+	 * return 1; } if(coloum == 2 && (count == 2 || count == 10 || count == 18 ||
+	 * count == 26 || count == 34 || count == 42 || count == 50 || count == 58 ||
+	 * count == 66 )) { return 2; } if(coloum == 3 && (count == 3 || count == 11 ||
+	 * count == 19 || count == 27 || count == 36 || count == 43 || count == 51 ||
+	 * count == 59 || count == 67 )) { return 3; }
+	 * 
+	 * if(coloum == 4 && (count == 4 || count == 12 || count == 20 || count == 28 ||
+	 * count == 36 || count == 44 || count == 52 || count == 60 || count == 68 )) {
+	 * return 4; } if(coloum == 5 && (count == 5 || count == 13 || count == 21 ||
+	 * count == 29 || count == 37 || count == 45 || count == 53 || count == 61 ||
+	 * count == 69)) { return 5; } if(coloum == 6 && (count == 6 || count == 14 ||
+	 * count == 22 || count == 30 || count == 38 || count == 45 || count == 54 ||
+	 * count == 62 || count == 70 )) {
+	 * 
+	 * return 6; } if(coloum == 7 && (count == 7 || count == 15 || count == 23 ||
+	 * count == 31 || count == 39 || count == 47 || count == 55 || count == 63 ||
+	 * count == 71 )) {
+	 * 
+	 * return 7; } if(coloum == 8 && (count == 8 || count == 16 || count == 24 ||
+	 * count == 32 || count == 40 || count == 48 || count == 56 || count == 71 ||
+	 * count == 72 )) {
+	 * 
+	 * return 8; } return 8; }
+	 */
+}
+

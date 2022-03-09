@@ -1,0 +1,38 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.AboutFeedBack;
+
+public interface AboutFeedBackRepository extends CrudRepository< AboutFeedBack, Long>{
+
+	List<AboutFeedBack> findByExNameAndExIsDeleteAndExIsActive(String exName,Boolean delete, Boolean active);
+
+	List<AboutFeedBack> findByExIsDelete(Boolean delete);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_about_feedback set ex_is_delete = ?1 , ex_is_active = ?2 where id =?3", nativeQuery = true)
+	int deleteAboutFeedback(Boolean delete, Boolean active, Long id);
+
+	List<AboutFeedBack> findByExNameAndExIsDelete(String exName, Boolean delete);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_about_feedback set ex_name = ?1 ,ex_description=?2 , ex_is_active =?3 ,ex_update_date =?4 ,ex_type=?5 where id =?6", nativeQuery = true)
+	int UpdateAboutFeedBack(String exName, String exDescription,Boolean exIsActive, Date date, String type, Long id);
+
+	Optional<AboutFeedBack> findByIdAndExIsDeleteAndExIsActive(Long feedbacks,Boolean delete, Boolean active);
+
+	List<AboutFeedBack> findByExIsDeleteAndExType(boolean b, String type);
+
+
+	
+}

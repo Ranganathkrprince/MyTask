@@ -1,0 +1,53 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.EvaluatorSelection;
+
+public interface EvaluatorSelectionRepository  extends  CrudRepository<EvaluatorSelection, Long>{
+
+
+	List<EvaluatorSelection> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndCollegesIdAndExamAnnouncementIdAndEvaluationId(
+			boolean b, boolean c, Long academicYear, Long colleges, Long examAnnouncement, Long evaluationType);
+
+	List<EvaluatorSelection> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndCollegesIdAndExamAnnouncementIdAndEvaluationIdAndExEmployeeId(
+			boolean b, boolean c, Long academicYear, Long colleges, Long examAnnouncement, Long evaluationType,
+			String exEmployeeId);
+
+	
+	List<EvaluatorSelection> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndCollegesIdAndExamAnnouncementIdAndEvaluationIdAndCoursesIdAndExpertId(
+			boolean b, boolean c, Long academicYear, Long colleges, Long examAnnouncement, Long evaluationType,
+			Long courses, Long evaluatorId);
+
+	List<EvaluatorSelection> findByExIsActiveAndExpertId(boolean b, Long staffId);
+	
+	List<EvaluatorSelection> findByExIsActiveAndExIsDelete(boolean active, boolean delte);
+
+	List<EvaluatorSelection> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndCollegesIdAndExamAnnouncementIdAndEvaluationIdAndProgrammesIdAndCoursesIdAndRegistrationTypeId(
+			boolean b, boolean c, Long academicYear, Long colleges, Long examAnnouncement, Long evaluationType,
+			Long programmes, Long courses , Long registrationtype);
+	
+	
+	@Query(value = "select * from ex_evaluator_selection where ex_is_delete = 0 and ex_is_active = 1  and  expert_id =?1 AND ex_evaluation_to >= ?2", nativeQuery = true)
+	List<EvaluatorSelection> getActivetails (Long staffId , Date date);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_evaluator_selection set  ex_update_date = ?1, ex_evaluation_time = ?2 , ex_evaluation_from = ?3 ,ex_evaluation_to =?4 , ex_evaluation_venue  = ?5 "
+			+ ", academic_year_id = ?6 AND exam_announcement_id = ?7 AND expert_id = ?8 , courses_id = ?9 , programmes_id =?10 , degree_id = ?11 , registration_type_id = ?12 where id =?13", nativeQuery = true)
+	int updateEvaluatorSelection(Date ex_update_date, Date ex_evaluation_time ,Date ex_evaluation_from ,  Date ex_evaluation_to , String ex_evaluation_venue
+			,Long academic_year_id , Long exam_announcement_id , Long expert_id , Long courses_id ,Long programmes_id , Long degree_id , Long registration_type_id , Long id);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_evaluator_selection set ex_is_delete = ?1 ,ex_is_active = ?2  where id =?3", nativeQuery = true)
+	int deleteEvaluator(Boolean exIsDelete, Boolean is_active, Long id);
+}

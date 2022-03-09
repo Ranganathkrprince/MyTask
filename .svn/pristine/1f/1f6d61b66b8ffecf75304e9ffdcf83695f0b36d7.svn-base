@@ -1,0 +1,51 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ex_month_name")
+public class MonthName {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private int monthId;
+	
+	private String exName;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public int getMonthId() {
+		return monthId;
+	}
+
+	public void setMonthId(int monthId) {
+		this.monthId = monthId;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	@Override
+	public String toString() {
+		return "MonthName [id=" + id + ", monthId=" + monthId + ", exName=" + exName + "]";
+	}
+
+	
+}

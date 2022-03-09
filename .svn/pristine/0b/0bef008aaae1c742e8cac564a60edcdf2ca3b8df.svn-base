@@ -1,0 +1,57 @@
+package com.niftem.app.repository;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.ClassAttendance;
+import com.niftem.app.entity.Courses;
+import com.niftem.app.entity.Studentadmission;
+
+public interface ClassAttendanceRepository extends CrudRepository< ClassAttendance, Long>{
+	
+	List<ClassAttendance> findByAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStreamIdAndProgrammesIdAndDegreeId(Long academicYear, Long programyear ,  Long semester , Long stream , Long program  , Long degree);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "SELECT * FROM ex_class_attendance where academicyear_id=?1 and semester_id=?3 and programmeyear_id=?2 group by student_admission_id;", nativeQuery = true)
+	List<ClassAttendance> findByAcademicYearIdAndProgrammeYearIdAndSemesterIdGroupByStudentAdmissionId(Long academicYear, Long programmeYear, Long semester);
+
+
+	List<ClassAttendance> findByAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionId(Long academicYear,
+			Long programmeYear, Long semester, Long studentid);
+
+
+	List<ClassAttendance> findByAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionIdAndCoursesId(
+			Long academicYear, Long programmeYear, Long semester, Long studentid, Long coursesid);
+
+
+	List<ClassAttendance> findByAcademicYearIdAndProgrammeYearIdAndSemesterIdAndCoursesId(Long academicYear,
+			Long programmeYear, Long semester, Long courses);
+	
+
+	@Query(value = "SELECT * FROM ex_class_attendance where academicyear_id=?1 and semester_id=?3 and programmeyear_id=?2 and courses_id =?4 and coursestype_id=?5 group by ex_present_date;", nativeQuery = true)
+	List<ClassAttendance> studentCount(Long academicYear, Long programmeYear, Long semester , Long courses ,Long CourseType);
+
+	
+	@Query(value = "SELECT student_admission_id , count(ex_is_present) as score  FROM ex_class_attendance where academicyear_id=?1 and semester_id=?3 and programmeyear_id=?2 and courses_id =?4 and coursestype_id=?5 AND ex_is_present = 1 Group By student_admission_id;", nativeQuery = true)
+	ArrayList<Object[]> getStudentDetails(Long academicYear, Long programmeYear, Long semester , Long courses,Long CourseType);
+
+
+	List<ClassAttendance> findByAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionIdAndCoursesTypeId(
+			Long academicYear, Long programmeYear, Long semester, Long student, Long coursesType);
+
+	List<ClassAttendance> findByAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionIdAndCoursesTypeIdAndCoursesId(
+			Long academicYear, Long programmeYear, Long semester, Long student, Long coursesType , long courses);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_class_attendance set ex_is_present = ?1,ex_update_date =?2  where ex_present_date =?3 AND student_admission_id =?4  and academicyear_id =?5 AND courses_id = ?6 AND coursestype_id = ?7 AND programmeyear_id = ?8 AND semester_id =?9", nativeQuery = true)
+	int updateClassAttendanceRecord(Boolean ispresent, Date date, Date presentdate , Long admision , Long academicyear_id , Long courses_id , Long coursestype_id , Long programmeyear_id , Long semester_id);
+}

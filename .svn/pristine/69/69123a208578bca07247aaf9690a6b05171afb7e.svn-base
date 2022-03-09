@@ -1,0 +1,423 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_MidTerm_Marks")
+public class MidTermMarks {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "staff_id", nullable = true)
+	private Staffpersonal staff;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "courses_id", nullable = false)
+	private Courses courses;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "student_admission_id", nullable = false)
+	private Studentadmission studentadmission;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "stream_id", nullable = true)
+	private Stream stream;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "examAnnouncement_id", nullable = true)
+	private ExamAnnouncement examAnnouncement;
+
+	private String exRollNo;
+
+	private Double exMidTermMarks;
+
+	private Double exAttendenceMarks;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	private String exMidTermRemarks;
+	private Double exAssignmentMarks;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "section_id", nullable = true)
+	private Section section;
+
+	private Double exQuizMarks;
+
+	private Double exPracticalRecordMarks;
+
+	private Double exPracticalLearning;
+	
+	private Double exCaseStudy;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	 private Boolean exIsSubmit;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	 private Boolean exIsSave;
+	
+	private String exAssignmentMarkRemark;
+	
+	private String exQuizRemark;
+	
+	private String exAttendenceRemark;
+
+	private String exCaseStudyRemark;
+	
+	private String expracticalRecordRemarks;
+	
+	private String expracticalLearningRemarks;
+
+	public Long getId() {
+		return id;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public Staffpersonal getStaff() {
+		return staff;
+	}
+
+	public Courses getCourses() {
+		return courses;
+	}
+
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public Stream getStream() {
+		return stream;
+	}
+
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public Double getExMidTermMarks() {
+		return exMidTermMarks;
+	}
+
+	public Double getExAttendenceMarks() {
+		return exAttendenceMarks;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public String getExMidTermRemarks() {
+		return exMidTermRemarks;
+	}
+
+	public Double getExAssignmentMarks() {
+		return exAssignmentMarks;
+	}
+
+	public Section getSection() {
+		return section;
+	}
+
+	public Double getExQuizMarks() {
+		return exQuizMarks;
+	}
+
+	public Double getExPracticalRecordMarks() {
+		return exPracticalRecordMarks;
+	}
+
+	public Double getExPracticalLearning() {
+		return exPracticalLearning;
+	}
+
+	public Double getExCaseStudy() {
+		return exCaseStudy;
+	}
+
+	public Boolean getExIsSubmit() {
+		return exIsSubmit;
+	}
+
+	public Boolean getExIsSave() {
+		return exIsSave;
+	}
+
+	public String getExAssignmentMarkRemark() {
+		return exAssignmentMarkRemark;
+	}
+
+	public String getExQuizRemark() {
+		return exQuizRemark;
+	}
+
+	public String getExAttendenceRemark() {
+		return exAttendenceRemark;
+	}
+
+	public String getExCaseStudyRemark() {
+		return exCaseStudyRemark;
+	}
+
+	public String getExpracticalRecordRemarks() {
+		return expracticalRecordRemarks;
+	}
+
+	public String getExpracticalLearningRemarks() {
+		return expracticalLearningRemarks;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	public void setStaff(Staffpersonal staff) {
+		this.staff = staff;
+	}
+
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public void setStream(Stream stream) {
+		this.stream = stream;
+	}
+
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	public void setExMidTermMarks(Double exMidTermMarks) {
+		this.exMidTermMarks = exMidTermMarks;
+	}
+
+	public void setExAttendenceMarks(Double exAttendenceMarks) {
+		this.exAttendenceMarks = exAttendenceMarks;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setExMidTermRemarks(String exMidTermRemarks) {
+		this.exMidTermRemarks = exMidTermRemarks;
+	}
+
+	public void setExAssignmentMarks(Double exAssignmentMarks) {
+		this.exAssignmentMarks = exAssignmentMarks;
+	}
+
+	public void setSection(Section section) {
+		this.section = section;
+	}
+
+	public void setExQuizMarks(Double exQuizMarks) {
+		this.exQuizMarks = exQuizMarks;
+	}
+
+	public void setExPracticalRecordMarks(Double exPracticalRecordMarks) {
+		this.exPracticalRecordMarks = exPracticalRecordMarks;
+	}
+
+	public void setExPracticalLearning(Double exPracticalLearning) {
+		this.exPracticalLearning = exPracticalLearning;
+	}
+
+	public void setExCaseStudy(Double exCaseStudy) {
+		this.exCaseStudy = exCaseStudy;
+	}
+
+	public void setExIsSubmit(Boolean exIsSubmit) {
+		this.exIsSubmit = exIsSubmit;
+	}
+
+	public void setExIsSave(Boolean exIsSave) {
+		this.exIsSave = exIsSave;
+	}
+
+	public void setExAssignmentMarkRemark(String exAssignmentMarkRemark) {
+		this.exAssignmentMarkRemark = exAssignmentMarkRemark;
+	}
+
+	public void setExQuizRemark(String exQuizRemark) {
+		this.exQuizRemark = exQuizRemark;
+	}
+
+	public void setExAttendenceRemark(String exAttendenceRemark) {
+		this.exAttendenceRemark = exAttendenceRemark;
+	}
+
+	public void setExCaseStudyRemark(String exCaseStudyRemark) {
+		this.exCaseStudyRemark = exCaseStudyRemark;
+	}
+
+	public void setExpracticalRecordRemarks(String expracticalRecordRemarks) {
+		this.expracticalRecordRemarks = expracticalRecordRemarks;
+	}
+
+	public void setExpracticalLearningRemarks(String expracticalLearningRemarks) {
+		this.expracticalLearningRemarks = expracticalLearningRemarks;
+	}
+
+	@Override
+	public String toString() {
+		return "MidTermMarks [id=" + id + ", colleges=" + colleges + ", degree=" + degree + ", programmes=" + programmes
+				+ ", academicYear=" + academicYear + ", programmeYear=" + programmeYear + ", semester=" + semester
+				+ ", staff=" + staff + ", courses=" + courses + ", studentadmission=" + studentadmission
+				+ ", department=" + department + ", stream=" + stream + ", examAnnouncement=" + examAnnouncement
+				+ ", exRollNo=" + exRollNo + ", exMidTermMarks=" + exMidTermMarks + ", exAttendenceMarks="
+				+ exAttendenceMarks + ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete + ", exCreateDate="
+				+ exCreateDate + ", exUpdateDate=" + exUpdateDate + ", exMidTermRemarks=" + exMidTermRemarks
+				+ ", exAssignmentMarks=" + exAssignmentMarks + ", section=" + section + ", exQuizMarks=" + exQuizMarks
+				+ ", exPracticalRecordMarks=" + exPracticalRecordMarks + ", exPracticalLearning=" + exPracticalLearning
+				+ ", exCaseStudy=" + exCaseStudy + ", exIsSubmit=" + exIsSubmit + ", exIsSave=" + exIsSave
+				+ ", exAssignmentMarkRemark=" + exAssignmentMarkRemark + ", exQuizRemark=" + exQuizRemark
+				+ ", exAttendenceRemark=" + exAttendenceRemark + ", exCaseStudyRemark=" + exCaseStudyRemark
+				+ ", expracticalRecordRemarks=" + expracticalRecordRemarks + ", expracticalLearningRemarks="
+				+ expracticalLearningRemarks + "]";
+	}
+
+	
+
+}

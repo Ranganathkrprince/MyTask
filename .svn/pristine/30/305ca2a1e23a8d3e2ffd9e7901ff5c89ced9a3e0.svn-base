@@ -1,0 +1,117 @@
+package com.niftem.app.repository;
+
+
+import java.util.Date;
+import java.util.List;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Programmes;
+@Repository
+@Service
+@Transactional
+public interface ProgrammesRepository extends CrudRepository<Programmes, Long>{
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_programmes set ex_name = ?1, ex_identifier =?2 , ex_is_Active = ?3, ex_local_name =?4 , ex_update_date = ?6 , degree_id =?7   where id =?5", nativeQuery = true)
+	int updatePrograme(String exName, String exIdentifier, Boolean exIsActive, String exLocalName, Long id, Date date, Long degree);
+	
+	List<Programmes> findByExNameAndExIsDelete(String exName,boolean exIsDelete);
+	
+	Optional<Programmes> findByExIsDeleteAndExIsActiveAndId(boolean exIsDelete,boolean exIsActive,Long program);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_programmes set ex_is_delete = ?1 ,ex_is_Active =?2  where id =?3", nativeQuery = true)
+	int DeleteProgrammes(Boolean exIsDelete, Boolean exIsActive, Long id);
+	
+	List<Programmes> findByExIsDelete(boolean exIsDelete);
+	//Optional<Programmes> findByIdAndExIsDeleteAndExIsActive(boolean b, boolean c, Long programmes);
+	
+	Optional<Programmes> findByIdAndExIsDeleteAndExIsActive(Long programmes, boolean c, boolean b);
+
+	Optional<Programmes> findByExIsDeleteAndExIsActiveAndExName(boolean b, boolean c, String trim);
+
+	Optional<Programmes> findByExIsDeleteAndExIsActiveAndExIdentifier(boolean b, boolean c, String trim);
+	
+	@Modifying
+	@Transactional	
+	@Query(value = "insert into ex_programmes_collage(program_id,collage_id)values(?1,?2)", nativeQuery = true)
+	int saveProgramCollege(Long program_id, Long collage_id);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "delete from ex_programmes_collage  where program_id =?2", nativeQuery = true)
+	void deleteProgramCollege(Long id);
+	
+
+
+	
+	
+
+	List<Programmes> findByCollegeIdAndDegreeId(Long colleges, Long degree);
+	//newly added
+
+	//Optional<Programmes> findByIdAndExIsDeleteAndExIsActive(boolean b, boolean c, String trim);
+
+	//Optional<Programmes> findByExNameAndExIsDeleteAndExIsActive(String trim, boolean b, boolean c);
+
+	Optional<Programmes> findByExIdentifierAndExIsDeleteAndExIsActive(String trim, boolean b, boolean c);
+	
+
+	List<Programmes> findByDegreeId(Long degree);
+
+	List<Programmes> findByCollegeId(Long colleges);
+	
+	
+
+	
+
+	List<Programmes> findByExIsDeleteAndExIsActiveAndDegreeId(boolean b, boolean c, Long id);
+
+	Optional<Programmes> findByIdAndExIsDeleteAndExIsActive(Programmes programmes, boolean c, boolean b);
+
+	List<Programmes> findByExIdentifierAndExIsDelete(String exIdentifier, boolean b);
+
+	List<Programmes> findByCollegeIdInAndDegreeId(List<Long> colleges, Long degree);
+
+	List<Programmes> findByCollegeIdIn(List<Long> colleges);
+
+	Optional<Programmes> findByExNameAndExIsDeleteAndExIsActive(Long programmes, boolean b, boolean c);
+
+	Optional<Programmes> findByExIsDeleteAndExIsActiveAndId(boolean exIsDelete, boolean exIsActive,
+			Programmes programmes);
+
+	Optional<Programmes> findByExIsDeleteAndId(boolean b, Long id);
+
+	Optional<Programmes> findByIdInAndExIsDeleteAndExIsActive(List<Long> programmes, boolean b, boolean c);
+
+
+	
+	
+	
+	
+
+
+	
+
+
+	
+
+	
+	
+	
+
+
+
+
+}

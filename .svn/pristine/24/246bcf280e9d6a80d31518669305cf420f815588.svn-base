@@ -1,0 +1,51 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.EvaluatorList;
+import com.niftem.app.entity.ExamBarcodes;
+import com.niftem.app.entity.ExternalMarks;
+import com.niftem.app.entity.Staffpersonal;
+
+public interface ExternalMarksRepository extends CrudRepository<ExternalMarks, Long>{
+
+	List<ExternalMarks> findByExpertIdAndExBarcode(Long staffid, String barcode);
+	
+	List<ExternalMarks> findByExBarcode(String barcode);
+
+	/*
+	 * @Modifying
+	 * 
+	 * @Transactional
+	 * 
+	 * @Query(value =
+	 * "update ex_external_marks set firstqmarks =?1 , secondqmarks=?2 ,thirdqmarks=?3,fourqmarks=?4 ,fiveqmarks=?5,sixqmarks =?6 ,sevenqmarks=?7, eightqmarks=?8,nineqmarks=?9,tenqmarks=?10 ,elevenqmarks=?11,twelveqmarks=?12 where ex_barcode=?13 and expert_id=?14 and exam_barcode=?15"
+	 * , nativeQuery = true) int updatemarks(Double firstQMarks, Double
+	 * secondQMarks, Double thirdQMarks, Double fourQMarks, Double fiveQMarks,
+	 * Double sixQMarks, Double sevenQMarks, Double eightQMarks, Double nineQMarks,
+	 * Double tenQMarks, Double elevenQMarks, Double twelve, String barcode,
+	 * EvaluatorList evaluatorList, ExamBarcodes omrMarks);
+	 */
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_external_marks set firstqmarks =?1 , secondqmarks=?2 ,thirdqmarks=?3,fourqmarks=?4 ,fiveqmarks=?5,sixqmarks =?6 ,sevenqmarks=?7, eightqmarks=?8,nineqmarks=?9,tenqmarks=?10 ,elevenqmarks=?11,twelveqmarks=?12,thirteenqmarks=?16,fourteenqmarks=?17,fifteenqmarks=?18,sixteenqmarks=?19,seventeenqmarks=?20,eighteenqmarks=?21,ninteenqmarks=?22,twentyqmarks=?23,twentyoneqmarks=?24,twentytwoqmarks=?25,twentythreeqmarks=?26,twentyfourqmarks=?27,twentyfiveqmarks=?28,twentysixqmarks=?29,twentysevenqmarks=?30,twentyeightqmarks=?31,twentynineqmarks=?32,thirtyqmarks=?33,thirtyoneqmarks=?34,thirtytwoqmarks=?35,thirtythreeqmarks=?36,thirtyfourqmarks=?37,thirtyfiveqmarks=?38,thirtysixqmarks=?39,thirtysevenqmarks=?40,thirtyeightqmarks=?41,thirtynineqmarks=?42,fortyqmarks=?43  where ex_barcode=?13 and expert_id=?14 and exam_barcode=?15", nativeQuery = true)
+
+	int updatemarks(Double firstQMarks, Double secondQMarks, Double thirdQMarks, Double fourQMarks, Double fiveQMarks,
+			Double sixQMarks, Double sevenQMarks, Double eightQMarks, Double nineQMarks, Double tenQMarks,
+			Double elevenQMarks, Double twelveQMarks, String barcode, EvaluatorList evaluatorList,
+			ExamBarcodes examBarcodes, Double thirteenQMarks, Double fourteenQMarks, Double fifteenQMarks,
+			Double sixteenQMarks, Double seventeenQMarks, Double eighteenQMarks, Double ninteenQMarks,
+			Double twentyQMarks, Double twentyoneQMarks, Double twentytwoQMarks, Double twentythreeQMarks,
+			Double twentyfourQMarks, Double twentyfiveQMarks, Double twentysixQMarks, Double twentysevenQMarks,
+			Double twentyeightQMarks, Double twentynineQMarks, Double thirtyQMarks, Double thirtyoneQMarks,
+			Double thirtytwoQMarks, Double thirtythreeQMarks, Double thirtyfourQMarks, Double thirtyfiveQMarks,
+			Double thirtysixQMarks, Double thirtysevenQMarks, Double thirtyeightQMarks, Double thirtynineQMarks,
+			Double fortyQMarks);
+}

@@ -1,0 +1,67 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.QuestionPaper;
+import com.niftem.app.entity.QuestionPaperType;
+
+@Repository
+@Service
+@Transactional
+public interface QuestionPaperRepository extends CrudRepository<QuestionPaper, Long> {
+
+	List<QuestionPaper> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndProgrammesId(
+			boolean b, boolean c, Long academicYear, Long courses, Long degree, Long examAnnouncement, Long programmes);
+
+	List<QuestionPaper> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndProgrammesIdAndDepartmentId(
+			boolean b, boolean c, Long academicYear, Long courses, Long degree, Long examAnnouncement, Long programmes,
+			Long department);
+
+	List<QuestionPaper> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndExQuestionTypeAndExversionAndProgrammesIdAndDepartmentId(
+			boolean b, boolean c, Long academicYear, Long courses, Long degree, Long examAnnouncement, String string,
+			String string2, Long programmes, Long department);
+
+	
+
+	List<QuestionPaper> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndExQuestionTypeAndExversion(
+			boolean b, boolean c, Long academicYear, Long courses, Long degree, Long examAnnouncement, String string,
+			String string2);
+
+	Optional<QuestionPaper> findByExQuestionAndCoursesIdAndAcademicYearIdAndExamAnnouncementId(String exQuestion,
+			Long courses, Long academicYear, Long examAnnouncement);
+
+	@Query(value = "SELECT * FROM ex_question_paper where ex_is_delete=?1 and  ex_is_active=?2 and academic_year_id=?3 and courses_id=?4 and degree_id=?5 and exam_announcement_id=?6 and exversion=?7 and department_id =?8 and programmes_id=?9  group by question_paper_pattern_id", nativeQuery = true)
+	List<QuestionPaper> getpatterns(boolean b, boolean c, Long academicYear, Long courses, Long degree,
+			Long examAnnouncement, String exVersion,Long department,Long programe );
+
+	
+
+	List<QuestionPaper> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndExversionAndQuestionPaperPatternIdAndDepartmentIdAndProgrammesId(
+			boolean b, boolean c, Long academicYear, Long courses, Long degree, Long examAnnouncement, String exVersion,
+			Long id, Long department, Long programmes);
+
+
+
+	List<QuestionPaper> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndExversionAndQuestionPaperPatternIdAndDepartmentIdAndProgrammesIdAndAndQuestionPaperTypeId(
+			boolean b, boolean c, Long academicYear, Long courses, Long degree, Long examAnnouncement, String exVersion,
+			Long id, Long department, Long programmes, Long id2);
+
+	List<QuestionPaper> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndExversionAndQuestionPaperPatternIdAndDepartmentIdAndProgrammesIdAndQuestionPaperTypeId(
+			boolean b, boolean c, Long academicYear, Long courses, Long degree, Long examAnnouncement, String exVersion,
+			Long id, Long department, Long programmes, Long id2);
+
+	List<QuestionPaper> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndCoursesIdAndDegreeIdAndExamAnnouncementId(
+			boolean b, boolean c, Long academicYear, Long courses, Long degree, Long examAnnouncement);
+
+	List<QuestionPaper> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndExtype(
+			boolean b, boolean c, Long academicYear, Long courses, Long degree, Long examAnnouncement, String string);
+
+
+}

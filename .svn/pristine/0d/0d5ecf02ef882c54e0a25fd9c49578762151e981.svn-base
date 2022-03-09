@@ -1,0 +1,38 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+public class ModuleMappingRequest {
+	
+	private String exModuleName;	
+	private List<String> exSubModule;
+	private Long role;
+	
+	
+	public String getExModuleName() {
+		return exModuleName;
+	}
+	public List<String> getExSubModule() {
+		return exSubModule;
+	}
+	public Long getRole() {
+		return role;
+	}
+	public void setExModuleName(String exModuleName) {
+		this.exModuleName = exModuleName;
+	}
+	public void setExSubModule(List<String> exSubModule) {
+		this.exSubModule = exSubModule;
+	}
+	public void setRole(Long role) {
+		this.role = role;
+	}
+	@Override
+	public String toString() {
+		return "ModuleMappingRequest [exModuleName=" + exModuleName + ", exSubModule=" + exSubModule + ", role=" + role
+				+ "]";
+	}
+	
+	
+	
+}

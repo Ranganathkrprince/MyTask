@@ -1,0 +1,75 @@
+package com.niftem.app.repository;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.CoursesType;
+
+public interface CoursesTypeRepository  extends CrudRepository<CoursesType, Long> {
+
+	List<CoursesType> findByExNameAndExIsDelete(String trim, boolean b);
+
+	List<CoursesType> findByExIsDelete(boolean b);
+	
+	List<CoursesType> findByExNameInAndExIsDeleteAndExIsActive(List<String> courseList, boolean delete , boolean active);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_coursestype set ex_is_delete = ?1  ,ex_is_active = ?2  where id =?3", nativeQuery = true)
+
+	int deleteCoursesType(Boolean exIsDelete, Boolean is_active, Long id);
+	
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_coursestype set ex_name = ?1 ,ex_is_active =?2 , ex_description =?3  , ex_update_date = ?4 where id =?5", nativeQuery = true)
+
+	int updateCoursesTypeRecord(String exName, Boolean exIsActive, String exDescription, Date date, Long id);
+
+	Optional<CoursesType> findByIdAndExIsDeleteAndExIsActive(Long col, boolean b, boolean c);
+	
+
+	//ArrayList<Object[]> checkCourseTypelist(List<String> courseList, boolean b, boolean c);
+
+//	Optional<CoursesType> findByExCoursestypeNameAndExIsDeleteAndExIsActive(String caty, boolean b, boolean c);
+
+//	ArrayList<Object[]> checkCourseType(List<String> courseList, boolean b, boolean c);
+	@Query(value = "SELECT *  FROM ex_coursestype WHERE ex_name IN ?1 and  ex_is_delete = ?2 and ex_is_active=?3", nativeQuery = true)
+	ArrayList<Object[]> CourseType(List<String> courseList, boolean b, boolean c);
+
+	List<CoursesType> findByIdInAndExIsDeleteAndExIsActive(List<String> courseList, boolean b, boolean c);
+
+	
+	//Optional<CoursesType> findByExCoursesTypeNameAndExIsDeleteAndExIsActive(String caty, boolean b, boolean c);
+
+	Optional<CoursesType> findByExNameAndExIsDeleteAndExIsActive(String coursesetype, boolean b, boolean c);
+
+	Optional<CoursesType> findByExIsDeleteAndExIsActiveAndId(boolean delete, boolean active, Long coursesType);
+
+	Optional<CoursesType> findByExIsDeleteAndExIsActiveAndIdIn(boolean b, boolean c, List courseTypeList);
+
+	Optional<CoursesType> findByExIsDeleteAndExIsActiveAndIdIn(boolean b, boolean c, Long coursesType);
+
+	
+	
+	
+	@Query(value = "SELECT * FROM ex_coursestype a,ex_courses_coursestype b\r\n" + 
+			"WHERE a.id=b.courses_type AND b.courses_id=?4 AND b.courses_type=?1 AND a.ex_is_active=?3 \r\n" + 
+			"AND a.ex_is_delete=?2", nativeQuery = true)
+	Optional<CoursesType> findtheoryORpractical(Long colnumber, boolean b, boolean c, Long course);
+
+
+
+
+
+
+}

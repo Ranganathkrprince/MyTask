@@ -1,0 +1,22 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.LetterGradeSetting;
+
+public interface LetterGradeSettingRepository extends CrudRepository<LetterGradeSetting, Long>{
+
+	List<LetterGradeSetting> findByExMinRangeMarksLessThanEqualAndExMaxRangeMarksGreaterThanEqual(double newInput,double newInput2);
+
+	List<LetterGradeSetting> findByExPointGradeLessThanEqualAndExPointGradeGreaterThanEqual(int round, int round2);
+
+	List<LetterGradeSetting> findByExLetterGrade(String exLetterGrades);
+
+	@Query(value="SELECT * FROM ex_letter_grade_settings where id >?1  ORDER BY id ASC LIMIT 1",nativeQuery=true)
+	List<LetterGradeSetting> getPriviousRecord(Long id);
+
+}

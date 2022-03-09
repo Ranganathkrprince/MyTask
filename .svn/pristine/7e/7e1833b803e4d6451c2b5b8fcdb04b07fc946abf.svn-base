@@ -1,0 +1,295 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_exam_timetable")
+public class ExamTimeTable {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Temporal(TemporalType.TIME)
+	@Column(columnDefinition = "TIME")
+	private Date exEndTime;
+
+	@Temporal(TemporalType.TIME)
+	@Column(columnDefinition = "TIME")
+	private Date exStartTime;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exEndDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exStartDate;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	private Long exExamType;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "stream_id", nullable = false)
+	private Stream stream;
+
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "courses_id", nullable = false)
+	private Courses courses;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "exam_announcement_id", nullable = false)
+	private ExamAnnouncement examAnnouncement;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsUpdate;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "User_id", nullable = false)
+	private User user;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "registration_type_id", nullable = true)
+	private RegistrationType registration;
+
+	public Long getId() {
+		return id;
+	}
+
+	public Date getExEndTime() {
+		return exEndTime;
+	}
+
+	public Date getExStartTime() {
+		return exStartTime;
+	}
+
+	public Date getExEndDate() {
+		return exEndDate;
+	}
+
+	public Date getExStartDate() {
+		return exStartDate;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Long getExExamType() {
+		return exExamType;
+	}
+
+	public Stream getStream() {
+		return stream;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public Courses getCourses() {
+		return courses;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public Boolean getExIsUpdate() {
+		return exIsUpdate;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public RegistrationType getRegistration() {
+		return registration;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExEndTime(Date exEndTime) {
+		this.exEndTime = exEndTime;
+	}
+
+	public void setExStartTime(Date exStartTime) {
+		this.exStartTime = exStartTime;
+	}
+
+	public void setExEndDate(Date exEndDate) {
+		this.exEndDate = exEndDate;
+	}
+
+	public void setExStartDate(Date exStartDate) {
+		this.exStartDate = exStartDate;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setExExamType(Long exExamType) {
+		this.exExamType = exExamType;
+	}
+
+	public void setStream(Stream stream) {
+		this.stream = stream;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setExIsUpdate(Boolean exIsUpdate) {
+		this.exIsUpdate = exIsUpdate;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setRegistration(RegistrationType registration) {
+		this.registration = registration;
+	}
+
+	@Override
+	public String toString() {
+		return "ExamTimeTable [id=" + id + ", exEndTime=" + exEndTime + ", exStartTime=" + exStartTime + ", exEndDate="
+				+ exEndDate + ", exStartDate=" + exStartDate + ", academicYear=" + academicYear + ", programmeYear="
+				+ programmeYear + ", semester=" + semester + ", degree=" + degree + ", exExamType=" + exExamType
+				+ ", stream=" + stream + ", programmes=" + programmes + ", courses=" + courses + ", department="
+				+ department + ", examAnnouncement=" + examAnnouncement + ", exIsActive=" + exIsActive + ", exIsDelete="
+				+ exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", exIsUpdate="
+				+ exIsUpdate + ", user=" + user + ", registration=" + registration + "]";
+	}
+	
+
+
+
+	
+}

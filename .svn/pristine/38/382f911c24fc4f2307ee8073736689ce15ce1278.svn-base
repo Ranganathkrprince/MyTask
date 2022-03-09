@@ -1,0 +1,39 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.InternalMarksConfiguration;
+
+public interface InternalMarksConfigurationRepository extends CrudRepository<InternalMarksConfiguration, Long>{
+
+	List<InternalMarksConfiguration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndExamAnnouncementId(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long examAnnouncement);
+	
+	
+	List<InternalMarksConfiguration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndAcademicYearIdAndProgrammeYearIdAndSemesterId(boolean b, boolean c, Long programmes, Long academicYear, Long programmeYear,Long semester);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_internal_marks_configuration set ex_is_active = ?1 ,ex_end_date=?2 ,ex_start_date =?3 , ex_update_date = ?4 , ex_extend_date =?5  where id =?6", nativeQuery = true)
+	int updateConfig(Boolean exIsActive, Date parse, Date parse2, Date date, Date exExtendDate, Long id);
+
+
+	List<InternalMarksConfiguration> findByExIsDelete(boolean b);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_internal_marks_configuration set ex_is_delete = ?1,ex_is_active =?2  where id =?3", nativeQuery = true)
+	int deleteSemesterRegistration(Boolean exIsDelete, Boolean exIsActive, Long id);
+
+
+
+}

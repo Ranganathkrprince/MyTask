@@ -1,0 +1,84 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+
+	@Entity
+	@Table(name = "ex_question_option_Mapping")
+	public class QuestionOptionMapping {
+		
+			@Id
+			@GeneratedValue(strategy = GenerationType.IDENTITY)
+		    private Long id;
+			
+			
+			private String exOptionValue;
+			
+			private String exQuestionType;
+
+			
+			@ManyToOne( optional = false)
+			@JoinColumn(name = "questionpaper_id", nullable = false)
+			private QuestionPaper questionPaper;
+
+			@ManyToOne( optional = false)
+			@JoinColumn(name = "questionPaperPattern_id", nullable = false)
+			private QuestionPaperPattern questionPaperPattern ;
+
+			public Long getId() {
+				return id;
+			}
+
+			public void setId(Long id) {
+				this.id = id;
+			}
+
+			public String getExOptionValue() {
+				return exOptionValue;
+			}
+
+			public void setExOptionValue(String exOptionValue) {
+				this.exOptionValue = exOptionValue;
+			}
+
+			public String getExQuestionType() {
+				return exQuestionType;
+			}
+
+			public void setExQuestionType(String exQuestionType) {
+				this.exQuestionType = exQuestionType;
+			}
+
+			public QuestionPaper getQuestionPaper() {
+				return questionPaper;
+			}
+
+			public void setQuestionPaper(QuestionPaper questionPaper) {
+				this.questionPaper = questionPaper;
+			}
+
+			public QuestionPaperPattern getQuestionPaperPattern() {
+				return questionPaperPattern;
+			}
+
+			public void setQuestionPaperPattern(QuestionPaperPattern questionPaperPattern) {
+				this.questionPaperPattern = questionPaperPattern;
+			}
+
+			@Override
+			public String toString() {
+				return "QuestionOptionMapping [id=" + id + ", exOptionValue=" + exOptionValue + ", exQuestionType="
+						+ exQuestionType + ", questionPaper=" + questionPaper + ", questionPaperPattern="
+						+ questionPaperPattern + "]";
+			}
+			
+			
+			
+
+}

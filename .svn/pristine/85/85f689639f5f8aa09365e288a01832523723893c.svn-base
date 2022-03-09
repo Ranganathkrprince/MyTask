@@ -1,0 +1,71 @@
+package com.niftem.app.implementation;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import com.niftem.app.entity.SemesterRegistration;
+import com.niftem.app.entity.SemesterRegistrationConfiguration;
+import com.niftem.app.entity.Studentadmission;
+import com.niftem.app.service.SchedulerService;
+import com.niftem.app.util.AutoManager;
+
+@Service
+@Transactional
+public class SchedulerServiceImpl extends AutoManager implements SchedulerService{
+	private static Logger logger = LoggerFactory.getLogger("master-log");
+	@Override
+	public void updateStudentDetails() {
+		try {
+			
+			DateFormat timeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			Date date = new Date();
+			Calendar cl = Calendar.getInstance();
+	        cl.setTime(date);
+	        String currentTime  = timeformat.format(cl.getTime());
+        
+	        Date date1=new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(currentTime);  
+	       // logger.info(date1+">>>>>>updateEvaluatorSelection>>>>"+currentTime+":00");	   
+	        
+	        List<SemesterRegistrationConfiguration> task = super.semesterRegistrationConfiguration.findByExIsDeleteAndExIsActiveAndExEndDateAndRegistrationId(false, true,date1, 1L);
+	      //  logger.info(">>>>>>updateEvaluatorSelection>>>>"+task.size());
+	        
+	        for(SemesterRegistrationConfiguration t :task) {  
+	        	// get the register student list 	        	
+				List<SemesterRegistration> list  = super.semesterRegistration.findByAcademicYearIdAndSemesterIdAndProgrammeYearIdAndProgrammesIdAndExIsActiveAndExIsDeleteAndDegreeId(							
+						t.getAcademicYear().getId(),t.getSemester().getId(),t.getProgrammeYear().getId(),t.getProgrammes().getId(),true , false, t.getDegree().getId());
+				List<Long> dataList = new LinkedList();				
+				Long batchId = null;
+				for(SemesterRegistration e  :list) {
+					dataList.add(e.getStudentadmission().getId());
+					batchId = e.getStudentadmission().getBatch().getId();
+					System.out.println("fffffffffffffffffff"+batchId);
+				}
+				System.out.println("fffffffffffffffffff"+dataList.size());
+				super.studentadmission.updateForRegistration(t.getColleges().getId(),t.getDegree().getId(),t.getProgrammes().getId(), batchId,dataList);
+	        	}
+	        
+	        
+	        //int updateForRegistration(Long colleges, Long degree, Long programmes, Long department);
+	       // logger.info(">>>>>updateEvaluatorSelection>>>>>"+endTime+":59");
+	      //evaluatorSelectionRepository.updateEvaluatorSelection(false,currentTime+":00" , endTime+":59");        
+		}catch(Exception e) {
+			logger.error("Exception occured"+ e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());			
+		}
+	}
+
+}

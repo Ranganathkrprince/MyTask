@@ -1,0 +1,300 @@
+package com.niftem.app.controller;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.niftem.app.entity.ComplaintType;
+import com.niftem.app.model.AssignHostelRequest;
+import com.niftem.app.model.CommonRequest;
+import com.niftem.app.model.ComplaintRequest;
+import com.niftem.app.model.ComplaintTypeRequest;
+import com.niftem.app.model.EvaluationDetailsRequest;
+import com.niftem.app.model.InitiatePayment;
+import com.niftem.app.model.ModuleMappingRequest;
+import com.niftem.app.model.NoduR;
+import com.niftem.app.model.Regulation;
+import com.niftem.app.model.SemesterEligibility;
+import com.niftem.app.model.SemesterRegistrationRequest;
+import com.niftem.app.model.StudentBankDetailsRequest;
+import com.niftem.app.service.HelpDeskService;
+import com.niftem.app.service.PaymentService;
+
+@RestController
+
+@RequestMapping("/api/helpdesk/")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+public class HelpDeskController {
+
+	@Autowired
+	HelpDeskService helpDeskService;
+	
+	@Autowired
+	PaymentService paymentService;
+	
+	
+	@PostMapping(value = "/saveComplaintType")
+	public Map<String, String> saveComplaintType(@RequestBody ComplaintTypeRequest request) {			
+		return helpDeskService.saveComplaintType(request);
+	}
+
+	
+	@PostMapping(value = "/getComplaintType")
+	public Map<String, Object> getComplaintType(ComplaintType request) {			
+		return helpDeskService.getComplaintType( request);
+	}
+	
+	@PostMapping(value = "/updateComplaintType")
+	public Map<String, Object> updateComplaintType(@RequestBody ComplaintTypeRequest request) {			
+		return helpDeskService.updateComplaintType( request);
+	}
+	@PostMapping(value = "/deleteComplaintType")
+	public Map<String, Object> deleteComplaintType(@RequestBody ComplaintTypeRequest request) {			
+		return helpDeskService.deleteComplaintType(request);
+	}
+	
+	@PostMapping(value = "/registerComplain")
+	public Map<String, Object> registerComplain(@RequestBody ComplaintRequest request) {			
+		return helpDeskService.registerComplain(request);
+	}
+	
+
+	@PostMapping(value = "/updateComplaintStatus")
+	public Map<String, Object> updateComplaintStatus (@RequestBody ComplaintRequest request) {			
+		return helpDeskService.updateComplaintStatus (request);
+	}
+	
+	@PostMapping(value = "/getComplainList")
+	public Map<String, Object> getComplainList (@RequestBody ComplaintRequest request) {			
+		return helpDeskService.getComplainList (request);
+	}
+	
+
+	@PostMapping(value = "/getComplainListOnStatus")
+	public Map<String, Object> getComplainListOnStatus (@RequestBody ComplaintRequest request) {			
+		return helpDeskService.getComplainListOnStatus (request);
+	}
+	
+
+	@PostMapping(value = "/getComplainHistory")
+	public Map<String, Object> getComplaitHistory (@RequestBody ComplaintRequest request) {			
+		return helpDeskService.getComplaitHistory (request);
+	}
+	
+
+	@PostMapping(value = "/sendRemark")
+	public Map<String, Object> sendRemark(@RequestBody ComplaintRequest request) {			
+		return helpDeskService.sendRemark(request);
+	}
+	
+	
+	@PostMapping(value = "/getOtp")
+	public Map<String, String> getOtp(@RequestBody EvaluationDetailsRequest request) {			
+		return helpDeskService.getOtp(request);
+	}
+	
+	@PostMapping(value = "/validateOtp")
+	public Map<String, String> validateOtp(@RequestBody EvaluationDetailsRequest request) {			
+		return helpDeskService.validateOtp(request);
+	}
+	
+	
+	
+	@PostMapping(value = "/getComplainOnStatusAndRole")
+	public Map<String, Object> getComplainOnStatusAndRole (@RequestBody ComplaintRequest request) {			
+		return helpDeskService.getComplainOnStatusAndRole (request);
+	}
+	
+	// get the student details for approve
+	
+	@PostMapping(value = "/getStudentForPayment")
+	public Map<String, Object> getStudentForPayment (@RequestBody SemesterRegistrationRequest request) {			
+		return helpDeskService.getStudentForPayment (request);
+	}
+	
+	@PostMapping(value = "/paymentApprove")
+	public Map<String, Object> paymentApprove(@RequestBody SemesterEligibility request) {			
+		return helpDeskService.paymentApprove(request);
+	}
+	
+	@PostMapping(value = "/validatePayment")
+	public Map<String, Object> validatePayment(@RequestBody SemesterEligibility request) {
+		return helpDeskService.validatePayment(request);
+	}	
+	
+	@PostMapping(value = "/checkTransaction")
+	public Map<String, Object> checkTransaction(@RequestBody InitiatePayment request) {
+		return paymentService.checkTransaction(request.getOrderId());
+	}
+	
+	
+	@PostMapping(value = "/regulation/create")
+	public Map<String, Object> createRegulation( Regulation request) {
+		return helpDeskService.createRegulation(request);
+	}
+	
+	@PostMapping(value = "/regulation/get")
+	public Map<String, Object> getRegulation(@RequestBody Regulation request) {
+		return helpDeskService.getRegulation(request);
+	}
+	
+	@PostMapping(value = "/regulation/update")
+	public Map<String, Object> updateRegulation( Regulation request) {
+		return helpDeskService.updateRegulation(request);
+	}
+	
+	
+	@PostMapping(value = "/regulation/delete")
+	public Map<String, Object> deleteRegulation(@RequestBody Regulation request) {
+		return helpDeskService.deleteRegulation(request);
+	}
+	
+
+	
+	@PostMapping(value = "/studentCertificateRequest")
+	public Map<String, Object> studentCertificateRequest(@RequestBody CommonRequest request) {
+		return helpDeskService.studentCertificateRequest(request);
+	}
+	
+	@PostMapping(value = "/getAllCertificate")
+	public Map<String, Object> getAllCertificate(@RequestBody CommonRequest request) {
+		return helpDeskService.getAllCertificate(request);
+	}
+	
+	@PostMapping(value = "/getCertificateByStudent")
+	public Map<String, Object> getCertificateByStudent(@RequestBody CommonRequest request) {
+		return helpDeskService.getCertificateByStudent(request);
+	}
+	
+	@PostMapping(value = "/assignCertificate")
+	public Map<String, Object> assignCertificate(@RequestBody CommonRequest request) {
+		return helpDeskService.assignCertificate(request);
+	}
+	
+	@PostMapping(value = "/assignHostel")
+	public Map<String, Object> assignHostel(@RequestBody AssignHostelRequest request) {
+		return helpDeskService.assignHostel(request);
+	}
+	
+	@PostMapping(value = "/getHostelAllocatedStudent")
+	public Map<String, Object> getHostelAllocatedStudent(@RequestBody AssignHostelRequest request) {
+		return helpDeskService.getHostelAllocatedStudent(request);
+	}
+	
+	@PostMapping(value = "/vacatedHostel")
+	public Map<String, Object> vacatedHostel(@RequestBody AssignHostelRequest request) {
+		return helpDeskService.vacatedHostel(request);
+	}
+	
+	
+	@PostMapping(value = "/updateBankDetailsByStudent")
+	public Map<String, Object> updateBankDetailsByStudent(@RequestBody StudentBankDetailsRequest request) {
+		return helpDeskService.updateBankDetailsByStudent(request);
+	}
+	
+	@PostMapping(value = "/getBankDetailsByStudent")
+	public Map<String, Object> getBankDetailsByStudent(@RequestBody StudentBankDetailsRequest request) {
+		return helpDeskService.getBankDetailsByStudent(request);
+	}
+	
+	@PostMapping(value = "/getBankDetailsByAdmin")
+	public Map<String, Object> getBankDetailsByAdmin(@RequestBody StudentBankDetailsRequest request) {
+		return helpDeskService.getBankDetailsByAdmin(request);
+	}
+	
+	@PostMapping(value = "/updateBankDetailsByAdmin")
+	public Map<String, Object> updateBankDetailsByAdmin(@RequestBody StudentBankDetailsRequest request) {
+		return helpDeskService.updateBankDetailsByAdmin(request);
+	}
+	
+	@PostMapping(value = "/saveModule")
+	public Map<String, Object> saveModule(@RequestBody ModuleMappingRequest request) {
+		return helpDeskService.saveModule(request);
+	}
+	@PostMapping(value = "/getModule")
+	public Map<String, Object> getModule(@RequestBody ModuleMappingRequest request) {
+		return helpDeskService.getModule(request);
+	}
+	
+	@PostMapping(value = "/changeStudyStatus")
+	public Map<String, Object> changeStudyStatus(@RequestBody StudentBankDetailsRequest request) {
+		return helpDeskService.changeStudyStatus(request);
+	}
+	
+	@PostMapping(value = "/changeMarksheet")
+	public Map<String, Object> changeMarksheet(@RequestBody CommonRequest request) {
+		return helpDeskService.changeMarksheet(request);
+	}
+	
+	@PostMapping(value = "/getStudentDetailsForPenlty")
+	public Map<String, Object> getStudentDetailsForPenlty(@RequestBody NoduR request) {
+		return helpDeskService.getStudentDetailsForPenlty(request);
+	}	
+	
+	@PostMapping(value = "/updateStudentPenlty")
+	public Map<String, Object> updateStudentPenlty( NoduR request) {
+		return helpDeskService.updateStudentPenlty(request);
+	}	
+	
+	@PostMapping(value = "/getListPenaltyByStudent")
+	public Map<String, Object> getListPenaltyByStudent(@RequestBody NoduR request) {
+		return helpDeskService.getListPenaltyByStudent(request);
+	}	
+	
+	// Staff complaint 
+	
+	@PostMapping(value = "/saveStaffComplaintType")
+	public Map<String, String> saveStaffComplaintType(@RequestBody ComplaintTypeRequest request) {			
+		return helpDeskService.saveStaffComplaintType(request);
+	}
+
+	
+	@PostMapping(value = "/getStaffComplaintType")
+	public Map<String, Object> getStaffComplaintType(ComplaintType request) {			
+		return helpDeskService.getStaffComplaintType( request);
+	}
+	
+	@PostMapping(value = "/updateStaffComplaintType")
+	public Map<String, Object> updateStaffComplaintType(@RequestBody ComplaintTypeRequest request) {			
+		return helpDeskService.updateStaffComplaintType( request);
+	}
+	@PostMapping(value = "/deleteStaffComplaintType")
+	public Map<String, Object> deleteStaffComplaintType(@RequestBody ComplaintTypeRequest request) {			
+		return helpDeskService.deleteStaffComplaintType(request);
+	}
+	
+	
+	@PostMapping(value = "/registerComplainByStaff")
+	public Map<String, Object> registerComplainByStaff(@RequestBody ComplaintRequest request) {			
+		return helpDeskService.registerComplainByStaff(request);
+	}
+	
+
+	@PostMapping(value = "/updateComplaintStatusForStaff")
+	public Map<String, Object> updateComplaintStatusForStaff (@RequestBody ComplaintRequest request) {			
+		return helpDeskService.updateComplaintStatusForStaff (request);
+	}
+	
+	@PostMapping(value = "/getComplainListForStaff")
+	public Map<String, Object> getComplainListForStaff (@RequestBody ComplaintRequest request) {			
+		return helpDeskService.getComplainListForStaff (request);
+	}
+	
+
+	@PostMapping(value = "/getComplainListOnStatusStaff")
+	public Map<String, Object> getComplainListOnStatusStaff (@RequestBody ComplaintRequest request) {			
+		return helpDeskService.getComplainListOnStatusStaff (request);
+	}
+	
+
+	@PostMapping(value = "/getComplainHistoryStaff")
+	public Map<String, Object> getComplainHistoryStaff (@RequestBody ComplaintRequest request) {			
+		return helpDeskService.getComplainHistoryStaff (request);
+	}
+	
+}

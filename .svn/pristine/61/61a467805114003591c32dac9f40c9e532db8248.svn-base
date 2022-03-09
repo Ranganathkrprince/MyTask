@@ -1,0 +1,486 @@
+package com.niftem.app.controller;
+
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.niftem.app.model.ApplicationVersionRequest;
+import com.niftem.app.model.CommonRequest;
+import com.niftem.app.model.ReportRequest;
+import com.niftem.app.model.SemesterRegistrationRequest;
+import com.niftem.app.service.CommonService;
+
+@RequestMapping("/api/common/")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RestController
+@Validated
+public class CommonController {
+	@Autowired
+	private CommonService commonService;
+	private static Logger logger = LoggerFactory.getLogger("master-log");
+
+	@PostMapping(value = "/programmesOnCollegeAndDegree")
+	public Map<String, Object> getprogrammesOnCollegeAndDegree(@RequestBody CommonRequest request) {
+		return commonService.getprogrammesOnCollegeAndDegree(request);
+
+	}
+	
+	
+	@PostMapping(value = "/getStudentboards")
+	public Map<String, Object> getStudentboards(@RequestBody CommonRequest request) {
+		return commonService.getStudentboards(request);
+
+	}
+	
+	
+	@PostMapping(value = "/getFilter")
+	public Map<String, Object> getFilter(@RequestBody CommonRequest request) {
+		return commonService.getFilter(request);
+
+	}
+	
+	@PostMapping(value = "/getStudentStates")
+	public Map<String, Object> getStudentStates(@RequestBody CommonRequest request) {
+		return commonService.getStudentStates(request);
+
+	}
+	
+	
+	@PostMapping(value = "/getboards")
+	public Map<String, Object> getboards(@RequestBody CommonRequest request) {
+		return commonService.getboards(request);
+
+	}
+	
+	
+	@PostMapping(value = "/getstates")
+	public Map<String, Object> getstates(@RequestBody CommonRequest request) {
+		return commonService.getstates(request);
+
+	}
+	
+	@PostMapping(value = "/getmotherTongue")
+	public Map<String, Object> getmotherTongue(@RequestBody CommonRequest request) {
+		return commonService.getmotherTongue(request);
+
+	}
+	
+	@PostMapping(value = "/getNationality")
+	public Map<String, Object> getNationality(@RequestBody CommonRequest request) {
+		return commonService.getNationality(request);
+
+	}
+	
+	@PostMapping(value = "/getreligion")
+	public Map<String, Object> getreligion(@RequestBody CommonRequest request) {
+		return commonService.getreligion(request);
+
+	}
+	
+	@PostMapping(value = "/getbloodgroup")
+	public Map<String, Object> getbloodgroup(@RequestBody CommonRequest request) {
+		return commonService.getbloodgroup(request);
+
+	}
+	
+	@PostMapping(value = "/getminaritycategory")
+	public Map<String, Object> getminaritycategory(@RequestBody CommonRequest request) {
+		return commonService.getminaritycategory(request);
+
+	}
+	
+
+	@PostMapping(value = "/departmentOnprogrammesAndCollegeAndDegree")
+	public Map<String, Object> getdepartmentOnProgrammesAndCollegeAndDegree(@RequestBody CommonRequest request) {
+		return commonService.getdepartmentOnProgrammesAndCollegeAndDegree(request);
+
+	}
+
+	@PostMapping(value = "/stream")
+	public Map<String, Object> getsteamOnProgrammesAndCollegeAndDepartmentAndDegree(@RequestBody CommonRequest request) {
+		return commonService.getsteamOnProgrammesAndCollegeAndDepartmentAndDegree(request);
+
+	}
+
+	@PostMapping(value = "/courses")
+	public Map<String, Object> getcoursesOnDepartmentAndProgrammesAndCollegeAndDegree(@RequestBody CommonRequest request) {
+		return commonService.getcoursesOnDepartmentAndProgrammesAndCollegeAndDegree(request);
+
+	}
+
+	@PostMapping(value = "/coursesOnDSCDP")
+	public Map<String, Object> getcoursesOnDepartmentAndProgrammesAndCollegeAndDegreeAndStream(@RequestBody CommonRequest request) {
+		return commonService.getcoursesOnDepartmentAndProgrammesAndCollegeAndDegreeAndStream(request);
+
+	}
+
+	@PostMapping(value = "/programmesOnDegree")
+	public Map<String, Object> getprogrammesOnDegree(@RequestBody CommonRequest request) {
+		return commonService.getprogrammesOnDegree(request);
+
+	}
+
+	@PostMapping(value = "/programmesOnColleges")
+	public Map<String, Object> getprogrammesOnCollege(@RequestBody CommonRequest request) {
+		return commonService.getprogrammesOnCollege(request);
+
+	}
+
+	@PostMapping(value = "/coursesOnAcademicYear")
+	public Map<String, Object> getcoursesOnAcademicYear(@RequestBody CommonRequest request) {
+		return commonService.getcoursesOnAcademicYear(request);
+
+	}
+
+	@PostMapping(value = "/roomMasterOnCollege")
+	public Map<String, Object> getroomMasterOnCollege(@RequestBody CommonRequest request) {
+		return commonService.getroomMasterOnCollege(request);
+
+	}
+
+	@PostMapping(value = "/studentOnCDPA")
+	public Map<String, Object> getstudentOnCollegeAndDegreeAndProgrammesAndAcademicYear(@RequestBody CommonRequest request) {
+		return commonService.getstudentOnCollegeAndDegreeAndProgrammesAndAcademicYear(request);
+
+	}
+
+	@PostMapping(value = "/staffOnCollegeAndDegree")
+	public Map<String, Object> getstaffpersonalOnCollegeAndDegree(@RequestBody CommonRequest request) {
+		return commonService.getstaffpersonalOnCollegeAndDegree(request);
+
+	}
+
+	@PostMapping(value = "/staffOnStaffType")
+	public Map<String, Object> getstaffpersonalOnStaffType( @RequestBody CommonRequest request) {
+		return commonService.getstaffpersonalOnStaffType(request);
+
+	}
+	
+	@PostMapping(value = "/invigilatorconfig")
+	public Map<String, Object> invigilatorconfig( @RequestBody CommonRequest request) {
+		return commonService.invigilatorconfig(request);
+	}
+	
+	
+
+	@PostMapping(value = "/staffOnStaffTypeAndDegreeAndCollege")
+	public Map<String, Object> getstaffpersonalOnCollegeAndDegreeAndStaffType(@RequestBody CommonRequest request) {
+		return commonService.getstaffpersonalOnCollegeAndDegreeAndStaffType(request);
+
+	}
+	@PostMapping(value = "/mentorOnBatchAndCollegeAndDegreeAndProgrammes")
+	public Map<String, Object> getmentorOnBatchAndCollegeAndDegreeAndProgrammes(@RequestBody CommonRequest request) {
+		return commonService.getmentorOnBatchAndCollegeAndDegreeAndProgrammes(request);
+
+	}
+
+	@PostMapping(value = "/departmentOnProgram")
+	public Map<String, Object> departmentOnProgram(@RequestBody CommonRequest request) {
+		return commonService.departmentOnProgram(request);
+
+	}
+	@PostMapping(value = "/departmentOnProgramDegree")
+	public Map<String, Object> departmentOnProgramDegree(@RequestBody CommonRequest request) {
+		return commonService.departmentOnProgramDegree(request);
+
+	}
+	
+	@PostMapping(value = "/streamOnProgramDepartment")
+	public Map<String, Object> streamOnProgramDepartment(@RequestBody CommonRequest request) {
+		return commonService.streamOnProgramDepartment(request);
+
+	}
+	@PostMapping(value = "/examTimeTableOnDate")
+	public Map<String, Object> getexamTimeTableOnDateAndDegreeAndAcademicYearAndProgrammesAndExamAnnouncementAndRegistrationType(@RequestBody CommonRequest request) {
+		return commonService.getexamTimeTableOnDateAndDegreeAndAcademicYearAndProgrammesAndExamAnnouncementAndRegistrationType(request);
+
+	}
+	@PostMapping(value = "/examAnnouncementDetailsOnAcademicYear")
+	public Map<String, Object> getexamAnnouncementDetailsOnAcademicYear(@RequestBody CommonRequest request) {
+		return commonService.getexamAnnouncementDetailsOnAcademicYear(request);
+
+	}
+	@PostMapping(value = "/getcoursesList")
+	public Map<String, Object> getcoursesList(@RequestBody CommonRequest request) {
+		return commonService.getcoursesList(request);
+
+	}
+	
+	@PostMapping(value = "/getcourseBasedOnAcademicYear")
+	public Map<String, Object> getcourseBasedOnAcademicYear(@RequestBody CommonRequest request) {
+		return commonService.getcourseBasedOnAcademicYear(request);
+
+	}
+	
+	@PostMapping(value = "/getCurrentCoursesList")
+	public Map<String, Object> getCurrentCoursesList(@RequestBody CommonRequest request) {
+		return commonService.getCurrentCoursesList(request);
+	}
+	
+	@PostMapping(value = "/getApprovalDetails")
+	public Map<String, Object> getApprovalDetails(@RequestBody CommonRequest request) {
+		return commonService.getApprovalDetails(request);
+	}
+	
+	@PostMapping(value = "/getAcademicForStudent")
+	public Map<String, Object> getAcademicForStudent(@RequestBody CommonRequest request) {
+		return commonService.getAcademicForStudent(request);
+	}
+	
+	@PostMapping(value = "/examAnnouncementonAcademicYear")
+	public Map<String, Object> getexamAnnouncementonAcademicYear(@RequestBody CommonRequest request) {
+		return commonService.getexamAnnouncementonAcademicYear(request);
+
+	}
+	
+	@PostMapping(value = "/restrationTypeOnExam")
+	public Map<String, Object> getrestrationTypeOnExam(@RequestBody CommonRequest request) {
+		return commonService.getrestrationTypeOnExam(request);
+
+	}
+	
+	@PostMapping(value = "/getStudentById")
+	public Map<String, Object> getStudentById(@RequestBody CommonRequest request) {
+		return commonService.getStudentById(request);
+
+	}
+	
+	@PostMapping(value = "/getStaffById")
+	public Map<String, Object> getStaffById(@RequestBody CommonRequest request) {
+		return commonService.getStaffById(request);
+
+	}
+	
+	@PostMapping(value = "/studentOnCDPAD")
+	public Map<String, Object> studentOnCDPAD(@RequestBody CommonRequest request) {
+		return commonService.studentOnCDPAD(request);
+
+	}
+	@PostMapping(value = "/examOnDAP")
+	public Map<String, Object> examOnDAP(@RequestBody CommonRequest request) {
+		return commonService.examOnDAP(request);
+
+	}
+	@PostMapping(value = "/hostelBasedOnCollege")
+	public Map<String, Object> hostelBasedOnCollege(@RequestBody CommonRequest request) {
+		return commonService.hostelBasedOnCollege(request);
+
+	}
+	@PostMapping(value = "/courseOnProgrammeAndPrgmYearAndSemester")
+	public Map<String, Object> courseOnProgrammeAndProgrammeYearAndSemester(@RequestBody CommonRequest request) {
+		return commonService.courseOnProgrammeAndProgrammeYearAndSemester(request);
+
+	}
+	
+	@PostMapping(value = "/getCoursesOnStaffId")
+	public Map<String, Object> getCoursesOnStaffId(@RequestBody CommonRequest request) {
+		return commonService.getCoursesOnStaffId(request);
+
+	}
+
+	@PostMapping(value = "/Studentform")
+	public Map<String, Object> Studentform(@RequestBody CommonRequest request) {
+		return commonService.Studentform(request);
+
+	}
+	
+	
+	@PostMapping(value = "/mentorOnBDPDS")
+	public Map<String, Object> mentorOnBDPDS(@RequestBody CommonRequest request) {
+		return commonService.mentorOnBDPDS(request);
+
+	}
+
+	@PostMapping(value = "/getmentordetails")
+	public Map<String, Object> getmentordetails(@RequestBody CommonRequest request) {
+		return commonService.getmentordetails(request);
+
+	}
+	
+	@PostMapping(value = "/batchsOnDegreeAndProgrammes")
+	public Map<String, Object> BatchOnDegreeAndprogrammes(@RequestBody CommonRequest request) {
+		return commonService.BatchOnDegreeAndprogrammes(request);
+
+	}
+	
+	@PostMapping(value = "/getAttendanceDetails")
+	public Map<String, Object> getAttendanceDetails(@RequestBody CommonRequest request) {
+		return commonService.getAttendanceDetails(request);
+	}	
+	
+	@PostMapping(value = "/getGpaCgpa")
+	public Map<String, Object> getGpaCgpa(@RequestBody CommonRequest request) {
+		return commonService.getGpaCgpa(request);
+	}
+	
+	@PostMapping(value = "/getApproveType")
+	public Map<String, Object> getApproveType() {
+		return commonService.getApproveType();
+	}
+	
+	@PostMapping(value = "/validateLateRegistration")
+		public Map<String, Object> validateLateRegistration(@RequestBody CommonRequest request) {
+			return commonService.validateLateRegistration(request);
+	}
+	
+	@PostMapping(value = "/getStudentInternal")
+	public Map<String, Object> getStudentInternal(@RequestBody CommonRequest request) {
+		return commonService.getStudentInternal(request);
+	}
+	
+	@PostMapping(value = "/courseWiseResult")
+	public Map<String, Object> courseWiseResult(@RequestBody CommonRequest request) {
+		return commonService.courseWiseResult(request);
+	}
+	
+	@PostMapping(value = "/courseForSyllabus")
+	public Map<String, Object> courseForSyllabus(@RequestBody CommonRequest request) {
+		return commonService.courseForSyllabus(request);
+	}
+	
+	@PostMapping(value = "/getSyllabusOnStaffId")
+	public Map<String, Object> getSyllabusOnStaffId(@RequestBody CommonRequest request) {
+		return commonService.getSyllabusOnStaffId(request);
+
+	}
+	
+	@PostMapping(value = "/getStaffDashboard")
+	public Map<String, Object> getStaffDashboard(@RequestBody CommonRequest request) {
+		return commonService.getStaffDashboard(request);
+
+	}
+	
+	
+	@PostMapping(value = "/getBatch")
+	public Map<String, Object> getBatch(@RequestBody CommonRequest request) {
+		return commonService.getBatch(request);
+
+	}
+	
+	
+	@PostMapping(value = "/getStaffReport")
+	public Map<String, Object> getStaffReport(@RequestBody CommonRequest request) {
+		return commonService.getStaffReport(request);
+	}
+	
+	@PostMapping(value = "/getCreditHour")
+	public Map<String, Object> getCreditHour(@RequestBody CommonRequest request) {
+		return commonService.getCreditHour(request);
+	}
+	
+	@PostMapping(value = "/getUplodedDocument")
+	public Map<String, Object> getUplodedDocument(@RequestBody CommonRequest request) {
+		return commonService.getUplodedDocument(request);
+
+	}
+	
+	@PostMapping(value = "/getDocumetType")
+	public Map<String, Object> getDocumetType() {
+		return commonService.getDocumetType();
+
+	}
+
+	@PostMapping(value = "/getCourseRegisteredAndUnregisteredDetails")
+	public Map<String, Object> getCourseRegistrationAndUnregisteredDetails(@RequestBody SemesterRegistrationRequest request) {
+		return commonService.getCourseRegistrationAndUnregisteredDetails(request);
+
+	}
+	
+	@PostMapping(value = "/getCourseForQP")
+	public Map<String, Object> getCourseForQP(@RequestBody CommonRequest request) {
+		return commonService.getCourseForQP(request);
+
+	}
+	
+	@PostMapping(value = "/getcoursesOnCourseType")
+	public Map<String, Object> getcoursesBasedOnCourseType(@RequestBody CommonRequest request) {
+		return commonService.getcoursesBasedOnCourseType(request);
+
+	}
+	
+	@PostMapping(value = "/courseOnBatch")
+	public Map<String, Object> courseOnBatch(@RequestBody CommonRequest request) {
+		return commonService.courseOnBatch(request);
+
+	}
+	
+	@PostMapping(value = "/courseOnBatchMultiple")
+	public Map<String, Object> courseOnBatchMultiple(@RequestBody ReportRequest request) {
+		return commonService.courseOnBatchMultiple(request);
+
+	}
+	
+	
+	@PostMapping(value = "/registerCourses")
+	public Map<String, Object> registerCourses(@RequestBody CommonRequest request) {
+		return commonService.registerCourses(request);
+
+	}
+	
+	@PostMapping(value = "/getCertificateType")
+	public Map<String, Object> getCertificateType() {
+		return commonService.getCertificateType();
+	}
+	
+	@PostMapping(value = "/getUplodedCertificate")
+	public Map<String, Object> getUplodedCertificate(@RequestBody CommonRequest request) {
+		return commonService.getUplodedCertificate(request);
+
+	}
+	
+	@PostMapping(value = "/getUplodedSyllabus")
+	public Map<String, Object> getUplodedSyllabus(@RequestBody CommonRequest request) {
+		return commonService.getUplodedSyllabus(request);
+
+	}
+	
+	@PostMapping(value = "/getStudentRegulation")
+	public Map<String, Object> getStudentRegulation(@RequestBody CommonRequest request) {
+		return commonService.getStudentRegulation(request);
+	}	
+	
+	@PostMapping(value = "/getStaffRegulation")
+	public Map<String, Object> getStaffRegulation(@RequestBody CommonRequest request) {
+		return commonService.getStaffRegulation(request);
+	}
+	
+	@PostMapping(value = "/getHostelDetail")
+	public Map<String, Object> getHostelDetail(@RequestBody CommonRequest request) {
+		return commonService.getHostelDetail(request);
+	}
+	
+	@PostMapping(value = "/getAcademicYearForStaff")
+	public Map<String, Object> getAcademicYearForStaff(@RequestBody CommonRequest request) {
+		return commonService.getAcademicYearForStaff(request);
+	}
+	
+	@PostMapping(value = "/getExamForStaff")
+	public Map<String, Object> getExamForStaff(@RequestBody CommonRequest request) {
+		return commonService.getExamForStaff(request);
+	}
+	
+	@PostMapping(value = "/getSectionForStaff")
+	public Map<String, Object> getSectionForStaff(@RequestBody CommonRequest request) {
+		return commonService.getSectionForStaff(request);
+	}
+	
+	@PostMapping(value = "/getsupplycoursesforapproval")
+	public Map<String, Object> getsupplycoursesforapproval(@RequestBody CommonRequest request) {
+	return commonService.getsupplycoursesforapproval(request);
+
+	}
+
+
+	@PostMapping(value = "/supplyofflineapproval")
+	public Map<String, Object> supplyofflineapproval(@RequestBody CommonRequest request) {
+	return commonService.supplyofflineapproval(request);
+	}
+}

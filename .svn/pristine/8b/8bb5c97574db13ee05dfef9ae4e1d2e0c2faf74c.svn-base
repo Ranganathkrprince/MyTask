@@ -1,0 +1,145 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.Degree;
+import com.niftem.app.entity.Programmes;
+
+public class ExamTimeTableRequest {
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide exStartDate")
+	private String exStartDate;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide exEndDate")	
+	private String exEndDate;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide exStartTime")
+	private String exStartTime;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide exEndTime")
+	private String exEndTime;
+	
+	private String exTimeSlot;
+		
+	private Long exExamType;	
+	
+	private Long exTimeTableId;
+		
+	private Long user;
+		
+	@NotNull(message = "ExamAnnouncementId is required")
+	private Long examAnnouncement;	
+	
+	
+	private Long registrationType;
+	private Long programmes;
+	private Long degree;
+	 private Long academicYear;
+
+	 private Long deparment;
+	 private Long semester;
+	public String getExStartDate() {
+		return exStartDate;
+	}
+	public String getExEndDate() {
+		return exEndDate;
+	}
+	public String getExStartTime() {
+		return exStartTime;
+	}
+	public String getExEndTime() {
+		return exEndTime;
+	}
+	public String getExTimeSlot() {
+		return exTimeSlot;
+	}
+	public Long getExExamType() {
+		return exExamType;
+	}
+	public Long getExTimeTableId() {
+		return exTimeTableId;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public Long getDeparment() {
+		return deparment;
+	}
+	public Long getSemester() {
+		return semester;
+	}
+	public void setExStartDate(String exStartDate) {
+		this.exStartDate = exStartDate;
+	}
+	public void setExEndDate(String exEndDate) {
+		this.exEndDate = exEndDate;
+	}
+	public void setExStartTime(String exStartTime) {
+		this.exStartTime = exStartTime;
+	}
+	public void setExEndTime(String exEndTime) {
+		this.exEndTime = exEndTime;
+	}
+	public void setExTimeSlot(String exTimeSlot) {
+		this.exTimeSlot = exTimeSlot;
+	}
+	public void setExExamType(Long exExamType) {
+		this.exExamType = exExamType;
+	}
+	public void setExTimeTableId(Long exTimeTableId) {
+		this.exTimeTableId = exTimeTableId;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setDeparment(Long deparment) {
+		this.deparment = deparment;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+	@Override
+	public String toString() {
+		return "ExamTimeTableRequest [exStartDate=" + exStartDate + ", exEndDate=" + exEndDate + ", exStartTime="
+				+ exStartTime + ", exEndTime=" + exEndTime + ", exTimeSlot=" + exTimeSlot + ", exExamType=" + exExamType
+				+ ", exTimeTableId=" + exTimeTableId + ", user=" + user + ", examAnnouncement=" + examAnnouncement
+				+ ", registrationType=" + registrationType + ", programmes=" + programmes + ", degree=" + degree
+				+ ", academicYear=" + academicYear + ", deparment=" + deparment + ", semester=" + semester + "]";
+	}
+	 
+
+
+}

@@ -1,0 +1,316 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+public class SemesterRegistrationRequest {
+	private Long id;
+
+	@NotNull(message = "academicYear is required")
+	private Long academicYear;
+
+	@NotNull(message = "colleges is required")
+	private Long colleges;
+
+	@NotNull(message = "degree is required")
+	private Long degree;
+
+	@NotNull(message = "stream is required")
+	private Long stream;
+
+	@NotNull(message = "programmes is required")
+	private Long programmes;
+
+	private Long batch;
+	
+	@NotNull(message = "department is required")
+	private Long department;
+
+	@NotNull(message = "registrationType is required")
+	private Long registrationType;
+
+	@NotNull(message = "semester is required")
+	private Long semester;
+
+	@NotNull(message = "student is required")
+	private Long student;
+
+	@NotNull(message = "programmeYear is required")
+	private Long programmeYear;
+
+	
+	private Long course;
+	@NotNull(message = "please selest courses ")
+	private List<Long> courses;
+
+	private Boolean exIsActive;
+
+	private Boolean exIsPaid;
+
+	private Boolean exIsRegistration;
+
+	private Boolean exIsApproved;
+
+	private Boolean exSemesterStatus;
+
+	private Boolean exIsHostelApprove;
+
+	private Boolean exIsLibraryApprove;
+
+	private Boolean exIsEligible;
+
+	private Boolean exIsAttendence;
+	
+	private Long examAnnouncement;
+	
+	private List studentList;
+	private String exRollNo; 
+	
+	private List<Long> studentLists;
+	
+	public Long user;
+
+	public Long getId() {
+		return id;
+	}
+
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+
+	public Long getColleges() {
+		return colleges;
+	}
+
+	public Long getDegree() {
+		return degree;
+	}
+
+	public Long getStream() {
+		return stream;
+	}
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+	public Long getBatch() {
+		return batch;
+	}
+
+	public Long getDepartment() {
+		return department;
+	}
+
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+
+	public Long getSemester() {
+		return semester;
+	}
+
+	public Long getStudent() {
+		return student;
+	}
+
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public Long getCourse() {
+		return course;
+	}
+
+	public List<Long> getCourses() {
+		return courses;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsPaid() {
+		return exIsPaid;
+	}
+
+	public Boolean getExIsRegistration() {
+		return exIsRegistration;
+	}
+
+	public Boolean getExIsApproved() {
+		return exIsApproved;
+	}
+
+	public Boolean getExSemesterStatus() {
+		return exSemesterStatus;
+	}
+
+	public Boolean getExIsHostelApprove() {
+		return exIsHostelApprove;
+	}
+
+	public Boolean getExIsLibraryApprove() {
+		return exIsLibraryApprove;
+	}
+
+	public Boolean getExIsEligible() {
+		return exIsEligible;
+	}
+
+	public Boolean getExIsAttendence() {
+		return exIsAttendence;
+	}
+
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+	public List getStudentList() {
+		return studentList;
+	}
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public List<Long> getStudentLists() {
+		return studentLists;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+	public void setStream(Long stream) {
+		this.stream = stream;
+	}
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setBatch(Long batch) {
+		this.batch = batch;
+	}
+
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+
+	public void setStudent(Long student) {
+		this.student = student;
+	}
+
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setCourse(Long course) {
+		this.course = course;
+	}
+
+	public void setCourses(List<Long> courses) {
+		this.courses = courses;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsPaid(Boolean exIsPaid) {
+		this.exIsPaid = exIsPaid;
+	}
+
+	public void setExIsRegistration(Boolean exIsRegistration) {
+		this.exIsRegistration = exIsRegistration;
+	}
+
+	public void setExIsApproved(Boolean exIsApproved) {
+		this.exIsApproved = exIsApproved;
+	}
+
+	public void setExSemesterStatus(Boolean exSemesterStatus) {
+		this.exSemesterStatus = exSemesterStatus;
+	}
+
+	public void setExIsHostelApprove(Boolean exIsHostelApprove) {
+		this.exIsHostelApprove = exIsHostelApprove;
+	}
+
+	public void setExIsLibraryApprove(Boolean exIsLibraryApprove) {
+		this.exIsLibraryApprove = exIsLibraryApprove;
+	}
+
+	public void setExIsEligible(Boolean exIsEligible) {
+		this.exIsEligible = exIsEligible;
+	}
+
+	public void setExIsAttendence(Boolean exIsAttendence) {
+		this.exIsAttendence = exIsAttendence;
+	}
+
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+	public void setStudentList(List studentList) {
+		this.studentList = studentList;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	public void setStudentLists(List<Long> studentLists) {
+		this.studentLists = studentLists;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "SemesterRegistrationRequest [id=" + id + ", academicYear=" + academicYear + ", colleges=" + colleges
+				+ ", degree=" + degree + ", stream=" + stream + ", programmes=" + programmes + ", batch=" + batch
+				+ ", department=" + department + ", registrationType=" + registrationType + ", semester=" + semester
+				+ ", student=" + student + ", programmeYear=" + programmeYear + ", course=" + course + ", courses="
+				+ courses + ", exIsActive=" + exIsActive + ", exIsPaid=" + exIsPaid + ", exIsRegistration="
+				+ exIsRegistration + ", exIsApproved=" + exIsApproved + ", exSemesterStatus=" + exSemesterStatus
+				+ ", exIsHostelApprove=" + exIsHostelApprove + ", exIsLibraryApprove=" + exIsLibraryApprove
+				+ ", exIsEligible=" + exIsEligible + ", exIsAttendence=" + exIsAttendence + ", examAnnouncement="
+				+ examAnnouncement + ", studentList=" + studentList + ", exRollNo=" + exRollNo + ", studentLists="
+				+ studentLists + ", user=" + user + "]";
+	}
+
+
+	
+	
+
+}

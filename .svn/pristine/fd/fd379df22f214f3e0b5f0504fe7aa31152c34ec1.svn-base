@@ -1,0 +1,2717 @@
+package com.niftem.app.implementation;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.niftem.app.dto.NoDueDTO;
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.ApproveType;
+import com.niftem.app.entity.Batch;
+import com.niftem.app.entity.ClassAttendance;
+import com.niftem.app.entity.ClassTimeTable;
+import com.niftem.app.entity.ClassTimeTableDays;
+import com.niftem.app.entity.Colleges;
+import com.niftem.app.entity.Courses;
+import com.niftem.app.entity.CoursesRegistration;
+import com.niftem.app.entity.CoursesType;
+import com.niftem.app.entity.Degree;
+import com.niftem.app.entity.Department;
+import com.niftem.app.entity.MidTermMarks;
+import com.niftem.app.entity.MonthName;
+import com.niftem.app.entity.NoDuePenalty;
+import com.niftem.app.entity.NoDuesConfiguration;
+import com.niftem.app.entity.NoDuesMapping;
+import com.niftem.app.entity.ProgrammeYear;
+import com.niftem.app.entity.Programmes;
+import com.niftem.app.entity.PushAlertLog;
+import com.niftem.app.entity.RoomMaster;
+import com.niftem.app.entity.Section;
+import com.niftem.app.entity.SemesterRegistration;
+import com.niftem.app.entity.Semster;
+import com.niftem.app.entity.Staffpersonal;
+import com.niftem.app.entity.Stream;
+import com.niftem.app.entity.StudentPenaltyDetails;
+import com.niftem.app.entity.Studentadmission;
+import com.niftem.app.entity.Studentpersonal;
+import com.niftem.app.entity.TeachingSummary;
+import com.niftem.app.entity.User;
+import com.niftem.app.entity.WeekDays;
+import com.niftem.app.model.AttendenceRequest;
+import com.niftem.app.model.ClassTimeTableRequest;
+import com.niftem.app.model.EligibleListforExamRequest;
+import com.niftem.app.model.NoDuesRequest;
+import com.niftem.app.model.NoduR;
+import com.niftem.app.model.SemesterEligibility;
+import com.niftem.app.model.TeachingSummaryRequest;
+import com.niftem.app.repository.NoDuesConfigurationRepository;
+import com.niftem.app.repository.StudentPenaltyDetailsRepository;
+import com.niftem.app.service.ClassAcademicService;
+import com.niftem.app.util.AutoManager;
+import com.niftem.app.util.EmailSending;
+
+@Service
+@Transactional
+public class ClassAcademicImpl extends AutoManager implements ClassAcademicService {
+	@Autowired
+	private EmailSending email;
+	
+	@Autowired
+	private NoDuesConfigurationRepository nodues;
+	
+	@Autowired
+	private StudentPenaltyDetailsRepository penaltydetils;
+	
+	private static Logger logger = LoggerFactory.getLogger("master-log");
+	private static Logger excellog = LoggerFactory.getLogger("excel-log");
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, Object> createClassTimeTable(ClassTimeTableRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+
+			Optional<AcademicYear> academic = super.academicYear
+					.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear(), false, true);
+			if (!academic.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+
+			Optional<Colleges> clgid = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges(), false,
+					true);
+			if (!clgid.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Colleges not present");
+				return info;
+			}
+
+			Optional<Programmes> programmes = super.programmes.findByExIsDeleteAndExIsActiveAndId(false, true,
+					request.getProgrammes());
+			if (!programmes.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Programme not present");
+				return info;
+			}
+			Optional<ProgrammeYear> programmeYear = super.programmeYear
+					.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(), true, false);
+			if (!programmeYear.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false, true,
+					request.getSemester());
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}
+
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDegree());
+			if (!degree.isPresent() || !degree.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+			Optional<Stream> stream = super.stream.findByIdAndExIsDeleteAndExIsActive(request.getStream(), false, true);
+			if (!stream.isPresent() || !stream.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Stream not present");
+				return info;
+			}
+
+			Optional<Section> section = super.section.findByExIsDeleteAndExIsActiveAndId(false, true,
+					request.getSection());
+			if (!section.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Section not present.");
+				return info;
+			}
+
+			Optional<RoomMaster> room = super.roomMaster.findByExIsDeleteAndExIsActiveAndId(false, true,
+					request.getRoom());
+			if (!room.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "room not present");
+				return info;
+			}
+
+			List<Courses> tasks = new ArrayList<Courses>();
+			tasks = super.courses
+					.findByAcademicYearIdAndProgrammesIdAndProgrammeYearIdAndDegreeIdAndExIsDeleteAndExIsActiveAndCollegesIdAndAndSemesterId(
+							request.getAcademicYear(), request.getProgrammes(), request.getProgrammeYear(),
+							request.getDegree(), false, true, request.getColleges(), request.getSemester());
+			if (tasks.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Course not present");
+				return info;
+			}
+
+			// check class time table already created
+
+			List<ClassTimeTable> validate = super.classtimetable
+					.findByAcademicYearIdAndCollegesIdAndDegreeIdAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndSectionIdAndExIsActiveAndExIsDelete(
+							request.getAcademicYear(), request.getColleges(), request.getDegree(),
+							request.getProgrammes(), request.getProgrammeYear(), request.getSemester(),
+							request.getSection(), true, false);
+			if (validate.size() > 0) {
+				info.put("status", "2");
+				info.put("message", "Class Timetable already created");
+				return info;
+			}
+
+			Date date = new Date();
+			Long privailageid = 37L;
+			User userid = super.commonHelper.getuser(request.getUser());
+			String Description = request.toString();
+			Boolean audit = super.commonHelper.saveauditlogdetails(true, Description, userid, privailageid);
+
+			for (Courses c : tasks) {
+				for (CoursesType r : c.getCoursesType()) {
+					ClassTimeTable table = new ClassTimeTable();
+					table.setAcademicYear(c.getAcademicYear());
+					table.setColleges(c.getColleges());
+					table.setCourses(c);
+					table.setCoursesType(r);
+					table.setDegree(c.getDegree());
+					table.setDepartment(c.getDepartment());
+					table.setSemester(c.getSemester());
+					table.setStream(c.getStream());
+					table.setProgrammes(c.getProgrammes());
+					table.setExIsUpdate(false);
+					table.setExCreateDate(date);
+					table.setExIsActive(true);
+					table.setExIsDelete(false);
+					table.setProgrammeYear(c.getProgrammeYear());
+					table.setSection(section.get());
+					super.classtimetable.save(table);
+					// GET days from
+					Iterable<WeekDays> week = super.weekdays.findAll();
+					List dataList = new LinkedList();
+					for (WeekDays w : week) {
+						ClassTimeTableDays weekday = new ClassTimeTableDays();
+						weekday.setWeekdays(w);
+						weekday.setExDayName(w.getExName());
+						weekday.setClasstimetable(table);
+						weekday.setCourses(c);
+						weekday.setRoom(room.get());
+						dataList.add(weekday);
+					}
+					super.timetabledays.saveAll(dataList);
+
+					System.out.println(">>>>>>>>table>>>>>>>>>>>>>>>>" + table);
+				}
+
+			}
+
+			// super.classtimetable.saveAll(dataList);
+			// super.courses.save(courses);
+			info.put("status", "1");
+			info.put("message", "Class time table created successfully");
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getclassTimeTable(@Valid ClassTimeTableRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+
+			List<ClassTimeTableDays> days = super.timetabledays
+					.findByClasstimetableAcademicYearIdAndClasstimetableCollegesIdAndClasstimetableDegreeIdAndClasstimetableProgrammesIdAndClasstimetableProgrammeYearIdAndClasstimetableSemesterIdAndClasstimetableExIsActiveAndClasstimetableExIsDeleteAndClasstimetableCoursesIdAndClasstimetableCoursesTypeIdAndClasstimetableSectionId(
+							request.getAcademicYear(), request.getColleges(), request.getDegree(),
+							request.getProgrammes(), request.getProgrammeYear(), request.getSemester(), true, false,
+							request.getCourses(), request.getCoursesType(), request.getSection());
+
+			if (days.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Class Timetable Not created");
+				return info;
+			}
+			List dataList = new LinkedList();
+			for (ClassTimeTableDays e : days) {
+				Map<Object, Object> coursesdata = new HashMap<Object, Object>();
+				coursesdata.put("id", e.getId());
+				coursesdata.put("dayName", e.getExDayName());
+				coursesdata.put("startTime",
+						e.getExStartTime() == null ? "NA" : e.getExStartTime().toString().substring(0, 5));
+				coursesdata.put("endTime",
+						e.getExEndTime() == null ? "NA" : e.getExEndTime().toString().substring(0, 5));
+				coursesdata.put("roonmName", e.getRoom().getExName());
+				coursesdata.put("roonmId", e.getRoom().getId());
+				dataList.add(coursesdata);
+			}
+
+			info.put("coursesId", days.get(0).getCourses().getId());
+			info.put("courses", days.get(0).getCourses().getExName());
+			info.put("courseCode", days.get(0).getCourses().getExCoursesCode());
+			info.put("creditHours", days.get(0).getCourses().getCreditHours().getExCreditHourTitle());
+			info.put("details", dataList);
+			info.put("status", "1");
+			info.put("message", "success");
+
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> updateclassTimeTable( ClassTimeTableRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			SimpleDateFormat time = new SimpleDateFormat("HH:mm");						
+			 Optional<ClassTimeTableDays> days = super.timetabledays.findById(request.getId());
+			 if(!days.isPresent()) {
+				 info.put("status", "2");
+			    info.put("message", "Id not present");					
+				return info;
+			 }
+				Long privailageid = 37L;
+				User userid = super.commonHelper.getuser(request.getUser());
+				String Description = request.toString();
+				Boolean audit = super.commonHelper.saveauditlogdetails(true, Description, userid, privailageid);
+			timetabledays.updateDaysRecord(time.parse(request.getStartTime()), time.parse(request.getEndTime()), request.getId() , request.getRoonmId());		
+			info.put("status", "1");
+			info.put("message", "Class Timetable updated successfully");
+			
+			return info;
+			
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> checkTimeTableStatus(@Valid ClassTimeTableRequest request) {
+	Map<String, Object> info = new LinkedHashMap<>();
+	try {
+	List<ClassTimeTable> tasks = super.classtimetable.findByAcademicYearIdAndCollegesIdAndDegreeIdAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndExIsActiveAndExIsDeleteAndCoursesIdAndCoursesTypeIdAndSectionId(
+	request.getAcademicYear(), request.getColleges(), request.getDegree(), request.getProgrammes(), request.getProgrammeYear(), request.getSemester() ,true, false, request.getCourses() , request.getCoursesType(),request.getSection());
+	if (tasks.size() <= 0) {
+	info.put("status", "2");
+	info.put("message", "Class Timetable Not created");
+	return info;
+	}
+	if(tasks.get(0).getExIsUpdate() == true) {
+	info.put("status", "1");
+	info.put("message", "Class Timetable already updated");
+	return info;
+	}else {
+	info.put("status", "3");
+	info.put("message", "Class Timetable Not updated");
+	return info;
+	}
+	}catch(Exception e) {
+	logger.error("Exception occured" + e);
+	StringWriter errors = new StringWriter();
+	e.printStackTrace();
+	e.printStackTrace(new PrintWriter(errors));
+	logger.error(errors.toString());
+	info.put("status", "0");
+	info.put("message", "Something went wrong");
+	return info;
+	}
+	}
+
+
+
+
+
+	@Override
+	public Map<String, Object> getMonthName() {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			 List<MonthName> month = (List<MonthName>) super.monthname.findAll();
+				if(month.size() <=0) {
+					info.put("status", "1");
+					info.put("message", "month_name ");	
+				}
+				
+				List dataList = new LinkedList();
+				for(MonthName e : month) {
+					Map<Object, Object> coursesdata = new HashMap<Object, Object>();
+					coursesdata.put("id", e.getId());		
+					coursesdata.put("monthName", e.getExName());				
+					dataList.add(coursesdata);
+				}
+				
+				info.put("details", dataList);
+				info.put("status", "1");
+				info.put("message", "success");			
+				return info;
+			
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> createTeachingSummary(@Valid TeachingSummaryRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {			
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear() , false , true);
+			if (!academic.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+			Optional<MonthName> month = super.monthname.findById(request.getMonthId());
+			if (!month.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Month id not present");
+				return info;
+			}
+			// check duplicate
+			
+			List<TeachingSummary> validate =  super.teachingsummary.findByExIsDeleteAndExIsActiveAndAcademicYearIdAndMonthnameId
+			( false , true , request.getAcademicYear() , request.getMonthId());
+			if(validate.size() > 0) {
+				info.put("status", "2");
+				info.put("message", "Teaching Summary already present");
+				return info;
+			}			
+			Long privailageid = 38L;
+			User userid = super.commonHelper.getuser(request.getUser());
+			String Description = request.toString();
+			Boolean audit = super.commonHelper.saveauditlogdetails(true, Description, userid, privailageid);
+			Date date = new Date();
+			TeachingSummary summary = new TeachingSummary();			
+			summary.setAcademicYear(academic.get());
+			summary.setMonthname(month.get());
+			summary.setExIsEven(request.getExIsEven());
+			summary.setExIsActive(true);
+			summary.setExTeachingDays((request.getExTeachingDays()));
+			summary.setExHolidayDates(request.getExHolidayDates());
+			summary.setExYear(request.getExYear());
+			summary.setExIsDelete(false);
+			summary.setExCreateDate(date);			
+			super.teachingsummary.save(summary);					
+			info.put("status", "1");
+			info.put("message", "Teaching Summary Created Successfully");
+			return info;
+			
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			e.printStackTrace();
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+	
+	
+
+	@Override
+	public Map<String, Object> updateTeachingSummary(@Valid TeachingSummaryRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {			
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear() , false , true);
+			if (!academic.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+			Optional<MonthName> month = super.monthname.findById(request.getMonthId());
+			if (!month.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Month id not present");
+				return info;
+			}
+			// check duplicate
+			
+			List<TeachingSummary> validate =  super.teachingsummary.findByExIsDeleteAndExIsActiveAndAcademicYearIdAndMonthnameIdAndExYear
+			( false , true , request.getAcademicYear() , request.getMonthId() , request.getExYear());
+			if(validate.size() > 0 && validate.get(0).getId() !=request.getId()) {
+				info.put("status", "2");
+				info.put("message", "Same record already present");
+				return info;
+			}				
+			Date date = new Date();
+			Long privailageid = 38L;
+			User userid = super.commonHelper.getuser(request.getUser());
+			String Description = request.toString();
+			Boolean audit = super.commonHelper.saveauditlogdetails(true, Description, userid, privailageid);
+			int i  = super.teachingsummary.updatesummaryRecord(request.getExHolidayDates(), request.getExTeachingDays(),date , request.getExYear(), request.getAcademicYear(), request.getMonthId(),request.getExIsEven() ,request.getId());
+		if(i == 1) {
+			info.put("status", "1");
+			info.put("message", "Teaching Summary Updated Successfully");
+			return info;
+		}	else {
+			info.put("status", "2");
+			info.put("message", "Id not ");
+			return info;
+		}	
+
+			
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			e.printStackTrace();
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+//	
+	@Override
+	public Map<String, Object> getTeachingSummary() {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {			
+			List<TeachingSummary> tasks = super.teachingsummary.findByExIsDelete(false);
+
+			if(tasks.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "TeachingSummary not created");
+				return info;
+			}else {
+				List dataList = new LinkedList();
+				for (TeachingSummary e : tasks) {
+					Map<Object, Object> coursesdata = new HashMap<Object, Object>();
+					coursesdata.put("id", e.getId());
+					coursesdata.put("teachingDays", e.getExTeachingDays());		
+					coursesdata.put("holidayDates", e.getExHolidayDates());					
+					coursesdata.put("year", e.getExYear());					
+					coursesdata.put("monthnameId", e.getMonthname().getId());
+					coursesdata.put("monthname", e.getMonthname().getExName());					
+					coursesdata.put("isEven", e.getExIsEven());					
+					coursesdata.put("academicYear", e.getAcademicYear().getExYear());
+					coursesdata.put("academicYearId", e.getAcademicYear().getId());									
+					dataList.add(coursesdata);
+				}
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("details", dataList);
+				return info;
+			}
+			
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			e.printStackTrace();
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> deleteTeachingSummary(TeachingSummaryRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			Optional<TeachingSummary> task = super.teachingsummary.findById(request.getId());
+			if (task.isPresent()) {
+				if (task.get().getExIsDelete()) {
+					info.put("status", "2");
+					info.put("message", "TeachingSummary already deleted");
+					return info;
+				}
+				Boolean exIsDelete = true;
+				Boolean is_active = false;
+				int result = super.teachingsummary.deleteTeachingSummry(exIsDelete, is_active, task.get().getId());
+				if (result == 0) {
+					info.put("status", "2");
+					info.put("message", "Something went wrong");
+					return info;
+				}
+				info.put("status", "1");
+				info.put("message", "TeachingSummary deleted successfully");
+				return info;
+			}
+			info.put("status", "2");
+			info.put("message", "TeachingSummary id not present");
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+	
+
+	@Override
+	public Map<String, Object> createClassAttendance(@Valid ClassTimeTableRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			logger.info("Class Attendance :"+request.toString());
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear() , false , true);
+			if (!academic.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+			
+			Optional<Colleges> clgid = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges(),false,true);
+			if (!clgid.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Colleges not present");
+				return info;
+			}
+
+			Optional<Programmes> programmes = super.programmes.findByExIsDeleteAndExIsActiveAndId(false , true ,request.getProgrammes() );
+			if (!programmes.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Programme not present");
+				return info;
+			}		
+			Optional<ProgrammeYear> programmeYear = super.programmeYear.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(),true,false);
+			if (!programmeYear.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}		
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false,true,request.getSemester());
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}	
+						
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false,true,request.getDegree());
+			if (!degree.isPresent() ||  !degree.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+			Optional<Stream> stream = super.stream.findByIdAndExIsDeleteAndExIsActive(request.getStream() , false,true);
+			if (!stream.isPresent() ||  !stream.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Stream not present");
+				return info;
+			}			
+			// check record already present			
+			
+			  List<ClassAttendance> validate = classattend.findByAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStreamIdAndProgrammesIdAndDegreeId(request.getAcademicYear(), request.getProgrammeYear(),request.getSemester() , request.getStream() , request.getProgrammes() ,request.getDegree());
+			
+			  if(validate.size() >0) { 
+				  info.put("status", "2"); 
+				  info.put("message","Class Attendance already created"); 
+				  return info; 
+			}			 
+			List<TeachingSummary>  summary  = super.teachingsummary.getRecord(true, false, request.getAcademicYear(), request.getExIsEven());
+			if(summary.size() <=0) {
+				info.put("status", "1");
+				info.put("message", "Please configure Teaching Summary");
+				return info;
+	        }
+			
+			// get month Nmae	
+			
+			List<Date> listdate  = new LinkedList<Date> ();			
+
+			List<Date> totaldate  = new LinkedList<Date> ();			
+			for(TeachingSummary e : summary) {		
+				List<Date> datelist  = new LinkedList<Date> ();				
+				LocalDate localDate = LocalDate.of(Integer.parseInt(e.getExYear()), e.getMonthname().getMonthId(), 1);						        
+		        LocalDate firstdate = localDate.with(TemporalAdjusters.firstDayOfMonth());
+		        LocalDate lastdate = localDate.with(TemporalAdjusters.lastDayOfMonth());	
+		        List holiday = new ArrayList();
+		        if(e.getExHolidayDates() !=null && !e.getExHolidayDates().trim().equals("")) {
+		        	 String[] arrOfStr = e.getExHolidayDates().split(","); 
+		        	 for(int i = 0 ; arrOfStr.length >i ; i++) {
+		        		 logger.info(">>>>>>>>>>week>>>>>>"+arrOfStr[i]);
+		        		 holiday.add(arrOfStr[i]);
+		        	 }
+		        }
+		        datelist  = super.commonHelper.getDaysBetweenDates(firstdate, lastdate , holiday , e.getExTeachingDays());	
+		        
+		        totaldate.addAll(datelist);
+			}
+			
+			// get Student registration details
+			long rtype = 1l;
+			Date date = new Date();
+			List dataList = new LinkedList();
+			
+			List<Date> daysdate  = new LinkedList<Date> ();				
+
+			 ZoneId defaultZoneId = ZoneId.systemDefault();
+			Boolean isinsert = false;
+			Long privailageid = 48L;
+			User userid = super.commonHelper.getuser(request.getUser());
+			String Description = request.toString();
+			Boolean audit = super.commonHelper.saveauditlogdetails(true, Description, userid, privailageid);
+			ArrayList<CoursesRegistration>  studentList  = coursesRegistration.getStudentForAttendance(request.getAcademicYear(), request.getColleges(), request.getDegree(), request.getProgrammeYear(),request.getProgrammes(), request.getSemester(), rtype , request.getStream());
+					for(CoursesRegistration e:studentList) {
+						 for(CoursesType  r :e.getCourses().getCoursesType()) {
+							 List<ClassTimeTableDays> days = super.timetabledays.findByClasstimetableAcademicYearIdAndClasstimetableCollegesIdAndClasstimetableDegreeIdAndClasstimetableProgrammesIdAndClasstimetableProgrammeYearIdAndClasstimetableSemesterIdAndClasstimetableExIsActiveAndClasstimetableExIsDeleteAndClasstimetableCoursesIdAndClasstimetableCoursesTypeIdAndExStartTime(request.getAcademicYear(), request.getColleges(), request.getDegree(), request.getProgrammes(), request.getProgrammeYear(), request.getSemester(), true, false, e.getId(), r.getId(),null);								
+							 if(days.size()>0) {
+							 List dayslist = new LinkedList();
+							 for(ClassTimeTableDays f :days) {	 
+								 dayslist.add(f.getExDayName());
+							 }	
+							Instant instant = totaldate.get(0).toInstant();
+							Instant einstant = totaldate.get(totaldate.size()-1).toInstant();
+								
+							LocalDate slocalDate = instant.atZone(defaultZoneId).toLocalDate();
+							LocalDate elocalDate = einstant.atZone(defaultZoneId).toLocalDate();					
+							 daysdate=	super.commonHelper.getdaydates(totaldate,dayslist);				
+							 listdate=daysdate;
+							 }else {
+								 
+								 listdate=totaldate;
+							 }							 							 
+							for(Date d : listdate) {
+								isinsert=true;
+								ClassAttendance attend = new ClassAttendance();
+								attend.setAcademicYear(e.getAcademicYear());
+								//attend.setColleges(e.getColleges());
+								attend.setCourses(e.getCourses());
+								//attend.setDegree(e.getDegree());
+								//attend.setDepartment(e.getDepartment());
+								attend.setCoursesType(r);
+								attend.setDegree(e.getDegree());
+								attend.setProgrammes(e.getProgrammes());
+								attend.setStream(e.getStream());
+								attend.setExCreateDate(date);
+								attend.setExIsActive(true);
+								attend.setExIsDelete(false);
+								attend.setExIsPresent(true);
+								attend.setExPresentDate(d);
+								//attend.setProgrammes(e.getProgrammes());
+								attend.setProgrammeYear(e.getProgrammeYear());
+								attend.setSemester(e.getSemester());
+								//attend.setStream(e.getStream());
+								attend.setStudentadmission(e.getStudentadmission());
+								dataList.add(attend);
+							}}
+					}
+					super.classattend.saveAll(dataList);
+					
+					if(isinsert) {
+						info.put("status", "1");
+						info.put("message", "Class Attendance created Successfully");
+						return info;
+					}else {
+						info.put("status", "2");
+						info.put("message", "Student Registration are Pending");
+						return info;
+					}			
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			e.printStackTrace();
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+		
+	}
+
+	@Override
+	public Map<String, Object> getEligibleListforExam(@Valid EligibleListforExamRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			logger.info("Class Attendance :"+request.toString());
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear() , false , true);
+			if (!academic.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+			Optional<Colleges> clgid = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges(),false,true);
+			if (!clgid.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Colleges not present");
+				return info;
+			}
+			Optional<Programmes> programmes = super.programmes.findByExIsDeleteAndExIsActiveAndId(false , true ,request.getProgrammes() );
+			if (!programmes.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Programme not present");
+				return info;
+			}		
+			Optional<ProgrammeYear> programmeYear = super.programmeYear.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(),true,false);
+			if (!programmeYear.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}		
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false,true,request.getSemester());
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}			
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false,true,request.getDegree());
+			if (!degree.isPresent() ||  !degree.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+			Optional<Department> department = super.department.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDepartment());
+			if (!department.isPresent() ||  !department.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "department not present");
+				return info;
+			}			
+			
+			List<ClassAttendance> classAttendance =super.classattend.findByAcademicYearIdAndProgrammeYearIdAndSemesterIdGroupByStudentAdmissionId(request.getAcademicYear(), request.getProgrammeYear(), request.getSemester());
+			if (classAttendance.size()<=0) {
+				info.put("status", "2");
+				info.put("message", "classAttendance not present");
+				return info;
+			}	
+			System.out.println("???????clsize???????????"+classAttendance.size());
+			for(ClassAttendance e:classAttendance) {
+	
+				List<ClassAttendance> student =super.classattend.findByAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionId(request.getAcademicYear(), request.getProgrammeYear(), request.getSemester(),e.getStudentadmission().getId());
+				System.out.println("???????student???????????"+student.size());
+				if (student.size()<=0) {
+					info.put("status", "2");
+					info.put("message", "StudentAttendance not present");
+					return info;
+				}
+				 for(ClassAttendance f :student){
+					  List<ClassAttendance> studentcourse =super.classattend.findByAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionIdAndCoursesId(request.getAcademicYear(), request.getProgrammeYear(), request.getSemester(),e.getStudentadmission().getId(),f.getCourses().getId());	
+					int ispresentcount=0;
+					  for(ClassAttendance g :studentcourse) {
+					  if(e.getExIsPresent()==true) {
+						  ispresentcount++;
+					    }
+					  }
+					System.out.println("???????ispresentcount???????????"+ispresentcount);
+				  }
+
+			}
+			
+			
+			
+			
+			
+						info.put("status", "2");
+						info.put("message", "OK");
+						return info;
+				
+			
+			
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			e.printStackTrace();
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> generateAttendence(@Valid AttendenceRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			logger.info("Class Attendance :"+request.toString());
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear() , false , true);
+			if (!academic.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+			Optional<Colleges> clgid = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges(),false,true);
+			if (!clgid.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Colleges not present");
+				return info;
+			}
+			Optional<Programmes> programmes = super.programmes.findByExIsDeleteAndExIsActiveAndId(false , true ,request.getProgrammes() );
+			if (!programmes.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Programme not present");
+				return info;
+			}		
+			Optional<ProgrammeYear> programmeYear = super.programmeYear.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(),true,false);
+			if (!programmeYear.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}		
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false,true,request.getSemester());
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}			
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false,true,request.getDegree());
+			if (!degree.isPresent() ||  !degree.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+			Optional<Department> department = super.department.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDepartment());
+			if (!department.isPresent() ||  !department.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "department not present");
+				return info;
+			}			
+			
+			Optional<Courses> Courses = super.courses.findByExIsDeleteAndExIsActiveAndId(false, true, request.getCourses());
+			if (!Courses.isPresent() ) {
+				info.put("status", "2");
+				info.put("message", "Courses not present");
+				return info;
+			}		
+			
+			
+			Optional<CoursesType> coursestype = super.coursestype.findByExIsDeleteAndExIsActiveAndId(false, true, request.getCoursesType());
+			if (!coursestype.isPresent() ) {
+				info.put("status", "2");
+				info.put("message", "coursestype not present");
+				return info;
+			}	
+			
+			List<ClassAttendance> result =super.classattend.studentCount(request.getAcademicYear(), request.getProgrammeYear(), request.getSemester(),request.getCourses(),request.getCoursesType());
+			if (result.size()<=0) {
+				info.put("status", "2");
+				info.put("message", "Attendance not created for particular request");
+				return info;
+			}	
+			
+			ArrayList<Object[]> evedetails  = super.classattend.getStudentDetails(request.getAcademicYear(), request.getProgrammeYear(), request.getSemester(),request.getCourses(),request.getCoursesType());			
+			
+			if (evedetails.size()<=0) {
+				info.put("status", "2");
+				info.put("message", "Attendance not created for particular requests");
+				return info;
+			}	
+			
+			if(request.getCoursesType()==1) {
+			for (Object[] e : evedetails) {
+				float Percentage=0f;
+				boolean isattendence=false;
+					Object studentid =  e[0];
+					Object score =  e[1];
+					Integer grandChildCount = ((BigInteger) score).intValue();		
+					Percentage = ((grandChildCount * 100) / result.size());
+					if(Percentage>=75.0)
+					{
+					isattendence = true;
+					}else {
+					isattendence = false;
+					}
+				    int update =super.coursesRegistration.updateattendec(isattendence,request.getCourses(),studentid,request.getAcademicYear(),request.getProgrammeYear(),request.getSemester(),Percentage);
+			    }
+			}
+			
+			if(request.getCoursesType()==2) {
+				for (Object[] e : evedetails) {
+					float Percentage=0f;
+					boolean isattendence=false;
+						Object studentid =  e[0];
+						Object score =  e[1];
+						Integer grandChildCount = ((BigInteger) score).intValue();		
+						Percentage = ((grandChildCount * 100) / result.size());
+						if(Percentage>=75.0)
+						{
+						isattendence = true;
+						}else {
+						isattendence = false;
+						}
+					    int update =super.coursesRegistration.updateattendecPractical(isattendence,request.getCourses(),studentid,request.getAcademicYear(),request.getProgrammeYear(),request.getSemester(),Percentage);
+				    }
+				}
+				
+			
+			
+			
+			info.put("status", "1");
+			info.put("message", "Attendence generated successfully for particular courses");
+			return info;
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			e.printStackTrace();
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> checkAttendenceEligibility(@Valid SemesterEligibility request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			logger.info("Class Attendance :"+request.toString());
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear() , false , true);
+			if (!academic.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+			Optional<Colleges> clgid = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges(),false,true);
+			if (!clgid.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Colleges not present");
+				return info;
+			}
+			Optional<Programmes> programmes = super.programmes.findByExIsDeleteAndExIsActiveAndId(false , true ,request.getProgrammes() );
+			if (!programmes.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Programme not present");
+				return info;
+			}		
+			Optional<ProgrammeYear> programmeYear = super.programmeYear.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(),true,false);
+			if (!programmeYear.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}		
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false,true,request.getSemester());
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}			
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false,true,request.getDegree());
+			if (!degree.isPresent() ||  !degree.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+			Optional<Department> department = super.department.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDepartment());
+			if (!department.isPresent() ||  !department.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "department not present");
+				return info;
+			}	
+			
+			Optional<CoursesType> coursesType = super.coursestype.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDepartment());
+			if (!coursesType.isPresent() ||  !coursesType.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "coursesType not present");
+				return info;
+			}	
+			
+			
+			
+			Optional<Studentadmission> studentadmission = super.studentadmission.findByExIsDeleteAndExIsActiveAndId(false, true, request.getStudent());
+			if (!studentadmission.isPresent() ) {
+				info.put("status", "2");
+				info.put("message", "student not present");
+				return info;
+			}	
+			// check all the courses attendance genrated or not
+			
+			List<ClassAttendance> result =super.classattend.findByAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionIdAndCoursesTypeId(request.getAcademicYear(), request.getProgrammeYear(), request.getSemester(),request.getStudent(),request.getCoursesType());
+			if (result.size()<=0) {
+				info.put("status", "2");
+				info.put("message", "Attendance not created for Student");
+				return info;
+			}
+			Long rtype  = 1L;
+			ArrayList<CoursesRegistration>  studentList  = coursesRegistration.validateClassAttendance(request.getAcademicYear(), request.getColleges(), request.getDegree(), request.getProgrammeYear(),request.getProgrammes(), request.getSemester(), rtype  , request.getStudent(),request.getCourses());			
+				if(studentList.size() <=0) {
+					info.put("status", "2");
+					info.put("message", "Student Not Register for Particular Course");
+					return info;
+				}
+			
+			if(request.getCoursesType()==1) {
+			float attendance = 0f;
+			System.out.println("????????????????????????studentList.get(0).getExIsAttendence()???????????????/"+studentList.get(0).getExIsAttendence());
+					if(studentList.get(0).getExIsAttendence() == false) {
+							if((studentList.get(0).getExAttendencePrecentage() !=null )&& (studentList.get(0).getExAttendencePrecentage() <75)) {
+								info.put("status", "1");
+								info.put("message", "Student Attendance is "+ studentList.get(0).getExAttendencePrecentage()+"%" +" for particular courses");
+								return info;
+							}
+						info.put("status", "2");
+						info.put("message", "Attendance not generate.");
+						return info;
+					}else {
+						info.put("status", "1");
+						info.put("message", "Student Attendance is "+ studentList.get(0).getExAttendencePrecentage()+"%" +" for particular courses");
+						return info;					
+				}
+			}	
+			if(request.getCoursesType()==2) {
+			
+				float attendance = 0f;
+				
+				if(studentList.get(0).getExIsPracticalAttendence() == false) {
+						if((studentList.get(0).getExPracticalAttendencePrecentage() !=null )&& (studentList.get(0).getExPracticalAttendencePrecentage() <75)) {
+							info.put("status", "1");
+							info.put("message", "Student Attendance is "+ studentList.get(0).getExPracticalAttendencePrecentage()+"%" +" for particular courses");
+							return info;
+						}
+					info.put("status", "2");
+					info.put("message", "Attendance not generate");
+					return info;
+				}else {
+					info.put("status", "2");
+					info.put("message", "Attendance not generate");
+					return info;					
+			}
+		}	
+			
+			
+			return info;	
+			
+				// Update ex_semester_registration 
+			//	attendance = attendance/studentList.size();
+			//	boolean ex_is_attendence = true;
+			//super.semesterRegistration.updateattendec(ex_is_attendence, attendance, request.getAcademicYear(), request.getSemester(), request.getProgrammeYear(), request.getStudent());
+			
+		
+			//info.put("status", "1");
+			//info.put("message", "students are eligible for registration");
+			//return info;
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			e.printStackTrace();
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getstudentEligiblelist(SemesterEligibility request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			logger.info("Class Attendance :"+request.toString());
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear() , false , true);
+			if (!academic.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+			Optional<Colleges> clgid = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges(),false,true);
+			if (!clgid.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Colleges not present");
+				return info;
+			}
+			Optional<Programmes> programmes = super.programmes.findByExIsDeleteAndExIsActiveAndId(false , true ,request.getProgrammes() );
+			if (!programmes.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Programme not present");
+				return info;
+			}		
+			Optional<ProgrammeYear> programmeYear = super.programmeYear.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(),true,false);
+			if (!programmeYear.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}		
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false,true,request.getSemester());
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}			
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false,true,request.getDegree());
+			if (!degree.isPresent() ||  !degree.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+			Optional<Department> department = super.department.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDepartment());
+			if (!department.isPresent() ||  !department.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "department not present");
+				return info;
+			}
+			Optional<CoursesType> coursesType = super.coursestype.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDepartment());
+			if (!coursesType.isPresent() ||  !coursesType.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "CoursesType not present");
+				return info;
+			}
+			
+			
+			
+			
+			
+			
+			// check all the courses attendance genrated or not
+			List<CoursesRegistration> register  =super.coursesRegistration.findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndCoursesId(false, true, request.getProgrammes(), request.getColleges(),request.getDegree(),request.getAcademicYear(),request.getProgrammeYear(),request.getSemester(),request.getDepartment(),request.getCourses());
+			if(register.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "No record found");
+				return info;				
+			}
+			List dataList = new LinkedList();
+			for(CoursesRegistration c :register) {
+				Map<Object, Object> student = new HashMap<Object, Object>();
+				if(request.getCoursesType()==1 && c.getExIsAttendence()==true ) {
+
+				student.put("studentName", c.getStudentadmission().getExName());
+				student.put("AttendencePrecentage", c.getExAttendencePrecentage()+"%");
+				student.put("enrollementNo" , c.getStudentadmission().getExEnrollementNo());
+				student.put("rollNo",c.getStudentadmission().getExRollNo());			
+				dataList.add(student);}
+				if(request.getCoursesType()==2 && c.getExIsPracticalAttendence()==true) {
+
+					student.put("studentName", c.getStudentadmission().getExName());
+					student.put("AttendencePrecentage", c.getExPracticalAttendencePrecentage()+"%");
+					student.put("enrollementNo" , c.getStudentadmission().getExEnrollementNo());
+					student.put("rollNo",c.getStudentadmission().getExRollNo());			
+					dataList.add(student);
+					
+				}
+				
+				
+			}
+			info.put("status", "1");
+			info.put("message", "success");	
+			info.put("details", dataList);
+
+			return info;
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			e.printStackTrace();
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> generateclassTimeTable(@Valid ClassTimeTableRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+			// Update Status in ClassTimeTable table 
+			Date date = new Date();
+			int value= super.classtimetable.updateTimetableRecord(true, date, request.getCourses(), request.getSemester(), request.getProgrammes(), request.getProgrammeYear(), request.getAcademicYear(),request.getCoursesType(),request.getSection());			
+			System.out.println("??????????????value????????"+value);			
+			info.put("status", "1");
+			info.put("message", "Class Timetable generated Successfully");			
+			return info;
+			
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> attendenceCalculator(AttendenceRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			logger.info("Class Attendance :"+request.toString());
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear() , false , true);
+			if (!academic.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+			Optional<Colleges> clgid = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges(),false,true);
+			if (!clgid.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Colleges not present");
+				return info;
+			}
+			Optional<Programmes> programmes = super.programmes.findByExIsDeleteAndExIsActiveAndId(false , true ,request.getProgrammes() );
+			if (!programmes.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Programme not present");
+				return info;
+			}		
+			Optional<ProgrammeYear> programmeYear = super.programmeYear.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(),true,false);
+			if (!programmeYear.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}		
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false,true,request.getSemester());
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}			
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false,true,request.getDegree());
+			if (!degree.isPresent() ||  !degree.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+			Optional<Department> department = super.department.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDepartment());
+			if (!department.isPresent() ||  !department.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "department not present");
+				return info;
+			}			
+			
+			Optional<Courses> Courses = super.courses.findByExIsDeleteAndExIsActiveAndId(false, true, request.getCourses());
+			if (!Courses.isPresent() ) {
+				info.put("status", "2");
+				info.put("message", "Courses not present");
+				return info;
+			}		
+								
+			List<CoursesRegistration> student  =super.coursesRegistration.findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndCoursesIdAndRegistrationId(false, true, request.getProgrammes(), request.getColleges(),request.getDegree(),request.getAcademicYear(),request.getProgrammeYear(),request.getSemester(),request.getDepartment(),request.getCourses() , 1L);
+			if(student.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "Courses registration are pending");
+				return info;				
+			}
+			
+			List<Staffpersonal> staff = super.staffpersonal.findByIdAndExIsDelete(request.getStaff(), false);	
+			if (staff.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Staff id not present");
+				return info;
+			}
+			
+			Date date = new Date();
+			for(CoursesRegistration c :student) {
+				logger.info("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"+c.getStudentadmission().getId());
+				List<MidTermMarks> getresult = super.midtermmarksMarks.findByCollegesIdAndDegreeIdAndProgrammesIdAndCoursesIdAndSemesterIdAndExIsActiveAndExIsDeleteAndStudentadmissionId(request.getColleges(), request.getDegree() ,request.getProgrammes(), request.getCourses() ,request.getSemester() , true , false,c.getStudentadmission().getId());
+				if(getresult.size() <=0) {
+					// insert record
+					MidTermMarks mid =  new MidTermMarks();	
+					mid.setAcademicYear(academic.get());
+					 mid.setCourses(Courses.get());
+					 mid.setExCreateDate(date);
+					 mid.setColleges(clgid.get());
+					 mid.setProgrammes(programmes.get());
+					 mid.setSection(c.getStudentadmission().getSection());
+					 mid.setProgrammeYear(programmeYear.get());
+					 mid.setStudentadmission(c.getStudentadmission());
+					 mid.setExRollNo(c.getStudentadmission().getExRollNo());
+					 mid.setDegree(degree.get());
+					 mid.setStream(c.getStream());					
+					 mid.setExIsActive(true);
+					 mid.setExIsDelete(false);
+					 mid.setStaff(staff.get(0)); 
+					 mid.setExAttendenceMarks(calculateAttendance(c.getExAttendencePrecentage()));
+					mid.setSemester(sem.get());
+					mid.setDepartment(department.get());
+					mid.setExamAnnouncement(c.getExamAnnouncement());
+				super.midtermmarksMarks.save(mid);
+					
+				}else {
+					// update record 					
+					int retval = super.midtermmarksMarks.updateAttendanceMarksByStaff(calculateAttendance(c.getExAttendencePrecentage()),date, request.getAcademicYear(),request.getColleges(),request.getProgrammes(),request.getCourses(), c.getStudentadmission().getId(),request.getDegree(),request.getProgrammeYear(),  staff.get(0).getId(), c.getStudentadmission().getSection() ,"");				
+					
+					
+				}
+			}
+			
+			
+			info.put("status", "1");
+			info.put("message", "Attendence calculated successfully.");
+			return info;
+		}catch(Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			e.printStackTrace();
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}	
+	
+	public double calculateAttendance(Float attendacne) {
+		if(attendacne == null ) {
+			return 0.0;
+		}
+		if(attendacne >=90.0) {
+			return 5.0;
+		}
+		if(attendacne >=85.0 && attendacne <=90.0) {
+			return 4.0;
+		}
+		if(attendacne >=75.0 && attendacne <=85.0) {
+			return 3.0;
+		}	
+		
+		return 0.0;
+	}
+
+	@Override
+	public Map<String, Object> studentListForApprove(SemesterEligibility request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			Optional<Colleges> Colleges = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges(),false, true);
+			if (!Colleges.isPresent() || !Colleges.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Colleges not present");
+				return info;
+			}
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDegree());
+			if (!degree.isPresent() || !degree.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+
+			Optional<Programmes> Programmes = super.programmes.findByExIsDeleteAndExIsActiveAndId(false, true,	request.getProgrammes());
+			if (!Programmes.isPresent() || !Programmes.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}
+
+			Optional<Department> department = super.department.findByExIsDeleteAndExIsActiveAndId(false, true,
+					request.getDepartment());
+			if (!department.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Department not present");
+				return info;
+			}
+
+			Optional<AcademicYear> academic = super.academicYear
+					.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear(), false, true);
+			if (!academic.isPresent() || !academic.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+
+			Optional<ProgrammeYear> programmeYear = super.programmeYear
+					.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(), true, false);
+			if (!programmeYear.isPresent() || !programmeYear.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false, true,
+					request.getSemester());
+			if (!sem.isPresent() || !sem.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}
+
+			List<SemesterRegistration> list  = null;
+			if(request.getMentor() != null && request.getApproveType().equalsIgnoreCase("mentorApprove")) {
+				list = super.semesterRegistration.findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndSemesterIdAndDepartmentIdAndProgrammeYearIdAndStudentadmissionMentorIdOrderByStudentadmissionIdAsc(
+						false, true, request.getProgrammes(), request.getColleges(), request.getDegree(),
+						request.getAcademicYear(), request.getSemester(), request.getDepartment() , request.getProgrammeYear(), request.getMentor());
+					if(list.size() <=0) {
+						info.put("status", "2");
+						info.put("message", "Mentor not allocated");
+						return info;
+					}
+			}else {
+				list = super.semesterRegistration.findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndSemesterIdAndDepartmentIdAndProgrammeYearIdOrderByStudentadmissionIdAsc(
+						false, true, request.getProgrammes(), request.getColleges(), request.getDegree(),
+						request.getAcademicYear(), request.getSemester(), request.getDepartment() , request.getProgrammeYear());
+			}
+					
+			if(list.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "no record found");
+				return info;
+			}
+			List<ApproveType> task =  super.approvetype.findByExIdentifier(request.getApproveType());			
+			if(task.size() <=0 ) {
+				info.put("status", "2");
+				info.put("message", "ApproveType is not present");
+				return info;
+			}
+			
+			List dataList = new LinkedList();		
+			for (SemesterRegistration e : list) {
+				Map<Object, Object> Studentadmissiondata = new HashMap<Object, Object>();
+				Studentadmissiondata.put("student", e.getId());
+				Studentadmissiondata.put("exName", e.getStudentadmission().getExName());
+				Studentadmissiondata.put("exRollNo", e.getStudentadmission().getExRollNo());
+								
+				if(request.getApproveType().equalsIgnoreCase("accountsApprove")) {
+					getPenalty("accountsApprove" , e ,Studentadmissiondata ,task.get(0).getId());
+					//Studentadmissiondata.put("accountsApprove", e.getExIsAccountsApprove()== null ?false :e.getExIsAccountsApprove());	
+				}
+				else if(request.getApproveType().equalsIgnoreCase("computerLabApprove")) {
+					
+					getPenalty("computerLabApprove" , e ,Studentadmissiondata,task.get(0).getId());
+					//Studentadmissiondata.put("computerLabApprove", e.getExIsComputerlabApprove()== null ?false :e.getExIsComputerlabApprove());	
+				}
+				else if(request.getApproveType().equalsIgnoreCase("deanApprove")) {
+					getPenalty("deanApprove" , e ,Studentadmissiondata,task.get(0).getId());
+					//Studentadmissiondata.put("deanApprove", e.getExIsDeanApprove()== null ?false :e.getExIsDeanApprove());		
+				}
+				
+				else if(request.getApproveType().equalsIgnoreCase("examinationApprove")) {
+					getPenalty("examinationApprove" , e ,Studentadmissiondata,task.get(0).getId());
+					//Studentadmissiondata.put("examinationApprove", e.getExIsExaminationApprove()== null ?false : e.getExIsExaminationApprove());	
+				}
+				
+				else if(request.getApproveType().equalsIgnoreCase("iTDepartmentApprove")) {
+					getPenalty("iTDepartmentApprove" , e ,Studentadmissiondata,task.get(0).getId());
+					//Studentadmissiondata.put("iTDepartmentApprove", e.getExIsItDepartmentApprove()== null ?false :e.getExIsItDepartmentApprove());	
+				}
+				
+				else if(request.getApproveType().equalsIgnoreCase("mentorApprove")) {
+					getPenalty("mentorApprove" , e ,Studentadmissiondata,task.get(0).getId());
+					//check mentor id 
+					//Studentadmissiondata.put("mentorApprove", e.getExIsMentorApprove()== null ?false :e.getExIsMentorApprove());	
+				}
+	
+				else if(request.getApproveType().equalsIgnoreCase("libraryApprove")) {
+					getPenalty("libraryApprove" , e ,Studentadmissiondata ,task.get(0).getId());
+					//Studentadmissiondata.put("libraryApprove", e.getExIsLibraryApprove() == null ?false :e.getExIsLibraryApprove());
+				}
+				//////////////////////////////////
+				
+				else if(request.getApproveType().equalsIgnoreCase("messApprove")) {
+					getPenalty("messApprove" , e ,Studentadmissiondata,task.get(0).getId());
+					//Studentadmissiondata.put("libraryApprove", e.getExIsLibraryApprove() == null ?false :e.getExIsLibraryApprove());
+				}
+				
+				else if(request.getApproveType().equalsIgnoreCase("hostel")) {
+					getPenalty("hostel" , e ,Studentadmissiondata,task.get(0).getId());
+					//Studentadmissiondata.put("libraryApprove", e.getExIsLibraryApprove() == null ?false :e.getExIsLibraryApprove());
+				}
+				else if(request.getApproveType().equalsIgnoreCase("sportApprove")) {
+					getPenalty("sportApprove" , e ,Studentadmissiondata,task.get(0).getId());
+					//Studentadmissiondata.put("libraryApprove", e.getExIsLibraryApprove() == null ?false :e.getExIsLibraryApprove());
+				}
+				else if(request.getApproveType().equalsIgnoreCase("medicalApprove")) {
+					getPenalty("medicalApprove" , e ,Studentadmissiondata,task.get(0).getId());
+					//Studentadmissiondata.put("libraryApprove", e.getExIsLibraryApprove() == null ?false :e.getExIsLibraryApprove());
+				}
+				else if(request.getApproveType().equalsIgnoreCase("crdApprove")) {
+					getPenalty("crdApprove" , e ,Studentadmissiondata,task.get(0).getId());
+					//Studentadmissiondata.put("libraryApprove", e.getExIsLibraryApprove() == null ?false :e.getExIsLibraryApprove());
+				}
+				else if(request.getApproveType().equalsIgnoreCase("hod")) {
+					getPenalty("hod" , e ,Studentadmissiondata,task.get(0).getId());
+					//Studentadmissiondata.put("libraryApprove", e.getExIsLibraryApprove() == null ?false :e.getExIsLibraryApprove());
+				}
+				
+				
+				///////////////////////////////////////
+				else {
+							
+					Studentadmissiondata.put("libraryApprove", e.getExIsLibraryApprove() == null ?false :e.getExIsLibraryApprove());
+					Studentadmissiondata.put("deanApprove", e.getExIsDeanApprove()== null ?false :e.getExIsDeanApprove());		
+					Studentadmissiondata.put("examinationApprove", e.getExIsExaminationApprove()== null ?false : e.getExIsExaminationApprove());	
+					Studentadmissiondata.put("iTDepartmentApprove", e.getExIsItDepartmentApprove()== null ?false :e.getExIsItDepartmentApprove());	
+					Studentadmissiondata.put("computerLabApprove", e.getExIsComputerlabApprove()== null ?false :e.getExIsComputerlabApprove());	
+					Studentadmissiondata.put("accountsApprove", e.getExIsAccountsApprove()== null ?false :e.getExIsAccountsApprove());	
+					Studentadmissiondata.put("mentorApprove", e.getExIsMentorApprove()== null ?false :e.getExIsMentorApprove());	
+										
+				}
+				
+				Studentadmissiondata.put("id", e.getId());	
+				dataList.add(Studentadmissiondata);
+			}
+			info.put("status", "1");
+			info.put("message", "success");
+			info.put("details", dataList);
+			return info;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+	
+
+
+	public Map<Object, Object> getPenalty(String string, SemesterRegistration e, Map<Object, Object> studentadmissiondata , Long approvetype){
+		System.out.println("ssssssssssssssssssssssssssss"+approvetype);
+		// check if record is already present 
+		Date date = new Date();
+		List<NoDuePenalty> list = noDuePenalty.findByRegistrationIdAndApproveType(e.getId(), string);
+		if(list.size() <=0) {
+			// Insert record 
+			NoDuePenalty pen =  new NoDuePenalty();			
+			pen.setApproveType(string);
+			pen.setExCreateDate(date);
+			pen.setExRollNo(e.getStudentadmission().getExRollNo());		
+			pen.setRegistration(e);
+			pen.setIspaid(false);
+			pen.setApprove(false);			
+			List<StudentPenaltyDetails> list123  = penaltydetils.findByExRollNoAndApprovetypeIdAndIsPaid(e.getStudentadmission().getExRollNo(), approvetype, false);
+			
+			// get the remark and penlty anount if not paid 
+			
+			if(list123.size() <=0) {
+				studentadmissiondata.put("remark", "NA");	
+				studentadmissiondata.put("penalty","NA");
+				pen.setRemark("NA");
+				pen.setAmount(0.0);
+			}else {
+				studentadmissiondata.put("remark", list123.get(0).getRemark());	
+				studentadmissiondata.put("penalty", list123.get(0).getAmount());
+				pen.setRemark(list123.get(0).getRemark());
+				pen.setAmount(list123.get(0).getAmount());
+			}
+			noDuePenalty.save(pen);
+			studentadmissiondata.put(string,false);	
+			return studentadmissiondata;
+		}else {				
+			List<StudentPenaltyDetails> list123  = penaltydetils.findByExRollNoAndApprovetypeIdAndIsPaid(e.getStudentadmission().getExRollNo(), approvetype, false);			
+			// get the remark and penlty anount if not paid 			
+			if(list123.size() <=0) {
+				studentadmissiondata.put("remark", "NA");	
+				studentadmissiondata.put("penalty","NA");
+			}else {
+				studentadmissiondata.put("remark", list123.get(0).getRemark());	
+				studentadmissiondata.put("penalty", list123.get(0).getAmount());
+				
+			}	
+			studentadmissiondata.put(string,list.get(0).isApprove());	
+			return studentadmissiondata;
+		}
+		
+	
+	}
+	
+
+	@Override
+	public Map<String, Object> approveStudent(SemesterEligibility request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			if(request.getApproveType() == null || request.getApproveType().equals("")) {
+				info.put("status", "2");
+				info.put("message", "ApproveType is missing");
+				return info;
+			}			
+			if(request.getId() == null || request.getId().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Id is missing");
+				return info;
+			}
+			
+			/*
+			 * Optional<SemesterRegistration> isprest =
+			 * super.semesterRegistration.findById(request.getId()); if
+			 * (!isprest.isPresent()) { info.put("status", "2"); info.put("message",
+			 * "Id not present"); return info; }
+			 */
+			
+			if(request.getApproveType().equalsIgnoreCase("All")) {
+				// approve all 
+				int i = super.semesterRegistration.updateAllApproval(request.getId());
+				System.out.println(">>>>>>>>>>>>>>>>>ddddddddd"+i);
+				if(i >0 ) {
+					info.put("status", "1");
+					info.put("message", "Student approved successfully");
+					return info;
+				}
+			}
+			if(request.getApproveType().equalsIgnoreCase("accountsApprove")) {
+				int i = super.semesterRegistration.accountApprove(request.getId());
+				if(i >0 ) {
+					info.put("status", "1");
+					info.put("message", "Accounts Department approved successfully");
+					return info;
+				}
+			}
+			if(request.getApproveType().equalsIgnoreCase("computerLabApprove")) {
+				int i = super.semesterRegistration.ex_is_computerlab_approve(request.getId());
+				if(i >0 ) {
+					info.put("status", "1");
+					info.put("message", "Computer Lab approved successfully");
+					return info;
+				}
+			}
+			if(request.getApproveType().equalsIgnoreCase("deanApprove")) {
+				int i = super.semesterRegistration.ex_is_dean_approve(request.getId());
+				if(i >0 ) {
+					info.put("status", "1");
+					info.put("message", "Dean approved successfully");
+					return info;
+				}
+			}
+			
+			if(request.getApproveType().equalsIgnoreCase("examinationApprove")) {
+				int i = super.semesterRegistration.ex_is_examination_approve(request.getId());
+				if(i >0 ) {
+					info.put("status", "1");
+					info.put("message", "Examination approved successfully");
+					return info;
+				}
+			}
+			
+			if(request.getApproveType().equalsIgnoreCase("iTDepartmentApprove")) {
+				int i = super.semesterRegistration.ex_is_it_department_approve(request.getId());
+				if(i >0 ) {
+					info.put("status", "1");
+					info.put("message", "IT Department approved successfully");
+					return info;
+				}
+			}
+			
+			if(request.getApproveType().equalsIgnoreCase("mentorApprove")) {
+				int i = super.semesterRegistration.ex_is_mentor_approve(request.getId());
+				if(i >0 ) {
+					info.put("status", "1");
+					info.put("message", "Mentor approved successfully");
+					return info;
+				}
+			}
+			
+			if(request.getApproveType().equalsIgnoreCase("mentorApprove")) {
+				int i = super.semesterRegistration.ex_is_mentor_approve(request.getId());
+				if(i >0 ) {
+					info.put("status", "1");
+					info.put("message", "Mentor approved successfully");
+					return info;
+				}
+			}
+			
+			if(request.getApproveType().equalsIgnoreCase("libraryApprove")) {
+				int i = super.semesterRegistration.ex_is_library_approve(request.getId());
+				if(i >0 ) {
+					info.put("status", "1");
+					info.put("message", "Library approved successfully");
+					return info;
+				}
+			}
+										
+			info.put("status", "2");
+			info.put("message", "Approve Type not valid");
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> eligibleList(SemesterEligibility request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			
+			List<NoDuesConfiguration> list123  = nodues.findByExIsDeleteAndExIsActiveAndAcademicYearIdAndBatchIdAndDepartmentIdAndProgrammeYearIdAndSemesterId(false ,true ,request.getAcademicYear(),request.getBatch() ,request.getDepartment() ,request.getProgrammeYear() ,request.getSemester());
+			if(list123.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "NoDues not configured");
+				return info;
+			}
+						
+			List<String> approve = new ArrayList<String>();
+					for(int i = 0 ; i<list123.get(0).getApprovetype().size() ; i++ ) {
+						approve.add(list123.get(0).getApprovetype().get(i).getExIdentifier());
+					}
+			System.out.println(">>>>>>>>>>>"+approve);
+
+			List<SemesterRegistration> list  = super.semesterRegistration.findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndSemesterIdAndDepartmentIdAndProgrammeYearIdOrderByStudentadmissionId(
+								false, true, request.getProgrammes(), request.getColleges(), request.getDegree(),
+								request.getAcademicYear(), request.getSemester(), request.getDepartment() , request.getProgrammeYear());
+
+			List dataList = new LinkedList();		
+			for (SemesterRegistration e : list) {
+				if(noDuePenalty.findByRegistrationIdAndApproveTypeInAndIsApprove(e.getId(), approve, true).size() == approve.size()) {
+					// check the student approved or not from all the department
+					Map<Object, Object> student = new HashMap<Object, Object>();
+					student.put("id", e.getId());		
+					student.put("exName", e.getStudentadmission().getExName());		
+					student.put("enrollementNo" , e.getStudentadmission().getExEnrollementNo());
+					student.put("rollNo",e.getStudentadmission().getExRollNo());		
+					dataList.add(student);
+				}		
+			}
+			
+			if(dataList.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "department approval is pending");
+				return info;
+				
+			}
+			info.put("status", "1");
+			info.put("message", "success");
+			info.put("details", dataList);
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> nonEligibleList(SemesterEligibility request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			Optional<Colleges> Colleges = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges(),false, true);
+			if (!Colleges.isPresent() || !Colleges.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Colleges not present");
+				return info;
+			}
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDegree());
+			if (!degree.isPresent() || !degree.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+
+			Optional<Programmes> Programmes = super.programmes.findByExIsDeleteAndExIsActiveAndId(false, true,	request.getProgrammes());
+			if (!Programmes.isPresent() || !Programmes.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}
+
+			Optional<Department> department = super.department.findByExIsDeleteAndExIsActiveAndId(false, true,
+					request.getDepartment());
+			if (!department.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Department not present");
+				return info;
+			}
+
+			Optional<AcademicYear> academic = super.academicYear
+					.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear(), false, true);
+			if (!academic.isPresent() || !academic.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+
+			Optional<ProgrammeYear> programmeYear = super.programmeYear
+					.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(), true, false);
+			if (!programmeYear.isPresent() || !programmeYear.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false, true,
+					request.getSemester());
+			if (!sem.isPresent() || !sem.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}
+
+			List<SemesterRegistration> list  = null;
+			
+				list = super.semesterRegistration.findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndSemesterIdAndDepartmentIdAndProgrammeYearIdOrderByStudentadmissionIdAsc(
+						false, true, request.getProgrammes(), request.getColleges(), request.getDegree(),
+						request.getAcademicYear(), request.getSemester(), request.getDepartment() , request.getProgrammeYear());
+			
+					
+			if(list.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "no record found");
+				return info;
+			}
+			
+			List dataList = new LinkedList();		
+			for (SemesterRegistration e : list) {
+				Map<Object, Object> Studentadmissiondata = new HashMap<Object, Object>();							
+				if(request.getApproveType().equalsIgnoreCase("accountsApprove")) {
+					if(e.getExIsAccountsApprove() == null || e.getExIsAccountsApprove() == false) {
+						Studentadmissiondata.put("accountsApprove", e.getExIsAccountsApprove()== null ?false :e.getExIsAccountsApprove());	
+						Studentadmissiondata.put("student", e.getId());
+						Studentadmissiondata.put("exName", e.getStudentadmission().getExName());
+						Studentadmissiondata.put("exRollNo", e.getStudentadmission().getExRollNo());
+						Studentadmissiondata.put("id", e.getId());	
+					}
+					
+				}
+				else if(request.getApproveType().equalsIgnoreCase("computerLabApprove")) {
+					if(e.getExIsComputerlabApprove() == null || e.getExIsComputerlabApprove() == false) {
+					Studentadmissiondata.put("computerLabApprove", e.getExIsComputerlabApprove()== null ?false :e.getExIsComputerlabApprove());	
+					Studentadmissiondata.put("student", e.getId());
+					Studentadmissiondata.put("exName", e.getStudentadmission().getExName());
+					Studentadmissiondata.put("exRollNo", e.getStudentadmission().getExRollNo());
+					Studentadmissiondata.put("id", e.getId());	
+					}
+				}
+				else if(request.getApproveType().equalsIgnoreCase("deanApprove")) {
+					if(e.getExIsDeanApprove() == null || e.getExIsDeanApprove() == false) {
+					Studentadmissiondata.put("deanApprove", e.getExIsDeanApprove()== null ?false :e.getExIsDeanApprove());
+					Studentadmissiondata.put("student", e.getId());
+					Studentadmissiondata.put("exName", e.getStudentadmission().getExName());
+					Studentadmissiondata.put("exRollNo", e.getStudentadmission().getExRollNo());
+					Studentadmissiondata.put("id", e.getId());	
+					}
+				}
+				
+				else if(request.getApproveType().equalsIgnoreCase("examinationApprove")) {
+					if(e.getExIsExaminationApprove() == null || e.getExIsExaminationApprove() == false) {
+					Studentadmissiondata.put("examinationApprove", e.getExIsExaminationApprove()== null ?false : e.getExIsExaminationApprove());	
+					Studentadmissiondata.put("student", e.getId());
+					Studentadmissiondata.put("exName", e.getStudentadmission().getExName());
+					Studentadmissiondata.put("exRollNo", e.getStudentadmission().getExRollNo());
+					Studentadmissiondata.put("id", e.getId());	
+					}
+				}
+				
+				else if(request.getApproveType().equalsIgnoreCase("iTDepartmentApprove")) {
+					if(e.getExIsItDepartmentApprove() == null || e.getExIsItDepartmentApprove() == false) {
+					Studentadmissiondata.put("iTDepartmentApprove", e.getExIsItDepartmentApprove()== null ?false :e.getExIsItDepartmentApprove());	
+					Studentadmissiondata.put("student", e.getId());
+					Studentadmissiondata.put("exName", e.getStudentadmission().getExName());
+					Studentadmissiondata.put("exRollNo", e.getStudentadmission().getExRollNo());
+					Studentadmissiondata.put("id", e.getId());	
+					}
+					}
+				
+				else if(request.getApproveType().equalsIgnoreCase("mentorApprove")) {
+					//check mentor id 
+					if(e.getExIsMentorApprove() == null || e.getExIsMentorApprove() == false) {
+					Studentadmissiondata.put("mentorApprove", e.getExIsMentorApprove()== null ?false :e.getExIsMentorApprove());	
+					Studentadmissiondata.put("student", e.getId());
+					Studentadmissiondata.put("exName", e.getStudentadmission().getExName());
+					Studentadmissiondata.put("exRollNo", e.getStudentadmission().getExRollNo());
+					Studentadmissiondata.put("id", e.getId());	
+					}
+					}
+	
+				else if(request.getApproveType().equalsIgnoreCase("libraryApprove")) {
+					if(e.getExIsLibraryApprove() == null || e.getExIsLibraryApprove() == false) {
+					Studentadmissiondata.put("libraryApprove", e.getExIsLibraryApprove() == null ?false :e.getExIsLibraryApprove());
+					Studentadmissiondata.put("student", e.getId());
+					Studentadmissiondata.put("exName", e.getStudentadmission().getExName());
+					Studentadmissiondata.put("exRollNo", e.getStudentadmission().getExRollNo());
+					Studentadmissiondata.put("id", e.getId());	
+					}
+				}
+				
+
+				if(!Studentadmissiondata.isEmpty()){
+					dataList.add(Studentadmissiondata);
+				}
+				
+				
+			}
+			if(dataList.size() >0) {
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("details", dataList);
+			}else {
+				info.put("status", "2");
+				info.put("message", "no record found");
+			}
+
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> sendNonEligibleEmail(SemesterEligibility request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+					
+			if(request.getId() == null || request.getId().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Id is missing");
+				return info;
+			}
+			for(int i =0 ; i<request.getId().size() ; i++) {
+				Optional<SemesterRegistration> semreg =	super.semesterRegistration.findById(request.getId().get(i));
+				List<Studentpersonal> task = super.studentpersonal.findByStudentadmissionId(semreg.get().getId());
+				if(task.size() >0) {
+					email.nonEligibleMail(task.get(0).getExEmailId(),request.getRemark(),"Info");
+					Date date = new Date();
+					// insert notificatin 
+					PushAlertLog alg = new PushAlertLog();
+				//	alg.setAlertId(e);
+					alg.setExCreateDate(date);
+					alg.setIsView(false);
+					alg.setMessage(request.getRemark());
+					alg.setTitle("Info");
+					alg.setExRollNo(semreg.get().getStudentadmission().getExRollNo());
+					alg.setExSentDate(date);
+					alg.setAcademicYear(semreg.get().getAcademicYear());
+					alg.setColleges(semreg.get().getColleges());
+					alg.setProgrammeYear(semreg.get().getProgrammeYear());
+					alg.setSemester(semreg.get().getSemester());
+					super.pushalertlog.save(alg);
+				}
+			}													
+			info.put("status", "1");
+			info.put("message", "Email has been sent successfully");
+			return info;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> noDuesConfiguration(NoduR request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			
+			if(request.getApproveTypeList().size() <=0) {
+				info.put("status", "2");
+				info.put("message", "please select Approve Type");
+				return info;
+			}
+			Optional<Colleges> Colleges = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges(),false, true);
+			if (!Colleges.isPresent() || !Colleges.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Colleges not present");
+				return info;
+			}
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDegree());
+			if (!degree.isPresent() || !degree.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+
+			Optional<Programmes> Programmes = super.programmes.findByExIsDeleteAndExIsActiveAndId(false, true,	request.getProgrammes());
+			if (!Programmes.isPresent() || !Programmes.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}
+
+			Optional<Department> department = super.department.findByExIsDeleteAndExIsActiveAndId(false, true,request.getDepartment());
+			if (!department.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Department not present");
+				return info;
+			}
+
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear(), false, true);
+			if (!academic.isPresent() || !academic.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+
+			Optional<ProgrammeYear> programmeYear = super.programmeYear.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(), true, false);
+			if (!programmeYear.isPresent() || !programmeYear.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}
+			
+			Optional<Batch> batch = super.batch.findByExIsDeleteAndExIsActiveAndId(false, true, request.getBatch());
+			if (!batch.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Batch not present");
+				return info;
+			}
+			
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false, true,
+					request.getSemester());
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}
+				List<ApproveType> apprv = new ArrayList<ApproveType>();
+			for (int i = 0; i < request.getApproveTypeList().size(); i++) {
+				Long number = request.getApproveTypeList().get(i);
+				Long col = new Long(number);
+				Optional<ApproveType> college = super.approvetype.findById(col);
+				if (!college.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Selected ApproveType type not present");
+					return info;
+				}
+				apprv.add(college.get());				
+			}
+			
+					Date date = new Date();		
+					NoDuesConfiguration data = new NoDuesConfiguration();				
+					data.setColleges(Colleges.get());
+					data.setDegree(degree.get());
+					data.setAcademicYear(academic.get());
+					data.setProgrammes(Programmes.get());
+					data.setDepartment(department.get());
+					data.setProgrammeYear(programmeYear.get());
+					data.setExCreateDate(date);
+					data.setExIsActive(true);
+					data.setApprovetype(apprv);
+					data.setExIsDelete(false);			
+					data.setSemester(sem.get());
+					data.setBatch(batch.get());
+					nodues.save(data);
+					
+						
+			
+			info.put("status", "1");
+			info.put("message", "No Dues has been configured successfully");
+			return info;
+			}
+		 catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getStudentForNoDues(SemesterEligibility request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {		
+			List<NoDuesMapping> list  = super.noDuesMappingRepository.findByConfigDegreeIdAndConfigAcademicYearIdAndConfigCollegesIdAndConfigDepartmentIdAndConfigProgrammesIdAndApprtypeId(							
+					request.getDegree() , request.getAcademicYear() , request.getColleges() , request.getDepartment(), request.getProgrammes(), request.getApproveTypeId());
+
+			if(list.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "No dues configuration are pending");
+				return info;
+			}
+
+			List dataList = new LinkedList();
+			for (NoDuesMapping e : list) {
+				Map<Object, Object> student = new HashMap<Object, Object>();
+				student.put("id", e.getId());	
+				student.put("exName", e.getStudentadmission().getExName());		
+				student.put("enrollementNo" , e.getStudentadmission().getExEnrollementNo());
+				student.put("rollNo",e.getStudentadmission().getExRollNo());	
+				student.put("isApprove",e.getExIsApprove());
+				student.put("approveType",e.getApprtype().getExName());
+				student.put("approveTypeId",e.getId());
+				dataList.add(student);
+			}
+			info.put("details", dataList);
+			info.put("status", "1");
+			info.put("message", "success");
+			return info;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> noDuesApprove(SemesterEligibility request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			User userresult = null;
+			String ExIsReGenerated = "Generated";
+			if (request.getUser() == null || request.getUser().equals("")) {
+				userresult = null;
+			} else {
+				List<User> user = super.user.findByIdAndExIsDeleteAndExIsActive(request.getUser(), false, true);
+				if (user.size() <= 0) {
+					info.put("status", "2");
+					info.put("message", "User id not present");
+					return info;
+				}
+				userresult = user.get(0);
+			}
+			int i = super.noDuesMappingRepository.updateApproval(userresult, request.getId(),request.getApproveTypeId());	
+			if(i>0) {
+				
+				info.put("status", "1");
+				info.put("message", "Student approved successfully");
+				return info;
+			}
+			info.put("status", "2");
+			info.put("message", "Student not approved");
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> approveStudentwithPenalty(SemesterEligibility request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			if(request.getApproveType() == null || request.getApproveType().equals("")) {
+				info.put("status", "2");
+				info.put("message", "ApproveType is missing");
+				return info;
+			}			
+			if(request.getNoDues().size() <=0) {
+				info.put("status", "2");
+				info.put("message", "Data is missing");
+				return info;
+			}
+			// get the ID which is approve
+			List<Long> vowels = new ArrayList<>();
+			for(NoDuesRequest e : request.getNoDues()) {
+				if(e.getStatus() == 1) {
+					vowels.add(e.getId());
+				}
+			}
+			request.setId(vowels);
+						
+			if(request.getApproveType().equalsIgnoreCase("All")) {
+				// approve all 
+				int i = super.semesterRegistration.updateAllApproval(request.getId());
+				if(i > 0 ) {
+					info.put("status", "1");
+					info.put("message", "Student approved successfully");
+					return info;
+				}
+			}
+			if(request.getApproveType().equalsIgnoreCase("accountsApprove")) {
+				
+				//if(request.getId() != null && request.getId().size() > 0) {
+					
+					//super.semesterRegistration.accountApprove(request.getId());
+				//}
+				
+				//update the penalty amount
+				for(NoDuesRequest e : request.getNoDues()) {
+					// update 
+					noDuePenalty.updateRecord(getDouble(e.getAmount()), e.getRemark(), e.getId(), request.getApproveType(), e.getStatus());
+				}
+				
+				
+					info.put("status", "1");
+					info.put("message", "Accounts Department approved successfully");
+					return info;
+				
+			}
+			if(request.getApproveType().equalsIgnoreCase("computerLabApprove")) {			
+				//if(request.getId() != null && request.getId().size() >0) {
+					
+				//	super.semesterRegistration.ex_is_computerlab_approve(request.getId());
+				//	}
+				
+				//update the penalty amount
+				for(NoDuesRequest e : request.getNoDues()) {
+					// update 
+					noDuePenalty.updateRecord(getDouble(e.getAmount()), e.getRemark(), e.getId(), request.getApproveType() ,e.getStatus());
+				}
+				
+				
+					info.put("status", "1");
+					info.put("message", "Computer Lab approved successfully");
+					return info;
+				
+			}
+			if(request.getApproveType().equalsIgnoreCase("deanApprove")) {
+			
+				
+				//if(request.getId() != null && request.getId().size() >0) {
+					
+					// super.semesterRegistration.ex_is_dean_approve(request.getId());
+					//}
+		
+				//update the penalty amount
+				for(NoDuesRequest e : request.getNoDues()) {
+					// update 
+					noDuePenalty.updateRecord(getDouble(e.getAmount()), e.getRemark(), e.getId(), request.getApproveType(),e.getStatus());
+				}
+				
+					info.put("status", "1");
+					info.put("message", "Dean approved successfully");
+					return info;
+				
+			}
+			
+			if(request.getApproveType().equalsIgnoreCase("examinationApprove")) {
+				
+			//	if(request.getId() != null && request.getId().size() >0) {
+					
+				//	super.semesterRegistration.ex_is_examination_approve(request.getId());
+					///}
+		
+				//update the penalty amount
+				for(NoDuesRequest e : request.getNoDues()) {
+					// update 
+					noDuePenalty.updateRecord(getDouble(e.getAmount()), e.getRemark(), e.getId(), request.getApproveType(),e.getStatus());
+				}
+				
+				
+					info.put("status", "1");
+					info.put("message", "Examination approved successfully");
+					return info;
+				
+			}
+			
+			if(request.getApproveType().equalsIgnoreCase("iTDepartmentApprove")) {							
+				//if(request.getId() != null && request.getId().size() >0) {					
+				//	super.semesterRegistration.ex_is_it_department_approve(request.getId());
+				//	}
+		
+				//update the penalty amount
+				for(NoDuesRequest e : request.getNoDues()) {
+					// update 
+					noDuePenalty.updateRecord(getDouble(e.getAmount()), e.getRemark(), e.getId(), request.getApproveType(),e.getStatus());
+				}								
+				info.put("status", "1");
+				info.put("message", "IT Department approved successfully");
+				return info;
+				
+			}
+			if(request.getApproveType().equalsIgnoreCase("mentorApprove")) {							
+				//if(request.getId() != null && request.getId().size() >0) {					
+				//	super.semesterRegistration.ex_is_mentor_approve(request.getId());
+					//}
+		
+				//update the penalty amount
+				for(NoDuesRequest e : request.getNoDues()) {
+					// update 
+					noDuePenalty.updateRecord(getDouble(e.getAmount()), e.getRemark(), e.getId(), request.getApproveType(),e.getStatus());
+				}									
+					info.put("status", "1");
+					info.put("message", "Mentor approved successfully");
+					return info;
+				
+			}
+						
+			if(request.getApproveType().equalsIgnoreCase("libraryApprove")) {
+				
+				//if(request.getId() != null && request.getId().size() >0) {					
+				//	super.semesterRegistration.ex_is_library_approve(request.getId());
+				//	}		
+				//update the penalty amount
+				for(NoDuesRequest e : request.getNoDues()) {
+					// update 
+					noDuePenalty.updateRecord(getDouble(e.getAmount()), e.getRemark(), e.getId(), request.getApproveType(),e.getStatus());
+				}	
+					info.put("status", "1");
+					info.put("message", "Library approved successfully");
+					return info;
+				
+			}
+			
+			/////////////////////////////////////
+			
+			if(request.getApproveType().equalsIgnoreCase("messApprove")) {
+				for(NoDuesRequest e : request.getNoDues()) {
+					noDuePenalty.updateRecord(getDouble(e.getAmount()), e.getRemark(), e.getId(), request.getApproveType(),e.getStatus());
+				}	
+					info.put("status", "1");
+					info.put("message", "Mess  approved successfully");
+					return info;
+				
+			}
+			
+			if(request.getApproveType().equalsIgnoreCase("hostel")) {
+				for(NoDuesRequest e : request.getNoDues()) {
+					noDuePenalty.updateRecord(getDouble(e.getAmount()), e.getRemark(), e.getId(), request.getApproveType(),e.getStatus());
+				}	
+					info.put("status", "1");
+					info.put("message", "Hostel approved successfully");
+					return info;
+				
+			}			
+
+			if(request.getApproveType().equalsIgnoreCase("sportApprove")) {
+				for(NoDuesRequest e : request.getNoDues()) {
+					noDuePenalty.updateRecord(getDouble(e.getAmount()), e.getRemark(), e.getId(), request.getApproveType(),e.getStatus());
+				}	
+					info.put("status", "1");
+					info.put("message", "SPORT SECTION approved successfully");
+					return info;
+				
+			}			
+			if(request.getApproveType().equalsIgnoreCase("medicalApprove")) {
+				for(NoDuesRequest e : request.getNoDues()) {
+					noDuePenalty.updateRecord(getDouble(e.getAmount()), e.getRemark(), e.getId(), request.getApproveType(),e.getStatus());
+				}	
+					info.put("status", "1");
+					info.put("message", "MEDICAL CENTRE successfully");
+					return info;
+				
+			}			
+			if(request.getApproveType().equalsIgnoreCase("crdApprove")) {
+				for(NoDuesRequest e : request.getNoDues()) {
+					noDuePenalty.updateRecord(getDouble(e.getAmount()), e.getRemark(), e.getId(), request.getApproveType(),e.getStatus());
+				}	
+					info.put("status", "1");
+					info.put("message", "CORPORATE RESOURCE DIVISION approved successfully");
+					return info;
+				
+			}
+			if(request.getApproveType().equalsIgnoreCase("hod")) {
+				for(NoDuesRequest e : request.getNoDues()) {
+					noDuePenalty.updateRecord(getDouble(e.getAmount()), e.getRemark(), e.getId(), request.getApproveType(),e.getStatus());
+				}	
+					info.put("status", "1");
+					info.put("message", "HOD approved successfully");
+					return info;
+				
+			}			
+			
+			info.put("status", "2");
+			info.put("message", "Approve Type not valid");
+			return info;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+	
+	private Double getDouble(String str) {
+		try {
+			return Double.valueOf(str); 
+		}catch(Exception e) {
+			return 0.0;
+		}
+		
+	}
+
+	@Override
+	public Map<String, Object> noDuesListForStudent(SemesterEligibility request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			// check nodues configure or not
+			
+			Optional<Studentadmission> studentadmission = super.studentadmission.findByExIsDeleteAndExIsActiveAndId(false, true, request.getStudent());
+			if (!studentadmission.isPresent() ) {
+				info.put("status", "2");
+				info.put("message", "student not present");
+				return info;
+			}	
+			// get the student list
+			
+			List<SemesterRegistration> validation  = 	super.semesterRegistration.findByExIsDeleteAndExIsActiveAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionId(false , true ,request.getAcademicYear() , request.getProgrammeYear(), request.getSemester() , request.getStudent());
+			if(validation.size() <= 0) {
+				
+				
+			}
+			
+			List<NoDuesConfiguration> list  = nodues.findByExIsDeleteAndExIsActiveAndAcademicYearIdAndBatchIdAndDepartmentIdAndProgrammeYearIdAndSemesterId(false ,true ,request.getAcademicYear(),studentadmission.get().getBatch().getId() ,studentadmission.get().getDepartment().getId() ,request.getProgrammeYear() ,request.getSemester());
+			
+			//List<NoDueDTO[]> list  = super.semesterRegistration.getNODDetails(request.getAcademicYear() , request.getProgrammeYear(), request.getSemester() , request.getStudent());
+			if(list.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "NoDues not configured");
+				return info;
+			}
+			long id  = validation.get(0).getId();
+			List dataList = new LinkedList();			
+			for(int i = 0 ;i<list.get(0).getApprovetype().size() ; i++) {
+				Map<Object, Object> student = new HashMap<Object, Object>();				
+				student.put("id",id);	
+			
+				student.put("approveType" , list.get(0).getApprovetype().get(i).getExName());
+				
+				List<NoDuePenalty> list123 = noDuePenalty.findByRegistrationIdAndApproveType(id, list.get(0).getApprovetype().get(i).getExIdentifier());
+				if(list123.size() <= 0) {
+					student.put("amount", "NA");	
+					student.put("isPaid","NA");	
+					student.put("isApprove",false);
+					student.put("remark","NA");
+				}else {
+					student.put("amount", list123.get(0).getAmount());	
+					student.put("isPaid",list123.get(0).isIspaid());	
+					student.put("isApprove",list123.get(0).isApprove());
+					student.put("remark",list123.get(0).getRemark());
+				}
+				
+				dataList.add(student);
+			}
+			
+			
+			info.put("status", "1");
+			info.put("message", "success");
+			info.put("details", dataList);
+			return info;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> updatenoDuesConfiguration(NoduR request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			
+			if(request.getApproveTypeList().size() <=0) {
+				info.put("status", "2");
+				info.put("message", "please select Approve Type");
+				return info;
+			}
+			Optional<Colleges> Colleges = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges(),false, true);
+			if (!Colleges.isPresent() || !Colleges.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Colleges not present");
+				return info;
+			}
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDegree());
+			if (!degree.isPresent() || !degree.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+
+			Optional<Programmes> Programmes = super.programmes.findByExIsDeleteAndExIsActiveAndId(false, true,	request.getProgrammes());
+			if (!Programmes.isPresent() || !Programmes.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}
+
+			Optional<Department> department = super.department.findByExIsDeleteAndExIsActiveAndId(false, true,request.getDepartment());
+			if (!department.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Department not present");
+				return info;
+			}
+
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear(), false, true);
+			if (!academic.isPresent() || !academic.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+
+			Optional<ProgrammeYear> programmeYear = super.programmeYear.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(), true, false);
+			if (!programmeYear.isPresent() || !programmeYear.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}
+			
+			Optional<Batch> batch = super.batch.findByExIsDeleteAndExIsActiveAndId(false, true, request.getBatch());
+			if (!batch.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Batch not present");
+				return info;
+			}
+			
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false, true,
+					request.getSemester());
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}
+				List<ApproveType> apprv = new ArrayList<ApproveType>();
+			for (int i = 0; i < request.getApproveTypeList().size(); i++) {
+				Long number = request.getApproveTypeList().get(i);
+				Long col = new Long(number);
+				Optional<ApproveType> college = super.approvetype.findById(col);
+				if (!college.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Selected ApproveType type not present");
+					return info;
+				}
+				apprv.add(college.get());				
+			}
+			
+					Date date = new Date();		
+					NoDuesConfiguration data = new NoDuesConfiguration();		
+					data.setId(request.getId());
+					data.setColleges(Colleges.get());
+					data.setDegree(degree.get());
+					data.setAcademicYear(academic.get());
+					data.setProgrammes(Programmes.get());
+					data.setDepartment(department.get());
+					data.setProgrammeYear(programmeYear.get());
+					data.setExCreateDate(date);
+					data.setExIsActive(true);
+					data.setApprovetype(apprv);
+					data.setExIsDelete(false);			
+					data.setSemester(sem.get());
+					data.setBatch(batch.get());
+					nodues.save(data);
+					
+						
+			
+			info.put("status", "1");
+			info.put("message", "No Dues has been configured successfully");
+			return info;
+			}
+		 catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getnoDuesConfiguration(NoduR request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List<NoDuesConfiguration> tasks = nodues.findByExIsDelete(false);
+			if (tasks.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Courses not created");
+				return info;
+			} else {
+				String serverurl = commonHelper.getSettingValue("SERVER_IP");
+				List dataList = new LinkedList();
+				for (NoDuesConfiguration e : tasks) {
+					List coursestype = new LinkedList();
+					List coursesTypeId = new LinkedList();
+					Map<Object, Object> coursesdata = new HashMap<Object, Object>();
+					coursesdata.put("id", e.getId());					
+					coursesdata.put("programmes", e.getProgrammes().getExName());
+					coursesdata.put("programmesId", e.getProgrammes().getId());
+					coursesdata.put("programmesIdentifire", e.getProgrammes().getExIdentifier());
+					coursesdata.put("department", e.getDepartment() == null ? "NA" : e.getDepartment().getExIdentifier());
+					coursesdata.put("departmentId", e.getDepartment() == null ? "NA" : e.getDepartment().getId());
+				coursesdata.put("programmeYear", e.getProgrammeYear().getExName());
+					coursesdata.put("programmeYearId", e.getProgrammeYear().getId());
+					coursesdata.put("semester", e.getSemester().getExName());
+					coursesdata.put("semesterId", e.getSemester().getId());
+				
+
+					for (int i = 0; i < e.getApprovetype().size(); i++) {
+						coursestype.add(e.getApprovetype().get(i).getExName());
+						coursesTypeId.add(e.getApprovetype().get(i).getId());
+					}
+
+					coursesdata.put("approveType", coursestype);
+					coursesdata.put("approveTypeId", coursesTypeId);
+					coursesdata.put("academicYear", e.getAcademicYear().getExYear());
+					coursesdata.put("academicYearId", e.getAcademicYear().getId());
+					coursesdata.put("degree", e.getDegree().getExName());
+					coursesdata.put("degreeId", e.getDegree().getId());
+					coursesdata.put("colleges", e.getColleges().getExIdentifier());
+					coursesdata.put("collegesId", e.getColleges().getId());
+					coursesdata.put("batch", e.getBatch().getExName());
+					coursesdata.put("batchId", e.getBatch().getId());
+					
+					
+					dataList.add(coursesdata);
+				}
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("details", dataList);
+				return info;
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+	
+}

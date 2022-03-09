@@ -1,0 +1,192 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+
+@Entity
+@Table(name = "ex_dashboard_count")
+public class Dashboard {
+
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		private Long id;
+				
+		private String academicYear;
+		
+		private String colleges;
+
+		private String programmes;
+
+		private String programmeYear;
+
+		private String semester;
+		
+		private String degree;
+
+	
+		private String courses;
+		
+		private Date startDate;
+		
+		private Date endDate;
+		
+		@ManyToOne(optional = false)
+		@JoinColumn(name = "user_id", nullable = false)
+		private User user;
+
+		@Column(columnDefinition="BOOLEAN DEFAULT false")
+		private Boolean exIsActive;
+		
+		@Column(columnDefinition="BOOLEAN DEFAULT false")
+		private Boolean exIsDelete;
+
+		@Temporal(TemporalType.TIMESTAMP)
+		@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+		private Date exCreateDate;
+
+		@Temporal(TemporalType.TIMESTAMP)
+		@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+		private Date exUpdateDate;
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public String getAcademicYear() {
+			return academicYear;
+		}
+
+		public void setAcademicYear(String academicYear) {
+			this.academicYear = academicYear;
+		}
+
+		public String getColleges() {
+			return colleges;
+		}
+
+		public void setColleges(String colleges) {
+			this.colleges = colleges;
+		}
+
+		public String getProgrammes() {
+			return programmes;
+		}
+
+		public void setProgrammes(String programmes) {
+			this.programmes = programmes;
+		}
+
+		public String getProgrammeYear() {
+			return programmeYear;
+		}
+
+		public void setProgrammeYear(String programmeYear) {
+			this.programmeYear = programmeYear;
+		}
+
+		public String getSemester() {
+			return semester;
+		}
+
+		public void setSemester(String semester) {
+			this.semester = semester;
+		}
+
+		public String getDegree() {
+			return degree;
+		}
+
+		public void setDegree(String degree) {
+			this.degree = degree;
+		}
+
+		public String getCourses() {
+			return courses;
+		}
+
+		public void setCourses(String courses) {
+			this.courses = courses;
+		}
+
+		public Date getStartDate() {
+			return startDate;
+		}
+
+		public void setStartDate(Date startDate) {
+			this.startDate = startDate;
+		}
+
+		public Date getEndDate() {
+			return endDate;
+		}
+
+		public void setEndDate(Date endDate) {
+			this.endDate = endDate;
+		}
+
+		public User getUser() {
+			return user;
+		}
+
+		public void setUser(User user) {
+			this.user = user;
+		}
+
+		public Boolean getExIsActive() {
+			return exIsActive;
+		}
+
+		public void setExIsActive(Boolean exIsActive) {
+			this.exIsActive = exIsActive;
+		}
+
+		public Boolean getExIsDelete() {
+			return exIsDelete;
+		}
+
+		public void setExIsDelete(Boolean exIsDelete) {
+			this.exIsDelete = exIsDelete;
+		}
+
+		public Date getExCreateDate() {
+			return exCreateDate;
+		}
+
+		public void setExCreateDate(Date exCreateDate) {
+			this.exCreateDate = exCreateDate;
+		}
+
+		public Date getExUpdateDate() {
+			return exUpdateDate;
+		}
+
+		public void setExUpdateDate(Date exUpdateDate) {
+			this.exUpdateDate = exUpdateDate;
+		}
+
+		@Override
+		public String toString() {
+			return "Dashboard [id=" + id + ", academicYear=" + academicYear + ", colleges=" + colleges + ", programmes="
+					+ programmes + ", programmeYear=" + programmeYear + ", semester=" + semester + ", degree=" + degree
+					+ ", courses=" + courses + ", startDate=" + startDate + ", endDate=" + endDate + ", user=" + user
+					+ ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate
+					+ ", exUpdateDate=" + exUpdateDate + "]";
+		}
+
+}

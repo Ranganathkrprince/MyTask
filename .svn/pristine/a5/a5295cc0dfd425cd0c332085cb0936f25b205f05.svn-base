@@ -1,0 +1,42 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Department;
+import com.niftem.app.entity.PublishResult;
+import com.niftem.app.entity.Semster;
+
+public interface PublishResultRepository extends CrudRepository<PublishResult, Long> {
+
+	List<PublishResult> findByBatchIdAndExResultTypeAndAcademicYearIdAndSemsterIn(Long  batch, int resulttype, Long academic , List<Semster> sem);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_publish_result set ex_is_publish = 0  where batch_id =?1 AND ex_result_type = ?2 AND id !=?3 and department_id = ?4", nativeQuery = true)
+	int updatePublish(Long batch , int resulttype , Long id , Long department);
+
+	List<PublishResult> findByExIsDelete(boolean b);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_publish_result set ex_is_delete = ?1 ,ex_is_active = ?2  where id =?3", nativeQuery = true)
+	int deletePublish(Boolean exIsDelete, Boolean is_active, Long id);
+	
+	
+	List<PublishResult> findByExIsDeleteAndExIsActiveAndBatchIdAndExIsPublishAndExResultTypeAndDepartmentId(boolean delete , boolean active , long batch , int ispublish , int resulttype , Long dept);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "select * from  ex_publish_result where  ex_is_delete = 0 and ex_is_active = 1 and ex_result_type = 1 and batch_id =?1 and department_id =?2 ORDER BY id DESC LIMIT 1", nativeQuery = true)
+	List<PublishResult> getRecord( long batch , Long dept);
+
+	List<PublishResult> findByBatchIdAndExResultTypeAndAcademicYearIdAndSemsterInAndDepartmentId(Long batch,
+			int exResultType, Long academicYear, List<Semster> list, Long department);
+
+}

@@ -1,0 +1,440 @@
+package com.niftem.app.repository;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.Batch;
+import com.niftem.app.entity.Colleges;
+import com.niftem.app.entity.Courses;
+import com.niftem.app.entity.CoursesType;
+import com.niftem.app.entity.Degree;
+import com.niftem.app.entity.Department;
+import com.niftem.app.entity.ProgrammeYear;
+import com.niftem.app.entity.Programmes;
+import com.niftem.app.entity.Semster;
+import com.niftem.app.entity.User;
+
+@Repository
+@Service
+@Transactional
+public interface CoursesRepository extends CrudRepository<Courses, Long>{
+
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_courses set ex_is_delete = ?1,ex_is_active=?2  where id =?3", nativeQuery = true)
+	int deleteCourses(Boolean exIsDelete, Boolean is_active, Long id);
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_courses set ex_subject_code = ?1  where ex_courses_code = ?2 and programmeyear_id = ?3 and semester_id =?4 and academic_year_id = ?5 and batch_id = ?6 and department_id = ?7 and programmes_id  = ?8", nativeQuery = true)
+	int updateSubjectType(String ex_subject_code ,String ex_courses_code, Long programmeyear_id, Long semester_id , Long academic_year_id , Long batch_id ,Long department_id , Long programmes_id);
+
+	List<Courses> findByExIsDelete(boolean exIsDelete);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_courses set ex_name = ?1,ex_description=?2  ,ex_update_date =?3 , ex_is_active = ?4 , ex_courses_code = ?5 , ex_is_satisfactory=?7  , ex_is_elective=?8  , ex_is_seminar=?9  ,  ex_is_project=?10  ,  academic_year_id=?11 ,  credit_hours_id=?12 ,  programmes_id=?13 ,  programmeyear_id=?14 ,  semester_id=?15 ,  department_id=?16 ,  degree_id=?17 ,  stream_id=?18 ,  batch_id=?19 , ex_subject_code =?20 , ex_iscompulsory = ?21, ex_is_industrial_visit = ?22, ex_is_village_adoption = ?23 , ex_is_research_project = ?24, ex_is_industrial_training_internship = ?25 where id =?6", nativeQuery = true)
+	int updateCourses(String exName, String exDescription, Date date, Boolean exIsActive, String exCoursesCode, Long id,
+			Boolean exIsSatisfactory, Boolean exIsElective, Boolean exIsSeminar, Boolean exIsProject, Long academicYear,
+			Long creditHours, Long programmes, Long programmeYear, Long semester, Long department, Long degree,
+			Long stream, Long batch, String exSubjectCode, Boolean exIscompulsory, Boolean exIsIndustrialVisit,
+			Boolean exIsVillageAdoption, Boolean exIsResearchProject, Boolean exIsIndustrialTrainingOrInternship);
+	
+	
+	@Modifying
+	@Transactional	
+	@Query(value = "insert into ex_courses_coursestype(courses_id,courses_type)values(?1,?2)", nativeQuery = true)
+	int saveCoursesCourseType(Long program_id, Long collage_id);
+	
+	// New Query Start from Here
+	
+	List<Courses> findByExNameAndAcademicYearIdAndProgrammesIdAndProgrammeYearIdAndStreamIdAndDegreeIdAndExIsDeleteAndExIsActiveAndCollegesIdAndBatchId
+	(String name,Long academic, Long programmes , Long programyear , Long stram , Long degree , boolean delete, boolean active , Long collegeid , Long batchid);
+	
+	
+	List<Courses> findByExNameAndExIsDeleteAndProgrammesIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndExCoursesCodeAndDepartmentIdAndStreamIdAndDegreeId(
+			String trim, boolean b, Long id, Long id2, Long id3, Long id4, String trim2, Long id5, Long id6, Long id7);
+
+	
+	List<Courses> findByCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentId(Long colleges, Long degree, Long programmes,
+			Long department);
+
+	List<Courses> findByCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndStreamId(Long colleges, Long degree,
+			Long programmes, Long department, Long stream);
+
+	
+	List<Courses> findByAcademicYearId(Long academicYear);
+
+	Optional<Courses> findByIdAndExIsDeleteAndExIsActiveAndAcademicYearIdAndProgrammeYearIdAndSemesterId(Long course,
+			boolean b, boolean c, Long academicYear, Long programmeYear, Long semester);
+
+	Optional<Courses> findByCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndIdAndExIsDeleteAndExIsActive(
+			Long colleges, Long degree, Long programmes, Long department, Long col, boolean b, boolean c);
+	
+	List<Courses> findByAcademicYearIdAndProgrammesIdAndProgrammeYearIdAndDegreeIdAndExIsDeleteAndExIsActiveAndCollegesIdAndAndSemesterId
+	(Long academic, Long programmes , Long programyear ,  Long degree , boolean delete, boolean active , Long collegeid , Long semester);
+	
+	Optional<Courses> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, Long courses);
+
+	List<Courses> findByAcademicYearIdAndProgrammesIdAndProgrammeYearIdAndDegreeIdAndExIsDeleteAndExIsActiveAndCollegesIdAndAndSemesterIdAndDepartmentId(
+			Long academicYear, Long programmes, Long programmeYear, Long degree, boolean b, boolean c, Long colleges,
+			Long semester, Long department);
+
+	
+	List<Courses> findByProgrammesIdAndAndDegreeIdAndExIsDeleteAndExIsActiveAndCollegesIdAndAndSemesterIdAndDepartmentIdAndBatchId(
+			 Long programmes, Long degree, boolean delete, boolean active, Long colleges,Long semester, Long department , Long batch );	
+	
+
+	List<Courses> findByIdIn(List<Long> dataList1);
+
+	List<Courses> findByExIsDeleteAndExIsActiveAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndAcademicYearId(
+			boolean b, boolean c, Long id, Long id2, Long id3, Long id4);
+
+
+	List<Courses> findByExIsDeleteAndExIsActiveAndProgrammesIdAndProgrammeYearIdAndSemesterId(boolean b,
+			boolean c, Long programme, Long programmeYear, Long id2);
+
+
+	Optional<Courses> findByIdAndExIsDeleteAndExIsActive(Long courses, boolean b, boolean c);
+
+	Optional<Courses> findByIdAndExIsDeleteAndExIsActiveAndAcademicYearId(Long courses, boolean b, boolean c,
+			Long academicYear);
+	
+
+	Optional<Courses> findByIdAndExIsDeleteAndExIsActiveAndProgrammesIdAndAcademicYearIdAndProgrammeYearIdAndSemesterId(
+			Long id, boolean b, boolean c, Long id2, Long id3, Long id4, Long id5);
+
+	
+
+	List<Courses> findByExCoursesCodeInAndExIsDeleteAndExIsActive(List<String> courseList, boolean b, boolean c);
+
+	
+	
+
+	Optional<Courses> findByExCoursesCodeAndExIsDeleteAndExIsActiveAndProgrammesIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentId(
+			String cour, boolean b, boolean c, Long id, Long id2, Long id3, Long id4 , Long dept);
+
+
+	List<Courses> findByAcademicYearIdAndProgrammesIdAndProgrammeYearIdAndDegreeIdAndExIsDeleteAndCoursesTypeIdInAndCollegesIdAndAndSemesterId(
+			Long academicYear, Long programmes, Long programmeYear, Long degree, boolean b, List<Long> list1,
+			Long colleges, Long semester);
+
+	Optional<Courses> findByCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndIdAndExIsDeleteAndExIsActiveAndCoursesType(
+			Long colleges, Long degree, Long programmes, Long department, Long col, boolean b, boolean c,
+			Optional<CoursesType> coursesType);
+
+	List<Courses> findByExIsDeleteAndExIsActiveAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndAcademicYearIdAndDepartmentId(
+			boolean b, boolean c, Long id, Long id2, Long id3, Long id4, Long deparment);
+
+	List<Courses> findByExIsDeleteAndExIsActiveAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndAcademicYearIdAndDepartmentId(
+			boolean b, boolean c, Long id, Long id2, Long id3, Long id4, Department e);
+
+
+	List<Courses> findDistinctByIdInAndExIsActive(Long id, boolean b);
+
+	List<Courses> findByExIsDeleteAndExIsActiveAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndAcademicYearIdAndDepartment(
+			boolean b, boolean c, Long id, Long id2, Long id3, Long id4, List<Department> depart);
+
+	List<Courses> findByExIsDeleteAndExIsActiveAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndAcademicYearIdAndDepartment(
+			boolean b, boolean c, Long id, Long id2, Long id3, Long id4, Optional<Department> depart);
+
+
+	Optional<Courses> findByIdAndExIsDeleteAndExIsActiveAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDegreeIdAndCollegesIdAndDepartmentIdAndBatchIdAndProgrammesId(
+			Long course, boolean b, boolean c, Long id, Long id2, Long id3, Long id4, Long id5, Long id6, Long id7,
+			Long id8);
+
+	List<Courses> findByExIsDeleteAndExIsActiveAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndCoursesTypeIdAndAcademicYearId(
+			boolean b, boolean c, Long programme, Long id, Long id2, Long department, long l ,Long academic);
+//=========
+	@Query(value = "SELECT * FROM ex_courses c , ex_courses_coursestype t WHERE t.courses_id=c.id and c.collage_id=?1 AND c.degree_id=?2 AND c.department_id=?4 and ex_is_delete=?5 and ex_is_active=?6  AND c.programmeyear_id=?8 AND c.programmes_id=?3  AND c.semester_id=?9  AND t.courses_type=?7 and stream_id=?10 ", nativeQuery = true)
+	List<Courses> getcourselist(Long colleges, Long degree, Long programmes, Long department, boolean b, boolean c, Long coursesType,
+			Long programmeYear, Long semester, Long stream );
+//===================
+	
+	List<Courses> findByExIsDeleteAndExIsActiveAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndAcademicYearIdAndDepartmentId(
+			boolean delete, boolean active, Long program, Long programyear, Long semester, Long academic,long depart);
+
+	List<Courses> findByExIsDeleteAndExIsActiveAndProgrammesIdAndSemesterIdAndProgrammeYearIdAndAcademicYearId(
+			boolean b, boolean c, Long programmes, Long semester, Long programmeYear, Long academicYear);
+
+	List<Courses> findByExIsDeleteAndExIsActiveAndIdIn(boolean delete, boolean active, List<Long> courses);
+
+	List<Courses> findByProgrammesIdAndExIsDeleteAndExIsActiveAndSemesterIdAndProgrammeYearId(Long programmes,
+			boolean b, boolean c, Long semester, Long programmeYear);
+
+	List<Courses> findByProgrammesIdAndExIsDeleteAndExIsActiveAndSemesterIdAndProgrammeYearIdAndAcademicYearIdAndBatchId(Long programmes,
+			boolean b, boolean c, Long semester, Long programmeYear , long acaemic , Long batch);
+	
+	List<Courses> findByExNameAndExIsDeleteAndProgrammesIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndExCoursesCodeAndDepartmentIdAndDegreeId(
+			String trim, boolean b, Long id, Long id2, Long id3, Long id4, String trim2, Long id5, Long id6);
+
+	List<Courses> findByExNameAndExIsDeleteAndExCoursesCode(String trim, boolean b, String trim2);
+
+	List<Courses> findByExNameAndAcademicYearIdAndProgrammesIdAndProgrammeYearIdAndStreamIdAndDegreeIdAndExIsDeleteAndExIsActiveAndCollegesIdAndBatchIdAndExIsSatisfactoryAndExIsProjectAndExIsSeminarAndExIsElective(
+			String exName, Long academicYear, Long programmes, Long programmeYear, Long stream, Long degree, boolean b,
+			boolean c, Long colleges, Long batch, Boolean exIsSatisfactory, Boolean exIsProject, Boolean exIsSeminar,
+			Boolean exIsElective);
+
+	Optional<Courses> findByExIsDeleteAndExIsActiveAndExName(boolean b, boolean c, String trim);
+
+	Optional<Courses> findByExIsDeleteAndExIsActiveAndExCoursesCodeAndAcademicYearIdAndProgrammesIdAndSemesterIdAndDepartmentId(boolean b, boolean c, String trim , Long academicYear , Long program , Long sem , Long dept);
+
+	Optional<Courses> findByExIsDeleteAndExIsActiveAndExCoursesCodeAndBatchIdAndSemesterIdAndProgrammesIdAndDepartmentId(boolean b, boolean c, String trim , Long batch, Long sem , Long program , Long dept);
+	
+	Optional<Courses> findByExIsDeleteAndExIsActiveAndExNameAndBatchIdAndSemesterIdAndProgrammesIdAndDepartmentIdAndExCoursesCode(boolean b, boolean c, String trim , Long batch, Long sem , Long program , Long dept , String coursecode);
+	
+
+	
+	@Query(value ="SELECT  s.ex_roll_no as studentid ,c.ex_name  as courses_name ,s.ex_name , r.semester_id ,"
+			+ " s.section_id , c.ex_courses_code , ch.ex_credit_hour_title FROM  ex_courses_registration r ,ex_student_admission s  , ex_student_personal sp ,ex_courses c ,  ex_credit_hours ch  where r.student_admission_id = s.id   "
+			+ "AND c.id = r.courses_id AND ch.id = c.credit_hours_id AND s.id = sp.student_admission_id  	AND r.degree_id = ?1 AND  r.academicyear_id =?2 AND r.programmes_id = ?3 AND  r.courses_id = ?4 AND r.programmeyear_id = ?5 AND  r.semester_id = ?6 AND r.colleges_id = ?7  AND s.section_id = ?8 and r.department_id=?9 AND r.registration_type_id IN (1,5) order by s.ex_roll_no" , nativeQuery = true)
+	List<Object[]> getDetails(Long degree, Long academicYear, Long programmes, Long courses, Long programmeYear,
+			Long semester, Long colleges, Long section, Long department);
+
+
+	/*
+	 * List<Courses>
+	 * findByCollegesIdInAndDegreeIdInAndProgrammesIdInAndAcademicYearIdInAndSemesterIdInAndProgrammeYearIdIn
+	 * (List<Long> college, List<Long> degree, List<Long> program, List<Long>
+	 * academic, List<Long> semester, List<Long> programyear);
+	 */
+	List<Courses> findByIdAndExIsActiveAndExIsDelete(Long course, boolean b, boolean c);
+
+	List<Courses> findByExIsDeleteAndIdAndExIsActive(boolean b, Long courses, boolean c);
+
+
+	@Query(value = "SELECT *  FROM ex_courses WHERE ex_courses_code IN ?1 and  ex_is_delete = ?2 and ex_is_active=?3  AND programmes_id =?4 AND programmeyear_id = ?5 AND semester_id = ?6 and batch_id = ?7 and department_id = ?8", nativeQuery = true)
+	ArrayList<Object[]> getCourseResult(List<String> courseList, boolean b, boolean c  , Long programmes_id , Long programyear , Long semester_id , Long batch_id , Long department_id);
+
+	List<Courses> findByCollegesIdAndDegreeIdAndProgrammesIdAndAcademicYearIdAndSemesterIdAndProgrammeYearId(
+			Long colleges, Long degree, Long programmes, Long academicYear, Long semester, Long programmeYear);
+
+	
+	
+	List<Courses> findByExIsActiveAndIdAndProgrammesIdAndProgrammeYearIdAndBatchIdAndAcademicYearAndSemesterId(
+			boolean b, Long courses, Long programmes, Long programmeYear, Long batch, Long academicYear, Long semester);
+
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_courses  set ex_syllabus_url = ?1 where  id =?2 and batch_id =?3 and academic_year_id =?4 and semester_id =?5",  nativeQuery = true)
+	int updateDocument(String photopath, Long courses, Long batch, Long acadmicyear, Long semester);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_courses  set ex_qp_url = ?1 where  ex_courses_code =?2 and batch_id =?3 and department_id =?4 and semester_id =?5",  nativeQuery = true)
+	int updateQp(String photopath, String courses, Long batch, Long department, Long semester);
+
+	Optional<Courses> findByExIsDeleteAndBatchIdAndSemesterIdAndProgrammeYearIdAndProgrammesIdAndAcademicYearIdAndId(
+			boolean b, Long batch, Long semester, Long programmeYear, Long programmes, Long courses, Long academicYear);
+
+
+	List<Courses> findByCollegesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndBatchId(Long colleges, Long degree, Long programmes,  Long semester, Long batch);
+
+
+
+	Optional<Courses> findByIdAndExIsDeleteAndExIsActive(List<Long> courses, boolean b, boolean c);
+
+
+
+	List<Courses> findByIdInAndExIsActiveAndExIsDelete(List<Long> courses, boolean b, boolean c);
+
+
+
+	Optional<Courses> findByDegreeIdAndProgrammesIdAndDepartmentIdAndIdAndExIsDeleteAndExIsActive(Long degree,
+			Long programmes, Long department, Long col, boolean b, boolean c);
+
+
+
+	List<Courses> findByProgrammesIdAndDepartmentIdAndSemesterIdAndProgrammeYearIdAndAcademicYearIdAndDegreeIdAndExIsActiveAndExIsDelete(
+			Long programmes, Long department, Long semester, Long programmeYear, Long academicYear, Long degree,
+			boolean b, boolean c);
+
+
+
+	List<Courses> findBySemesterIdAndDegreeIdAndProgrammesIdAndDepartmentId(Long semester, Long degree, Long programmes,
+			Long department);
+
+
+
+	List<Courses> findByProgrammesIdAndDepartmentIdAndSemesterIdAndProgrammeYearIdAndAcademicYearIdAndDegreeId(
+			Long programmes, Long department, Long semester, Long programmeYear, Long academicYear, Long degree);
+
+	List<Courses> findByProgrammesIdAndDepartmentIdAndSemesterIdAndProgrammeYearIdAndDegreeIdAndBatchIdAndExIsActive(
+			Long programmes, Long department, Long semester, Long programmeYear, Long degree , Long batch , boolean activ);
+
+	List<Courses> findByExCoursesCodeInAndExIsDeleteAndExIsActiveAndProgrammesIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentId(
+			List<String> courseList, boolean b, boolean c, Long id, Long id2, Long id3, Long id4 , Long dept);
+	/*
+	 * @Modifying
+	 * 
+	 * @Transactional
+	 * 
+	 * @Query(value =
+	 * "SELECT * FROM ex_courses c , ex_courses_coursestype t WHERE t.courses_id=c.id and  t.courses_type IN ?1  AND c.semester_id=?2 AND c.academic_year_id=?3 	AND c.degree_id=?4 AND c.department_id=?5 and c.stream_id=?6 AND c.programmes_id=?7"
+	 * , nativeQuery = true)
+	 * 
+	 * 
+	 * List<Courses>
+	 * findByCoursesTypeAndSemesterIdAndAcademicYearIdAndDegreeIdAndDepartmentIdAndStreamIdAndProgrammesId(
+	 * List<Long> coursesTypeId, Long semester, Long academicYear, Long degree, Long
+	 * department, Long stream, Long programmes);
+	 */
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "SELECT * FROM ex_courses c , ex_courses_coursestype t WHERE t.courses_id=c.id and  t.courses_id =?1 and t.courses_type = ?2  ", nativeQuery = true)
+
+	List<Courses> findByCoursesType(Long id, Long id2);
+
+
+
+	List<Courses> findBySemesterIdAndAcademicYearIdAndDegreeIdAndDepartmentIdAndStreamIdAndProgrammesId(Long semester,
+			Long academicYear, Long degree, Long department, Long stream, Long programmes);
+
+	 @Query(value = "SELECT * FROM ex_courses c , ex_courses_coursestype t WHERE t.courses_id=c.id   AND c.semester_id=?1 AND c.academic_year_id=?2 AND c.degree_id=?3 AND c.department_id=?4 and c.stream_id=?5 AND c.programmes_id=?6 and  t.courses_type IN ?7  group by c.id ", nativeQuery = true)
+	 List<Courses> findBySemesterIdAndAcademicYearIdAndDegreeIdAndDepartmentIdAndStreamIdAndProgrammesIdAndCoursesTypeIdIn(Long semester,
+			Long academicYear, Long degree, Long department, Long stream, Long programmes, List<Long> list);
+
+	 @Query(value ="SELECT ex_courses_code from ex_courses  where id IN ?1", nativeQuery = true)
+	ArrayList<Object[]> getName(List<Object[]> maping);
+	
+	
+	@Query(value ="SELECT b.ex_name FROM ex_batch b , ex_courses c WHERE c.batch_id = b.id AND c.id IN ?1 GROUP BY b.ex_name", nativeQuery = true)
+	ArrayList<Object[]> getBatchName(List<Object[]> maping);
+	
+	List<Courses> findByProgrammesIdAndExIsDeleteAndExIsActiveAndSemesterIdAndProgrammeYearIdAndDepartmentIdAndAcademicYearId(Long programmes,
+			boolean b, boolean c, Long semester, Long programmeYear , long dept , Long academic);
+
+
+
+	List<Courses> findByProgrammesIdAndProgrammeYearIdAndDegreeIdAndCollegesIdAndAndSemesterIdAndDepartmentIdAndBatchId(
+			Long id, Long id2, Long id3, Long id4, Long id5, Long id6, Long id7);
+
+
+
+	List<Courses> findByProgrammeYearIdInAndSemesterIdInAndProgrammesIdInAndBatchId(
+			List<Long> programyear, List<Long> semester, List<Long> prograam , Long batch);
+
+	@Query(value = "SELECT * FROM ex_courses c , ex_courses_coursestype t WHERE t.courses_id=c.id and c.collage_id=?1 AND c.degree_id=?2 AND c.department_id=?4 and ex_is_delete=?5 and ex_is_active=?6  AND c.programmeyear_id=?8 AND c.programmes_id=?3  AND c.semester_id=?9  AND t.courses_type=?7 and stream_id=?10 ", nativeQuery = true)
+	List<Courses> getcourselistForQp(Long colleges, Long degree, Long programmes, Long department, boolean b, boolean c, Long coursesType,
+			Long programmeYear, Long semester, Long stream );
+
+
+
+	List<Courses> findByCollegesIdAndDegreeIdAndProgrammesIdAndAcademicYearIdAndSemesterIdAndProgrammeYearIdAndExIsActiveAndExIsDelete(
+			Long colleges, Long degree, Long programmes, Long academicYear, Long semester, Long programmeYear,
+			boolean b, boolean c);
+
+
+	List<Courses> findByExNameAndAcademicYearIdAndProgrammesIdAndProgrammeYearIdAndStreamIdAndDegreeIdAndExIsDeleteAndExIsActiveAndCollegesIdAndBatchIdAndExIsSatisfactoryAndExIsProjectAndExIsSeminarAndExIsElectiveAndExIsIndustrialVisitAndExIsVillageAdoptionAndExIsResearchProject(
+			String exName, Long academicYear, Long programmes, Long programmeYear, Long stream, Long degree, boolean b,
+			boolean c, Long colleges, Long batch, Boolean exIsSatisfactory, Boolean exIsProject, Boolean exIsSeminar,
+			Boolean exIsElective, Boolean exIsIndustrialVisit, Boolean exIsVillageAdoption,
+			Boolean exIsResearchProject);
+
+
+
+	List<Courses> findByExNameAndAcademicYearIdAndProgrammesIdAndProgrammeYearIdAndStreamIdAndDegreeIdAndExIsDeleteAndExIsActiveAndCollegesIdAndBatchIdAndExIsSatisfactoryAndExIsProjectAndExIsSeminarAndExIsElectiveAndExIsIndustrialVisitAndExIsVillageAdoptionAndExIsResearchProjectAndExIsIndustrialTrainingInternship(
+			String exName, Long academicYear, Long programmes, Long programmeYear, Long stream, Long degree, boolean b,
+			boolean c, Long colleges, Long batch, Boolean exIsSatisfactory, Boolean exIsProject, Boolean exIsSeminar,
+			Boolean exIsElective, Boolean exIsIndustrialVisit, Boolean exIsVillageAdoption, Boolean exIsResearchProject,
+			Boolean exIsIndustrialTrainingOrInternship);
+
+
+
+	List<Courses> findByCollegesIdAndDegreeIdAndProgrammesIdAndExIsActiveAndExIsDelete(Long colleges, Long degree,
+			Long programmes, boolean b, boolean c);
+
+
+
+	
+
+	List<Courses> findByExCoursesCodeInAndExIsDeleteAndExIsActiveAndProgrammesIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndBatchId(
+			String trim, boolean b, boolean c, Long id, Long id2, Long id3, Long id4, Long id5, Long id6);
+
+	
+	@Query(value = " SELECT DISTINCT a.ex_courses_code as code ,a.ex_name as name,c.ex_name as coursetypes,f.ex_name,g.ex_credit_hour_title,h.ex_name as sections FROM ex_courses a \r\n" + 
+			"LEFT JOIN  ex_courses_coursestype b ON a.id=b.courses_id \r\n" + 
+			"LEFT JOIN ex_coursestype c ON c.id=b.courses_type\r\n" + 
+			"LEFT JOIN ex_teacher_course_mapping_courses d ON d.courses_id=a.id\r\n" + 
+			"LEFT JOIN ex_teacher_course_mapping e ON e.id=d.ex_teache_course_mapping_id\r\n" + 
+			"LEFT JOIN ex_staff_personal f ON f.id=e.staffpersonal_id\r\n" + 
+			"LEFT JOIN ex_credit_hours g ON g.id=a.credit_hours_id\r\n" + 
+			"LEFT JOIN ex_section h ON h.id=e.section_id\r\n" + 
+			"WHERE   a.programmes_id=?1 AND a.department_id=?2 AND a.ex_is_delete=?3 AND a.ex_is_active=?4 AND e.section_id=?5 AND  a.academic_year_id=?6 AND a.semester_id=?7  ", nativeQuery = true)
+	List<Object[]> classtimetablerecords(Long programmes, Long department, boolean b, boolean c, Long section,
+			Long academicYear, Long semester);
+
+
+
+	@Query(value = " SELECT w.ex_courses_code,a.ex_start_time,a.ex_end_time,d.ex_short_name ,e.ex_name AS se , f.ex_name as room FROM ex_courses w, ex_class_timetable_days a, ex_teacher_course_mapping b, ex_teacher_course_mapping_courses c , ex_staff_personal d , ex_section e ,ex_room_master f\r\n" +
+			"WHERE a.courses_id=c.courses_id AND c.ex_teache_course_mapping_id=b.id AND a.courses_id=w.id AND b.staffpersonal_id=d.id AND b.section_id=e.id AND a.room_id=f.id\r\n" +
+			"AND a.week_days_id=1 AND w.programmes_id=?1 AND w.department_id=?2 AND w.ex_is_delete=?3 AND w.ex_is_active=?4 AND b.section_id=?5 AND w.academic_year_id=?6 AND w.semester_id=?7 ", nativeQuery = true)
+			List<Object[]> classtimetablerecordsss(Long programmes, Long department, boolean b, boolean c, Long section,
+			Long academicYear, Long semester);
+
+
+
+
+			@Query(value = " SELECT w.ex_courses_code,a.ex_start_time,a.ex_end_time,d.ex_short_name ,e.ex_name AS se , f.ex_name as room FROM ex_courses w, ex_class_timetable_days a, ex_teacher_course_mapping b, ex_teacher_course_mapping_courses c , ex_staff_personal d , ex_section e ,ex_room_master f\r\n" +
+			"WHERE a.courses_id=c.courses_id AND c.ex_teache_course_mapping_id=b.id AND a.courses_id=w.id AND b.staffpersonal_id=d.id AND b.section_id=e.id AND a.room_id=f.id\r\n" +
+			"AND a.week_days_id=2 AND w.programmes_id=?1 AND w.department_id=?2 AND w.ex_is_delete=?3 AND w.ex_is_active=?4 AND b.section_id=?5 AND w.academic_year_id=?6 AND w.semester_id=?7 ", nativeQuery = true)
+			List<Object[]> classtimetablerecordTuesday(Long programmes, Long department, boolean b, boolean c, Long section,
+			Long academicYear, Long semester);
+
+
+
+
+			@Query(value = " SELECT w.ex_courses_code,a.ex_start_time,a.ex_end_time,d.ex_short_name ,e.ex_name AS se , f.ex_name as room FROM ex_courses w, ex_class_timetable_days a, ex_teacher_course_mapping b, ex_teacher_course_mapping_courses c , ex_staff_personal d , ex_section e ,ex_room_master f\r\n" +
+			"WHERE a.courses_id=c.courses_id AND c.ex_teache_course_mapping_id=b.id AND a.courses_id=w.id AND b.staffpersonal_id=d.id AND b.section_id=e.id AND a.room_id=f.id\r\n" +
+			"AND a.week_days_id=3 AND w.programmes_id=?1 AND w.department_id=?2 AND w.ex_is_delete=?3 AND w.ex_is_active=?4 AND b.section_id=?5 AND w.academic_year_id=?6 AND w.semester_id=?7 ", nativeQuery = true)
+			List<Object[]> classtimetablerecordrecordWed(Long programmes, Long department, boolean b, boolean c, Long section,
+			Long academicYear, Long semester);
+
+
+
+
+			@Query(value = " SELECT w.ex_courses_code,a.ex_start_time,a.ex_end_time,d.ex_short_name ,e.ex_name AS se , f.ex_name as room FROM ex_courses w, ex_class_timetable_days a, ex_teacher_course_mapping b, ex_teacher_course_mapping_courses c , ex_staff_personal d , ex_section e ,ex_room_master f\r\n" +
+			"WHERE a.courses_id=c.courses_id AND c.ex_teache_course_mapping_id=b.id AND a.courses_id=w.id AND b.staffpersonal_id=d.id AND b.section_id=e.id AND a.room_id=f.id\r\n" +
+			"AND a.week_days_id=4 AND w.programmes_id=?1 AND w.department_id=?2 AND w.ex_is_delete=?3 AND w.ex_is_active=?4 AND b.section_id=?5 AND w.academic_year_id=?6 AND w.semester_id=?7 ", nativeQuery = true)
+			List<Object[]> classtimetablerecordThur(Long programmes, Long department, boolean b, boolean c, Long section,
+			Long academicYear, Long semester);
+
+
+
+
+			@Query(value = " SELECT w.ex_courses_code,a.ex_start_time,a.ex_end_time,d.ex_short_name ,e.ex_name AS se , f.ex_name as room FROM ex_courses w, ex_class_timetable_days a, ex_teacher_course_mapping b, ex_teacher_course_mapping_courses c , ex_staff_personal d , ex_section e ,ex_room_master f\r\n" +
+			"WHERE a.courses_id=c.courses_id AND c.ex_teache_course_mapping_id=b.id AND a.courses_id=w.id AND b.staffpersonal_id=d.id AND b.section_id=e.id AND a.room_id=f.id\r\n" +
+			"AND a.week_days_id=5 AND w.programmes_id=?1 AND w.department_id=?2 AND w.ex_is_delete=?3 AND w.ex_is_active=?4 AND b.section_id=?5 AND w.academic_year_id=?6 AND w.semester_id=?7 ", nativeQuery = true)
+			List<Object[]> classtimetablerecordFrid(Long programmes, Long department, boolean b, boolean c, Long section,
+			Long academicYear, Long semester);
+
+
+
+
+
+
+
+	
+
+
+}

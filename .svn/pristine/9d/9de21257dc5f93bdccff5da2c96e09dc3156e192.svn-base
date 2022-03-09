@@ -1,0 +1,145 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_exam_timetable_logs")
+public class ExamTimeTableLogs {
+	
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		private Long id;
+
+		private String exTimeTableUrl;
+		
+		private Long exExamType;
+		
+	    @ManyToOne( optional = false)
+	    @JoinColumn(name = "academicyear_id", nullable = false)
+	    private AcademicYear academicYear; 
+	    
+		@ManyToOne(optional = false)
+		@JoinColumn(name = "exam_announcement_id", nullable = false)
+		private ExamAnnouncement examAnnouncement;
+		
+		@Temporal(TemporalType.TIMESTAMP)
+		@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+		private Date exCreateDate;
+
+		@Column(columnDefinition="BOOLEAN DEFAULT false")
+		private Boolean reportType;
+		
+		@ManyToOne( optional = false)
+	    @JoinColumn(name = "programmes_id", nullable = false)
+	    private Programmes programmes;
+		
+		@ManyToOne( optional = false)
+	    @JoinColumn(name = "degree_id", nullable = false)
+	    private Degree degree;
+	
+		public Programmes getProgrammes() {
+			return programmes;
+		}
+
+		public void setProgrammes(Programmes programmes) {
+			this.programmes = programmes;
+		}
+
+		public Degree getDegree() {
+			return degree;
+		}
+
+		public void setDegree(Degree degree) {
+			this.degree = degree;
+		}
+
+		@ManyToOne(optional = true)
+		@JoinColumn(name = "User_id", nullable = true)
+		private User user;
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public String getExTimeTableUrl() {
+			return exTimeTableUrl;
+		}
+
+		public Boolean getReportType() {
+			return reportType;
+		}
+
+		public void setReportType(Boolean reportType) {
+			this.reportType = reportType;
+		}
+
+		public void setExTimeTableUrl(String exTimeTableUrl) {
+			this.exTimeTableUrl = exTimeTableUrl;
+		}
+
+		public AcademicYear getAcademicYear() {
+			return academicYear;
+		}
+
+		public void setAcademicYear(AcademicYear academicYear) {
+			this.academicYear = academicYear;
+		}
+
+		public ExamAnnouncement getExamAnnouncement() {
+			return examAnnouncement;
+		}
+
+		public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+			this.examAnnouncement = examAnnouncement;
+		}
+
+		public Date getExCreateDate() {
+			return exCreateDate;
+		}
+
+		public void setExCreateDate(Date exCreateDate) {
+			this.exCreateDate = exCreateDate;
+		}
+
+		public User getUser() {
+			return user;
+		}
+
+		public void setUser(User user) {
+			this.user = user;
+		}
+
+		public Long getExExamType() {
+			return exExamType;
+		}
+
+		public void setExExamType(Long exExamType) {
+			this.exExamType = exExamType;
+		}
+
+		@Override
+		public String toString() {
+			return "ExamTimeTableLogs [id=" + id + ", exTimeTableUrl=" + exTimeTableUrl + ", exExamType=" + exExamType
+					+ ", academicYear=" + academicYear + ", examAnnouncement=" + examAnnouncement + ", exCreateDate="
+					+ exCreateDate + ", reportType=" + reportType + ", programmes=" + programmes + ", degree=" + degree
+					+ ", user=" + user + "]";
+		}
+		
+		
+				
+}

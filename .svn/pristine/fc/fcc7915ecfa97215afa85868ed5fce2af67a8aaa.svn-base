@@ -1,0 +1,114 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+
+@Entity
+@Table(name = "ex_Privileges_Features")
+public class PrivilegesFeatures {
+	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @NotBlank
+    private String exFeaturename;
+    
+    @ManyToOne( optional = false)
+	@JoinColumn(name = "privilegesModules_id", nullable = false)
+	private PrivilegesModules privilegesModules;  
+    
+    @Column(columnDefinition="BOOLEAN DEFAULT false")
+   	private Boolean exIsActive;
+
+   	@Column(columnDefinition="BOOLEAN DEFAULT false")
+   	private Boolean exIsDelete;
+
+   	@Temporal(TemporalType.TIMESTAMP)
+   	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+   	private Date exCreateDate;
+
+   	@Temporal(TemporalType.TIMESTAMP)
+   	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+   	private Date exUpdateDate;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	
+
+	public PrivilegesModules getPrivilegesModules() {
+		return privilegesModules;
+	}
+
+	public void setPrivilegesModules(PrivilegesModules privilegesModules) {
+		this.privilegesModules = privilegesModules;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+	public String getExFeaturename() {
+		return exFeaturename;
+	}
+
+	public void setExFeaturename(String exFeaturename) {
+		this.exFeaturename = exFeaturename;
+	}
+    
+    
+	@Override
+	public String toString() {
+		return "PrivilegesFeatures [id=" + id + ", exFeaturename=" + exFeaturename
+				+ ", privilegesModules=" + privilegesModules + ", exIsActive="
+				+ exIsActive + ", exIsDelete=" + exIsDelete + ", exCreateDate="
+				+ exCreateDate + ", exUpdateDate=" + exUpdateDate + "]";
+	}
+
+	
+
+}

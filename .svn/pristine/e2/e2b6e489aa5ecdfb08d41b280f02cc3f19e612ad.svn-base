@@ -1,0 +1,157 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class HostelConfigureDetailRequest {
+	private Long id;       
+	@NotNull(message = "college is required")//get studentdetails who selected hostel
+	private Long college;
+	@NotNull(message = "semester is required")
+	private Long semester;
+	@NotNull(message = "degree is required")
+	private Long degree;
+	@NotNull(message = "programmes is required")
+	private Long programmes;
+	@NotNull(message = "programmeYear is required")
+	private Long programmeYear;
+	@NotNull(message = "AcademicYear is required")
+	private Long academicYear;
+	@NotNull(message = "hostel is required")
+	private Long hostel;
+	
+	private String exMonthName;              //HostelConfiguration
+	private Double exAmount ;
+	private String exFeename;
+	@NotNull(message = "student is required")
+	private String  student ;
+	@NotNull(message = "hostelfeetype is required")
+	private Long hostelfeetype;
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a StartDate")
+	private String exStartDate;
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a endDate")
+	private String exEndDate;
+	@NotNull(message = "Please provide a exIsActive 0/1")
+	private Boolean exIsActive;
+	private Long user;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getCollege() {
+		return college;
+	}
+	public void setCollege(Long college) {
+		this.college = college;
+	}
+	public Long getSemester() {
+		return semester;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public Long getHostel() {
+		return hostel;
+	}
+	public void setHostel(Long hostel) {
+		this.hostel = hostel;
+	}
+
+	public String getExFeename() {
+		return exFeename;
+	}
+	public void setExFeename(String exFeename) {
+		this.exFeename = exFeename;
+	}
+	
+	
+
+	public String getStudent() {
+		return student;
+	}
+	public void setStudent(String student) {
+		this.student = student;
+	}
+	public Long getHostelfeetype() {
+		return hostelfeetype;
+	}
+	public void setHostelfeetype(Long hostelfeetype) {
+		this.hostelfeetype = hostelfeetype;
+	}
+	
+	public String getExMonthName() {
+		return exMonthName;
+	}
+	public void setExMonthName(String exMonthName) {
+		this.exMonthName = exMonthName;
+	}
+	public Double getExAmount() {
+		return exAmount;
+	}
+	public void setExAmount(Double exAmount) {
+		this.exAmount = exAmount;
+	}
+	public String getExStartDate() {
+		return exStartDate;
+	}
+	public void setExStartDate(String exStartDate) {
+		this.exStartDate = exStartDate;
+	}
+	public String getExEndDate() {
+		return exEndDate;
+	}
+	public void setExEndDate(String exEndDate) {
+		this.exEndDate = exEndDate;
+	}
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	@Override
+	public String toString() {
+		return "HostelConfigureDetailRequest [id=" + id + ", college=" + college + ", semester=" + semester
+				+ ", degree=" + degree + ", programmes=" + programmes + ", programmeYear=" + programmeYear
+				+ ", academicYear=" + academicYear + ", hostel=" + hostel + ", exMonthName=" + exMonthName
+				+ ", exAmount=" + exAmount + ", exFeename=" + exFeename + ", student=" + student + ", hostelfeetype="
+				+ hostelfeetype + ", exStartDate=" + exStartDate + ", exEndDate=" + exEndDate + ", exIsActive="
+				+ exIsActive + ", user=" + user + "]";
+	}
+	
+	
+	
+}

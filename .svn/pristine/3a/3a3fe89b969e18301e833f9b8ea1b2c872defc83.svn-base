@@ -1,0 +1,34 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.StudentIdSetting;
+
+public interface StudentIdSettingRepository extends CrudRepository<StudentIdSetting, Long>{
+	
+	List<StudentIdSetting> findByCollegesIdAndProgrammesIdAndExIsActiveAndExIsDelete(Long college , Long program , boolean is_active , boolean is_delete);
+
+	List<StudentIdSetting> findByExIsDelete(boolean delete);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_student_id_setting set ex_is_delete = ?1 , ex_is_active = ?2 where id =?3", nativeQuery = true)
+	int deleteStudentIdFormat(Boolean exIsDelete, Boolean ex_is_active,Long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_student_id_setting set colleges_id = ?1 , academic_year_id = ?2, programmes_id = ?3, ex_id_value = ?4, ex_is_active = ?5 ,ex_start_with = ?6 ,ex_update_date = ?7 where id =?8", nativeQuery = true)
+	int updateStudentIdFormat( Long colleges,Long academicYear, Long programmes, String exIdValue,Boolean exIsActive, String exStartWith, Date date, Long id);
+
+	@Query(value = "SELECT * FROM  ex_student_id_setting  where ex_start_with =?1 and ex_is_delete=?2 and colleges_id =?3 and academic_year_id=?4 "
+			+ "and programmes_id=?5", nativeQuery = true)
+	List<StudentIdSetting> checkduplicationcheck(String exStartWith, boolean delete, Long colleges, Long academicYear, Long programmes,Long id);
+
+}

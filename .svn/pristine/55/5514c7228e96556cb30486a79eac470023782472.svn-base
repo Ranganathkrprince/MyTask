@@ -1,0 +1,31 @@
+package com.niftem.app.service;
+
+import java.util.Map;
+
+import com.niftem.app.entity.PrivilegesModules;
+import com.niftem.app.model.PrivilegesFeaturesRequest;
+import com.niftem.app.model.PrivilegesRequest;
+import com.niftem.app.model.RoleRequest;
+
+public interface RoleService {
+
+	Map<String, String> saveRole(RoleRequest role);
+	Map<String, String> updateRole(RoleRequest role);
+	Map<String, Object>getRole();
+	Map<String, String> deleteRole(Long id);
+
+	Map<String, String> savePrivilegesModules(PrivilegesModules module);
+	Map<String, String> updatePrivilegesModules(PrivilegesModules module);
+	Map<String, Object> getPrivilegesModules();
+	Map<String, String> deletePrivilegesModules(Long id);
+	
+	Map<String, String> savePrivilegesFeatures(PrivilegesFeaturesRequest request);
+	Map<String, String> updatePrivilegesFeatures(PrivilegesFeaturesRequest request);
+	Map<String, Object> getPrivilegesFeatures();
+	Map<String, String> deletePrivilegesFeatures(Long id);
+	
+
+	Map<String, String> saveallPrivileges(PrivilegesRequest request);
+	Map<String, Object> getPrivileges(Long roleid);
+	Map<String, String> deletePrivileges(Long id);
+}

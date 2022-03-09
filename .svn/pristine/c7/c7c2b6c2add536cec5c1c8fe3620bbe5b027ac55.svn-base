@@ -1,0 +1,87 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.ExamAcademicYearProgrammes;
+
+public interface ExamAcademicYearProgrammesRepository extends CrudRepository<ExamAcademicYearProgrammes, Long> {
+	
+
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_exam_academic_year_programmes set ex_is_time_table = ?1 where programmes_id = ?2 and academicyear_id = ?3 and  exam_announcement_id = ?4 and registration_type_id = ?5 and user_id=?6  and ex_exam_type=?7 and department_id = ?8", nativeQuery = true)
+	int updateTimeTablestatus(Boolean timetable, Long programmes, Long academicYear, Long examAnnouncement,
+			Long registrationType, Long user, Long type , Long dept);
+	
+	List<ExamAcademicYearProgrammes> findByProgrammesId(Long programmes);
+
+	List<ExamAcademicYearProgrammes> findByAcademicYearIdAndExamAnnouncementIdAndProgrammesId(Long academicYear,
+			Long examAnnouncement, Long programmes);
+
+	List<ExamAcademicYearProgrammes> findByAcademicYearIdAndExamAnnouncementIdAndProgrammesIdAndExExamTypeAndDegreeIdAndDepartmentId(
+			Long academicYear, Long examAnnouncement, Long programmes, Long exExamType, Long degree , Long dept);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_exam_academic_year_programmes set ex_is_time_table = ?1 where programmes_id = ?2 and academicyear_id = ?3 and  exam_announcement_id = ?4  and user_id=?5  and ex_exam_type=?6", nativeQuery = true)
+	int updateTimeTables(Boolean timetable, Long programmes, Long academicYear, Long examAnnouncement,
+			Long user, Long type);
+
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_exam_academic_year_programmes set ex_is_publish = ?1 where programmes_id = ?2 and academicyear_id = ?3 and  exam_announcement_id = ?4  and user_id=?5  and ex_exam_type=?6 and  department_id =?7 ", nativeQuery = true)
+	int publishresult(Boolean publish, Long programmes, Long academicYear, Long examAnnouncement, Long user,
+			Long exExamType ,Long dept);
+
+	List<ExamAcademicYearProgrammes> findByAcademicYearIdAndExamAnnouncementIdAndProgrammesIdAndExExamTypeAndDegreeIdAndDepartmentIdAndRegistrationId(
+			Long academicYear, Long examAnnouncement, Long programmes, Long exExamType, Long degree, Long department,
+			Long registrationType);
+
+	List<ExamAcademicYearProgrammes> findByAcademicYearIdAndExamAnnouncementIdAndProgrammesIdAndExExamTypeAndDegreeIdAndDepartmentIdAndRegistrationIdAndExIsPublish(
+			Long academicYear, Long examAnnouncement, Long programmes, Long exExamType, Long degree, Long deparment,
+			Long registrationType, boolean b);
+
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_exam_academic_year_programmes set ex_is_publish = ?1 where programmes_id = ?2 and academicyear_id = ?3 and  exam_announcement_id = ?4  and user_id=?5  and ex_exam_type=?6 and registration_type_id =?7 and  department_id =?8 ", nativeQuery = true)
+	int publishresultEndTerm(Boolean publish, Long programmes, Long academicYear, Long examAnnouncement, Long user,
+			Long exExamType, Long registrationType, Long department);
+
+	List<ExamAcademicYearProgrammes> findByAcademicYearIdAndExamAnnouncementIdAndProgrammesIdAndExExamTypeAndDegreeIdAndDepartmentIdAndExIsPublish(
+			Long academicYear, Long examAnnouncement, Long programmes, Long exExamType, Long degree, Long deparment,
+			boolean b);
+
+	
+	
+
+/*	@Modifying
+	@Transactional
+	@Query(value = "update ex_exam_academic_year_programmes set ex_is_attendence = ?1  where programmes_id = ?2 and academicyear_id = ?3 and  exam_announcement_id = ?4 and registration_type_id = ?5", nativeQuery = true)
+	int updateAttendencestatus(Boolean attendence, Long programmes, Long academicYear, Long examAnnouncement,
+			Long registrationType);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_exam_academic_year_programmes set ex_is_barcode = ?1  where programmes_id = ?2 and academicyear_id = ?3 and  exam_announcement_id = ?4 and registration_type_id = ?5", nativeQuery = true)
+
+	int updateBarcodestatus(Boolean barcode, Long programmes, Long academicYear, Long examAnnouncement,
+			Long registrationType);*/
+
+
+	
+
+	
+
+}

@@ -1,0 +1,608 @@
+package com.niftem.app.implementation;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.niftem.app.dao.DashboardDao;
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.Dashboard;
+import com.niftem.app.entity.Programmes;
+import com.niftem.app.entity.User;
+import com.niftem.app.model.Count;
+import com.niftem.app.service.DashBoardService;
+import com.niftem.app.util.AutoManager;
+
+@Service
+@Transactional
+public class DashBoardImpl extends AutoManager implements DashBoardService {
+	private static Logger logger = LoggerFactory.getLogger("master-log");
+	@Autowired
+	DashboardDao dashDao;
+
+	@Override
+	public Map<String, String> saveDashboardCount(Count request) {
+		// TODO Auto-generated method stub
+
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+
+			if (request.getAcademicYear() == null || request.getAcademicYear().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Academicyear is required");
+				return info;
+			}
+
+			if (request.getUser() == null || request.getUser().equals("")) {
+				info.put("status", "2");
+				info.put("message", "user is required");
+				return info;
+			}
+
+			List<User> tasks = super.user.findByIdAndExIsDeleteAndExIsActive(request.getUser(), false, true);
+			if (tasks.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "User Id not present");
+				return info;
+			}
+
+			List<Dashboard> DashboardCount = super.dashboardRepository
+					.findByUserIdAndExIsDeleteAndExIsActive(request.getUser(), false, true);
+			if (DashboardCount.size() > 0) {
+				info.put("status", "2");
+				info.put("message", "Records already present ");
+				return info;
+			}
+
+			// String models = String.join(",", request.getAcademicyear());
+
+			List<String> academiclist = request.getAcademicYear().stream().map(s -> String.valueOf(s))
+					.collect(Collectors.toList());
+			;
+			String academicyear = String.join(", ", academiclist);
+
+			List<String> collegelist = request.getColleges().stream().map(s -> String.valueOf(s))
+					.collect(Collectors.toList());
+			;
+			String college = String.join(", ", collegelist);
+
+			List<String> Programmeslist = request.getProgrammes().stream().map(s -> String.valueOf(s))
+					.collect(Collectors.toList());
+			;
+			String Programmes = String.join(", ", Programmeslist);
+
+			List<String> Programmeyearlist = request.getProgrammeYear().stream().map(s -> String.valueOf(s))
+					.collect(Collectors.toList());
+			;
+			String Programmeyear = String.join(", ", Programmeyearlist);
+
+			List<String> Semesterlist = request.getSemester().stream().map(s -> String.valueOf(s))
+					.collect(Collectors.toList());
+			;
+			String Semester = String.join(", ", Semesterlist);
+
+			List<String> courseslist = request.getCourses().stream().map(s -> String.valueOf(s))
+					.collect(Collectors.toList());
+			;
+			String courses = String.join(", ", courseslist);
+			List<String> degreelist = request.getDegree().stream().map(s -> String.valueOf(s))
+					.collect(Collectors.toList());
+			;
+			String degree = String.join(", ", degreelist);
+
+			SimpleDateFormat date1 = new SimpleDateFormat("dd/MM/yyyy");
+
+			Dashboard Dashboard = new Dashboard();
+			Date date = new Date();
+			Dashboard.setAcademicYear(academicyear);
+			Dashboard.setColleges(college);
+			Dashboard.setProgrammes(Programmes);
+			Dashboard.setProgrammeYear(Programmeyear);
+			Dashboard.setSemester(Semester);
+			Dashboard.setStartDate(request.getStartDate() == null ? null : date1.parse(request.getStartDate()));
+			Dashboard.setEndDate(request.getEndDate() == null ? null : date1.parse(request.getEndDate()));
+			Dashboard.setUser(tasks.get(0));
+			Dashboard.setDegree(degree);
+			Dashboard.setExIsActive(true);
+			Dashboard.setExIsDelete(false);
+			Dashboard.setExCreateDate(date);
+			Dashboard.setCourses(courses);
+
+			super.dashboardRepository.save(Dashboard);
+			info.put("status", "1");
+			info.put("message", "DashboardCount created successfully");
+			// info.put("id", staffpersonal.getId().toString());
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+
+	}
+
+	@Override
+	public Map<String, Object> displayDashboardCount(Count request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List dataList = new LinkedList();
+			logger.info("Request for report" + request.toString());
+			SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+
+			List<Dashboard> DashboardCount = super.dashboardRepository
+					.findByUserIdAndExIsDeleteAndExIsActive(request.getUser(), false, true);
+			if (DashboardCount.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Records not present ");
+				return info;
+			}
+
+			SimpleDateFormat date1 = new SimpleDateFormat("dd/MM/yyyy");
+
+			request.setStartDate(DashboardCount.get(0).getStartDate() == null ? ""
+					: date1.format(DashboardCount.get(0).getStartDate()));
+			request.setEndDate(
+					DashboardCount.get(0).getEndDate() == null ? "" : date1.format(DashboardCount.get(0).getEndDate()));
+
+			String sacademic = DashboardCount.get(0).getAcademicYear();
+			String scollege = DashboardCount.get(0).getColleges();
+			String sprogram = DashboardCount.get(0).getProgrammes();
+			String sprogramyear = DashboardCount.get(0).getProgrammeYear();
+			String ssemester = DashboardCount.get(0).getSemester();
+			String scourses = DashboardCount.get(0).getCourses();
+			String sdegree = DashboardCount.get(0).getDegree();
+
+			if (sacademic.equals("")) {
+				info.put("status", "2");
+				info.put("message", "Academic Year is required");
+				return info;
+			}
+
+			String query = "";
+
+			logger.info("Query " + query);
+			logger.info("sacademic" + sacademic);
+			long totalNoOfStudents = dashDao.studentCount(scollege, sdegree, sprogram, sacademic);
+
+			Map<Object, Object> students1 = new HashMap<Object, Object>();
+			Map<Object, Object> students = new HashMap<Object, Object>();
+			students1.put("totalNoOfStudents", totalNoOfStudents);
+			students.put("studentCount", students1);
+			
+			List<Object[]> regularcoursesList  = dashDao.totalCourses(scollege , sprogram,sacademic,ssemester,sprogramyear , 1L,sdegree, sacademic);
+			
+			long regularcourseList = 0;
+			for(int i = 0 ; i<regularcoursesList.size() ; i++) {
+				regularcourseList = regularcourseList+castObjectToLong(regularcoursesList.get(i));
+			}
+			
+			long supplycoursescount = 0;
+			List<Object[]> supplycoursesList  = dashDao.totalCourses(scollege , sprogram,sacademic,ssemester,sprogramyear , 2L ,sdegree , sacademic);
+			
+			for(int i = 0 ; i<supplycoursesList.size() ; i++) {
+				supplycoursescount = supplycoursescount+castObjectToLong(supplycoursesList.get(i));
+			}
+			
+			long totalcourses = regularcourseList+supplycoursescount;
+
+			Map<Object, Object> staffs1 = new HashMap<Object, Object>();
+			Map<Object, Object> staffs = new HashMap<Object, Object>();
+			staffs1.put("totalNoOfStaff", dashDao.staffCount(scollege, sdegree, sprogram));
+			staffs.put("staffCount", staffs1);
+			
+			/*
+			 * long totalCourses = dashDao.totalCourses(scollege, sdegree, sprogram,
+			 * sacademic, sprogramyear, ssemester); Map<Object, Object> courses1 = new
+			 * HashMap<Object, Object>(); Map<Object, Object> courses = new HashMap<Object,
+			 * Object>(); courses1.put("totalNoOfCourses", totalCourses);
+			 * courses.put("coursesCount", courses1);
+			 */
+
+			long totalExamAttendance = dashDao.totalExamAttendance(scollege, sdegree, sprogram, sacademic, ssemester);
+			Map<Object, Object> attendance1 = new HashMap<Object, Object>();
+			Map<Object, Object> attendance = new HashMap<Object, Object>();
+			
+			attendance1.put("totalCourses", totalcourses);
+			attendance1.put("attendanceGenerated", totalExamAttendance);
+			attendance1.put("pending", totalcourses-totalExamAttendance);
+			attendance.put("attendance", attendance1);	
+
+			long totalBarcodeGenerated = dashDao.totalBarcodeGenrated(scollege, sdegree, sprogram, sacademic, ssemester,sprogramyear);
+
+			Map<Object, Object> barcode1 = new HashMap<Object, Object>();
+			Map<Object, Object> barcode = new HashMap<Object, Object>();
+			barcode1.put("totalBarcodeGenerated", totalBarcodeGenerated);
+			barcode1.put("pendingBarcode", (totalcourses * totalNoOfStudents) - totalBarcodeGenerated);
+			barcode.put("barcodeCount", barcode1);
+			
+
+			Map<Object, Object> questionpaper1 = new HashMap<Object, Object>();
+			Map<Object, Object> questionpaper = new HashMap<Object, Object>();
+			questionpaper1.put("totalQuestionPaperGenarated",dashDao.totalQuestionPaperGenrated(sdegree, sprogram, sacademic, scourses));
+			questionpaper.put("questionPaperGeneratedCount", questionpaper1);
+
+			Map<Object, Object> timetable1 = new HashMap<Object, Object>();
+			Map<Object, Object> timetable = new HashMap<Object, Object>();
+
+			long timetablecreated = dashDao.totalExamTimeTable(sdegree, sprogram, sacademic, ssemester,sprogramyear);
+			long timetablegenrated = dashDao.totalExamTimeTableToBeGenerated(scollege, sdegree, sprogram,sacademic, ssemester, sprogramyear);
+
+			timetable1.put("timeTableGenerated", timetablegenrated);
+			timetable1.put("totalCourses", totalcourses);
+			timetable1.put("timeTableCreated", timetablecreated);
+			timetable.put("timeTable", timetable1);
+			
+			
+
+			Map<Object, Object> registration1 = new HashMap<Object, Object>();
+			Map<Object, Object> registration = new HashMap<Object, Object>();
+			registration1.put("regularCount",dashDao.getRegisterCount(scollege, sdegree, sprogram, sacademic, sprogramyear, ssemester));
+			registration1.put("supplyCount",dashDao.getsupplyCount(scollege, sdegree, sprogram, sacademic, sprogramyear, ssemester));
+			registration1.put("reEvaluationCount",dashDao.getreEvaluationCount(scollege, sdegree, sprogram, sacademic, sprogramyear, ssemester));
+			registration1.put("photocopyCount",dashDao.getphotoCopyCount(scollege, sdegree, sprogram, sacademic, sprogramyear, ssemester));
+			registration.put("registrationCount", registration1);
+				
+			
+			
+			Map<Object, Object> gradereport = new HashMap<Object, Object>();
+			Map<Object, Object> gradereport1 = new HashMap<Object, Object>();	
+			
+			gradereport1.put("totalCourses", totalcourses);
+			gradereport1.put("gradeReportCreated", dashDao.gradereport(scollege , sprogram,sacademic,ssemester,sprogramyear));
+			gradereport.put("gradereport", gradereport1);
+						
+			
+			Map<Object, Object> transaction = new HashMap<Object, Object>();
+			Map<Object, Object> transaction1 = new HashMap<Object, Object>();
+			
+			long webAppTransactions = dashDao.webAppTransactions(scollege , sprogram,sacademic,ssemester,sprogramyear , request.getStartDate(),request.getEndDate());
+			long mobileAppTransactions = dashDao.mobileAppTransactions(scollege , sprogram,sacademic,ssemester,sprogramyear , request.getStartDate(),request.getEndDate());
+			
+			transaction1.put("webAppTransactions", webAppTransactions);			
+			transaction1.put("webAppCollection", dashDao.webAppCollection(scollege , sprogram,sacademic,ssemester,sprogramyear,request.getStartDate(),request.getEndDate()));			
+			transaction1.put("mobileAppTransactions", mobileAppTransactions);			
+			transaction1.put("mobileAppCollection", dashDao.mobileAppCollection(scollege , sprogram,sacademic,ssemester,sprogramyear,request.getStartDate(),request.getEndDate()));			
+			transaction1.put("totalTransactions",webAppTransactions+mobileAppTransactions);		
+			
+			transaction.put("transaction", transaction1);
+			
+
+			Map<Object, Object> invigilator1 = new HashMap<Object, Object>();
+			Map<Object, Object> invigilator = new HashMap<Object, Object>();
+			invigilator1.put("totalInvigilator", dashDao.getInvigilatorCount(scollege, sdegree, sacademic));
+			invigilator.put("invigilatorCount", invigilator1);
+			
+			
+			gradereport1.put("totalCourses", dashDao.totalCourses(scollege, sdegree, sprogram,sacademic, sprogramyear, ssemester));
+			gradereport1.put("gradeReportCreated", dashDao.gradereport(scollege , sprogram,sacademic,ssemester,sprogramyear));
+			gradereport.put("gradereport", gradereport1);	
+			
+			
+			Map<Object, Object> semesterprogress = new HashMap<Object, Object>();
+			Map<Object, Object> semesterprogress1 = new HashMap<Object, Object>();
+			
+			semesterprogress1.put("totalStudent", totalNoOfStudents);
+			semesterprogress1.put("generatedReports", dashDao.semesterProgress(scollege , sprogram,sacademic,ssemester,sprogramyear));
+			semesterprogress.put("semesterProgress", semesterprogress1);
+
+			
+			dataList.add(students);
+			dataList.add(staffs);
+			//dataList.add(courses);
+			dataList.add(attendance);
+			dataList.add(barcode);
+			dataList.add(questionpaper);
+			dataList.add(timetable);
+			dataList.add(registration);
+			dataList.add(invigilator);
+			dataList.add(transaction);
+			dataList.add(gradereport);
+			dataList.add(semesterprogress);
+			info.put("status", "1");
+			info.put("count", dataList);
+			return info;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+
+	public static Long castObjectToLong(Object object) {
+		return new Long(object.toString());
+	}
+
+	@Override
+	public Map<String, String> updateDashboardCount(Count request) {
+		// TODO Auto-generated method stub
+
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+
+			if (request.getAcademicYear() == null || request.getAcademicYear().equals("")) {
+				info.put("status", "2");
+				info.put("message", "AcademicYear is required");
+				return info;
+			}
+
+			if (request.getUser() == null || request.getUser().equals("")) {
+				info.put("status", "2");
+				info.put("message", "user is required");
+				return info;
+			}
+
+			List<User> tasks = super.user.findByIdAndExIsDeleteAndExIsActive(request.getUser(), false, true);
+			if (tasks.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "User Id not present");
+				return info;
+			}
+
+			List<Dashboard> DashboardCount = super.dashboardRepository
+					.findByUserIdAndExIsDeleteAndExIsActive(request.getUser(), false, true);
+			if (DashboardCount.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Records not present ");
+				return info;
+			}
+			if (request.getStartDate().trim().isEmpty() || request.getStartDate().equalsIgnoreCase("null")) {
+				request.setStartDate(null);
+			}
+
+			if (request.getEndDate().trim().isEmpty() || request.getEndDate().equalsIgnoreCase("null")) {
+				request.setEndDate(null);
+			}
+
+			List<String> academiclist = request.getAcademicYear().stream().map(s -> String.valueOf(s))
+					.collect(Collectors.toList());
+			;
+			String academicYear = String.join(", ", academiclist);
+
+			List<String> collegelist = request.getColleges().stream().map(s -> String.valueOf(s))
+					.collect(Collectors.toList());
+			;
+			String college = String.join(", ", collegelist);
+
+			List<String> programmeslist = request.getProgrammes().stream().map(s -> String.valueOf(s))
+					.collect(Collectors.toList());
+			;
+			String programmes = String.join(", ", programmeslist);
+
+			List<String> programmeyearlist = request.getProgrammeYear().stream().map(s -> String.valueOf(s))
+					.collect(Collectors.toList());
+			;
+			String programmeYear = String.join(", ", programmeyearlist);
+
+			List<String> semesterlist = request.getSemester().stream().map(s -> String.valueOf(s))
+					.collect(Collectors.toList());
+			;
+			String semester = String.join(", ", semesterlist);
+
+			List<String> courseslist = request.getCourses().stream().map(s -> String.valueOf(s))
+					.collect(Collectors.toList());
+			;
+			String courses = String.join(", ", courseslist);
+			List<String> degreelist = request.getDegree().stream().map(s -> String.valueOf(s))
+					.collect(Collectors.toList());
+			;
+			String degree = String.join(", ", degreelist);
+
+			SimpleDateFormat date1 = new SimpleDateFormat("dd/MM/yyyy");
+			Date date = new Date();
+
+			int result = super.dashboardRepository.updaterecords(academicYear, college, programmes, programmeYear,
+					semester, request.getStartDate() == null ? null : date1.parse(request.getStartDate()),
+					request.getEndDate() == null ? null : date1.parse(request.getEndDate()), date, degree,
+					request.getUser(), courses);
+			if (result == 0) {
+				info.put("status", "2");
+				info.put("message", "something went wrong in update query");
+				return info;
+
+			}
+
+			info.put("status", "1");
+			info.put("message", "DashboardCount updated successfully");
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getCountOnAcademicYear(Count request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List<AcademicYear> academic = super.academicYear.findByExIsDelete(false);
+			if (academic.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+			List dataList = new LinkedList();
+			for(AcademicYear a :academic) {				
+				Map<Object, Object> data = new HashMap<Object, Object>();
+				data.put("academicYear", a.getExYear());
+				data.put("studentcount", dashDao.getStudentCount(a.getId()));
+				dataList.add(data);
+			}
+			
+			info.put("details", dataList);
+			info.put("status", "1");
+			info.put("message", "success");
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getCountOnProgram(Count request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List<Programmes> program = super.programmes.findByExIsDelete(false);
+			if (program.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "Programmes not present");
+				return info;
+			}
+			List dataList = new LinkedList();
+			for(Programmes a :program) {				
+				Map<Object, Object> data = new HashMap<Object, Object>();
+				data.put("programme", a.getExName()+" ("+(a.getExIdentifier())+")");
+				data.put("studentcount", dashDao.getStudentCountOnProgram(a.getId()));
+				dataList.add(data);
+			}
+			
+			
+			info.put("details", dataList);
+			info.put("status", "1");
+			info.put("message", "success");
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getCountOnGender(Count request) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {		
+			List dataList = new LinkedList();	
+				Map<Object, Object> data = new HashMap<Object, Object>();
+				data.put("male", dashDao.getCountOnGender("Male"));
+				data.put("female", dashDao.getCountOnGender("Female"));
+				dataList.add(data);
+		
+			info.put("details", dataList);
+			info.put("status", "1");
+			info.put("message", "success");
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+
+//	@Override
+//	public Map<String, Object> getDashboard(Count request) {
+//		// TODO Auto-generated method stub
+//		Map<String, Object> info = new LinkedHashMap<>();
+//		try {
+//			if (request.getUser() == null || request.getUser().equals("")) {
+//				info.put("status", "2");
+//				info.put("message", "user is required");
+//				return info;
+//			}
+//
+//			List<Dashboard> tasks = super.dashboardRepository.findByExIsDeleteAndExIsActive(false, true);
+//			if (tasks.size() <= 0) {
+//				info.put("status", "2");
+//				info.put("message", "dashboard count  is not present");
+//				return info;
+//			}
+//			SimpleDateFormat date1 = new SimpleDateFormat("dd/MM/yyyy");
+//
+//			request.setStartDate(tasks.get(0).getStartDate() == null ? ""
+//					: date1.format(tasks.get(0).getStartDate()));
+//			request.setEndDate(
+//					tasks.get(0).getEndDate() == null ? "" : date1.format(tasks.get(0).getEndDate()));
+//
+//			String academic = tasks.get(0).getAcademicYear();
+//			String college = tasks.get(0).getColleges();
+//			String program = tasks.get(0).getProgrammes();
+//			String programyear = tasks.get(0).getProgrammeYear();
+//			String semester = tasks.get(0).getSemester();
+//			String courses = tasks.get(0).getCourses();
+//			String degree = tasks.get(0).getDegree();
+//
+//
+//			List dataList = new LinkedList();
+//			for (Dashboard e : tasks) {
+//				Map<Object, Object> dashboard = new HashMap<Object, Object>();
+//				
+//				dashboard.put("id", e.getId());
+//				dashboard.put("academicYearId", e.getAcademicYear());
+//				dashboard.put("collegeId", e.getColleges());
+//				dashboard.put("programmeYearId", e.getProgrammeYear());
+//				dashboard.put("programmesId ", e.getProgrammes());
+//				dashboard.put("coursesId", e.getCourses());
+//				dashboard.put("degreeId", e.getDegree());
+//				dashboard.put("semesterid", e.getSemester());
+////				dashboard.put("userId", e.getUser());
+//				dataList.add(dashboard);
+//
+//			}
+//		} catch (Exception e) {
+//			logger.error("Exception occured" + e);
+//			StringWriter errors = new StringWriter();
+//			e.printStackTrace(new PrintWriter(errors));
+//			logger.error(errors.toString());
+//			info.put("status", "0");
+//			info.put("message", "something went wrong");
+//			return info;
+//		}
+//		return info;
+//
+//	}
+
+}

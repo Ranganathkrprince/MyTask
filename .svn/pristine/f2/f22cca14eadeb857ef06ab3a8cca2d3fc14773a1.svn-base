@@ -1,0 +1,255 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+@Entity
+@Table(name = "ex_evaluation_details")
+public class EvaluationDetails {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "expert_id", nullable = true)
+	private EvaluatorList expert;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "registrationType_id", nullable = false)
+	private RegistrationType registrationType;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "courses_id", nullable = false)
+	private Courses courses;
+
+	
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "department_id", nullable = true)
+	private Department department;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "allocation_user_id", nullable = true)
+	private User allocationUser;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "re_allocation_user_id", nullable = true)
+	private User reAllocationUser;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "exam_announcement_id", nullable = true)
+	private ExamAnnouncement examAnnouncement;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+	
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsReallocated;
+	
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "re_allocation_expert_id", nullable = true)
+	private Staffpersonal reAllocationExpert;
+	 	 
+	private String exTimeLimit;
+	private Long exAllocatedBooklet;
+	private Long exIntiAllocatedBooklet;
+	private Long exLimitPerDay;
+	public Long getId() {
+		return id;
+	}
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+	public EvaluatorList getExpert() {
+		return expert;
+	}
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+	public Semster getSemester() {
+		return semester;
+	}
+	public Degree getDegree() {
+		return degree;
+	}
+	public RegistrationType getRegistrationType() {
+		return registrationType;
+	}
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+	public Courses getCourses() {
+		return courses;
+	}
+	public Department getDepartment() {
+		return department;
+	}
+	public User getAllocationUser() {
+		return allocationUser;
+	}
+	public User getReAllocationUser() {
+		return reAllocationUser;
+	}
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+	public Boolean getExIsReallocated() {
+		return exIsReallocated;
+	}
+	public Staffpersonal getReAllocationExpert() {
+		return reAllocationExpert;
+	}
+	public String getExTimeLimit() {
+		return exTimeLimit;
+	}
+	public Long getExAllocatedBooklet() {
+		return exAllocatedBooklet;
+	}
+	public Long getExIntiAllocatedBooklet() {
+		return exIntiAllocatedBooklet;
+	}
+	public Long getExLimitPerDay() {
+		return exLimitPerDay;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setExpert(EvaluatorList expert) {
+		this.expert = expert;
+	}
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+	public void setRegistrationType(RegistrationType registrationType) {
+		this.registrationType = registrationType;
+	}
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+	public void setAllocationUser(User allocationUser) {
+		this.allocationUser = allocationUser;
+	}
+	public void setReAllocationUser(User reAllocationUser) {
+		this.reAllocationUser = reAllocationUser;
+	}
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+	public void setExIsReallocated(Boolean exIsReallocated) {
+		this.exIsReallocated = exIsReallocated;
+	}
+	public void setReAllocationExpert(Staffpersonal reAllocationExpert) {
+		this.reAllocationExpert = reAllocationExpert;
+	}
+	public void setExTimeLimit(String exTimeLimit) {
+		this.exTimeLimit = exTimeLimit;
+	}
+	public void setExAllocatedBooklet(Long exAllocatedBooklet) {
+		this.exAllocatedBooklet = exAllocatedBooklet;
+	}
+	public void setExIntiAllocatedBooklet(Long exIntiAllocatedBooklet) {
+		this.exIntiAllocatedBooklet = exIntiAllocatedBooklet;
+	}
+	public void setExLimitPerDay(Long exLimitPerDay) {
+		this.exLimitPerDay = exLimitPerDay;
+	}
+	@Override
+	public String toString() {
+		return "EvaluationDetails [id=" + id + ", academicYear=" + academicYear + ", expert=" + expert
+				+ ", programmeYear=" + programmeYear + ", semester=" + semester + ", degree=" + degree
+				+ ", registrationType=" + registrationType + ", programmes=" + programmes + ", courses=" + courses
+				+ ", department=" + department + ", allocationUser=" + allocationUser + ", reAllocationUser="
+				+ reAllocationUser + ", examAnnouncement=" + examAnnouncement + ", exCreateDate=" + exCreateDate
+				+ ", exUpdateDate=" + exUpdateDate + ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete
+				+ ", exIsReallocated=" + exIsReallocated + ", reAllocationExpert=" + reAllocationExpert
+				+ ", exTimeLimit=" + exTimeLimit + ", exAllocatedBooklet=" + exAllocatedBooklet
+				+ ", exIntiAllocatedBooklet=" + exIntiAllocatedBooklet + ", exLimitPerDay=" + exLimitPerDay + "]";
+	}
+	
+}

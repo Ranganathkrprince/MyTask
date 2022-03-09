@@ -1,0 +1,45 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.ProgrammeYear;
+
+public interface ProgrammeYearRepository extends CrudRepository<ProgrammeYear, Long>{
+
+	List<ProgrammeYear> findByExIsDelete(boolean is_delete);
+	
+	Optional<ProgrammeYear> findByIdAndExIsActiveAndExIsDelete( Long id, Boolean is_active , Boolean is_delete);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_programme_year set ex_is_delete = ?1 ,ex_is_active=?2 where id =?3", nativeQuery = true)
+	int deleteProgrammeYear(Boolean exIsDelete, Boolean exIsactive, Long id);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_programme_year set ex_description =?2  , ex_name = ?1 ,  ex_update_date = ?3 , ex_is_active =?4 , ex_identifier =?5 where id =?6", nativeQuery = true)
+	int updateProgrammeYearRecord(String exName, String exdescription, Date date, Boolean exIsActive,int identifire  , Long id);
+
+	List<ProgrammeYear> findByExNameAndExIsDelete(String exName , Boolean is_delete);
+
+	Optional<ProgrammeYear> findByExIsDeleteAndExIsActiveAndId(Boolean delete, Boolean active, Long programmeYear);
+	
+	Optional<ProgrammeYear> findByExNameAndExIsActiveAndExIsDelete(String ExName, Boolean active, Boolean delete);
+
+	Optional<ProgrammeYear> findByIdAndExIsDeleteAndExIsActive(Long programmeyear, boolean b, boolean c);
+
+	List<ProgrammeYear> findByExIdentifierAndExIsDeleteAndExIsActive(Integer exIdentifier, boolean b, boolean c);
+
+	Optional<ProgrammeYear> findByExIsDeleteAndExIsActiveAndId(boolean delete, boolean active,
+			ProgrammeYear programmeYear);
+	
+	//newly added
+
+}

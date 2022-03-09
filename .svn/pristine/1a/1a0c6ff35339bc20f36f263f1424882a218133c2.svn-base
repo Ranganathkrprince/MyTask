@@ -1,0 +1,359 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.springframework.web.multipart.MultipartFile;
+
+public class InternalMarksRequest {
+
+	private Long id;
+	
+	@NotNull(message="degree is required")
+	private Long degree;
+	
+	@NotNull(message="academicyear is required")
+	private Long academicYear;
+	
+	@NotNull(message="programmes is required")
+	private Long programmes;
+	
+	@NotNull(message="courses is required")
+	private Long courses;
+	
+	@NotNull(message="colleges is required")
+	private Long colleges;
+	
+	@NotNull(message="semester is required")
+	private Long semester;
+	
+	@NotNull(message="programmeyear is required")
+	private Long programmeYear;
+	
+	@NotNull(message = "department is required")
+	private Long department;
+	
+	private Long section;
+	
+	@NotNull(message = "RoomId is required")
+	private Long roomId;
+	
+	@NotNull(message = "RoomId is required")
+	private Long exExamType;
+	
+	private String semeserType;
+	
+	private String startDate;
+	
+	private List<Long> course;
+	
+	private List<Long> semesters;
+		
+	private MultipartFile exIaFile;
+	private Long user;
+	private Long staff;
+	private Long examAnnouncement;	
+	private Long registrationType;
+	private String exIdentifier;
+	private Long coursesType;
+	private Long studentAdmissionId;
+	
+    private String exMidTermMarks;
+	private String exAttendenceMarks;
+	
+	private String exAssignmentMarks;
+	
+	private String exCaseStudy;
+	
+	private String exQuizMarks;
+	private Double exPracticalRecordMarks;
+	private Double exEndTermMarks;
+	private String exEndTermRemark;
+
+	private Long stream;
+	private Double exPracticalLearning;
+	private String exRollNo;
+	private String exMidTermRemarks;
+	private  List studentList;
+	
+	private Boolean exIsPracticalAttendance;
+	private String exLabExperiment;
+	private String exViva;
+	
+	private String exEndTermMark;
+
+	
+	
+	
+	public Long getExExamType() {
+		return exExamType;
+	}
+	public void setExExamType(Long exExamType) {
+		this.exExamType = exExamType;
+	}
+	public String getSemeserType() {
+		return semeserType;
+	}
+	public void setSemeserType(String semeserType) {
+		this.semeserType = semeserType;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getExEndTermMark() {
+		return exEndTermMark;
+	}
+	public void setExEndTermMark(String exEndTermMark) {
+		this.exEndTermMark = exEndTermMark;
+	}
+	public Long getId() {
+		return id;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public Long getCourses() {
+		return courses;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public Long getSemester() {
+		return semester;
+	}
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public Long getDepartment() {
+		return department;
+	}
+	public Long getSection() {
+		return section;
+	}
+	public MultipartFile getExIaFile() {
+		return exIaFile;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public Long getStaff() {
+		return staff;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+	public String getExIdentifier() {
+		return exIdentifier;
+	}
+	public Long getCoursesType() {
+		return coursesType;
+	}
+	public Long getStudentAdmissionId() {
+		return studentAdmissionId;
+	}
+	public String getExMidTermMarks() {
+		return exMidTermMarks;
+	}
+	public String getExAttendenceMarks() {
+		return exAttendenceMarks;
+	}
+	public String getExAssignmentMarks() {
+		return exAssignmentMarks;
+	}
+	public String getExCaseStudy() {
+		return exCaseStudy;
+	}
+	public String getExQuizMarks() {
+		return exQuizMarks;
+	}
+	public Double getExPracticalRecordMarks() {
+		return exPracticalRecordMarks;
+	}
+	public Double getExEndTermMarks() {
+		return exEndTermMarks;
+	}
+	public String getExEndTermRemark() {
+		return exEndTermRemark;
+	}
+	public Long getStream() {
+		return stream;
+	}
+	public Double getExPracticalLearning() {
+		return exPracticalLearning;
+	}
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public String getExMidTermRemarks() {
+		return exMidTermRemarks;
+	}
+	public List getStudentList() {
+		return studentList;
+	}
+	public Boolean getExIsPracticalAttendance() {
+		return exIsPracticalAttendance;
+	}
+	public String getExLabExperiment() {
+		return exLabExperiment;
+	}
+	public String getExViva() {
+		return exViva;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+	public void setSection(Long section) {
+		this.section = section;
+	}
+	public void setExIaFile(MultipartFile exIaFile) {
+		this.exIaFile = exIaFile;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public void setStaff(Long staff) {
+		this.staff = staff;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+	public void setExIdentifier(String exIdentifier) {
+		this.exIdentifier = exIdentifier;
+	}
+	public void setCoursesType(Long coursesType) {
+		this.coursesType = coursesType;
+	}
+	public void setStudentAdmissionId(Long studentAdmissionId) {
+		this.studentAdmissionId = studentAdmissionId;
+	}
+	public void setExMidTermMarks(String exMidTermMarks) {
+		this.exMidTermMarks = exMidTermMarks;
+	}
+	public void setExAttendenceMarks(String exAttendenceMarks) {
+		this.exAttendenceMarks = exAttendenceMarks;
+	}
+	public void setExAssignmentMarks(String exAssignmentMarks) {
+		this.exAssignmentMarks = exAssignmentMarks;
+	}
+	public void setExCaseStudy(String exCaseStudy) {
+		this.exCaseStudy = exCaseStudy;
+	}
+	public void setExQuizMarks(String exQuizMarks) {
+		this.exQuizMarks = exQuizMarks;
+	}
+	public void setExPracticalRecordMarks(Double exPracticalRecordMarks) {
+		this.exPracticalRecordMarks = exPracticalRecordMarks;
+	}
+	public void setExEndTermMarks(Double exEndTermMarks) {
+		this.exEndTermMarks = exEndTermMarks;
+	}
+	public void setExEndTermRemark(String exEndTermRemark) {
+		this.exEndTermRemark = exEndTermRemark;
+	}
+	public void setStream(Long stream) {
+		this.stream = stream;
+	}
+	public void setExPracticalLearning(Double exPracticalLearning) {
+		this.exPracticalLearning = exPracticalLearning;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	public void setExMidTermRemarks(String exMidTermRemarks) {
+		this.exMidTermRemarks = exMidTermRemarks;
+	}
+	public void setStudentList(List studentList) {
+		this.studentList = studentList;
+	}
+	public void setExIsPracticalAttendance(Boolean exIsPracticalAttendance) {
+		this.exIsPracticalAttendance = exIsPracticalAttendance;
+	}
+	public void setExLabExperiment(String exLabExperiment) {
+		this.exLabExperiment = exLabExperiment;
+	}
+	public void setExViva(String exViva) {
+		this.exViva = exViva;
+	}
+
+	public Long getRoomId() {
+		return roomId;
+	}
+	public void setRoomId(Long roomId) {
+		this.roomId = roomId;
+	}
+
+	public List<Long> getCourse() {
+		return course;
+	}
+	public void setCourse(List<Long> course) {
+		this.course = course;
+	}
+	
+	public List<Long> getSemesters() {
+		return semesters;
+	}
+	public void setSemesters(List<Long> semesters) {
+		this.semesters = semesters;
+	}
+	@Override
+	public String toString() {
+		return "InternalMarksRequest [id=" + id + ", degree=" + degree + ", academicYear=" + academicYear
+				+ ", programmes=" + programmes + ", courses=" + courses + ", colleges=" + colleges + ", semester="
+				+ semester + ", programmeYear=" + programmeYear + ", department=" + department + ", section=" + section
+				+ ", roomId=" + roomId + ", exExamType=" + exExamType + ", semeserType=" + semeserType + ", startDate="
+				+ startDate + ", course=" + course + ", semesters=" + semesters + ", exIaFile=" + exIaFile + ", user="
+				+ user + ", staff=" + staff + ", examAnnouncement=" + examAnnouncement + ", registrationType="
+				+ registrationType + ", exIdentifier=" + exIdentifier + ", coursesType=" + coursesType
+				+ ", studentAdmissionId=" + studentAdmissionId + ", exMidTermMarks=" + exMidTermMarks
+				+ ", exAttendenceMarks=" + exAttendenceMarks + ", exAssignmentMarks=" + exAssignmentMarks
+				+ ", exCaseStudy=" + exCaseStudy + ", exQuizMarks=" + exQuizMarks + ", exPracticalRecordMarks="
+				+ exPracticalRecordMarks + ", exEndTermMarks=" + exEndTermMarks + ", exEndTermRemark=" + exEndTermRemark
+				+ ", stream=" + stream + ", exPracticalLearning=" + exPracticalLearning + ", exRollNo=" + exRollNo
+				+ ", exMidTermRemarks=" + exMidTermRemarks + ", studentList=" + studentList
+				+ ", exIsPracticalAttendance=" + exIsPracticalAttendance + ", exLabExperiment=" + exLabExperiment
+				+ ", exViva=" + exViva + ", exEndTermMark=" + exEndTermMark + "]";
+	}
+	
+	
+	
+}

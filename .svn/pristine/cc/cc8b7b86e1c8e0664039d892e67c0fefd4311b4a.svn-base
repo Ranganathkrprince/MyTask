@@ -1,0 +1,134 @@
+package com.niftem.app.service;
+
+import java.util.Map;
+
+import javax.validation.Valid;
+
+import com.niftem.app.model.AcademicCalenderRequest;
+import com.niftem.app.model.CoursesRegistrationRequest;
+import com.niftem.app.model.ExamAttendanceRequest;
+import com.niftem.app.model.ForwardLateRegApproveRequest;
+import com.niftem.app.model.InternalMarksRequest;
+import com.niftem.app.model.LateRegListApproval;
+import com.niftem.app.model.LateRegStudentApprove;
+import com.niftem.app.model.LateRegistrationRequest;
+import com.niftem.app.model.PenaltyRequest;
+import com.niftem.app.model.SemesterEligibility;
+import com.niftem.app.model.SemesterRegistrationConfigurationRequest;
+import com.niftem.app.model.SemesterRegistrationRequest;
+
+public interface CollegeAcademicService {
+
+	Map<String, String> createAcademicClender( AcademicCalenderRequest request);
+
+	Map<String, Object> getAcademicClender(AcademicCalenderRequest request);
+
+	Map<String, Object> getAcademicClenderlist(AcademicCalenderRequest request);
+
+	Map<String, Object> updateAcademicClender(AcademicCalenderRequest request);
+
+	Map<String, String> deleteacademicClender(AcademicCalenderRequest request);
+
+	Map<String, Object> validateSemesterConfiguration(SemesterRegistrationConfigurationRequest request);
+
+	Map<String, Object> createsemesterRegistration( SemesterRegistrationRequest request);
+
+	Map<String, Object> unRegistrationStudentList(SemesterRegistrationRequest request);
+
+	Map<String, Object> lateRegStudentApprove(@Valid LateRegStudentApprove request);
+
+	Map<String, Object> lateRegRequest( LateRegistrationRequest request);
+
+	Map<String, Object> getlateRegRequestForMentor( LateRegListApproval request);
+
+	Map<String, Object> forwardlateRegRequest(ForwardLateRegApproveRequest request);
+
+	Map<String, Object> checkSemesterEligibility( SemesterEligibility request);
+
+	Map<String, Object> getStudentInternalComponentMarks(InternalMarksRequest request);
+
+	Map<String, Object> getStudentExternalComponentMarks(InternalMarksRequest request);
+
+	Map<String, Object> updateStudentInternalComponentMarks(InternalMarksRequest request);
+
+	Map<String, Object> updateStudentExternalMarks(InternalMarksRequest request);
+
+
+	Map<String, String> createPenaltyConfiguration(@Valid PenaltyRequest request);
+
+	Map<String, Object> getPenaltyConfiguration(PenaltyRequest request);
+
+	Map<String, String> deletePenaltyConfiguration(PenaltyRequest request);
+
+	Map<String, String> updatePenaltyConfiguration(PenaltyRequest request);
+
+	Map<String, Object> studentListForLibrary(SemesterRegistrationRequest request);
+
+	Map<String, Object> approveLibrary(SemesterRegistrationRequest request);
+
+	Map<String, Object> saveAssignmentMarks(InternalMarksRequest request);
+
+	Map<String, Object> saveQuizMarks(InternalMarksRequest request);
+
+	Map<String, Object> saveMidTermMarks(InternalMarksRequest request);
+
+	Map<String, Object> savePracticalMarks(InternalMarksRequest request);
+
+	Map<String, Object> saveAttendanceMarks(InternalMarksRequest request);
+
+	
+
+	Map<String, Object> savePracticalExternalMarks(InternalMarksRequest request);
+
+	Map<String, Object> sumbitInternalMarks(InternalMarksRequest request);
+
+	Map<String, Object> saveInternalMarks(InternalMarksRequest request);
+
+	Map<String, Object> studentForInternalMarks(InternalMarksRequest request);
+
+	Map<String, Object> savePracticalLearningMarks(InternalMarksRequest request);
+
+	Map<String, Object> validateInternalMarks(SemesterRegistrationConfigurationRequest request);
+
+	
+
+
+	Map<String, String> courseRegistrationByAdmin(SemesterRegistrationRequest request);
+
+	Map<String, Object> getRegisteredCourse(SemesterRegistrationRequest request);
+
+	Map<String, String> deleteCourseRegistration(CoursesRegistrationRequest request);
+
+	Map<String, Object> saveCaseStudy(InternalMarksRequest request);
+
+	Map<String, Object> updateStudentLabExperiment(InternalMarksRequest request);
+
+	Map<String, Object> updateStudentVivaComponent(InternalMarksRequest request);
+
+	Map<String, String> publishCalender(@Valid AcademicCalenderRequest request);
+
+	Map<String, Object> refurbishLabExperimentelement(InternalMarksRequest request);
+
+	Map<String, Object> refurbishVivaelement(InternalMarksRequest request);
+
+	Map<String, Object> refurbishEndTermelement(InternalMarksRequest request);
+
+	Map<String, Object> saveVivaMarks(InternalMarksRequest request);
+
+	Map<String, Object> saveLabMarks(InternalMarksRequest request);
+
+	Map<String, Object> studentListForRegisterCourses(SemesterRegistrationRequest request);
+
+	Map<String, Object> studentListForUnRegisterCourses(SemesterRegistrationRequest request);
+
+	Map<String, Object> getAcademicClendergetOnID(AcademicCalenderRequest request);
+
+	Map<String, Object> updateSerialNo(AcademicCalenderRequest request);
+
+	Map<String, Object> updateProposedDate(AcademicCalenderRequest request);
+
+	Map<String, Object> submitCalander(AcademicCalenderRequest request);
+
+	Map<String, Object> validateFeedbackConfiguration(SemesterRegistrationConfigurationRequest request);
+
+}

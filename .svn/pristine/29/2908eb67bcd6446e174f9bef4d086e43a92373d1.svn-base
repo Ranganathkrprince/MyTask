@@ -1,0 +1,61 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.AcademicYear;
+
+@Repository
+@Service
+@Transactional
+public interface AcademicYearRepository extends CrudRepository<AcademicYear, Long>{
+	
+	List<AcademicYear> findByExYearAndExIsDelete(String ExYear, boolean is_delete);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_academic_year set ex_year = ?1 ,ex_description =?2,ex_startdate =?3,ex_enddate=?4 , ex_is_active = ?5 ,ex_update_date = ?6 ,ex_identifier=?8 where id =?7", nativeQuery = true)
+	int updateAcademicYearRecord(String exYear, String exDescription, Date exStartdate, Date exEnddate,Boolean exIsActive, Date date, Long id, String identifier);
+
+
+	List<AcademicYear> findByExIsDelete(boolean b);
+	
+	
+	@Query(value = "select * from  ex_academic_year where  ex_is_delete = 0 and ex_is_active = 1 order by ex_startdate desc", nativeQuery = true)
+	List<AcademicYear> getAcademic();
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_academic_year set ex_is_delete = ?1 ,ex_is_active=?2 where id =?3", nativeQuery = true)
+	int deleteAcademicYear(Boolean exIsDelete, Boolean is_active, Long id);
+	
+	
+	@Query(value = "select * from  ex_academic_year where id >= ?1 and ex_is_delete = 0 and ex_is_active = 1 ", nativeQuery = true)
+	List<AcademicYear> latestAcademicYear(Long id);
+
+
+	Optional<AcademicYear> findByIdAndExIsDeleteAndExIsActive(Long academicYear, boolean b, boolean c);
+
+
+	Optional<AcademicYear> findByExIsDeleteAndExIsActiveAndExYear(boolean b, boolean c, String trim);
+
+	Optional<AcademicYear> findByExIsDeleteAndExIsActiveAndExIdentifier(boolean delete, boolean active, String trim);
+	
+	Optional<AcademicYear> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, Long academicYear);
+
+	List<AcademicYear> findByExIdentifierAndExIsDeleteAndExIsActive(String exIdentifier, boolean b, boolean c);
+
+	Optional<AcademicYear> findByIdAndExIsDeleteAndExIsActive(AcademicYear academicYear, boolean b, boolean c);
+
+	Optional<AcademicYear> findByIdInAndExIsDeleteAndExIsActive(List<Long> academicYear, boolean b, boolean c);
+
+	
+}

@@ -1,0 +1,39 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.StaffEmpDetails;
+
+public interface StaffEmpDetailsRepository  extends CrudRepository<StaffEmpDetails, Long>{
+
+	
+	List<StaffEmpDetails> findByStaffpersonalExIsDelete(Boolean is_delete);
+
+
+	@Query(value = "SELECT * FROM ex_staff_emp_details e INNER JOIN ex_staff_personal p ON p.id = e.staffpersonal_id where stafftype_id IN ?1 and ex_is_delete=?2 and ex_is_active=?3", nativeQuery = true)
+	List<StaffEmpDetails> findByStafftypeIdExIsDeleteAndExActive(List<Long> stafftypeid, boolean delete, boolean active);
+
+	@Query(value = "SELECT * FROM ex_staff_emp_details e INNER JOIN ex_staff_personal p ON p.id = e.staffpersonal_id where p.colleges_id IN ?1 and p.degree_id IN ?2 and e.stafftype_id IN ?3 and p.ex_is_delete=?4 and p.ex_is_active=?5", nativeQuery = true)
+	List<StaffEmpDetails> getStaffList(List<Long> college,List<Long> degree, List<Long> staffTypeId, boolean exIsDelete, boolean exIsActive);
+
+
+    List<StaffEmpDetails> findByStaffpersonalId(Long id) ;
+
+
+	Optional<StaffEmpDetails> findByStaffpersonalExIsDeleteAndStaffpersonalExIsActiveAndStaffpersonalId(boolean b,
+			boolean c, Long staff);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_staff_emp_details set ex_adhaar_number = ?1 , ex_bank_account_no = ?2,  ex_bank_name = ?3, ex_ifsc_code = ?4, ex_pan_number = ?5,ex_qualification=?6,ex_skill=?7 , ex_nature = ?8 , ex_blood_group = ?9 where staffpersonal_id =?10", nativeQuery = true)
+	
+	int updateStaffempldetails(String exAdhaarNumber, String exBankAccountNo, String exBankName, String exIfscCode,
+			String exPanNumber, String exQualification, String exSkill , String nature , String bollode, Long id);
+	
+}

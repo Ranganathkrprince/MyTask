@@ -1,0 +1,263 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotNull;
+
+import org.springframework.web.multipart.MultipartFile;
+
+public class ExamAttendanceRequest {
+
+	private Long id;
+	
+	@NotNull(message = "Please provide academicYear")
+	private Long academicYear;
+	
+	@NotNull(message = "Please provide colleges")
+	private Long colleges;
+	
+	@NotNull(message = "Please provide degree")
+	private Long degree;
+	
+	private Long programmeYear;
+	
+	private Long roomId;
+
+	private Long Studentadmission;
+	
+	@NotNull(message = "Please provide programmes")
+	private Long programmes;
+	
+	@NotNull(message = "Please provide courses")
+	private Long courses;
+	
+	@NotNull(message = "Please provide Exam Id")
+	private Long examAnnouncement;
+	 
+	@NotNull(message = "Please provide stream")
+	private Long stream;
+
+	private Boolean exIsActive;
+	
+	private Long user;
+	
+	@NotNull(message = "Please provide registrationType")
+	private Long registrationType;
+	
+	
+	@NotNull(message = "Please provide semester")
+	private Long semester;
+	
+	@NotNull(message = "Please provide department Id")
+	private Long  department;
+	
+	private String exBarcode;
+    private String exTimeLimit;
+	private String exTimeTaken;
+	private String exAnsBookletPath;
+	private String exEvaluatedPath;
+	
+	private	Double omrMarks;
+	private Double externalmarks;
+	
+	private String exStudentIdFrom;
+	private String exStudentIdTo;
+	private Boolean exReportType;
+	private Double exLabExperiment;
+	private Double exViva;
+	private MultipartFile exlabFile;
+	private Boolean exIsPracticalAttendance;
+
+	public Boolean getExIsPracticalAttendance() {
+		return exIsPracticalAttendance;
+	}
+	public void setExIsPracticalAttendance(Boolean exIsPracticalAttendance) {
+		this.exIsPracticalAttendance = exIsPracticalAttendance;
+	}
+	public MultipartFile getExlabFile() {
+		return exlabFile;
+	}
+	public void setExlabFile(MultipartFile exlabFile) {
+		this.exlabFile = exlabFile;
+	}
+	public Double getExLabExperiment() {
+		return exLabExperiment;
+	}
+	public void setExLabExperiment(Double exLabExperiment) {
+		this.exLabExperiment = exLabExperiment;
+	}
+	public Double getExViva() {
+		return exViva;
+	}
+	public void setExViva(Double exViva) {
+		this.exViva = exViva;
+	}
+	public Long getId() {
+		return id;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public Long getRoomId() {
+		return roomId;
+	}
+	public Long getStudentadmission() {
+		return Studentadmission;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public Long getCourses() {
+		return courses;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public Long getStream() {
+		return stream;
+	}
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+	public Long getSemester() {
+		return semester;
+	}
+	public Long getDepartment() {
+		return department;
+	}
+	public String getExBarcode() {
+		return exBarcode;
+	}
+	public String getExTimeLimit() {
+		return exTimeLimit;
+	}
+	public String getExTimeTaken() {
+		return exTimeTaken;
+	}
+	public String getExAnsBookletPath() {
+		return exAnsBookletPath;
+	}
+	public String getExEvaluatedPath() {
+		return exEvaluatedPath;
+	}
+	public Double getOmrMarks() {
+		return omrMarks;
+	}
+	public Double getExternalmarks() {
+		return externalmarks;
+	}
+	public String getExStudentIdFrom() {
+		return exStudentIdFrom;
+	}
+	public String getExStudentIdTo() {
+		return exStudentIdTo;
+	}
+	public Boolean getExReportType() {
+		return exReportType;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public void setRoomId(Long roomId) {
+		this.roomId = roomId;
+	}
+	public void setStudentadmission(Long studentadmission) {
+		Studentadmission = studentadmission;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public void setStream(Long stream) {
+		this.stream = stream;
+	}
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+	public void setExBarcode(String exBarcode) {
+		this.exBarcode = exBarcode;
+	}
+	public void setExTimeLimit(String exTimeLimit) {
+		this.exTimeLimit = exTimeLimit;
+	}
+	public void setExTimeTaken(String exTimeTaken) {
+		this.exTimeTaken = exTimeTaken;
+	}
+	public void setExAnsBookletPath(String exAnsBookletPath) {
+		this.exAnsBookletPath = exAnsBookletPath;
+	}
+	public void setExEvaluatedPath(String exEvaluatedPath) {
+		this.exEvaluatedPath = exEvaluatedPath;
+	}
+	public void setOmrMarks(Double omrMarks) {
+		this.omrMarks = omrMarks;
+	}
+	public void setExternalmarks(Double externalmarks) {
+		this.externalmarks = externalmarks;
+	}
+	public void setExStudentIdFrom(String exStudentIdFrom) {
+		this.exStudentIdFrom = exStudentIdFrom;
+	}
+	public void setExStudentIdTo(String exStudentIdTo) {
+		this.exStudentIdTo = exStudentIdTo;
+	}
+	public void setExReportType(Boolean exReportType) {
+		this.exReportType = exReportType;
+	}
+	@Override
+	public String toString() {
+		return "ExamAttendanceRequest [id=" + id + ", academicYear=" + academicYear + ", colleges=" + colleges
+				+ ", degree=" + degree + ", programmeYear=" + programmeYear + ", roomId=" + roomId
+				+ ", Studentadmission=" + Studentadmission + ", programmes=" + programmes + ", courses=" + courses
+				+ ", examAnnouncement=" + examAnnouncement + ", stream=" + stream + ", exIsActive=" + exIsActive
+				+ ", user=" + user + ", registrationType=" + registrationType + ", semester=" + semester
+				+ ", department=" + department + ", exBarcode=" + exBarcode + ", exTimeLimit=" + exTimeLimit
+				+ ", exTimeTaken=" + exTimeTaken + ", exAnsBookletPath=" + exAnsBookletPath + ", exEvaluatedPath="
+				+ exEvaluatedPath + ", omrMarks=" + omrMarks + ", externalmarks=" + externalmarks + ", exStudentIdFrom="
+				+ exStudentIdFrom + ", exStudentIdTo=" + exStudentIdTo + ", exReportType=" + exReportType
+				+ ", exLabExperiment=" + exLabExperiment + ", exViva=" + exViva + ", exlabFile=" + exlabFile
+				+ ", exIsPracticalAttendance=" + exIsPracticalAttendance + "]";
+	}
+}

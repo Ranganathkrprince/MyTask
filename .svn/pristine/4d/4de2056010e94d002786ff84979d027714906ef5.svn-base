@@ -1,0 +1,19 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.ElectiveCoursesGroup;
+
+public interface ElectiveCoursesGroupRepository extends CrudRepository<ElectiveCoursesGroup, Long> {
+
+	@Query(value = "select * from ex_elective_courses_group where elective_group_id=?1", nativeQuery = true)
+	List<ElectiveCoursesGroup> courseOnGroup(Long electiveGroup);
+
+	List<ElectiveCoursesGroup> findByElectiveGroupId(Long id);
+
+	List<ElectiveCoursesGroup> findByCoursesIdAndElectiveGroupId(Long courses, Long electiveGroup);
+
+}

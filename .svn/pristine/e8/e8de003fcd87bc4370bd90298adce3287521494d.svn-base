@@ -1,0 +1,378 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotNull;
+
+import org.springframework.web.multipart.MultipartFile;
+
+public class ClassTimeTableRequest {
+	
+	@NotNull(message = "Programme is required")
+	private Long programmes;
+		
+	@NotNull(message = "programmeyear is required")
+	private Long programmeYear;
+	
+	@NotNull(message = "semester is required")
+	private Long semester;
+	
+	
+	@NotNull(message = "section is required")
+	private Long section;
+	
+	//@NotNull(message = "coursesType is required")
+	private Long coursesType;
+	
+	@NotNull(message = "degree is required")
+	private Long degree;
+	
+	private Long stream;
+		
+	@NotNull(message="please provide colleges")
+	private Long colleges;
+
+	@NotNull(message = "academicyear is required")
+	private Long academicYear;
+	
+	//@NotNull(message = "room is required")
+	private Long room;
+	private Long roonmId;
+	private Long courses;
+	
+	private Long id;
+	
+	private Boolean exIsEven;
+	
+	private String startTime;
+	private String endTime;
+		
+	private String mondayStartTime;
+	private String mondayEndTime;
+		
+	private String tuesdayStartTime;
+	private String tuesdayEndTime;
+		
+	private String wednesdayStartTime;
+	private String wednesdayEndTime;
+	
+	private String thursdayStartTime;
+	private String thursdayEndTime;
+		
+	private String fridayStartTime;
+	private String fridayEndTime;
+	
+	private String exStudentId;
+	
+	private MultipartFile classAttendance;
+
+	
+	private Long user;
+
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+
+
+	public Long getSemester() {
+		return semester;
+	}
+
+
+	public Long getSection() {
+		return section;
+	}
+
+
+	public Long getCoursesType() {
+		return coursesType;
+	}
+
+
+	public Long getDegree() {
+		return degree;
+	}
+
+
+	public Long getStream() {
+		return stream;
+	}
+
+
+	public Long getColleges() {
+		return colleges;
+	}
+
+
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+
+
+	public Long getRoom() {
+		return room;
+	}
+
+
+	public Long getRoonmId() {
+		return roonmId;
+	}
+
+
+	public Long getCourses() {
+		return courses;
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public Boolean getExIsEven() {
+		return exIsEven;
+	}
+
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+
+	public String getMondayStartTime() {
+		return mondayStartTime;
+	}
+
+
+	public String getMondayEndTime() {
+		return mondayEndTime;
+	}
+
+
+	public String getTuesdayStartTime() {
+		return tuesdayStartTime;
+	}
+
+
+	public String getTuesdayEndTime() {
+		return tuesdayEndTime;
+	}
+
+
+	public String getWednesdayStartTime() {
+		return wednesdayStartTime;
+	}
+
+
+	public String getWednesdayEndTime() {
+		return wednesdayEndTime;
+	}
+
+
+	public String getThursdayStartTime() {
+		return thursdayStartTime;
+	}
+
+
+	public String getThursdayEndTime() {
+		return thursdayEndTime;
+	}
+
+
+	public String getFridayStartTime() {
+		return fridayStartTime;
+	}
+
+
+	public String getFridayEndTime() {
+		return fridayEndTime;
+	}
+
+
+	public String getExStudentId() {
+		return exStudentId;
+	}
+
+
+	public MultipartFile getClassAttendance() {
+		return classAttendance;
+	}
+
+
+	public Long getUser() {
+		return user;
+	}
+
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+
+
+	public void setSection(Long section) {
+		this.section = section;
+	}
+
+
+	public void setCoursesType(Long coursesType) {
+		this.coursesType = coursesType;
+	}
+
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+
+	public void setStream(Long stream) {
+		this.stream = stream;
+	}
+
+
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+
+
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+
+
+	public void setRoom(Long room) {
+		this.room = room;
+	}
+
+
+	public void setRoonmId(Long roonmId) {
+		this.roonmId = roonmId;
+	}
+
+
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public void setExIsEven(Boolean exIsEven) {
+		this.exIsEven = exIsEven;
+	}
+
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
+
+	public void setMondayStartTime(String mondayStartTime) {
+		this.mondayStartTime = mondayStartTime;
+	}
+
+
+	public void setMondayEndTime(String mondayEndTime) {
+		this.mondayEndTime = mondayEndTime;
+	}
+
+
+	public void setTuesdayStartTime(String tuesdayStartTime) {
+		this.tuesdayStartTime = tuesdayStartTime;
+	}
+
+
+	public void setTuesdayEndTime(String tuesdayEndTime) {
+		this.tuesdayEndTime = tuesdayEndTime;
+	}
+
+
+	public void setWednesdayStartTime(String wednesdayStartTime) {
+		this.wednesdayStartTime = wednesdayStartTime;
+	}
+
+
+	public void setWednesdayEndTime(String wednesdayEndTime) {
+		this.wednesdayEndTime = wednesdayEndTime;
+	}
+
+
+	public void setThursdayStartTime(String thursdayStartTime) {
+		this.thursdayStartTime = thursdayStartTime;
+	}
+
+
+	public void setThursdayEndTime(String thursdayEndTime) {
+		this.thursdayEndTime = thursdayEndTime;
+	}
+
+
+	public void setFridayStartTime(String fridayStartTime) {
+		this.fridayStartTime = fridayStartTime;
+	}
+
+
+	public void setFridayEndTime(String fridayEndTime) {
+		this.fridayEndTime = fridayEndTime;
+	}
+
+
+	public void setExStudentId(String exStudentId) {
+		this.exStudentId = exStudentId;
+	}
+
+
+	public void setClassAttendance(MultipartFile classAttendance) {
+		this.classAttendance = classAttendance;
+	}
+
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+
+	@Override
+	public String toString() {
+		return "ClassTimeTableRequest [programmes=" + programmes + ", programmeYear=" + programmeYear + ", semester="
+				+ semester + ", section=" + section + ", coursesType=" + coursesType + ", degree=" + degree
+				+ ", stream=" + stream + ", colleges=" + colleges + ", academicYear=" + academicYear + ", room=" + room
+				+ ", roonmId=" + roonmId + ", courses=" + courses + ", id=" + id + ", exIsEven=" + exIsEven
+				+ ", startTime=" + startTime + ", endTime=" + endTime + ", mondayStartTime=" + mondayStartTime
+				+ ", mondayEndTime=" + mondayEndTime + ", tuesdayStartTime=" + tuesdayStartTime + ", tuesdayEndTime="
+				+ tuesdayEndTime + ", wednesdayStartTime=" + wednesdayStartTime + ", wednesdayEndTime="
+				+ wednesdayEndTime + ", thursdayStartTime=" + thursdayStartTime + ", thursdayEndTime=" + thursdayEndTime
+				+ ", fridayStartTime=" + fridayStartTime + ", fridayEndTime=" + fridayEndTime + ", exStudentId="
+				+ exStudentId + ", classAttendance=" + classAttendance + ", user=" + user + "]";
+	}
+	
+
+
+	
+}

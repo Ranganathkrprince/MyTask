@@ -1,0 +1,61 @@
+package com.niftem.app.model;
+
+public class SeatArrangementRequestList {
+
+	
+	private Long programmeYear;
+	private Long semester;
+	private Long degree;	
+	private Long programmes;
+	private Long department;
+	private Long batch;
+	private int totalStudent;
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public Long getSemester() {
+		return semester;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public Long getDepartment() {
+		return department;
+	}
+	public Long getBatch() {
+		return batch;
+	}
+	public int getTotalStudent() {
+		return totalStudent;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+	public void setBatch(Long batch) {
+		this.batch = batch;
+	}
+	public void setTotalStudent(int totalStudent) {
+		this.totalStudent = totalStudent;
+	}
+	@Override
+	public String toString() {
+		return "SeatArrangementRequestList [programmeYear=" + programmeYear + ", semester=" + semester + ", degree="
+				+ degree + ", programmes=" + programmes + ", department=" + department + ", batch=" + batch
+				+ ", totalStudent=" + totalStudent + "]";
+	}
+}

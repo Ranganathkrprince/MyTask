@@ -1,0 +1,327 @@
+package com.niftem.app.repository;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.GradeReport;
+import com.niftem.app.entity.GradeReportLog;
+import com.niftem.app.entity.User;
+
+public interface GradeReportRepository extends CrudRepository<GradeReport, Long>{
+
+	List<GradeReport> findByExRollNoAndCollegesIdAndCoursesIdAndProgrammesIdAndSemesterIdAndExamAnnouncementIdAndProgrammeYearIdAndRegistrationTypeIdAndDepartmentIdAndDegreeId(
+			String string, Long colleges, Long courses, Long programmes, Long semester, Long examAnnouncement,
+			Long programmeYear, Long registrationType, Long department, Long degree);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_grade_report set ex_is_active = ?1 ,ex_is_delete = ?2 where  semester_id =?3 and programmes_id=?4  and courses_id=?5 and student_admission_id = ?6  and colleges_id=?7", nativeQuery = true)
+	void updateStatus(boolean b, boolean c, Long semester, Long programmes, Long courses, Long student, Long colleges);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_grade_report set ex_courses_status = ?1 ,ex_remark = ?2 , ex_end_term_marks =?3, ex_mid_term_marks = ?4  ,ex_grand_total = ?5,ex_grade_point = ?6 , ex_update_date = ?7 , ex_credit_point = ?8 , user_id=?15 ,ex_quiz_marks=?17, ex_assignment_marks=?18, ex_attendence_marks=?19 ,ex_letter_grades=?20 , ex_case_study =?21,ex_practical_external_marks=?22,ex_practical_internal_marks=?23 where semester_id =?9 and programmes_id=?10 and exam_announcement_id=?11  and courses_id=?12 and ex_Roll_No=?13  and colleges_id=?14 and department_id=?16", nativeQuery = true)
+	int updateGradeReport(int course_status, String remark, Double endterm, Double midterm, Double grand_total,
+			Double grade_point, Date date, Double creditpoint, Long semester, Long programmes, Long examAnnouncement,
+			Long courses, String string, Long colleges, User userresult, Long department, Double quizMarks, Double asst, Double atte, String exLetterGrades,
+			Double casestudy,Double PracticalExternalMarks,Double practicalinternalmarks);
+
+	@Query(value ="SELECT * FROM  ex_grade_report g   inner join   ex_courses_registration r  on  r.student_admission_id=g.student_admission_id  and  r.academicyear_id=g.academicyear_id and r.colleges_id=g.colleges_id and r.courses_id = g.courses_id  and r.degree_id=g.degree_id  and r.programmes_id=g.programmes_id  and r.semester_id=g.semester_id where r.academicyear_id=?7 and r.colleges_id=?1 and r.courses_id=?2 and r.degree_id=?5  and r.programmes_id=?3 and r.programmeyear_id=?10 and r.registration_type_id=?9 and r.semester_id=?4 and g.exam_announcement_id=?6  and g.department_id =?8 and section_id=?11  order by g.ex_Roll_No", nativeQuery = true)
+	ArrayList<GradeReport> getGradeReport(Long colleges, Long courses, Long programmes, Long semester, Long degree,
+			Long examAnnouncement, Long academicYear, Long department, Long registrationType, Long programmeYear, Long section);
+
+
+	
+
+
+	List<GradeReport> findByCollegesIdAndCoursesIdAndProgrammesIdAndSemesterIdAndDegreeIdAndExamAnnouncementIdAndAcademicYearIdAndDepartmentIdAndRegistrationTypeId(
+			Long colleges, Long courses, Long programmes, Long semester, Long degree, Long examAnnouncement,
+			Long academicYear, Long department, Long registrationType);
+
+
+	List<GradeReport> findByCollegesIdAndProgrammesIdAndDegreeIdAndSemesterIdAndExRollNoAndProgrammeYearIdAndDepartmentIdAndExIsActiveAndExIsDeleteAndCoursesExIsSatisfactory(
+			Long colleges, Long programmes, Long degree, Long semester, String exRollNo, Long programmeYear,  Long department , boolean active , boolean delete , boolean sat);
+ 
+	@Query(value = "SELECT * FROM ex_grade_report e  , ex_courses c where e.colleges_id = ?1 AND e.programmes_id =?2  AND e.degree_id = ?3 AND e.ex_is_active = 1 AND e.ex_is_delete = 0 AND e.semester_id = ?4 and e.programmeyear_id = ?5 and e.academicyear_id = ?6 and e.registration_type_id = ?7 and  e.department_id=?8 and c.id = e.courses_id and c.ex_is_satisfactory = 0 and c.batch_id = ?9 group by e.ex_Roll_No", nativeQuery = true)	
+	List<GradeReport> getGradeStudentList(Long colleges, Long programmes, Long degree, Long semester, Long programmeYear, Long academicYear, Long id, Long department , Long batch);
+
+
+	List<GradeReport> findByCollegesIdAndProgrammesIdAndDegreeIdAndSemesterIdAndExRollNoAndProgrammeYearIdAndRegistrationTypeIdInAndExIsActiveAndExIsDeleteAndCoursesId(
+			Long colleges, Long programmes, Long degree, Long semester, String exRollNo, Long programmeYear,
+			List<Object> regtype, boolean b, boolean c, Long id);
+
+	List<GradeReport> findByAcademicYearIdAndExamAnnouncementIdAndRegistrationTypeIdAndStudentadmissionId(Long academic, Long exam, Long registrationtype, Long sudent);
+
+	List<GradeReport> findByAcademicYearIdAndRegistrationTypeIdAndStudentadmissionIdAndSemesterIdAndExCoursesStatus(Long academic,  Long registrationtype, Long sudent , Long semester , int stats);
+
+	List<GradeReport> findByRegistrationTypeIdAndStudentadmissionIdAndSemesterIdAndExCoursesStatus( Long registrationtype, Long sudent , Long semester , int stats);
+
+	
+	
+	@Query(value = "SELECT * FROM ex_grade_report where ex_courses_status = 0 and student_admission_id = ?1 and semester_id <=?2 group by courses_id", nativeQuery = true)	
+	List<GradeReport> getSuject( Long student, Long semester_id);
+	
+	
+	@Query(value = "SELECT * FROM ex_grade_report where ex_courses_status = 0 and student_admission_id = ?1  group by courses_id", nativeQuery = true)	
+	List<GradeReport> getSujectR( Long student) ;
+	
+	List<GradeReport> findByExCoursesStatusAndStudentadmissionIdAndCoursesId( int stats , Long student , Long courses);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_grade_report set ex_courses_status = ?1 ,ex_remark = ?2 ,  ex_letter_grades=?3, ex_grand_total = ?4  ,ex_grade_point = ?5 , ex_update_date = ?6 , ex_credit_point = ?7 ,ex_practical_internal_marks=?8 , ex_practical_external_marks=?9,user_id=?16 where semester_id =?10 and programmes_id=?11 and exam_announcement_id=?12  and courses_id=?13 and ex_Roll_No=?14  and colleges_id=?15 and department_id=?17 and degree_id=?18", nativeQuery = true)
+	int updateGradeReport(int course_status, String remark1, String exLetterGrades, Double grandtotal,
+			Double gradepoint, Date date, Double creditpoint, Double midtermmarks, Double endterm, Long sem, Long prog,
+			Long examann, Long courses, String rollno, Long collage, User userresult, Long dep, Long degree);
+
+
+	List<GradeReport> findByExRollNoAndCollegesIdAndCoursesIdAndProgrammesIdAndSemesterIdAndProgrammeYearIdAndDepartmentIdAndDegreeId(
+			String exRollNo, Long id, Long id2, Long id3, Long id4, Long id5, Long id6, Long id7);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_grade_report set ex_courses_status = ?1 ,ex_remark = ?3 ,  ex_letter_grades=?2, ex_grand_total = ?5  ,ex_grade_point = ?4 , ex_update_date = ?6 , ex_credit_point = ?7 ,user_id=?13  where semester_id =?8 and programmes_id=?9  and courses_id=?10 and ex_Roll_No=?11  and colleges_id=?12 and department_id=?14 and degree_id=?15 and programmeyear_id=?16 and academicyear_id=?17", nativeQuery = true)
+	int updateexcelGradeReport(Integer course_status, String lettergrade, String remark, double gradepoint,
+			double grandtotal, Date date, Double creditpoint, Long sem, Long prog, Long course, String exRollNo, Long collger,
+			User userresult, Long department, Long degree, Long programmeyear, Long academic);
+
+	@Query(value ="SELECT * FROM  ex_grade_report r   where r.academicyear_id=?6 and r.colleges_id=?1 and r.courses_id=?2 and r.degree_id=?5  and r.programmes_id=?3 and r.programmeyear_id=?9 and r.registration_type_id=?8 and r.semester_id=?4   and r.department_id =?7 and r.section_id=?10  order by r.ex_Roll_No", nativeQuery = true)
+	ArrayList<GradeReport> getMIGGradeReport(Long colleges, Long courses, Long programmes, Long semester, Long degree,
+			Long academicYear, Long department, Long registrationType, Long programmeYear, Long section);
+
+	@Query(value = "SELECT * FROM ex_grade_report e where  colleges_id = ?1 AND programmes_id =?2  AND degree_id = ?3  AND semester_id = ?4 and programmeyear_id = ?5 and academicyear_id = ?6 and registration_type_id = ?7 and  department_id=?8  group by ex_Roll_No", nativeQuery = true)	
+	List<GradeReport> getMIGGradeStudentList(Long colleges, Long programmes, Long degree, Long semester,
+			Long programmeYear, Long academicYear, Long id, Long department);
+
+
+	List<GradeReport> findByCollegesIdAndProgrammesIdAndDegreeIdAndSemesterIdAndExRollNoAndProgrammeYearIdAndExIsActiveAndExIsDelete(
+			Long colleges, Long programmes, Long degree, Long semester, String exRollNo, Long programmeYear,
+			 boolean b, boolean c);
+
+	List<GradeReport> findByExRollNoAndCollegesIdAndCoursesIdAndProgrammesIdAndSemesterIdAndProgrammeYearIdAndRegistrationTypeIdAndDepartmentIdAndDegreeIdAndAcademicYearId(
+			String string, Long colleges, Long courses, Long programmes, Long semester, Long programmeYear,
+			Long registrationType, Long department, Long degree , Long academic);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_grade_report set ex_courses_status = ?1 ,ex_remark = ?2 ,  ex_letter_grades=?3, ex_grand_total = ?4  ,ex_grade_point = ?5 , ex_update_date = ?6 , ex_credit_point = ?7 ,user_id=?8 , ex_end_term_marks =?9 , ex_mid_term_marks =?10   where id =?11", nativeQuery = true)
+	int updateMigGradeReport(int course_status, String remark,String ex_letter_grades,Double ex_grand_total,Double ex_grade_point , Date date,  Double ex_credit_point, User userresult ,Double ex_end_term_marks ,  Double ex_mid_term_marks ,Long long1);
+	
+	
+	/*
+	 * int updateMigGradeReport(int course_status, String remark, Double endterm,
+	 * Double midtermWeightage, double d, Double finalgradepoint, Date date, Double
+	 * creditpoint, Long semester, Long programmes, Long courses, String string,
+	 * Long colleges, User userresult, Long department, Double quizMarks, Double
+	 * asst, Double atte, String exLetterGrades);
+	 */
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_grade_report set ex_courses_status = ?1 ,ex_remark = ?2 ,  ex_letter_grades=?3, ex_grand_total = ?4  ,ex_grade_point = ?5 , ex_update_date = ?6 , ex_credit_point = ?7 ,ex_practical_internal_marks=?8 , ex_practical_external_marks=?9,user_id=?15 where semester_id =?10 and programmes_id=?11  and courses_id=?12 and ex_Roll_No=?13  and colleges_id=?14 and department_id=?16 and degree_id=?17", nativeQuery = true)
+	int updateMigGradeReport(int course_status, String remark1, String exLetterGrades, Double grandtotal,
+			Double finalgradepoint, Date date, Double creditpoint, Double midtermmarks, Double endterm, Long id,
+			Long id2, Long id3, String string, Long id4, User userresult, Long id5, Long id6);
+
+
+	List<GradeReport> findByStudentadmissionIdAndCollegesIdAndProgrammesIdAndProgrammeYearIdAndDepartmentIdAndDegreeIdAndExCoursesStatus(
+			Long student, Long colleges, Long programmes, Long programmeYear, Long department, Long degree, int status);
+
+	List<GradeReport> findByCollegesIdInAndProgrammesIdInAndSemesterIdInAndProgrammeYearIdInAndDepartmentIdInAndDegreeIdInAndAcademicYearIdIn (
+			 List<Long> college,  List<Long> program, List<Long> semester, List<Long> programyear, List<Long> department, List<Long> degree , List<Long> academic);
+
+
+	List<GradeReport> findByExRollNoAndExIsActiveAndExIsDelete(String studentid, boolean b, boolean c);
+
+
+	@Query(value ="SELECT c.ex_courses_code,c.ex_name  ,h.ex_credit_hour_title,r.ex_letter_grades FROM  ex_grade_report r   ,ex_courses c ,ex_credit_hours h "
+			+ "Where   r.ex_Roll_No = ?1 AND  r.semester_id = ?2 and r.courses_id =c.id and c.credit_hours_id =h.id and r.ex_courses_status =1 and r.ex_is_active = 1" , nativeQuery = true)
+
+	List<Object[]> getSemesterResult(String studentid , Long semester);
+
+
+	List<GradeReport> findByCollegesIdAndProgrammesIdAndDegreeIdAndSemesterIdAndExRollNoAndAcademicYearId(Long colleges,
+			Long programmes, Long degree, Long semester, String exRollNo, Long academicYear);
+
+
+	
+
+	List<GradeReport> findBySemesterIdAndProgrammeYearIdAndStudentadmissionId(Long semester , Long proramyear , Long student);
+
+	List<GradeReport> findBySemesterIdAndStudentadmissionIdAndExIsActiveOrderByCoursesId(Long semester , Long student , Boolean active);
+
+	
+	
+	@Query(value ="SELECT \r\n" + 
+			"c2.ex_identifier AS a1,c3.ex_identifier AS a2,\r\n" + 
+			"c6.ex_identifier AS a3,c1.ex_identifier AS a4,MAX(c4.ex_identifier) AS a5,\r\n" + 
+			"c5.ex_name AS a6 ,c.ex_name AS a7,c.ex_courses_code AS a8,c7.ex_credit_hour_title AS ch,\r\n" + 
+			"round(case when c8.ex_assignment_marks IS NULL then c8.ex_assignment_mark_remark ELSE c8.ex_assignment_marks END ,2) AS a10,\r\n" + 
+			"round(case when c8.ex_attendence_marks IS NULL then c8.ex_attendence_remark ELSE c8.ex_attendence_marks END ,2) AS a11,\r\n" + 
+			"round(case when c8.ex_quiz_marks IS NULL then c8.ex_quiz_remark ELSE c8.ex_quiz_marks END ,2) AS a12,\r\n" + 
+			"round(case when c8.ex_case_study IS NULL then c8.ex_case_study_remark ELSE c8.ex_case_study END,2) AS a13,\r\n" + 
+			"ROUND((case when c8.ex_assignment_marks IS NULL then 0 ELSE c8.ex_assignment_marks END +\r\n" + 
+			"case when c8.ex_attendence_marks IS NULL then 0 ELSE c8.ex_attendence_marks END +\r\n" + 
+			"case when c8.ex_quiz_marks IS NULL then 0 ELSE c8.ex_quiz_marks END +\r\n" + 
+			"case when c8.ex_case_study IS NULL then 0 ELSE c8.ex_case_study END),2)AS total_internal,\r\n" + 
+			"\r\n" + 
+			"ROUND(a.ex_mid_term_marks,2) AS a14,ROUND(a.ex_end_term_marks,2) AS a15,\r\n" + 
+			"ROUND(a.ex_end_term_marks+a.ex_mid_term_marks+\r\n" + 
+			"(case when c8.ex_assignment_marks IS NULL then 0 ELSE c8.ex_assignment_marks END +\r\n" + 
+			"case when c8.ex_attendence_marks IS NULL then 0 ELSE c8.ex_attendence_marks END +\r\n" + 
+			"case when c8.ex_quiz_marks IS NULL then 0 ELSE c8.ex_quiz_marks END +\r\n" + 
+			"case when c8.ex_case_study IS NULL then 0 ELSE c8.ex_case_study END)\r\n" + 
+			",2) AS a16,\r\n" + 
+			"case when c8.ex_practical_learning IS NULL then 'NA' ELSE c8.ex_practical_learning END AS a17,\r\n" + 
+			"case when c8.ex_practical_record_marks IS NULL then 'NA' ELSE c8.ex_practical_record_marks END AS a18,\r\n" + 
+			"case when c9.ex_lab_experiment IS NULL then 'NA' ELSE c9.ex_lab_experiment END AS a19,\r\n" + 
+			"case when c9.ex_viva IS NULL then 'NA' ELSE c9.ex_viva END AS a20,\r\n" + 
+			"ROUND(a.ex_practical_external_marks,2)AS a21,Round(a.ex_grand_total,2)AS a22,a.ex_letter_grades AS a24,a.ex_roll_no AS a25,b.ex_name AS a26 ,\r\n" + 
+			"c10.ex_contact_details AS pno,c10.ex_email_id AS emailid,b.ex_study_status AS ss\r\n" + 
+			" FROM ex_grade_report a \r\n" + 
+			" LEFT JOIN ex_student_admission b ON a.student_admission_id=b.id\r\n" + 
+			" LEFT JOIN ex_courses c ON a.courses_id=c.id\r\n" + 
+			" LEFT JOIN ex_mid_term_marks c8 ON a.courses_id=c8.courses_id AND a.ex_roll_no=c8.ex_roll_no\r\n" + 
+			" LEFT JOIN ex_colleges c2 ON a.colleges_id=c2.id\r\n" + 
+			" LEFT JOIN ex_programmes c3 ON a.programmes_id=c3.id\r\n" + 
+			" LEFT JOIN ex_batch c1 ON b.batch_id=c1.id\r\n" + 
+			" LEFT JOIN ex_academic_year c4 ON c8.academicyear_id=c4.id\r\n" + 
+			" LEFT JOIN ex_semester c5 ON a.semester_id=c5.id\r\n" + 
+			" LEFT JOIN ex_department c6 ON a.department_id=c6.id\r\n" + 
+			" LEFT JOIN ex_credit_hours c7 ON c.credit_hours_id=c7.id\r\n" + 
+			" \r\n" + 
+			" LEFT JOIN ex_exam_barcodes c9 ON a.courses_id=c9.courses_id AND a.ex_roll_no=c9.ex_roll_no\r\n" + 
+			" LEFT JOIN ex_student_personal c10 ON a.student_admission_id=c10.student_admission_id\r\n" + 
+			"\r\n" + 
+			"WHERE  a.colleges_id IN ?1 AND a.programmes_id IN ?2 AND a.department_id IN ?3 AND a.academicyear_id IN ?4 AND a.degree_id IN ?5 \r\n" + 
+			"AND a.ex_letter_grades IN ('f','i','x') AND a.ex_is_active IS TRUE AND a.ex_is_delete IS FALSE \r\n" + 
+			"GROUP BY a.id ORDER BY a.ex_roll_no,a.semester_id"
+			/*"SELECT DISTINCT c2.ex_identifier AS a1,c3.ex_identifier AS a2,\r\n" + 
+			"c6.ex_identifier AS a3,c1.ex_identifier AS a4,max(c4.ex_identifier) AS a5,\r\n" + 
+			"c5.ex_name AS a6 ,c.ex_name AS a7,c.ex_courses_code AS a8,c7.ex_credit_hour_title AS a9,\r\n" + 
+			"round(case when c8.ex_assignment_marks IS NULL then c8.ex_assignment_mark_remark ELSE c8.ex_assignment_marks END ,2) AS a10,\r\n" + 
+			"round(case when c8.ex_attendence_marks IS NULL then c8.ex_attendence_remark ELSE c8.ex_attendence_marks END ,2) AS a11,\r\n" + 
+			"round(case when c8.ex_quiz_marks IS NULL then c8.ex_quiz_remark ELSE c8.ex_quiz_marks END ,2) AS a12,\r\n" + 
+			"round(case when c8.ex_case_study IS NULL then c8.ex_case_study_remark ELSE c8.ex_case_study END,2) AS a13,\r\n" + 
+			"(case when c8.ex_assignment_marks IS NULL then 0 ELSE c8.ex_assignment_marks END +\r\n" + 
+			"case when c8.ex_attendence_marks IS NULL then 0 ELSE c8.ex_attendence_marks END +\r\n" + 
+			"case when c8.ex_quiz_marks IS NULL then 0 ELSE c8.ex_quiz_marks END +\r\n" + 
+			"case when c8.ex_case_study IS NULL then 0 ELSE c8.ex_case_study END )AS total_internal,\r\n" + 
+			"ROUND(a.ex_mid_term_marks,2) AS a14,ROUND(a.ex_end_term_marks,2) AS a15,\r\n" + 
+			"ROUND(a.ex_end_term_marks+a.ex_mid_term_marks+\r\n" + 
+			"(case when c8.ex_assignment_marks IS NULL then 0 ELSE c8.ex_assignment_marks END +\r\n" + 
+			"case when c8.ex_attendence_marks IS NULL then 0 ELSE c8.ex_attendence_marks END +\r\n" + 
+			"case when c8.ex_quiz_marks IS NULL then 0 ELSE c8.ex_quiz_marks END +\r\n" + 
+			"case when c8.ex_case_study IS NULL then 0 ELSE c8.ex_case_study END)\r\n" + 
+			",2) AS a16,\r\n" + 
+			"case when c8.ex_practical_learning IS NULL then 'NA' ELSE c8.ex_practical_learning END AS a17,\r\n" + 
+			"case when c8.ex_practical_record_marks IS NULL then 'NA' ELSE c8.ex_practical_record_marks END AS a18,\r\n" + 
+			"case when c9.ex_lab_experiment IS NULL then 'NA' ELSE c9.ex_lab_experiment END AS a19,\r\n" + 
+			"case when c9.ex_viva IS NULL then 'NA' ELSE c9.ex_viva END AS a20,\r\n" + 
+			"ROUND(a.ex_practical_external_marks,2)AS a21,Round(a.ex_grand_total,2)AS a22,a.ex_letter_grades AS a24,a.ex_roll_no AS a25,b.ex_name AS a26 ,\r\n" + 
+			"c10.ex_contact_details AS pno,c10.ex_email_id AS emailid,b.ex_study_status AS ss\r\n" + 
+			"FROM ex_grade_report a JOIN ex_student_admission b ON a.student_admission_id=b.id\r\n" + 
+			" LEFT JOIN ex_courses c ON a.courses_id=c.id\r\n" + 
+			" LEFT JOIN ex_colleges c2 ON a.colleges_id=c2.id\r\n" + 
+			" LEFT JOIN ex_programmes c3 ON a.programmes_id=c3.id\r\n" + 
+			" LEFT JOIN ex_batch c1 ON b.batch_id=c1.id\r\n" + 
+			" LEFT JOIN ex_academic_year c4 ON a.academicyear_id=c4.id\r\n" + 
+			" LEFT JOIN ex_semester c5 ON a.semester_id=c5.id\r\n" + 
+			" LEFT JOIN ex_department c6 ON a.department_id=c6.id\r\n" + 
+			" LEFT JOIN ex_credit_hours c7 ON c.credit_hours_id=c7.id\r\n" + 
+			" LEFT JOIN ex_mid_term_marks c8 ON a.courses_id=c8.courses_id AND a.ex_roll_no=c8.ex_roll_no\r\n" + 
+			" LEFT JOIN ex_exam_barcodes c9 ON a.courses_id=c9.courses_id AND a.ex_roll_no=c9.ex_roll_no\r\n" + 
+			" LEFT JOIN ex_student_personal c10 ON a.student_admission_id=c10.student_admission_id\r\n"+
+			"WHERE  b.colleges_id IN ?1 AND b.programmes_id IN ?2 AND a.department_id IN ?3 AND b.academic_year_id IN ?4 AND a.degree_id IN ?5\r\n" + 
+			"AND  a.ex_letter_grades IN ('F','I','X') GROUP BY a.courses_id ORDER BY a.ex_roll_no,a.semester_id,a.academicyear_id,b.batch_id ,a.exam_announcement_id"*/, nativeQuery = true)
+	List<Object[]> Fgrades(List<Long> colleges, List<Long> programmes, List<Long> department, List<Long> academicYear,
+			List<Long> degree);
+
+
+	
+	
+	
+	
+	@Query(value ="SELECT c1.ex_identifier as a1,c2.ex_name,c3.ex_identifier as b,c5.ex_identifier as h,\r\n" + 
+			"c.ex_identifier as d,c6.ex_name as e,c7.ex_name as r,c4.ex_courses_code as t,c4.ex_name as g,a.ex_roll_no as m,c8.ex_name as o,c8.ex_enrollement_no as n,\r\n" + 
+			"c9.ex_contact_details as z,c9.ex_email_id as v,a.ex_letter_grades as i,a.ex_grade_point as k,c10.ex_name as q,a.ex_remark as j\r\n" + 
+			"FROM ex_grade_report a \r\n" + 
+			"LEFT JOIN ex_academic_year c ON a.academicyear_id=c.id\r\n" + 
+			"LEFT JOIN ex_colleges c1 ON a.colleges_id=c1.id\r\n" + 
+			"LEFT JOIN ex_degree c2 ON a.degree_id=c2.id\r\n" + 
+			"LEFT JOIN ex_programmes c3 ON a.programmes_id=c3.id\r\n" + 
+			"LEFT JOIN ex_courses c4 ON a.courses_id=c4.id\r\n" + 
+			"LEFT JOIN ex_department c5 ON a.department_id=c5.id\r\n" + 
+			"LEFT JOIN ex_programme_year c6 ON a.programmeyear_id=c6.id\r\n" + 
+			"LEFT JOIN ex_semester c7 ON a.semester_id=c7.id\r\n" + 
+			"LEFT JOIN ex_student_admission c8 ON a.student_admission_id=c8.id\r\n" + 
+			"LEFT JOIN ex_student_personal c9 ON a.student_admission_id=c9.student_admission_id\r\n" + 
+			"LEFT JOIN ex_registration_type c10 ON a.registration_type_id=c10.id\r\n" + 
+			"\r\n" + 
+			"\r\n" + 
+			"WHERE a.programmes_id IN ?1 AND a.semester_id IN ?2 AND a.degree_id IN ?3 AND a.colleges_id IN ?4 AND\r\n" + 
+			"a.academicyear_id IN ?5 AND a.programmeyear_id IN ?6 AND a.department_id IN ?7\r\n" + 
+			"\r\n"
+			, nativeQuery = true)
+	List<Object[]> getgradedetails(List<Long> programmes, List<Long> semester, List<Long> degree, List<Long> colleges,
+			List<Long> academicYear, List<Long> programmeYear, List<Long> department);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_grade_report set ex_courses_status = ?1 ,ex_remark = ?2 , ex_end_term_marks =?3, ex_mid_term_marks = ?4  ,ex_grand_total = ?5,ex_grade_point = ?6 , ex_update_date = ?7 , ex_credit_point = ?8 , user_id=?15 ,ex_quiz_marks=?17, ex_assignment_marks=?18, ex_attendence_marks=?19 ,ex_letter_grades=?20 , ex_case_study =?21 where semester_id =?9 and programmes_id=?10 and exam_announcement_id=?11  and courses_id=?12 and ex_Roll_No=?13  and colleges_id=?14 and department_id=?16", nativeQuery = true)
+	int updateGradeReport(int course_status, String remark, Double endterm, Double midtermWeightage, Double grand_total,
+			double finalgradepoint, Date date, Double creditpoint, Long id, Long id2, Long id3, Long id4, String string,
+			Long id5, User userresult, Long id6, Double quizMarks, Double asst, Double atte, String exLetterGrades,
+			Double casestudy);
+
+
+	List<GradeReport> findByStudentadmissionIdAndCoursesIdIn(Long id, List<Long> courses);
+
+	@Modifying
+	@Transactional
+	@Query(value = "delete from ex_grade_report where student_admission_id=?1 AND  courses_id IN ?2", nativeQuery = true)
+	int deleteCourseFromGradeTable(Long id, List<Long> courses);
+
+
+	
+	
+	@Query(value ="SELECT a.ex_roll_no,a.courses_id,a.ex_courses_name,a.ex_assignment_marks FROM ex_grade_report a WHERE a.ex_roll_no=?1 ORDER BY a.courses_id", nativeQuery = true)
+	ArrayList<Object[]> getresults(String exRollNo);
+
+
+	List<GradeReport> findBySemesterIdAndStudentadmissionId(int i, Long id);
+
+
+	List<GradeReport> findByStudentadmissionIdOrderByCoursesId(Long id);
+
+
+
+	List<GradeReport> findByCoursesIdAndExIsActiveAndExIsDeleteAndAcademicYearId(Long courses, boolean b, boolean c,
+			Long academicyear);
+
+
+	List<GradeReport> findByCoursesIdAndExIsActiveAndExIsDelete(Long courses, boolean b, boolean c);
+
+
+	
+	
+	
+	@Query(value ="select * from ex_grade_report",nativeQuery = true) 
+	List<Object[]> getrecordspdfs(Long courses, List<Long> academicYear);
+
+
+
+
+
+
+
+}

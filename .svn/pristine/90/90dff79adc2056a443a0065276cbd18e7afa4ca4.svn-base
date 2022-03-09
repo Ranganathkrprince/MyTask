@@ -1,0 +1,304 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_feeCategory")
+public class FeeCategory {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String exName;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "feeheadmaster_id", nullable = false)
+	private FeeHeadMaster feeheadmaster;
+	
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public FeeHeadMaster getFeeheadmaster() {
+		return feeheadmaster;
+	}
+
+	public void setFeeheadmaster(FeeHeadMaster feeheadmaster) {
+		this.feeheadmaster = feeheadmaster;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	@Override
+	public String toString() {
+		return "FeeCategory [id=" + id + ", exName=" + exName + ", feeheadmaster=" + feeheadmaster + ", exIsActive="
+				+ exIsActive + ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate="
+				+ exUpdateDate + "]";
+	}
+
+
+	
+	
+
+
+	/*private String exFeeName;
+
+	private String exFeeHead;
+
+	private String exFeeCategory;
+
+	private String exFeeAmount;
+
+	private String exFeeCode;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "batch_id", nullable = false)
+	private Batch batch;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeyear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "semster_id", nullable = false)
+	private Semster semster;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "feeheadmaster_id", nullable = false)
+	private FeeHeadMaster feeheadmaster;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_feeCategory_category", joinColumns = {
+			@JoinColumn(name = "feeCategory_id", referencedColumnName = "id", nullable = false, updatable = true) }, inverseJoinColumns = {
+					@JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false, updatable = false) })
+	private List<FeeCategory> feecategory = new LinkedList<>();
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_feeCategory_feeType", joinColumns = {
+			@JoinColumn(name = "feeCategory_id", referencedColumnName = "id", nullable = false, updatable = true) }, inverseJoinColumns = {
+					@JoinColumn(name = "feeType_id", referencedColumnName = "id", nullable = false, updatable = false) })
+	private List<FeeType> feetype = new LinkedList<>();
+	
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExFeeName() {
+		return exFeeName;
+	}
+
+	public void setExFeeName(String exFeeName) {
+		this.exFeeName = exFeeName;
+	}
+
+	public String getExFeeHead() {
+		return exFeeHead;
+	}
+
+	public void setExFeeHead(String exFeeHead) {
+		this.exFeeHead = exFeeHead;
+	}
+
+	public String getExFeeCategory() {
+		return exFeeCategory;
+	}
+
+	public void setExFeeCategory(String exFeeCategory) {
+		this.exFeeCategory = exFeeCategory;
+	}
+
+	public String getExFeeAmount() {
+		return exFeeAmount;
+	}
+
+	public void setExFeeAmount(String exFeeAmount) {
+		this.exFeeAmount = exFeeAmount;
+	}
+
+	public String getExFeeCode() {
+		return exFeeCode;
+	}
+
+	public void setExFeeCode(String exFeeCode) {
+		this.exFeeCode = exFeeCode;
+	}
+
+	public Batch getBatch() {
+		return batch;
+	}
+
+	public void setBatch(Batch batch) {
+		this.batch = batch;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public ProgrammeYear getProgrammeyear() {
+		return programmeyear;
+	}
+
+	public void setProgrammeyear(ProgrammeYear programmeyear) {
+		this.programmeyear = programmeyear;
+	}
+
+	public Semster getSemster() {
+		return semster;
+	}
+
+	public void setSemster(Semster semster) {
+		this.semster = semster;
+	}
+
+	public FeeHeadMaster getFeeheadmaster() {
+		return feeheadmaster;
+	}
+
+	public void setFeeheadmaster(FeeHeadMaster feeheadmaster) {
+		this.feeheadmaster = feeheadmaster;
+	}
+
+	public List<FeeCategory> getFeecategory() {
+		return feecategory;
+	}
+
+	public void setFeecategory(List<FeeCategory> feecategory) {
+		this.feecategory = feecategory;
+	}
+
+	public List<FeeType> getFeetype() {
+		return feetype;
+	}
+
+	public void setFeetype(List<FeeType> feetype) {
+		this.feetype = feetype;
+	}
+	
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	@Override
+	public String toString() {
+		return "FeeCategory [id=" + id + ", exFeeName=" + exFeeName + ", exFeeHead=" + exFeeHead + ", exFeeCategory="
+				+ exFeeCategory + ", exFeeAmount=" + exFeeAmount + ", exFeeCode=" + exFeeCode + ", batch=" + batch
+				+ ", degree=" + degree + ", programmes=" + programmes + ", programmeyear=" + programmeyear
+				+ ", semster=" + semster + ", feeheadmaster=" + feeheadmaster + ", feecategory=" + feecategory
+				+ ", feetype=" + feetype + ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete + "]";
+	}
+
+*/
+}

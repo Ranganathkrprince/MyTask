@@ -1,0 +1,39 @@
+package com.niftem.app.model;
+
+public class StudentMentorRequest {
+	private Long id;
+	private Long mentorId;
+	private Long studentadmissionId;
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getMentorId() {
+		return mentorId;
+	}
+
+	public void setMentorId(Long mentorId) {
+		this.mentorId = mentorId;
+	}
+
+	public Long getStudentadmissionId() {
+		return studentadmissionId;
+	}
+
+	public void setStudentadmissionId(Long studentadmissionId) {
+		this.studentadmissionId = studentadmissionId;
+	}
+
+	@Override
+	public String toString() {
+		return "StudentMentorRequest [id=" + id + ", mentorId=" + mentorId + ", studentadmissionId="
+				+ studentadmissionId + "]";
+	}
+
+	
+
+}

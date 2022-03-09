@@ -1,0 +1,97 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class RoomMasterRequest {
+
+	private Long id;
+	
+	@NotNull(message = "College is required")
+	private Long colleges;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a name")
+	private String exName;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide exRoomNumber")
+	private String exRoomNumber;	
+	
+	@NotNull(message = "Please provide exRoomCapacity")
+	private Integer exRoomCapacity;
+	
+	@NotNull(message = "Please provide a exIsActive 0/1")
+	private Boolean exIsActive;
+	private Boolean exIsDelete;
+	private Long user;
+	
+	private Integer exNumberOfStudent;
+	private int  noOfInvigilator;
+	public Long getId() {
+		return id;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public String getExName() {
+		return exName;
+	}
+	public String getExRoomNumber() {
+		return exRoomNumber;
+	}
+	public Integer getExRoomCapacity() {
+		return exRoomCapacity;
+	}
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public Integer getExNumberOfStudent() {
+		return exNumberOfStudent;
+	}
+	public int getNoOfInvigilator() {
+		return noOfInvigilator;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+	public void setExRoomNumber(String exRoomNumber) {
+		this.exRoomNumber = exRoomNumber;
+	}
+	public void setExRoomCapacity(Integer exRoomCapacity) {
+		this.exRoomCapacity = exRoomCapacity;
+	}
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public void setExNumberOfStudent(Integer exNumberOfStudent) {
+		this.exNumberOfStudent = exNumberOfStudent;
+	}
+	public void setNoOfInvigilator(int noOfInvigilator) {
+		this.noOfInvigilator = noOfInvigilator;
+	}
+	@Override
+	public String toString() {
+		return "RoomMasterRequest [id=" + id + ", colleges=" + colleges + ", exName=" + exName + ", exRoomNumber="
+				+ exRoomNumber + ", exRoomCapacity=" + exRoomCapacity + ", exIsActive=" + exIsActive + ", exIsDelete="
+				+ exIsDelete + ", user=" + user + ", exNumberOfStudent=" + exNumberOfStudent + ", noOfInvigilator="
+				+ noOfInvigilator + "]";
+	}
+}

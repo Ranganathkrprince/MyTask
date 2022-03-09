@@ -1,0 +1,197 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_creditHours")
+public class CreditHours {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String exCreditHourTitle;
+
+	private Double exCreditHourLecture;
+
+	private Double exCreditHourPractical;
+
+	private Double exTotalMarks;
+
+	private Double exPassingGradePoints;
+
+	private Double exExternalMarks;
+
+	private Double exExternalPassingMarks;
+
+	private Double exNoOfTopics;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	private String exName;
+	private Double exCreditHourTutorials;
+	private Double exTotalCreditHour;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExCreditHourTitle() {
+		return exCreditHourTitle;
+	}
+
+	public void setExCreditHourTitle(String exCreditHourTitle) {
+		this.exCreditHourTitle = exCreditHourTitle;
+	}
+
+
+
+	public Double getExCreditHourLecture() {
+		return exCreditHourLecture;
+	}
+
+	public void setExCreditHourLecture(Double exCreditHourLecture) {
+		this.exCreditHourLecture = exCreditHourLecture;
+	}
+
+	public Double getExCreditHourPractical() {
+		return exCreditHourPractical;
+	}
+
+	public void setExCreditHourPractical(Double exCreditHourPractical) {
+		this.exCreditHourPractical = exCreditHourPractical;
+	}
+
+	public Double getExTotalMarks() {
+		return exTotalMarks;
+	}
+
+	public void setExTotalMarks(Double exTotalMarks) {
+		this.exTotalMarks = exTotalMarks;
+	}
+
+	public Double getExPassingGradePoints() {
+		return exPassingGradePoints;
+	}
+
+	public void setExPassingGradePoints(Double exPassingGradePoints) {
+		this.exPassingGradePoints = exPassingGradePoints;
+	}
+
+	public Double getExExternalMarks() {
+		return exExternalMarks;
+	}
+
+	public void setExExternalMarks(Double exExternalMarks) {
+		this.exExternalMarks = exExternalMarks;
+	}
+
+	public Double getExExternalPassingMarks() {
+		return exExternalPassingMarks;
+	}
+
+	public void setExExternalPassingMarks(Double exExternalPassingMarks) {
+		this.exExternalPassingMarks = exExternalPassingMarks;
+	}
+
+	public Double getExNoOfTopics() {
+		return exNoOfTopics;
+	}
+
+	public void setExNoOfTopics(Double exNoOfTopics) {
+		this.exNoOfTopics = exNoOfTopics;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public Double getExCreditHourTutorials() {
+		return exCreditHourTutorials;
+	}
+
+	public void setExCreditHourTutorials(Double exCreditHourTutorials) {
+		this.exCreditHourTutorials = exCreditHourTutorials;
+	}
+
+	public Double getExTotalCreditHour() {
+		return exTotalCreditHour;
+	}
+
+	public void setExTotalCreditHour(Double exTotalCreditHour) {
+		this.exTotalCreditHour = exTotalCreditHour;
+	}
+
+	@Override
+	public String toString() {
+		return "CreditHours [id=" + id + ", exCreditHourTitle=" + exCreditHourTitle + ", exCreditHourLecture="
+				+ exCreditHourLecture + ", exCreditHourPractical=" + exCreditHourPractical + ", exTotalMarks="
+				+ exTotalMarks + ", exPassingGradePoints=" + exPassingGradePoints + ", exExternalMarks="
+				+ exExternalMarks + ", exExternalPassingMarks=" + exExternalPassingMarks + ", exNoOfTopics="
+				+ exNoOfTopics + ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete + ", exCreateDate="
+				+ exCreateDate + ", exUpdateDate=" + exUpdateDate + ", exName=" + exName + ", exCreditHourTutorials="
+				+ exCreditHourTutorials + ", exTotalCreditHour=" + exTotalCreditHour + "]";
+	}
+
+}

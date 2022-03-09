@@ -1,0 +1,118 @@
+package com.niftem.app.model;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class FeeCategoryRequest {
+	
+	private Long id;
+ 	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide exName")
+    private String exName;
+	
+	@NotNull(message="please provide feeheadmaster")
+	private Long feeheadmaster;
+	
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	private Long user;
+	
+	
+	
+	public Long getUser() {
+		return user;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public Long getFeeheadmaster() {
+		return feeheadmaster;
+	}
+
+	public void setFeeheadmaster(Long feeheadmaster) {
+		this.feeheadmaster = feeheadmaster;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	@Override
+	public String toString() {
+		return "FeeCategoryRequest [id=" + id + ", exName=" + exName + ", feeheadmaster=" + feeheadmaster
+				+ ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate
+				+ ", exUpdateDate=" + exUpdateDate + ", user=" + user + "]";
+	}
+
+
+	
+
+
+}

@@ -1,0 +1,53 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.AcademicCalender;
+
+public interface AcademicCalenderRepository extends CrudRepository<AcademicCalender, Long>{
+
+	List<AcademicCalender> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndExIsEven(boolean b, boolean c,
+			Long academicYear, Boolean exIsEven);
+
+	List<AcademicCalender> findByExIsDelete(boolean b);
+
+	List<AcademicCalender> findByIdAndExIsDelete(Long id, boolean b);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_academic_calender set ex_is_active = ?3 ,ex_proposed_dates=?1,   ex_is_even=?4 ,academic_calender_activity_id=?2 ,ex_update_date=?5 where id =?6", nativeQuery = true)
+	int updateAcademicCalenderRecord(String exProposedDates, Long academicCalenderActivity, Boolean exIsActive,Boolean exIsEven, Date date, Long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_academic_calender set ex_is_delete=?1 ,ex_is_active=?2 where id =?3", nativeQuery = true)
+	int deleteAcademicCalender(Boolean exIsDelete, Boolean is_active, Long id);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "select * from  ex_academic_calender e, ex_academic_calenderactivity_batch p where e.id = p.academic_calenderactivity_id and  e.ex_is_delete = ?1  and e.ex_is_active=?2 and  e.academic_year_id=?3 and e.ex_is_even=?4 and p.batch IN ?5 limit 1", nativeQuery = true)
+	List<AcademicCalender> getrecordForPdf(boolean delete, boolean ex_is_active,Long academicYear, Boolean exIsEven, List<Long> batch);
+	
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_academic_calender set ex_is_update = 1 ,ex_is_publish = ?2   where id =?1 ", nativeQuery = true)
+	int publishAcademicCalender( Long id, int i);
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_academic_calender set ex_remark =?1 , ex_is_update = 1 where id =?2  ", nativeQuery = true)
+	int submitCalender(String ex_remark , long id);
+	
+	
+}

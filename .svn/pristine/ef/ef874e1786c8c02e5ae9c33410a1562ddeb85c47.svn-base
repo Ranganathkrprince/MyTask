@@ -1,0 +1,155 @@
+package com.niftem.app.model;
+
+import org.springframework.web.multipart.MultipartFile;
+
+public class QuestionpaperRequest {
+
+	private String exQuestion;
+	private String exkeyanswer;
+	private Boolean exIsActive;
+	private Long courses;
+	private Long user;
+
+	private String exVersion;
+	private String extime;
+	private String exCourseCodeNo;
+	private MultipartFile exQuestionpaperFile;
+	private Long exquestionPaperType;
+	private String extype;
+	private Long academicYear;
+	private Long examAnnouncement;
+	private Long degree;
+	private Long id;
+	private Long programmes;
+	private Long department;
+	
+	private MultipartFile exQpFile;
+	 private MultipartFile exAnswerKeyFile;
+	public String getExQuestion() {
+		return exQuestion;
+	}
+	public String getExkeyanswer() {
+		return exkeyanswer;
+	}
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+	public Long getCourses() {
+		return courses;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public String getExVersion() {
+		return exVersion;
+	}
+	public String getExtime() {
+		return extime;
+	}
+	public String getExCourseCodeNo() {
+		return exCourseCodeNo;
+	}
+	public MultipartFile getExQuestionpaperFile() {
+		return exQuestionpaperFile;
+	}
+	public Long getExquestionPaperType() {
+		return exquestionPaperType;
+	}
+	public String getExtype() {
+		return extype;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public Long getId() {
+		return id;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public Long getDepartment() {
+		return department;
+	}
+	public MultipartFile getExQpFile() {
+		return exQpFile;
+	}
+	public MultipartFile getExAnswerKeyFile() {
+		return exAnswerKeyFile;
+	}
+	public void setExQuestion(String exQuestion) {
+		this.exQuestion = exQuestion;
+	}
+	public void setExkeyanswer(String exkeyanswer) {
+		this.exkeyanswer = exkeyanswer;
+	}
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public void setExVersion(String exVersion) {
+		this.exVersion = exVersion;
+	}
+	public void setExtime(String extime) {
+		this.extime = extime;
+	}
+	public void setExCourseCodeNo(String exCourseCodeNo) {
+		this.exCourseCodeNo = exCourseCodeNo;
+	}
+	public void setExQuestionpaperFile(MultipartFile exQuestionpaperFile) {
+		this.exQuestionpaperFile = exQuestionpaperFile;
+	}
+	public void setExquestionPaperType(Long exquestionPaperType) {
+		this.exquestionPaperType = exquestionPaperType;
+	}
+	public void setExtype(String extype) {
+		this.extype = extype;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+	public void setExQpFile(MultipartFile exQpFile) {
+		this.exQpFile = exQpFile;
+	}
+	public void setExAnswerKeyFile(MultipartFile exAnswerKeyFile) {
+		this.exAnswerKeyFile = exAnswerKeyFile;
+	}
+	@Override
+	public String toString() {
+		return "QuestionpaperRequest [exQuestion=" + exQuestion + ", exkeyanswer=" + exkeyanswer + ", exIsActive="
+				+ exIsActive + ", courses=" + courses + ", user=" + user + ", exVersion=" + exVersion + ", extime="
+				+ extime + ", exCourseCodeNo=" + exCourseCodeNo + ", exQuestionpaperFile=" + exQuestionpaperFile
+				+ ", exquestionPaperType=" + exquestionPaperType + ", extype=" + extype + ", academicYear="
+				+ academicYear + ", examAnnouncement=" + examAnnouncement + ", degree=" + degree + ", id=" + id
+				+ ", programmes=" + programmes + ", department=" + department + ", exQpFile=" + exQpFile
+				+ ", exAnswerKeyFile=" + exAnswerKeyFile + "]";
+	}
+	
+	
+	
+}

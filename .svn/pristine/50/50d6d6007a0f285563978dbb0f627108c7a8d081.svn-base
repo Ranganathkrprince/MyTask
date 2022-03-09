@@ -1,0 +1,104 @@
+package com.niftem.app.model;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class QuestionPaperTypeRequest {
+	private Long id;
+
+	@NotNull(message = "Please provide a exIsActive 0/1")
+	 private Boolean exIsActive;
+	
+	private Boolean exIsDelete;
+	private Long user;
+	
+	private Date exCreateDate;
+
+	
+
+	private Date exUpdateDate;
+
+
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a QPType")
+    private String exQpType;
+   
+	 private String exDescription;
+	 
+	 
+	 public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public Boolean getExIsActive() {
+			return exIsActive;
+		}
+
+		public void setExIsActive(Boolean exIsActive) {
+			this.exIsActive = exIsActive;
+		}
+
+		public Boolean getExIsDelete() {
+			return exIsDelete;
+		}
+
+		public void setExIsDelete(Boolean exIsDelete) {
+			this.exIsDelete = exIsDelete;
+		}
+
+		public Long getUser() {
+			return user;
+		}
+
+		public void setUser(Long user) {
+			this.user = user;
+		}
+
+		public String getExQpType() {
+			return exQpType;
+		}
+
+		public void setExQpType(String exQpType) {
+			this.exQpType = exQpType;
+		}
+
+		public String getExDescription() {
+			return exDescription;
+		}
+
+		public void setExDescription(String exDescription) {
+			this.exDescription = exDescription;
+		}
+
+		public Date getExCreateDate() {
+			return exCreateDate;
+		}
+
+		public void setExCreateDate(Date exCreateDate) {
+			this.exCreateDate = exCreateDate;
+		}
+
+		public Date getExUpdateDate() {
+			return exUpdateDate;
+		}
+
+		public void setExUpdateDate(Date exUpdateDate) {
+			this.exUpdateDate = exUpdateDate;
+		}
+		@Override
+		public String toString() {
+			return "QuestionPaperTypeRequest [id=" + id + ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete
+					+ ", user=" + user + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate
+					+ ", exQpType=" + exQpType + ", exDescription=" + exDescription + "]";
+		}
+
+}

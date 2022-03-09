@@ -1,0 +1,296 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+	@Entity
+	@Table(name = "ex_feed_back")
+	public class FeedBack {
+		
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Long id;
+		
+	    @ManyToOne( optional = false, fetch = FetchType.LAZY)
+		@JoinColumn(name = "student_admission_id", nullable = false)
+		private Studentadmission studentadmission; 
+		
+		private Long exTotalScaleValue;
+		
+		@Column(columnDefinition="TEXT")
+		private String exRemark;	
+		
+		private Integer feedbackType; // 1 for middle of the sem 2 for end of the semester
+		
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "programmes_id", nullable = false)
+		private Programmes programmes;
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "department_id", nullable = false)
+		private Department department;
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "degree_id", nullable = false)
+		private Degree degree;
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "programmeYear_id", nullable = false)
+		private ProgrammeYear programmeYear;
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "semster_id", nullable = false)
+		private Semster semester;
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "academicYear_id", nullable = false)
+		private AcademicYear academicYear;
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "staff_id", nullable = false)
+		private Staffpersonal staff;
+		
+		@ManyToOne( optional = true)
+		@JoinColumn(name = "designation_id", nullable = true)
+		private Designation designation;
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "courses_id", nullable = false)
+		private Courses courses;
+		
+	
+		@Column(columnDefinition="BOOLEAN DEFAULT false")
+	    private Boolean exIsActive;
+		
+		@Column(columnDefinition="BOOLEAN DEFAULT false")
+		private Boolean exIsDelete;
+		
+
+		@Temporal(TemporalType.TIMESTAMP)
+		@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+		private Date exCreateDate;
+
+		@Temporal(TemporalType.TIMESTAMP)
+		@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+		private Date exUpdateDate;
+		
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "colleges_id", nullable = false)
+		private Colleges colleges;
+
+
+		public Long getId() {
+			return id;
+		}
+
+
+		public Studentadmission getStudentadmission() {
+			return studentadmission;
+		}
+
+
+		public Long getExTotalScaleValue() {
+			return exTotalScaleValue;
+		}
+
+
+		public String getExRemark() {
+			return exRemark;
+		}
+
+
+		public Integer getFeedbackType() {
+			return feedbackType;
+		}
+
+
+		public Programmes getProgrammes() {
+			return programmes;
+		}
+
+
+		public Department getDepartment() {
+			return department;
+		}
+
+
+		public Degree getDegree() {
+			return degree;
+		}
+
+
+		public ProgrammeYear getProgrammeYear() {
+			return programmeYear;
+		}
+
+
+		public Semster getSemester() {
+			return semester;
+		}
+
+
+		public AcademicYear getAcademicYear() {
+			return academicYear;
+		}
+
+
+		public Staffpersonal getStaff() {
+			return staff;
+		}
+
+
+		public Designation getDesignation() {
+			return designation;
+		}
+
+
+		public Courses getCourses() {
+			return courses;
+		}
+
+
+		public Boolean getExIsActive() {
+			return exIsActive;
+		}
+
+
+		public Boolean getExIsDelete() {
+			return exIsDelete;
+		}
+
+
+		public Date getExCreateDate() {
+			return exCreateDate;
+		}
+
+
+		public Date getExUpdateDate() {
+			return exUpdateDate;
+		}
+
+
+		public Colleges getColleges() {
+			return colleges;
+		}
+
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+
+		public void setStudentadmission(Studentadmission studentadmission) {
+			this.studentadmission = studentadmission;
+		}
+
+
+		public void setExTotalScaleValue(Long exTotalScaleValue) {
+			this.exTotalScaleValue = exTotalScaleValue;
+		}
+
+
+		public void setExRemark(String exRemark) {
+			this.exRemark = exRemark;
+		}
+
+
+		public void setFeedbackType(Integer feedbackType) {
+			this.feedbackType = feedbackType;
+		}
+
+
+		public void setProgrammes(Programmes programmes) {
+			this.programmes = programmes;
+		}
+
+
+		public void setDepartment(Department department) {
+			this.department = department;
+		}
+
+
+		public void setDegree(Degree degree) {
+			this.degree = degree;
+		}
+
+
+		public void setProgrammeYear(ProgrammeYear programmeYear) {
+			this.programmeYear = programmeYear;
+		}
+
+
+		public void setSemester(Semster semester) {
+			this.semester = semester;
+		}
+
+
+		public void setAcademicYear(AcademicYear academicYear) {
+			this.academicYear = academicYear;
+		}
+
+
+		public void setStaff(Staffpersonal staff) {
+			this.staff = staff;
+		}
+
+
+		public void setDesignation(Designation designation) {
+			this.designation = designation;
+		}
+
+
+		public void setCourses(Courses courses) {
+			this.courses = courses;
+		}
+
+
+		public void setExIsActive(Boolean exIsActive) {
+			this.exIsActive = exIsActive;
+		}
+
+
+		public void setExIsDelete(Boolean exIsDelete) {
+			this.exIsDelete = exIsDelete;
+		}
+
+
+		public void setExCreateDate(Date exCreateDate) {
+			this.exCreateDate = exCreateDate;
+		}
+
+
+		public void setExUpdateDate(Date exUpdateDate) {
+			this.exUpdateDate = exUpdateDate;
+		}
+
+
+		public void setColleges(Colleges colleges) {
+			this.colleges = colleges;
+		}
+
+
+		@Override
+		public String toString() {
+			return "FeedBack [id=" + id + ", studentadmission=" + studentadmission + ", exTotalScaleValue="
+					+ exTotalScaleValue + ", exRemark=" + exRemark + ", feedbackType=" + feedbackType + ", programmes="
+					+ programmes + ", department=" + department + ", degree=" + degree + ", programmeYear="
+					+ programmeYear + ", semester=" + semester + ", academicYear=" + academicYear + ", staff=" + staff
+					+ ", designation=" + designation + ", courses=" + courses + ", exIsActive=" + exIsActive
+					+ ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate
+					+ ", colleges=" + colleges + "]";
+		}
+	
+}

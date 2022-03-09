@@ -1,0 +1,78 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+@Entity
+@Table(name = "ex_customer_sms_log")
+public class CustomerSmsLog {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private String exMobile;
+	
+	private String otpcode;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+	
+	private int exIsActive;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExMobile() {
+		return exMobile;
+	}
+
+	public String getOtpcode() {
+		return otpcode;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public int getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExMobile(String exMobile) {
+		this.exMobile = exMobile;
+	}
+
+	public void setOtpcode(String otpcode) {
+		this.otpcode = otpcode;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExIsActive(int exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomerSmsLog [id=" + id + ", exMobile=" + exMobile + ", otpcode=" + otpcode + ", exCreateDate="
+				+ exCreateDate + ", exIsActive=" + exIsActive + "]";
+	}
+}

@@ -1,0 +1,71 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ex_feed_back_scale")
+public class FeedBackScale {
+		
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Long id;
+		
+		@ManyToOne( optional = true)
+		@JoinColumn(name = "feedBack_id", nullable = true)
+		private FeedBack feedBack;
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "about_feed_back_id", nullable = false)
+		private AboutFeedBack aboutFeedBack;
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "Scale_id", nullable = false)
+		private Scale Scale;
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public FeedBack getFeedBack() {
+			return feedBack;
+		}
+
+		public void setFeedBack(FeedBack feedBack) {
+			this.feedBack = feedBack;
+		}
+
+		public AboutFeedBack getAboutFeedBack() {
+			return aboutFeedBack;
+		}
+
+		public void setAboutFeedBack(AboutFeedBack aboutFeedBack) {
+			this.aboutFeedBack = aboutFeedBack;
+		}
+
+		public Scale getScale() {
+			return Scale;
+		}
+
+		public void setScale(Scale scale) {
+			Scale = scale;
+		}
+
+		@Override
+		public String toString() {
+			return "FeedBackScale [id=" + id + ", feedBack=" + feedBack
+					+ ", aboutFeedBack=" + aboutFeedBack + ", Scale=" + Scale
+					+ "]";
+		}
+
+		
+}

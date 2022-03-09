@@ -1,0 +1,291 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class ReportRequest {
+
+	private List<Long> colleges;
+	private List<Long> programmes;
+	private List<Long> academicYear;
+	private Long coursesType;
+	
+	private String exAccountType;
+	
+	private String exBranch;
+	
+	private String exAccountNumber;
+	
+	private String exIfscCode;
+	
+
+	private String exBankAddress;
+	
+	
+	private String exStudentAddress;
+
+	private String status;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide Identifier")
+    private String exIdentifier;
+
+	private List<Long> programmeYear;
+	private List<Long> semester;
+	private List<Long> degree;
+	private List<Long> department;
+	private List<Long> stream;
+	private List<Long> courses;
+	
+	private List<String> boards;	
+	private List<String> states;
+	private List<String> mothertongue;
+	private List<String> nationality;
+	private List<String> religion;
+	private List<String> bloodgroup;
+	private List<String> minority;
+	
+	private Long batch;
+	
+	private String methodType;
+	
+	private String privilegesModulesId;
+	private String startDate;
+	private String endDate;
+	
+	  private String orderId; 
+		private String paymentStatus;
+		  private List<Long> category;
+		  private String exRollNo;
+		  private String exCGPA;
+		public List<Long> getColleges() {
+			return colleges;
+		}
+		public List<Long> getProgrammes() {
+			return programmes;
+		}
+		public List<Long> getAcademicYear() {
+			return academicYear;
+		}
+		public List<Long> getProgrammeYear() {
+			return programmeYear;
+		}
+		public List<Long> getSemester() {
+			return semester;
+		}
+		public List<Long> getDegree() {
+			return degree;
+		}
+		public List<Long> getDepartment() {
+			return department;
+		}
+		public List<Long> getStream() {
+			return stream;
+		}
+		public List<Long> getCourses() {
+			return courses;
+		}
+		public Long getBatch() {
+			return batch;
+		}
+		public String getMethodType() {
+			return methodType;
+		}
+		public String getPrivilegesModulesId() {
+			return privilegesModulesId;
+		}
+		public String getStartDate() {
+			return startDate;
+		}
+		public String getEndDate() {
+			return endDate;
+		}
+		public String getOrderId() {
+			return orderId;
+		}
+		public String getPaymentStatus() {
+			return paymentStatus;
+		}
+		public List<Long> getCategory() {
+			return category;
+		}
+		public String getExRollNo() {
+			return exRollNo;
+		}
+		public String getExCGPA() {
+			return exCGPA;
+		}
+		public void setColleges(List<Long> colleges) {
+			this.colleges = colleges;
+		}
+		public void setProgrammes(List<Long> programmes) {
+			this.programmes = programmes;
+		}
+		public void setAcademicYear(List<Long> academicYear) {
+			this.academicYear = academicYear;
+		}
+		public void setProgrammeYear(List<Long> programmeYear) {
+			this.programmeYear = programmeYear;
+		}
+		public void setSemester(List<Long> semester) {
+			this.semester = semester;
+		}
+		public void setDegree(List<Long> degree) {
+			this.degree = degree;
+		}
+		public void setDepartment(List<Long> department) {
+			this.department = department;
+		}
+		public void setStream(List<Long> stream) {
+			this.stream = stream;
+		}
+		public void setCourses(List<Long> courses) {
+			this.courses = courses;
+		}
+		public void setBatch(Long batch) {
+			this.batch = batch;
+		}
+		public void setMethodType(String methodType) {
+			this.methodType = methodType;
+		}
+		public void setPrivilegesModulesId(String privilegesModulesId) {
+			this.privilegesModulesId = privilegesModulesId;
+		}
+		public void setStartDate(String startDate) {
+			this.startDate = startDate;
+		}
+		public void setEndDate(String endDate) {
+			this.endDate = endDate;
+		}
+		public void setOrderId(String orderId) {
+			this.orderId = orderId;
+		}
+		public void setPaymentStatus(String paymentStatus) {
+			this.paymentStatus = paymentStatus;
+		}
+		public void setCategory(List<Long> category) {
+			this.category = category;
+		}
+		public void setExRollNo(String exRollNo) {
+			this.exRollNo = exRollNo;
+		}
+		public void setExCGPA(String exCGPA) {
+			this.exCGPA = exCGPA;
+		}
+		
+		public String getExAccountType() {
+			return exAccountType;
+		}
+		public void setExAccountType(String exAccountType) {
+			this.exAccountType = exAccountType;
+		}
+		public String getExBranch() {
+			return exBranch;
+		}
+		public void setExBranch(String exBranch) {
+			this.exBranch = exBranch;
+		}
+		public String getExAccountNumber() {
+			return exAccountNumber;
+		}
+		public void setExAccountNumber(String exAccountNumber) {
+			this.exAccountNumber = exAccountNumber;
+		}
+		public String getExIfscCode() {
+			return exIfscCode;
+		}
+		public void setExIfscCode(String exIfscCode) {
+			this.exIfscCode = exIfscCode;
+		}
+		public String getExBankAddress() {
+			return exBankAddress;
+		}
+		public void setExBankAddress(String exBankAddress) {
+			this.exBankAddress = exBankAddress;
+		}
+		public String getExStudentAddress() {
+			return exStudentAddress;
+		}
+		public void setExStudentAddress(String exStudentAddress) {
+			this.exStudentAddress = exStudentAddress;
+		}
+		public String getStatus() {
+			return status;
+		}
+		public void setStatus(String status) {
+			this.status = status;
+		}
+		public Long getCoursesType() {
+			return coursesType;
+		}
+		public void setCoursesType(Long coursesType) {
+			this.coursesType = coursesType;
+		}
+		public String getExIdentifier() {
+			return exIdentifier;
+		}
+		public void setExIdentifier(String exIdentifier) {
+			this.exIdentifier = exIdentifier;
+		}
+		
+		public List<String> getBoards() {
+			return boards;
+		}
+		public void setBoards(List<String> boards) {
+			this.boards = boards;
+		}
+		public List<String> getStates() {
+			return states;
+		}
+		public void setStates(List<String> states) {
+			this.states = states;
+		}
+		public List<String> getMothertongue() {
+			return mothertongue;
+		}
+		public void setMothertongue(List<String> mothertongue) {
+			this.mothertongue = mothertongue;
+		}
+		public List<String> getNationality() {
+			return nationality;
+		}
+		public void setNationality(List<String> nationality) {
+			this.nationality = nationality;
+		}
+		public List<String> getReligion() {
+			return religion;
+		}
+		public void setReligion(List<String> religion) {
+			this.religion = religion;
+		}
+		public List<String> getBloodgroup() {
+			return bloodgroup;
+		}
+		public void setBloodgroup(List<String> bloodgroup) {
+			this.bloodgroup = bloodgroup;
+		}
+		public List<String> getMinority() {
+			return minority;
+		}
+		public void setMinority(List<String> minority) {
+			this.minority = minority;
+		}
+		@Override
+		public String toString() {
+			return "ReportRequest [colleges=" + colleges + ", programmes=" + programmes + ", academicYear="
+					+ academicYear + ", coursesType=" + coursesType + ", exAccountType=" + exAccountType + ", exBranch="
+					+ exBranch + ", exAccountNumber=" + exAccountNumber + ", exIfscCode=" + exIfscCode
+					+ ", exBankAddress=" + exBankAddress + ", exStudentAddress=" + exStudentAddress + ", status="
+					+ status + ", exIdentifier=" + exIdentifier + ", programmeYear=" + programmeYear + ", semester="
+					+ semester + ", degree=" + degree + ", department=" + department + ", stream=" + stream
+					+ ", courses=" + courses + ", boards=" + boards + ", states=" + states + ", mothertongue="
+					+ mothertongue + ", nationality=" + nationality + ", religion=" + religion + ", bloodgroup="
+					+ bloodgroup + ", minority=" + minority + ", batch=" + batch + ", methodType=" + methodType
+					+ ", privilegesModulesId=" + privilegesModulesId + ", startDate=" + startDate + ", endDate="
+					+ endDate + ", orderId=" + orderId + ", paymentStatus=" + paymentStatus + ", category=" + category
+					+ ", exRollNo=" + exRollNo + ", exCGPA=" + exCGPA + "]";
+		}
+	
+}

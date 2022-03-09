@@ -1,0 +1,240 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_feeMaster")
+public class FeeMaster {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String exFeeName;
+
+	private String exFeeAmount;
+
+	private String exFeeCode;
+
+	@ManyToOne(optional = false , fetch = FetchType.LAZY)
+	@JoinColumn(name = "batch_id", nullable = false)
+	private Batch batch;
+
+	@ManyToOne(optional = false , fetch = FetchType.LAZY)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false , fetch = FetchType.LAZY)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false , fetch = FetchType.LAZY)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeyear;
+
+	@ManyToOne(optional = false , fetch = FetchType.LAZY)
+	@JoinColumn(name = "semster_id", nullable = false)
+	private Semster semster;
+
+	
+	@ManyToOne(optional = false , fetch = FetchType.LAZY)
+	@JoinColumn(name = "academicYear_id", nullable = false)
+	private AcademicYear academicYear;
+	
+	@ManyToOne(optional = true , fetch = FetchType.LAZY)
+	@JoinColumn(name = "feecategory_id", nullable = true)
+	private FeeCategory feecategory;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_feeMaster_category", joinColumns = {
+			@JoinColumn(name = "feeMaster_id", referencedColumnName = "id", nullable = false, updatable = true) }, inverseJoinColumns = {
+					@JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false, updatable = false) })
+	private List<Category> category = new LinkedList<>();
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_feeMaster_feeType", joinColumns = {
+			@JoinColumn(name = "feeMaster_id", referencedColumnName = "id", nullable = false, updatable = true) }, inverseJoinColumns = {
+					@JoinColumn(name = "feeType_id", referencedColumnName = "id", nullable = false, updatable = false) })
+	private List<FeeType> feetype = new LinkedList<>();
+	
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExFeeName() {
+		return exFeeName;
+	}
+
+	public String getExFeeAmount() {
+		return exFeeAmount;
+	}
+
+	public String getExFeeCode() {
+		return exFeeCode;
+	}
+
+	public Batch getBatch() {
+		return batch;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public ProgrammeYear getProgrammeyear() {
+		return programmeyear;
+	}
+
+	public Semster getSemster() {
+		return semster;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public FeeCategory getFeecategory() {
+		return feecategory;
+	}
+
+	public List<Category> getCategory() {
+		return category;
+	}
+
+	public List<FeeType> getFeetype() {
+		return feetype;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExFeeName(String exFeeName) {
+		this.exFeeName = exFeeName;
+	}
+
+	public void setExFeeAmount(String exFeeAmount) {
+		this.exFeeAmount = exFeeAmount;
+	}
+
+	public void setExFeeCode(String exFeeCode) {
+		this.exFeeCode = exFeeCode;
+	}
+
+	public void setBatch(Batch batch) {
+		this.batch = batch;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setProgrammeyear(ProgrammeYear programmeyear) {
+		this.programmeyear = programmeyear;
+	}
+
+	public void setSemster(Semster semster) {
+		this.semster = semster;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setFeecategory(FeeCategory feecategory) {
+		this.feecategory = feecategory;
+	}
+
+	public void setCategory(List<Category> category) {
+		this.category = category;
+	}
+
+	public void setFeetype(List<FeeType> feetype) {
+		this.feetype = feetype;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	@Override
+	public String toString() {
+		return "FeeMaster [id=" + id + ", exFeeName=" + exFeeName + ", exFeeAmount=" + exFeeAmount + ", exFeeCode="
+				+ exFeeCode + ", batch=" + batch + ", degree=" + degree + ", programmes=" + programmes
+				+ ", programmeyear=" + programmeyear + ", semster=" + semster + ", academicYear=" + academicYear
+				+ ", feecategory=" + feecategory + ", category=" + category + ", feetype=" + feetype + ", exIsActive="
+				+ exIsActive + ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate="
+				+ exUpdateDate + "]";
+	}
+
+
+
+}

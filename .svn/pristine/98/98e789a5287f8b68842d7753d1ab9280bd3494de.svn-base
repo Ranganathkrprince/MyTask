@@ -1,0 +1,35 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.NoDuePenalty;
+
+public interface NoDuePenaltyRepository extends CrudRepository<NoDuePenalty, Long>{
+
+	
+	List<NoDuePenalty> findByRegistrationIdAndApproveType (Long student  , String type);
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_nodues_penalty set amount = ?1 , remark = ?2 , is_approve = ?5 where registration_id =?3 AND approve_type =?4 ", nativeQuery = true)
+	int updateRecord(Double amount, String remark, Long registration_id , String approve_type , int status );
+
+	
+	List<NoDuePenalty> findByRegistrationIdAndApproveTypeInAndIsApprove(Long student  ,List<String> type , boolean approve);
+	
+
+	@Query(value = "select count(id) from  ex_nodues_penalty  where is_approve = 1 and  registration_id =?1 AND approve_type =?2 ", nativeQuery = true)
+		int  gettype(Long registration_id , String approve_type );
+
+
+}

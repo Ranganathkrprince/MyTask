@@ -1,0 +1,43 @@
+package com.niftem.app.repository;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.FeeType;
+import com.niftem.app.entity.User;
+
+public interface FeeTypeRepository extends CrudRepository<FeeType, Long>{
+
+	List<FeeType> findByExIsDelete(Boolean delete);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_fee_type set ex_is_delete = ?1 ,ex_is_active=?2 where id =?3", nativeQuery = true)
+	int deleteFeeType(Boolean exIsDelete, Boolean is_active, Long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_fee_type set ex_name = ?1 ,ex_description=?2 , ex_is_active =?3,ex_update_date =?4 where id =?5", nativeQuery = true)
+	int updateFeeTypeRecord(String exName, String exDescription, Boolean exIsActive, Date updateDate, Long id);
+
+	Optional<FeeType> findByIdAndExIsDeleteAndExIsActive(Long feetype ,boolean delete, boolean active);
+
+	@Query(value = "SELECT *  FROM ex_fee_type WHERE ex_name IN ?1 and  ex_is_delete = ?2 and ex_is_active=?3", nativeQuery = true)
+	ArrayList<Object[]> checkfeelist(List<String> itemList,boolean delete, boolean active);
+
+	List<FeeType> findByExNameAndExIsDelete(String trim, boolean isDelete);
+
+	Optional<FeeType> findByExNameAndExIsDeleteAndExIsActive(String feetypes, boolean isDelete, boolean isActive);
+
+	Optional<FeeType> findByIdAndExIsDeleteAndExIsActive(List<Long> feetype, boolean delete, boolean active);
+
+	Optional<FeeType> findByExIsDeleteAndId(boolean b,Object id);
+
+}

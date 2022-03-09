@@ -1,0 +1,76 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.ClassTimeTableDays;
+import com.niftem.app.entity.Courses;
+
+public interface ClassTimeTableDaysRepository extends CrudRepository< ClassTimeTableDays, Long>{
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_class_timetable_days set ex_start_time = ?1,ex_end_time =?2  where class_timetable_id =?3 AND ex_day_name =?4 ", nativeQuery = true)
+	int updateRecord(Date exIsDelete, Date exIsActive, Long id , String dayname);
+
+	List<ClassTimeTableDays> findByClasstimetableAcademicYearId(Long academicYear);
+
+	
+	List<ClassTimeTableDays> findByClasstimetableAcademicYearIdAndClasstimetableCollegesIdAndClasstimetableDegreeIdAndClasstimetableProgrammesIdAndClasstimetableProgrammeYearIdAndClasstimetableSemesterIdAndClasstimetableExIsActiveAndClasstimetableExIsDeleteAndClasstimetableCoursesIdAndClasstimetableCoursesTypeIdAndExStartTime(
+			Long academicYear, Long colleges, Long degree, Long programmes, Long programmeYear, Long semester,
+			boolean b, boolean c, Long courses, Long coursesType, Object object);
+
+	List<ClassTimeTableDays> findByClasstimetableAcademicYearIdAndClasstimetableCollegesIdAndClasstimetableDegreeIdAndClasstimetableProgrammesIdAndClasstimetableProgrammeYearIdAndClasstimetableSemesterIdAndClasstimetableExIsActiveAndClasstimetableExIsDeleteAndClasstimetableCoursesIdAndClasstimetableCoursesTypeId(
+			Long academicYear, Long colleges, Long degree, Long programmes, Long programmeYear, Long semester,
+			boolean b, boolean c, Long courses, Long coursesType);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_class_timetable_days set ex_start_time = ?1,ex_end_time =?2 , room_id =?4 where id =?3 ", nativeQuery = true)
+	int updateDaysRecord(Date exIsDelete, Date exIsActive, Long id , Long roomid);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_class_timetable_days a set a.ex_start_time = ?1,a.ex_end_time =?2 ,a.room_id =?3 where a.id =?4 ", nativeQuery = true)
+	int updateDaysRecords(Date exIsDelete, Date exIsActive, Long id , Long room );
+	
+	
+	@Query(value ="SELECT t.courses_id,c.ex_end_time  ,c.ex_start_time FROM  ex_class_timetable_days c  ,ex_class_timetable  t "
+			+ "Where    c.class_timetable_id =t.id " , nativeQuery = true)
+	List<Object[]> getalltimetable(Long id);
+
+	
+	List<ClassTimeTableDays> findByCoursesId(Courses courses);
+
+	List<ClassTimeTableDays> findByClasstimetableAcademicYearIdAndClasstimetableCollegesIdAndClasstimetableDegreeIdAndClasstimetableProgrammesIdAndClasstimetableProgrammeYearIdAndClasstimetableSemesterIdAndClasstimetableExIsActiveAndClasstimetableExIsDeleteAndClasstimetableCoursesIdAndClasstimetableCoursesTypeIdAndClasstimetableSectionId(
+			Long academicYear, Long colleges, Long degree, Long programmes, Long programmeYear, Long semester,
+			boolean b, boolean c, Long courses, Long coursesType, Long section);
+
+
+
+	
+	@Query(value ="SELECT * FROM  ex_class_timetable_days c  ,ex_class_timetable  t "
+			+ "Where    c.class_timetable_id =t.id And c.class_timetable_id = ?1 " , nativeQuery = true)
+	List<ClassTimeTableDays> getclasstimetable(Long id);
+
+	
+	
+	@Query(value ="SELECT * FROM  ex_class_timetable_days c  ,ex_class_timetable  t "
+			+ "Where    c.class_timetable_id =t.id And t.academicyear_id = ?1 And t.section_id =?2 And  t.collage_id=?3 AND t.degree_id=?4 AND t.programmes_id=?5 AND t.department_id=?6 AND t.semester_id=?7" , nativeQuery = true)
+	List<ClassTimeTableDays> getclasstimetable(Long academicYear, Long section,Long college, Long degree,Long programmes, Long department, Long semester );
+
+	@Query(value ="SELECT d.ex_name FROM ex_class_timetable_days a, ex_teacher_course_mapping b, ex_teacher_course_mapping_courses c,ex_staff_personal d WHERE a.week_days_id=1 AND b.id=c.ex_teache_course_mapping_id AND a.courses_id=c.courses_id AND b.staffpersonal_id=d.id AND b.ex_is_delete=?1" , nativeQuery = true)
+	List<Object[]> classtimetablerecords(boolean b);
+
+
+
+	
+	}

@@ -1,0 +1,125 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Colleges;
+import com.niftem.app.entity.Role;
+import com.niftem.app.entity.User;
+
+
+public interface UserRepository extends CrudRepository<User, Long>{
+
+//	List<User> findByExNameAndExIsDelete(String username, Boolean delete);
+
+	List<User> findByExIsDelete(boolean delete);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_user set ex_is_delete = ?1,ex_is_active =?2  where id =?3", nativeQuery = true)
+	int deleteUser(Boolean exIsDelete, Boolean is_active, Long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_user set ex_name = ?1,ex_password = ?2,ex_mobile = ?3,ex_is_active =?4 ,"
+			+ "ex_email = ?5,ex_update_date = ?6,ex_user_name=?8,role_id=?9 ,ex_start_time =?10 , ex_end_time=?11 ,ex_start_date =?12 ,ex_end_date = ?13 where id =?7", nativeQuery = true)
+	int updateUserRecord(String exName, String dcrypt, String exMobile, Boolean exIsActive, String exEmail, Date date,
+			Long id, String exUserName, Long role, Date setExStartTime, Date setExEndTime, Date setExStartDate, Date setExEndDate);
+
+	
+
+	List<User> findByIdAndExIsDeleteAndExIsActive(Long user, Boolean delete,Boolean active);
+
+	List<User> findByIdAndExIsDelete(Long user, boolean isDelete);
+
+	List<User> findByExIsDeleteAndExUserNameAndExPassword(Boolean is_delete, String userName, String dcrypt);
+
+	List<User> findByExUserNameAndExIsDelete(String trim, boolean b);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_user set ex_photo = ?1 where id =?2", nativeQuery = true)
+	int updatePhoto(String imagepath, Long id);
+
+	Optional<User> findByExNameAndExIsDeleteAndExIsActive(String trim, boolean b, boolean c);
+	
+	@Query(value = "select username as username , password as password from ex_authentication  where username = ?1", nativeQuery = true)
+	public UserDetails findByUser(String username);
+	
+	
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_user set ex_password = ?1 where ex_user_name =?2", nativeQuery = true)
+
+	int updateuserPassword(String newpassworddcrypt, String userName);
+	
+	
+
+	List<User> findByExIsDeleteAndExUserName(boolean b, String userName);
+
+	Optional<User> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, Long user);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "delete from ex_user_collage  where user_id =?1", nativeQuery = true)
+	void deleteuserCollege(Long id);
+
+	
+	
+	@Modifying
+	@Transactional	
+	@Query(value = "insert into ex_user_collage(user_id,collage_id)values(?1,?2)", nativeQuery = true)
+	void saveuserCollege(Long id, Long col);
+
+	Optional<User> findByExIsDeleteAndId(Long user, boolean b);
+
+	@Modifying
+	@Transactional
+	@Query(value = "delete from ex_user_degree  where user_id =?1", nativeQuery = true)
+	void deleteuserDegree(Long id);
+	
+	@Modifying
+	@Transactional	
+	@Query(value = "insert into ex_user_degree(user_id,degree_id)values(?1,?2)", nativeQuery = true)
+	void saveuserDegree(Long id, Long col);
+
+	@Modifying
+	@Transactional
+	@Query(value = "delete from ex_user_department  where user_id =?1", nativeQuery = true)
+	void deleteuserDepartment(Long id);
+	
+	
+	@Modifying
+	@Transactional	
+	@Query(value = "insert into ex_user_department(user_id,department_id)values(?1,?2)", nativeQuery = true)
+	void saveuserDepartment(Long id, Long col);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "delete from ex_user_programmes  where user_id =?1", nativeQuery = true)
+	void deleteuserprogrammes(Long id);
+
+	
+    @Modifying
+	@Transactional	
+	@Query(value = "insert into ex_user_programmes(user_id,programmes_id)values(?1,?2)", nativeQuery = true)
+	void saveuserprogramme(Long id, Long col);
+	
+	
+	
+	
+
+
+	
+}

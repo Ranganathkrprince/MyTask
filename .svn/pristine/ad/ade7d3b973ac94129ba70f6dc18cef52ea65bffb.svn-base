@@ -1,0 +1,39 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.PrivilegesFeatures;
+
+	public interface PrivillageFeaturesRepository extends CrudRepository<PrivilegesFeatures, Long>{
+
+	List<PrivilegesFeatures> findByExFeaturenameAndExIsDeleteAndExIsActiveAndPrivilegesModulesId(String Featurename, Boolean delete, Boolean active, Long PrivilegesModules);
+
+	List<PrivilegesFeatures> findByExIsDelete(Boolean delete);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_privileges_features set ex_is_delete = ?1  ,ex_is_active = ?2  where id =?3", nativeQuery = true)
+	int updatePrivilegesFeatures(Boolean delete,  Boolean active, Long id);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_privileges_features set ex_Featurename = ?1  , privileges_modules_id =?2, ex_is_active = ?3 , ex_update_date = ?4  where id = ?5", nativeQuery = true)
+	int updatePrivilegesFeaturesStatus(String exFeaturename,Long privilegesModules, Boolean exIsActive, Date date, Long id);
+
+	Optional<PrivilegesFeatures> findByIdAndExIsDeleteAndExIsActive(Long privilegesFeatures,Boolean delete, Boolean active);
+
+	List<PrivilegesFeatures> findByIdAndExIsDelete(Long id,Boolean delete);
+
+	List<PrivilegesFeatures> findByExFeaturenameAndExIsActiveAndExIsDelete(String exName, boolean b, boolean c);
+
+	List<PrivilegesFeatures> findByIdAndExIsActiveAndExIsDelete(long privillagefetureid, boolean b, boolean c);
+
+}

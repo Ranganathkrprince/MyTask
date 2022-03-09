@@ -1,0 +1,369 @@
+package com.niftem.app.controller;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.niftem.app.entity.ClassAttendance;
+import com.niftem.app.model.AcademicCalenderRequest;
+import com.niftem.app.model.ClassTimeTableRequest;
+import com.niftem.app.model.CoursesRegistrationRequest;
+import com.niftem.app.model.ForwardLateRegApproveRequest;
+import com.niftem.app.model.InternalMarksRequest;
+import com.niftem.app.model.LateRegListApproval;
+import com.niftem.app.model.LateRegStudentApprove;
+import com.niftem.app.model.LateRegistrationRequest;
+import com.niftem.app.model.PenaltyRequest;
+import com.niftem.app.model.SemesterEligibility;
+import com.niftem.app.model.SemesterRegistrationConfigurationRequest;
+import com.niftem.app.model.SemesterRegistrationRequest;
+import com.niftem.app.service.CollegeAcademicService;
+import com.niftem.app.service.ExcellService;
+import com.niftem.app.util.ExcelExportResponse;
+
+@RequestMapping("/api/collegeacademic/")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RestController
+@Validated
+public class CollegeAcademicController {
+	
+	@Autowired
+	private ExcellService excelService;
+	
+	private static org.slf4j.Logger logger = LoggerFactory.getLogger("master-log");
+
+	
+	@Autowired
+	private CollegeAcademicService collegeAcademicService;
+	
+	
+	@PostMapping(value = "/academicClender/create")
+	public Map<String, String> createAcademicClender(  @RequestBody AcademicCalenderRequest request) {
+			return collegeAcademicService.createAcademicClender(request);			
+	}
+	
+	@PostMapping(value = "/academicClender/get")
+	public Map<String, Object> getAcademicClender( @RequestBody AcademicCalenderRequest request) {
+			return collegeAcademicService.getAcademicClender(request);			
+	}
+	
+	@PostMapping(value = "/academicClender/getOnID")
+	public Map<String, Object> getAcademicClendergetOnID( @RequestBody AcademicCalenderRequest request) {
+			return collegeAcademicService.getAcademicClendergetOnID(request);			
+	}
+	
+	@PostMapping(value = "/academicClender/updateSerialNo")
+	public Map<String, Object> updateSerialNo( @RequestBody AcademicCalenderRequest request) {
+			return collegeAcademicService.updateSerialNo(request);			
+	}
+	
+	@PostMapping(value = "/academicClender/updateProposedDate")
+	public Map<String, Object> updateProposedDate( @RequestBody AcademicCalenderRequest request) {
+			return collegeAcademicService.updateProposedDate(request);			
+	}
+	
+	
+	@PostMapping(value = "/academicClender/submitCalander")
+	public Map<String, Object> submitCalander( @RequestBody AcademicCalenderRequest request) {
+			return collegeAcademicService.submitCalander(request);			
+	}
+	
+	
+	
+	@PostMapping(value = "/academicClender/update")
+	public Map<String, Object> updateAcademicClender( @RequestBody AcademicCalenderRequest request) {
+			return collegeAcademicService.updateAcademicClender(request);			
+	}
+	
+	@PostMapping(value = "/academicClenderOnAcademicYearAndSemester")
+	public Map<String, Object> getAcademicClenderlist( @RequestBody AcademicCalenderRequest request) {
+			return collegeAcademicService.getAcademicClenderlist(request);			
+	}
+	
+	
+	@PostMapping(value = "/academicClender/delete")
+	public Map<String, String> deleteacademicClender(@RequestBody AcademicCalenderRequest request) {
+			return collegeAcademicService.deleteacademicClender(request);			
+	}
+
+	
+	@PostMapping(value = "/validateSemesterConfiguration")
+	public Map<String, Object> validateSemesterConfiguration(@RequestBody SemesterRegistrationConfigurationRequest request) {
+		return collegeAcademicService.validateSemesterConfiguration(request);
+	}	
+	
+	
+	@PostMapping(value = "/validateFeedbackConfiguration")
+	public Map<String, Object> validateFeedbackConfiguration(@RequestBody SemesterRegistrationConfigurationRequest request) {
+		return collegeAcademicService.validateFeedbackConfiguration(request);
+	}	
+	
+	
+	
+	@PostMapping(value = "/semesterRegistration/create")
+	public Map<String, Object> createsemesterRegistration(@Valid  @RequestBody SemesterRegistrationRequest request) {
+			return collegeAcademicService.createsemesterRegistration(request);			
+	}
+	
+	@PostMapping(value = "/unRegistrationStudentList")
+	public Map<String, Object> unRegistrationStudentList(@RequestBody SemesterRegistrationRequest request) {
+			return collegeAcademicService.unRegistrationStudentList(request);			
+	}
+	
+	@PostMapping(value = "/lateRegStudentApprove")
+	public Map<String, Object> lateRegStudentApprove(@Valid  @RequestBody LateRegStudentApprove request) {
+			return collegeAcademicService.lateRegStudentApprove(request);			
+	}
+	
+	@PostMapping(value = "/lateRegRequest")
+	public Map<String, Object> lateRegRequest(@Valid   LateRegistrationRequest request) {
+			return collegeAcademicService.lateRegRequest(request);			
+	}
+	
+	@PostMapping(value = "/getlateRegRequest")
+	public Map<String, Object> getlateRegRequestForMentor(@Valid @RequestBody LateRegListApproval request) {
+			return collegeAcademicService.getlateRegRequestForMentor(request);			
+	}
+	
+	
+	@PostMapping(value = "/forwardlateRegRequest")
+	public Map<String, Object> forwardlateRegRequest(@Valid @RequestBody ForwardLateRegApproveRequest request) {
+			return collegeAcademicService.forwardlateRegRequest(request);			
+	}
+	
+	@PostMapping(value = "/checkSemesterEligibility")
+	public Map<String, Object> checkSemesterEligibility( @RequestBody SemesterEligibility request) {
+			return collegeAcademicService.checkSemesterEligibility(request);			
+	}
+	
+	
+	// API to export student from class attendance based on courses and student ID
+	
+	@PostMapping("/studentForAttendance")
+	public ResponseEntity<InputStreamResource> studentForAttendance(@RequestBody ClassTimeTableRequest request ,HttpServletResponse response ) throws IOException	{
+		 try {
+		        List<ClassAttendance> list =excelService.studentForAttendance(request);		        
+		        SXSSFWorkbook wb = (new ExcelExportResponse()).exportClassTimeTableExamExcel(new String[] {"NAME", "Roll Number" , "Present Date" ,"IsPresent"}, list);                   
+		      		                  ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+		                    wb.write(outByteStream);
+		                    byte[] outArray = outByteStream.toByteArray();                      
+		                    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		                    response.setContentLength(outArray.length);
+		                    response.setHeader("Expires:", "0"); // eliminates browser caching
+		                    response.setHeader("Content-Disposition", "attachment; filename=classAttendance.xlsx");
+		                    OutputStream outStream = response.getOutputStream();
+		                    outStream.write(outArray);
+		                    outStream.flush();
+		                    wb.dispose();
+		                    wb.close();
+		                    return new ResponseEntity(outStream, HttpStatus.OK);
+		            } catch (Exception e) {
+		                e.printStackTrace();
+		            }
+		return null;
+	}
+	
+	
+	@PostMapping(value = "/getStudentInternalComponentMarks")
+	public Map<String, Object> getStudentInternalComponentMarks( @RequestBody InternalMarksRequest request) {
+			return collegeAcademicService.getStudentInternalComponentMarks(request);			
+	}
+	
+	@PostMapping(value = "/getStudentExternalComponentMarks")
+	public Map<String, Object> getStudentExternalComponentMarks( @RequestBody InternalMarksRequest request) {
+			return collegeAcademicService.getStudentExternalComponentMarks(request);			
+	}
+	
+	@PostMapping(value = "/updateStudentInternalComponentMarks")
+	public Map<String, Object> updateStudentInternalComponentMarks( @RequestBody InternalMarksRequest request) {
+			return collegeAcademicService.updateStudentInternalComponentMarks(request);			
+	}
+	@PostMapping(value = "/updateStudentExternalMarks")
+	public Map<String, Object> updateStudentExternalMarks( @RequestBody InternalMarksRequest request) {
+			return collegeAcademicService.updateStudentExternalMarks(request);			
+	}
+	
+	@PostMapping(value = "/updateStudentLabExperiment")
+	public Map<String, Object> updateStudentLabExperiment( @RequestBody InternalMarksRequest request) {
+			return collegeAcademicService.updateStudentLabExperiment(request);			
+	}
+	
+	@PostMapping(value = "/updateStudentVivaComponent")
+	public Map<String, Object> updateStudentVivaComponent( @RequestBody InternalMarksRequest request) {
+			return collegeAcademicService.updateStudentVivaComponent(request);			
+	}
+	//======================
+	@PostMapping(value = "/refurbishLabExperimentelement")
+	public Map<String, Object> refurbishLabExperimentelement( @RequestBody InternalMarksRequest request) {
+			return collegeAcademicService.refurbishLabExperimentelement(request);			
+	}
+	
+	@PostMapping(value = "/refurbishVivaelement")
+	public Map<String, Object> refurbishVivaelement( @RequestBody InternalMarksRequest request) {
+			return collegeAcademicService.refurbishVivaelement(request);			
+	}
+	
+	
+	@PostMapping(value = "/refurbishEndTermelement")
+	public Map<String, Object> refurbishEndTermelement( @RequestBody InternalMarksRequest request) {
+			return collegeAcademicService.refurbishEndTermelement(request);			
+	}
+	//======================
+	
+	@PostMapping(value = "/studentListForLibrary")
+	public Map<String, Object> studentListForLibrary(@RequestBody SemesterRegistrationRequest request) {
+			return collegeAcademicService.studentListForLibrary(request);			
+	}
+	
+	@PostMapping(value = "/approveLibrary")
+	public Map<String, Object> approveLibrary(@RequestBody SemesterRegistrationRequest request) {
+			return collegeAcademicService.approveLibrary(request);			
+	}
+	
+	@PostMapping(value = "/penaltyConfig/create")
+	public Map<String, String> createPenaltyConfiguration(@Valid  @RequestBody PenaltyRequest request) {
+			return collegeAcademicService.createPenaltyConfiguration(request);			
+	}
+	
+	@PostMapping(value = "/penaltyConfig/get")
+	public Map<String, Object> getPenaltyConfiguration( @RequestBody PenaltyRequest request) {
+			return collegeAcademicService.getPenaltyConfiguration(request);			
+	}
+	
+	@PostMapping(value = "/penaltyConfig/update")
+	public Map<String, String> updatePenaltyConfiguration( @RequestBody PenaltyRequest request) {
+			return collegeAcademicService.updatePenaltyConfiguration(request);			
+	}
+	
+	
+	@PostMapping(value = "/penaltyConfig/delete")
+	public Map<String, String> deletePenaltyConfiguration(@RequestBody PenaltyRequest request) {
+	return collegeAcademicService.deletePenaltyConfiguration(request);
+	}
+	
+	
+	@PostMapping(value = "/saveVivaMarks")
+	public Map<String, Object> saveVivaMarks(@RequestBody InternalMarksRequest request) {
+		return collegeAcademicService.saveVivaMarks(request);
+	}
+	
+	@PostMapping(value = "/saveLabMarks")
+	public Map<String, Object> saveLabMarks(@RequestBody InternalMarksRequest request) {
+		return collegeAcademicService.saveLabMarks(request);
+	}
+	
+	
+	
+	@PostMapping(value = "/saveAssignmentMarks")
+	public Map<String, Object> saveAssignmentMarks(@RequestBody InternalMarksRequest request) {
+		return collegeAcademicService.saveAssignmentMarks(request);
+	}
+	
+	@PostMapping(value = "/saveCaseStudy")
+	public Map<String, Object> saveCaseStudy(@RequestBody InternalMarksRequest request) {
+		return collegeAcademicService.saveCaseStudy(request);
+	}
+	
+	
+	@PostMapping(value = "/saveQuizMarks")
+	public Map<String, Object> saveQuizMarks(@RequestBody InternalMarksRequest request) {
+		return collegeAcademicService.saveQuizMarks(request);
+	}
+	
+	@PostMapping(value = "/saveMidTermMarks")
+	public Map<String, Object> saveMidTermMarks(@RequestBody InternalMarksRequest request) {
+		return collegeAcademicService.saveMidTermMarks(request);
+	}	
+	
+	@PostMapping(value = "/savePracticalRecordMarks")
+	public Map<String, Object> savePracticalMarks(@RequestBody InternalMarksRequest request) {
+		return collegeAcademicService.savePracticalMarks(request);
+	}	
+	@PostMapping(value = "/saveAttendanceMarks")
+	public Map<String, Object> saveAttendanceMarks(@RequestBody InternalMarksRequest request) {
+		return collegeAcademicService.saveAttendanceMarks(request);
+	}
+	@PostMapping(value = "/savePracticalExternalMarks")
+	public Map<String, Object> savePracticalExternalMarks(@RequestBody InternalMarksRequest request) {
+		return collegeAcademicService.savePracticalExternalMarks(request);
+	}
+	@PostMapping(value = "/sumbitInternalMarks")
+	public Map<String, Object> sumbitInternalMarks(@RequestBody InternalMarksRequest request) {
+		return collegeAcademicService.sumbitInternalMarks(request);
+	}
+	@PostMapping(value = "/saveInternalMarks")
+	public Map<String, Object> saveInternalMarks(@RequestBody InternalMarksRequest request) {
+		return collegeAcademicService.saveInternalMarks(request);
+	}
+	
+	@PostMapping(value = "/studentForInternalMarks")
+	public Map<String, Object> studentForInternalMarks(@RequestBody InternalMarksRequest request) {
+		return collegeAcademicService.studentForInternalMarks(request);
+	}
+	
+	@PostMapping(value = "/savePracticalLearningMarks")
+	public Map<String, Object> savePracticalLearningMarks(@RequestBody InternalMarksRequest request) {
+		return collegeAcademicService.savePracticalLearningMarks(request);
+	}	
+	
+	
+	@PostMapping(value = "/validateInternalMarks")
+	public Map<String, Object> validateInternalMarks(@RequestBody SemesterRegistrationConfigurationRequest request) {
+		return collegeAcademicService.validateInternalMarks(request);
+	}
+	
+	
+	@PostMapping(value = "/getRegisteredCourse")
+	public Map<String, Object> getRegisteredCourse( @RequestBody SemesterRegistrationRequest request) {
+		return collegeAcademicService.getRegisteredCourse(request);
+	}
+	
+	
+	
+	@PostMapping(value = "/deleteCourseRegistration")
+	public Map<String, String> deleteCourseRegistration(@RequestBody CoursesRegistrationRequest request) {
+			return collegeAcademicService.deleteCourseRegistration(request);			
+	}
+	
+	@PostMapping(value = "/courseRegistration")
+	public Map<String, String> courseRegistrationByAdmin(@RequestBody SemesterRegistrationRequest request) {
+			return collegeAcademicService.courseRegistrationByAdmin(request);			
+	}
+	
+	
+	@PostMapping(value = "/publishCalender")
+	public Map<String, String> publishCalender(@RequestBody AcademicCalenderRequest request) {
+			return collegeAcademicService.publishCalender(request);			
+	}
+	
+	
+	@PostMapping(value = "/studentListForRegisterCourses")
+	public Map<String, Object> studentListForRegisterCourses(@RequestBody SemesterRegistrationRequest request) {
+			return collegeAcademicService.studentListForRegisterCourses(request);			
+	}	
+	
+	@PostMapping(value = "/studentListForUnRegisterCourses")
+	public Map<String, Object> studentListForUnRegisterCourses(@RequestBody SemesterRegistrationRequest request) {
+			return collegeAcademicService.studentListForUnRegisterCourses(request);			
+	}	
+	
+	
+}

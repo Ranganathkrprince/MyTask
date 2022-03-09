@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="college-rpt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="90005b79-1b15-4016-8ebc-4b9d4b68c61e">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<parameter name="academicYear" class="java.lang.String"/>
+	<parameter name="examannouncement" class="java.lang.String"/>
+	<parameter name="degree" class="java.lang.String"/>
+	<parameter name="programme" class="java.lang.String"/>
+	<parameter name="department" class="java.lang.String"/>
+	
+	<parameter name="delete" class="java.lang.Boolean"/>
+	<parameter name="createdBy" class="java.lang.String"/>
+	<parameter name="exExamType" class="java.lang.String"/>
+	<parameter name="university" class="java.lang.String"/>
+	<parameter name="type" class="java.lang.String"/>
+	<parameter name="registrationType" class="java.lang.String"/>
+	<parameter name="logo" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+ (SELECT DISTINCT p.ex_name FROM ex_exam_timetable e ,ex_department p WHERE e.department_id=  $P{department}   and p.id=e.department_id) AS depart,
+ 
+ 
+      d.ex_name as degreename,
+      p.ex_name as programmename,
+      e.ex_start_date,
+      ex.ex_name as exam,
+      e.ex_start_time,
+      e.ex_end_time,
+      DAYNAME(e.ex_start_date) as daynames,
+      concat(c.ex_courses_code, ' ', '(', h.ex_credit_hour_title,')') as "course1"
+			
+    FROM ( SELECT DISTINCT  ex_start_date,exam_announcement_id,ex_start_time,ex_end_time,programmes_id,degree_id
+
+	    	FROM    ex_exam_timetable f
+
+     where	 f.exam_announcement_id=$P{examannouncement} AND f.programmes_id=$P{programme} AND f.degree_id=$P{degree} AND f.department_id=$P{department}   and
+			 f.academicyear_id=$P{academicYear} and registration_type_id=$P{registrationType} and ex_is_update ='1' and ex_exam_type=$P{exExamType} group by ex_start_date
+
+		   )e
+	left Join ex_exam_timetable e1 on e1.ex_start_date = e.ex_start_date and e1.department_id= $P{department}   
+	
+  LEFT JOIN ex_courses c ON c.id = e1.courses_id
+ 
+
+  LEFT JOIN ex_credit_hours h ON h.id = c.credit_hours_id AND c.id = e1.courses_id
+ 
+  LEFT JOIN ex_exam_announcement ex ON ex.id = e.exam_announcement_id
+   LEFT JOIN ex_programmes p ON p.id = e.programmes_id
+    LEFT JOIN ex_degree d ON d.id = e.degree_id ORDER BY e1.ex_start_date asc]]>
+	</queryString>
+	<field name="depart" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="depart"/>
+	</field>
+	<field name="ex_start_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="ex_start_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ex_exam_timetable_details"/>
+	</field>
+	<field name="ex_start_time" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="ex_start_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ex_exam_timetable_details"/>
+	</field>
+	<field name="ex_end_time" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="ex_end_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ex_exam_timetable_details"/>
+	</field>
+	<field name="exam" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="exam"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ex_exam_announcement"/>
+	</field>
+	<field name="daynames" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="daynames"/>
+	</field>
+	<field name="course1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="course1"/>
+	</field>
+	<group name="depart">
+		<groupExpression><![CDATA[$F{depart}]]></groupExpression>
+	</group>
+	<group name="ex_start_time">
+		<groupExpression><![CDATA[$F{ex_start_time}]]></groupExpression>
+	</group>
+	<group name="ex_end_time">
+		<groupExpression><![CDATA[$F{ex_end_time}]]></groupExpression>
+	</group>
+	<group name="ex_start_date">
+		<groupExpression><![CDATA[$F{ex_start_date}]]></groupExpression>
+	</group>
+	<group name="exam">
+		<groupExpression><![CDATA[$F{exam}]]></groupExpression>
+	</group>
+	<group name="daynames">
+		<groupExpression><![CDATA[$F{daynames}]]></groupExpression>
+	</group>
+	<group name="course1">
+		<groupExpression><![CDATA[$F{course1}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="180" splitType="Stretch">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="20" y="70" width="524" height="20" uuid="64b2b1ed-1d95-4076-9f2a-2b6c37c218e7"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exam}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" x="69" y="127" width="71" height="53" uuid="d4157d6c-d327-4b3a-9c92-cb59e388c6b8"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerHeight" x="140" y="127" width="80" height="53" uuid="87c7ec68-9667-42e5-96c5-1c9011b7c1d9"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Day]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="220" y="148" width="270" height="32" uuid="799d9acd-3c20-4f8a-a6b0-bff62b9f5967"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Courses"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="0" width="540" height="20" uuid="4484adce-b6a5-4e3d-b289-24a484df750c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{university}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Page" isBlankWhenNull="true">
+				<reportElement x="220" y="127" width="270" height="21" uuid="65bdaae8-ff15-4a17-888f-a4a0d7d3de60"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Time : "+(new SimpleDateFormat("hh:mm aa")).format($F{ex_start_time})+" to"+(new SimpleDateFormat("hh:mm aa")).format($F{ex_end_time})]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="130" y="100" width="360" height="20" uuid="9b46939c-6d67-4f5d-863d-cd87e749f642"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{depart}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="69" y="100" width="60" height="20" uuid="6376b2ea-4714-4cf7-b026-2f1e89305ff6"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Department:			  	      ]]></text>
+			</staticText>
+			<image onErrorType="Blank">
+				<reportElement positionType="Float" x="49" y="30" width="80" height="40" uuid="eafed5c2-ee05-4ee9-8037-623b8dcd684c"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="140" y="40" width="360" height="20" uuid="285a8be1-2e64-41f2-a84d-cf853f3177a5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{type}+" Exam Time Table"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="220" y="0" width="270" height="20" uuid="1a93ec9b-48a5-4943-9295-68ec1943842d"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{course1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="140" y="0" width="80" height="20" uuid="ceabfdf6-2d0a-4bbe-b717-bad22a006cf3"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{daynames}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="69" y="0" width="71" height="20" uuid="e14539a2-b8ae-432c-9280-ea3720fd3c35"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ex_start_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,365 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_courses_registration")
+public class CoursesRegistration {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@JoinColumn(name = "colleges_id", nullable = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private Colleges colleges;
+
+	@JoinColumn(name = "degree_id", nullable = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private Degree degree;
+
+	@JoinColumn(name = "programmes_id", nullable = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private Programmes programmes;
+
+	@JoinColumn(name = "department_id", nullable = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private Department department;
+
+	@JoinColumn(name = "stream_id", nullable = true)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private Stream stream;
+
+	@JoinColumn(name = "courses_id", nullable = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private Courses courses;
+
+	@JoinColumn(name = "semester_id", nullable = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private Semster semester;
+
+	@JoinColumn(name = "student_admission_id", nullable = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private Studentadmission studentadmission;
+
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private ProgrammeYear programmeYear;
+
+	@JoinColumn(name = "registration_type_id", nullable = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private RegistrationType registration;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_admitted_date", columnDefinition = "DATETIME")
+	private Date exAdmittedDate;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsPaid;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsRegistration;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsApproved;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exSemesterStatus;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsEligible;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsAttendence;
+
+	private Boolean exIsPracticalAttendence;
+
+	private Boolean exIsPracticalAttendenceApprove;
+
+	private Float exPracticalAttendencePrecentage;
+
+	private Float exAttendencePrecentage;
+
+	@JoinColumn(name = "exam_announcement_id", nullable = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private ExamAnnouncement examAnnouncement;
+
+	private String orderId;
+
+	public Long getId() {
+		return id;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public Stream getStream() {
+		return stream;
+	}
+
+	public Courses getCourses() {
+		return courses;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public RegistrationType getRegistration() {
+		return registration;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public Date getExAdmittedDate() {
+		return exAdmittedDate;
+	}
+
+	public Boolean getExIsPaid() {
+		return exIsPaid;
+	}
+
+	public Boolean getExIsRegistration() {
+		return exIsRegistration;
+	}
+
+	public Boolean getExIsApproved() {
+		return exIsApproved;
+	}
+
+	public Boolean getExSemesterStatus() {
+		return exSemesterStatus;
+	}
+
+	public Boolean getExIsEligible() {
+		return exIsEligible;
+	}
+
+	public Boolean getExIsAttendence() {
+		return exIsAttendence;
+	}
+
+	public Boolean getExIsPracticalAttendence() {
+		return exIsPracticalAttendence;
+	}
+
+	public Boolean getExIsPracticalAttendenceApprove() {
+		return exIsPracticalAttendenceApprove;
+	}
+
+	public Float getExPracticalAttendencePrecentage() {
+		return exPracticalAttendencePrecentage;
+	}
+
+	public Float getExAttendencePrecentage() {
+		return exAttendencePrecentage;
+	}
+
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public void setStream(Stream stream) {
+		this.stream = stream;
+	}
+
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setRegistration(RegistrationType registration) {
+		this.registration = registration;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setExAdmittedDate(Date exAdmittedDate) {
+		this.exAdmittedDate = exAdmittedDate;
+	}
+
+	public void setExIsPaid(Boolean exIsPaid) {
+		this.exIsPaid = exIsPaid;
+	}
+
+	public void setExIsRegistration(Boolean exIsRegistration) {
+		this.exIsRegistration = exIsRegistration;
+	}
+
+	public void setExIsApproved(Boolean exIsApproved) {
+		this.exIsApproved = exIsApproved;
+	}
+
+	public void setExSemesterStatus(Boolean exSemesterStatus) {
+		this.exSemesterStatus = exSemesterStatus;
+	}
+
+	public void setExIsEligible(Boolean exIsEligible) {
+		this.exIsEligible = exIsEligible;
+	}
+
+	public void setExIsAttendence(Boolean exIsAttendence) {
+		this.exIsAttendence = exIsAttendence;
+	}
+
+	public void setExIsPracticalAttendence(Boolean exIsPracticalAttendence) {
+		this.exIsPracticalAttendence = exIsPracticalAttendence;
+	}
+
+	public void setExIsPracticalAttendenceApprove(Boolean exIsPracticalAttendenceApprove) {
+		this.exIsPracticalAttendenceApprove = exIsPracticalAttendenceApprove;
+	}
+
+	public void setExPracticalAttendencePrecentage(Float exPracticalAttendencePrecentage) {
+		this.exPracticalAttendencePrecentage = exPracticalAttendencePrecentage;
+	}
+
+	public void setExAttendencePrecentage(Float exAttendencePrecentage) {
+		this.exAttendencePrecentage = exAttendencePrecentage;
+	}
+
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	@Override
+	public String toString() {
+		return "CoursesRegistration [id=" + id + ", academicYear=" + academicYear + ", colleges=" + colleges
+				+ ", degree=" + degree + ", programmes=" + programmes + ", department=" + department + ", stream="
+				+ stream + ", courses=" + courses + ", semester=" + semester + ", studentadmission=" + studentadmission
+				+ ", programmeYear=" + programmeYear + ", registration=" + registration + ", exIsActive=" + exIsActive
+				+ ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate
+				+ ", exAdmittedDate=" + exAdmittedDate + ", exIsPaid=" + exIsPaid + ", exIsRegistration="
+				+ exIsRegistration + ", exIsApproved=" + exIsApproved + ", exSemesterStatus=" + exSemesterStatus
+				+ ", exIsEligible=" + exIsEligible + ", exIsAttendence=" + exIsAttendence + ", exIsPracticalAttendence="
+				+ exIsPracticalAttendence + ", exIsPracticalAttendenceApprove=" + exIsPracticalAttendenceApprove
+				+ ", exPracticalAttendencePrecentage=" + exPracticalAttendencePrecentage + ", exAttendencePrecentage="
+				+ exAttendencePrecentage + ", examAnnouncement=" + examAnnouncement + ", orderId=" + orderId + "]";
+	}
+}

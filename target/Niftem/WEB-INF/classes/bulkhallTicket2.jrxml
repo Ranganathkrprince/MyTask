@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="bulkMigration" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ce04c4cd-b1ec-4045-b249-f397c4a31416">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="university" class="java.lang.String"/>
+	<parameter name="programmes" class="java.lang.String"/>
+	<parameter name="colleges" class="java.lang.String"/>
+	<parameter name="programmeYear" class="java.lang.String"/>
+	<parameter name="department" class="java.lang.String"/>
+	<parameter name="semester" class="java.lang.String"/>
+	<parameter name="time" class="java.lang.String"/>
+	<parameter name="academicYear" class="java.lang.String"/>
+	<parameter name="logo" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="date" class="java.lang.String"/>
+	<field name="day" class="java.lang.String"/>
+	<field name="mother" class="java.lang.String"/>
+	<field name="father" class="java.lang.String"/>
+	<field name="exEnroll" class="java.lang.String"/>
+	<field name="mobile" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="exFirstName" class="java.lang.String"/>
+	<field name="size" class="java.lang.Integer"/>
+	<field name="slNo" class="java.lang.Integer"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="exStudentId" class="java.lang.String"/>
+	<field name="exCoursesName" class="java.lang.String"/>
+	<field name="exCreditHour" class="java.lang.String"/>
+	<field name="exCoursesCode" class="java.lang.String"/>
+	<field name="amount" class="java.lang.String"/>
+	<field name="isPaid" class="java.lang.String"/>
+	<field name="isApprove" class="java.lang.String"/>
+	<field name="remark" class="java.lang.String"/>
+	<group name="DescriptionGroupforsupply">
+		<groupExpression><![CDATA[$F{exStudentId}]]></groupExpression>
+		<groupHeader>
+			<band height="160">
+				<printWhenExpression><![CDATA[$F{exStudentId}!=null]]></printWhenExpression>
+				<textField evaluationTime="Group" evaluationGroup="DescriptionGroupforsupply">
+					<reportElement x="340" y="60" width="75" height="20" uuid="f626bb36-a919-48b9-98b3-756d1ce9812b"/>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{exStudentId}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="DescriptionGroupforsupply">
+					<reportElement x="100" y="0" width="454" height="20" uuid="3ecb48a0-f7c7-4a8f-8e2e-1bed48e94cd0"/>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{exFirstName}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="90" height="20" uuid="1befbfff-7bf3-4bd8-84d6-b17c5fc373cc"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Candidate Name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="280" y="60" width="50" height="20" uuid="533d9d39-a8f9-4feb-8a25-37d85d325ded"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[ID.No]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="250" y="140" width="210" height="20" uuid="553edf02-c549-4397-8b9a-36b445515896"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Course Title]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="140" width="70" height="20" uuid="e277c0af-7a1c-4fdd-8c62-7ae29ea01fc2"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Course Code]]></text>
+				</staticText>
+				<textField evaluationTime="Group" evaluationGroup="DescriptionGroupforsupply">
+					<reportElement x="500" y="60" width="54" height="20" uuid="ce9ff6dc-31ec-4d24-9851-bfe25da46baa"/>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{gender}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="DescriptionGroupforsupply">
+					<reportElement x="100" y="20" width="454" height="20" uuid="f5333a57-7f4c-4798-9444-845464f53817"/>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{father}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="20" width="90" height="20" uuid="cc568a06-e04c-4036-b81b-1ff29ea57a2c"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Father’s Name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="450" y="60" width="40" height="20" uuid="5c7312a4-0449-4fe3-926e-cc3db7af9ea9"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Gender]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="90" y="0" width="10" height="20" uuid="313c958a-0557-415d-9577-d12f0bf2cf16"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="90" y="20" width="10" height="20" uuid="68bc7609-46b1-4e95-83f3-d5b0e1c2e628"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<textField evaluationTime="Group" evaluationGroup="DescriptionGroupforsupply">
+					<reportElement x="100" y="40" width="454" height="20" uuid="29b6855f-1ecd-4c1f-8fae-6fc418eaf4d7"/>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{mother}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="40" width="90" height="20" uuid="be27f948-166f-422d-af98-21b7a7922745"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Mother’s Name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="90" y="40" width="10" height="20" uuid="a9473082-b34b-4ede-bee4-9317cd8d2ee5"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="330" y="60" width="10" height="20" uuid="bae58084-1578-4e71-bbaa-4cc53af32fbb"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="490" y="60" width="10" height="20" uuid="368e9195-06a3-4403-b4fa-673dec368669"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<textField evaluationTime="Group" evaluationGroup="DescriptionGroupforsupply">
+					<reportElement x="100" y="60" width="180" height="20" uuid="577fbcc8-5f16-4962-8592-6c031745a47d"/>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{exEnroll}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="60" width="90" height="20" uuid="66c28d7c-ba16-4b44-bf2f-e3cf2cc79c9d"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Enrollment No.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="90" y="60" width="10" height="20" uuid="9e1fb4cc-41c6-4ef6-9663-fa66fc1c9957"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<textField evaluationTime="Group" evaluationGroup="DescriptionGroupforsupply">
+					<reportElement x="340" y="80" width="214" height="20" uuid="b8829ed7-d9ce-4880-bcce-2b0705210460"/>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="280" y="80" width="50" height="20" uuid="1ada7405-caaf-4079-a3ce-60f80377fd4a"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Email ID.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="330" y="80" width="10" height="20" uuid="ac71aa84-16db-4bfd-9c55-0a1242241164"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<textField evaluationTime="Group" evaluationGroup="DescriptionGroupforsupply">
+					<reportElement x="100" y="80" width="180" height="20" uuid="bc8f71ff-06b0-4519-a1ee-15be77c570cf"/>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{mobile}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="80" width="90" height="20" uuid="39e29a80-350f-43e2-b5db-a17d0dab1a6c"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Mobile No.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="90" y="80" width="10" height="20" uuid="07aab5f7-03fd-4414-a02c-0a8e54091ad3"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="110" y="140" width="70" height="20" uuid="674e4c76-d447-4936-b823-fdc59b1cc75d"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Day]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="40" y="140" width="70" height="20" uuid="8a86f104-1841-4564-affc-9306b494d23a"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="140" width="40" height="20" uuid="59b6912d-8b38-4ca0-9de2-c8f76e997331"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[SI No.]]></text>
+				</staticText>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement mode="Opaque" x="0" y="100" width="554" height="20" forecolor="#FFFFFF" backcolor="#070708" uuid="ab4f2ba9-7703-458c-87ca-b9763a7fd256"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{department}+"  "+$P{programmeYear} +" Year  "+$P{semester}+" Semester  "+$P{academicYear}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement mode="Opaque" x="0" y="120" width="554" height="20" forecolor="#FFFFFF" backcolor="#070708" uuid="2be8bcb5-440c-4a18-a8cc-96d65602affc"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["  EXAMINATION TIMINGS  -"+$P{time}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="460" y="140" width="94" height="20" uuid="12aabcde-43bc-4861-b051-a01ffef36117"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Appearing Status
+]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="88">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="70" y="0" width="420" height="30" forecolor="#228C07" uuid="85aa3efc-05ae-4b7f-a7d9-31136f607f58"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{university}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="160" y="46" width="240" height="20" uuid="e591b9c7-6a3c-4254-89e1-0273ec0397e4">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[[ ADMIT CARD  ODD SEMESTER EXAM ]]]></text>
+			</staticText>
+			<image onErrorType="Blank">
+				<reportElement positionType="Float" x="0" y="0" width="70" height="60" uuid="fff76668-1e1d-4c24-a34f-94b6d2bdb452"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="15">
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="180" y="0" width="70" height="15" isRemoveLineWhenBlank="true" uuid="3c02b27b-9e0c-4b89-bb1e-15ad58b312d6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exCoursesCode}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="250" y="0" width="210" height="15" isRemoveLineWhenBlank="true" uuid="a822eed1-b202-470f-811c-f1a93e75f844">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
+					<font size="8"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exCoursesName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="40" y="0" width="70" height="15" isRemoveLineWhenBlank="true" uuid="82a03341-21b0-494f-9c31-41313b69a347">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="110" y="0" width="70" height="15" isRemoveLineWhenBlank="true" uuid="eb03bb76-fa4c-4c4a-aa2c-47e3435536b8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{day}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="0" y="0" width="40" height="15" isRemoveLineWhenBlank="true" uuid="b6d72b0c-e60b-4da6-9216-83698206d010">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{slNo}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="460" y="0" width="94" height="15" isRemoveLineWhenBlank="true" uuid="da8b212c-9604-4071-a57e-1d8beaa81b81">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
+					<font size="8"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="391">
+			<printWhenExpression><![CDATA[$V{PAGE_COUNT}.intValue()%$F{size}.intValue()==0]]></printWhenExpression>
+			<break>
+				<reportElement x="0" y="390" width="538" height="1" uuid="f7305914-f9ce-46dc-92e6-47c470ce73c9">
+					<printWhenExpression><![CDATA[$V{PAGE_COUNT}.intValue()%$F{size}.intValue()==0]]></printWhenExpression>
+				</reportElement>
+			</break>
+			<staticText>
+				<reportElement mode="Opaque" x="5" y="80" width="545" height="20" backcolor="#7980B8" uuid="7a89423d-36f3-4d2b-83f5-357b51ec3dde"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font size="14" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[IMPORTANT INSTRUCTIONS ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="6" y="370" width="544" height="20" backcolor="#7980B8" uuid="f2990dbe-ef24-43b8-83bf-9075a7441c3d"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font size="12" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[IF LOST – RS. 100/- WILL BE CHARGED FOR ISSUE OF DUPLICATE ADMIT CARD ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="120" width="537" height="250" uuid="e34851be-7842-4a92-853e-6492a7933ec9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[1. Student should bring this admit card to enter the examination hall.
+2. Examination Date sheet is given overleaf.
+3. Student should reach exam hall sharp 30 minutes before the commencement of examinations.
+4. No student will be admitted to the examination hall after 15 minutes of the commencement of examination.
+5. Student should use blue or black ink pen to write answers of question. Do not use pencil for answering the questions except diagrams.
+6. Do not write anything inside the answer book which reveals your Identity.
+7. Do not write your roll number anywhere in the answer book except in Part -A and on the Red slip available on the cover page of answer booklets.
+8. Use of Programmable calculator is not allowed.
+9. Mobile phones / any type of watch (or) any electronic gadgets are strictly prohibited in examination hall even in switch off mode.
+10. Student (if found) carrying mobile/any type of watch/any other similar material during the examinations will be booked under use of Unfair Means (UFM) and appropriate disciplinary action will be taken against the student as per NIFTEM’s Policy.
+11. If any discrepancy is found in the student details entered in the admit card please inform the examination branch immediately.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="6" y="390" width="544" height="1" uuid="37ecfc47-5377-439e-9b9e-4b7ff3dac2ac"/>
+			</line>
+			<line>
+				<reportElement x="5" y="99" width="544" height="1" uuid="289dd809-bbd8-40f0-89b8-af8744745307"/>
+			</line>
+			<line>
+				<reportElement x="5" y="99" width="1" height="291" uuid="dcaa620a-0dc4-444e-aff6-886c1fa78689"/>
+			</line>
+			<line>
+				<reportElement x="549" y="99" width="1" height="291" uuid="2368b49b-0f6e-4018-89b0-b739027ee7ce"/>
+			</line>
+			<staticText>
+				<reportElement x="5" y="60" width="170" height="20" uuid="b943d5eb-c13e-48f7-a008-67fec069b630"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Controller of Examinations]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="371" y="60" width="170" height="20" uuid="7dfdbb3f-9d9a-4ce3-a4b5-24386cc6af73"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Student’s Signature]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

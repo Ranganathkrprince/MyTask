@@ -1,0 +1,129 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+@Entity
+@Table(name = "ex_audit_log")
+public class AuditLog {
+	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exRecordType ;
+	
+	@Column(columnDefinition="TEXT")
+	private String exDescription;
+
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+	
+	@ManyToOne( optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user; 
+	
+	 @ManyToOne( optional = false)
+	 @JoinColumn(name = "privileges_features_id", nullable = false)
+	 private PrivilegesFeatures PrivilegesFeatures;
+	 
+	 @ManyToOne( optional = false)
+	 @JoinColumn(name = "privileges_Modules_id", nullable = false)
+	 private PrivilegesModules PrivilegesModules;
+	 
+	@ManyToOne( optional = true)
+	@JoinColumn(name = "staff_id", nullable = true)
+	private Staffpersonal staff;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Boolean getExRecordType() {
+		return exRecordType;
+	}
+
+	public void setExRecordType(Boolean exRecordType) {
+		this.exRecordType = exRecordType;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public PrivilegesFeatures getPrivilegesFeatures() {
+		return PrivilegesFeatures;
+	}
+
+	public void setPrivilegesFeatures(PrivilegesFeatures privilegesFeatures) {
+		PrivilegesFeatures = privilegesFeatures;
+	}
+
+	public PrivilegesModules getPrivilegesModules() {
+		return PrivilegesModules;
+	}
+
+	public void setPrivilegesModules(PrivilegesModules privilegesModules) {
+		PrivilegesModules = privilegesModules;
+	}
+
+	public Staffpersonal getStaff() {
+		return staff;
+	}
+
+	public void setStaff(Staffpersonal staff) {
+		this.staff = staff;
+	}
+
+	@Override
+	public String toString() {
+		return "AuditLog [id=" + id + ", exRecordType=" + exRecordType + ", exDescription=" + exDescription
+				+ ", exCreateDate=" + exCreateDate + ", user=" + user + ", PrivilegesFeatures=" + PrivilegesFeatures
+				+ ", PrivilegesModules=" + PrivilegesModules + ", staff=" + staff + "]";
+	}
+	
+	
+	
+	
+
+}

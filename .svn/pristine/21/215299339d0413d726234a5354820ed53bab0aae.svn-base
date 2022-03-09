@@ -1,0 +1,292 @@
+package com.niftem.app.entity;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_teacherCourseMapping")
+public class TeacherCourseMapping {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+		
+	 @ManyToOne( optional = false)
+	 @JoinColumn(name = "colleges_id", nullable = false)
+	 private Colleges colleges;  
+	 
+	 @ManyToOne( optional = false)
+	 @JoinColumn(name = "section_id", nullable = false)
+	 private Section section;  
+	 
+	 
+	 @ManyToOne( optional = false)
+	 @JoinColumn(name = "degree_id", nullable = false)
+	 private Degree degree; 
+	 
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "academicYear_id", nullable = false)
+	private AcademicYear academicYear; 	 
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+ 	 
+	 @ManyToOne(optional = false)
+	 @JoinColumn(name = "programme_year_id", nullable = false)
+	 private ProgrammeYear programmeYear;
+	 
+	 @ManyToOne(optional = false)
+	 @JoinColumn(name = "Semester_id", nullable = false)
+	 private Semster semster;
+	 
+	 @ManyToOne(optional = false)
+	 @JoinColumn(name = "staff_type_id", nullable = false)
+	 private StaffType staffType;
+	 
+	 @ManyToOne(optional = false)
+	 @JoinColumn(name = "staffpersonal_id", nullable = false)
+	 private Staffpersonal staffpersonal;
+//	 
+//		@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+//		@JoinTable(name = "ex_TeacherCourseMapping_CourseType",joinColumns = { @JoinColumn(name = "ex_Teacher_Course_mapping_id", referencedColumnName = "id", nullable = false, updatable = true)},
+//		inverseJoinColumns = {  @JoinColumn(name = "course_type_id", referencedColumnName = "id", nullable = false, updatable = true)})
+//		private List<CoursesType> courseType = new ArrayList<>();
+//
+//	 public List<CoursesType> getCourseType() {
+//			return courseType;
+//		}
+//
+//		public void setCourseType(List<CoursesType> courseType) {
+//			this.courseType = courseType;
+//		}
+	 @ManyToOne(optional = false)
+	 @JoinColumn(name = "coursetype_id", nullable = false)
+	 private CoursesType courseType;
+	 
+	public CoursesType getCourseType() {
+		return courseType;
+	}
+
+	public void setCourseType(CoursesType courseType) {
+		this.courseType = courseType;
+	}
+
+	@ManyToOne(optional = true)
+	 @JoinColumn(name = "stream_id", nullable = true)
+	 private Stream stream;
+
+	@ManyToOne(optional = true)
+	 @JoinColumn(name = "registrationType_id", nullable = true)
+	 private RegistrationType registrationType;
+
+	
+	 public RegistrationType getRegistrationType() {
+		return registrationType;
+	}
+
+	public void setRegistrationType(RegistrationType registrationType) {
+		this.registrationType = registrationType;
+	}
+
+	@ManyToOne(optional = false)
+	 @JoinColumn(name = "department_id", nullable = false)
+	 private Department department;
+
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+    private Boolean exIsActive;
+		
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+    private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_teacher_course_mapping_courses",joinColumns = { @JoinColumn(name = "ex_teache_course_mapping_id", referencedColumnName = "id", nullable = false, updatable = true)},
+	inverseJoinColumns = {  @JoinColumn(name = "courses_id", referencedColumnName = "id", nullable = false, updatable = true)})
+	private List<Courses> courses = new LinkedList<>();
+	
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public Semster getSemster() {
+		return semster;
+	}
+
+	public void setSemster(Semster semster) {
+		this.semster = semster;
+	}
+
+	public StaffType getStaffType() {
+		return staffType;
+	}
+
+	public void setStaffType(StaffType staffType) {
+		this.staffType = staffType;
+	}
+
+	
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public Stream getStream() {
+		return stream;
+	}
+
+	public void setStream(Stream stream) {
+		this.stream = stream;
+	}
+
+
+
+	public List<Courses> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<Courses> courses) {
+		this.courses = courses;
+	}
+
+	public Staffpersonal getStaffpersonal() {
+		return staffpersonal;
+	}
+
+	public void setStaffpersonal(Staffpersonal staffpersonal) {
+		this.staffpersonal = staffpersonal;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public Section getSection() {
+		return section;
+	}
+
+	public void setSection(Section section) {
+		this.section = section;
+	}
+
+	@Override
+	public String toString() {
+		return "TeacherCourseMapping [id=" + id + ", colleges=" + colleges + ", section=" + section + ", degree="
+				+ degree + ", academicYear=" + academicYear + ", programmes=" + programmes + ", programmeYear="
+				+ programmeYear + ", semster=" + semster + ", staffType=" + staffType + ", staffpersonal="
+				+ staffpersonal + ", courseType=" + courseType + ", stream=" + stream + ", registrationType="
+				+ registrationType + ", department=" + department + ", exIsActive=" + exIsActive + ", exIsDelete="
+				+ exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", courses="
+				+ courses + "]";
+	}
+
+	
+
+
+
+	
+	
+}

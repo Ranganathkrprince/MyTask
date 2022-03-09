@@ -1,0 +1,23 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.ReportRequestEntity;
+
+public interface ReportRequestEntityRepository  extends CrudRepository<ReportRequestEntity, Long> {
+
+	
+	@Query(value = "SELECT * FROM ex_report_request where id IN ?1 group by table_namevalue", nativeQuery = true)
+	List<ReportRequestEntity> getTableName(List<Long> list );
+	
+	
+	@Query(value = "SELECT * FROM ex_report_request where id IN ?1 ", nativeQuery = true)
+	List<ReportRequestEntity> getColoumnName(List<Long> list );
+	
+	
+	@Query(value = "SELECT * FROM ex_report_request", nativeQuery = true)
+	List<ReportRequestEntity> getall();
+}

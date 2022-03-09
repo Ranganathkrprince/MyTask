@@ -1,0 +1,177 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ex_exam_academic_year_programmes")
+public class ExamAcademicYearProgrammes {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+		
+    @ManyToOne( optional = false)
+    @JoinColumn(name = "academicyear_id", nullable = false)
+    private AcademicYear academicYear; 
+    
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes; 
+	
+	
+    @ManyToOne( optional = true)
+    @JoinColumn(name = "registration_type_id", nullable = true)
+    private RegistrationType registration;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "exam_announcement_id", nullable = false)
+	private ExamAnnouncement examAnnouncement;
+	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="department_id",nullable=false)
+	private Department department;
+	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="degree_id",nullable=false)
+	private Degree degree;
+	
+	
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
+	
+	
+
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsPublish;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	 private Boolean exIsTimeTable;
+	
+/*	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	 private Boolean exIsAttendence;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	 private Boolean exIsBarcode ;*/
+	
+	
+	   private Long exExamType;
+		
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	 private Boolean exIsInvigilator ;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public RegistrationType getRegistration() {
+		return registration;
+	}
+
+	public void setRegistration(RegistrationType registration) {
+		this.registration = registration;
+	}
+
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Boolean getExIsTimeTable() {
+		return exIsTimeTable;
+	}
+
+	public void setExIsTimeTable(Boolean exIsTimeTable) {
+		this.exIsTimeTable = exIsTimeTable;
+	}
+
+
+
+	public Boolean getExIsInvigilator() {
+		return exIsInvigilator;
+	}
+
+	public void setExIsInvigilator(Boolean exIsInvigilator) {
+		this.exIsInvigilator = exIsInvigilator;
+	}
+
+	public Long getExExamType() {
+		return exExamType;
+	}
+
+	public void setExExamType(Long exExamType) {
+		this.exExamType = exExamType;
+	}
+
+	public Boolean getExIsPublish() {
+		return exIsPublish;
+	}
+
+	public void setExIsPublish(Boolean exIsPublish) {
+		this.exIsPublish = exIsPublish;
+	}
+
+	@Override
+	public String toString() {
+		return "ExamAcademicYearProgrammes [id=" + id + ", academicYear=" + academicYear + ", programmes=" + programmes
+				+ ", registration=" + registration + ", examAnnouncement=" + examAnnouncement + ", department="
+				+ department + ", degree=" + degree + ", user=" + user + ", exIsPublish=" + exIsPublish
+				+ ", exIsTimeTable=" + exIsTimeTable + ", exExamType=" + exExamType + ", exIsInvigilator="
+				+ exIsInvigilator + "]";
+	}
+
+}

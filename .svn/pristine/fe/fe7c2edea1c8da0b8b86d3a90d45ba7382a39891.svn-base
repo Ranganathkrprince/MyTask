@@ -1,0 +1,70 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+@Entity
+@Table(name = "ex_settings")
+@EntityListeners(AuditingEntityListener.class)
+public class Settings {
+	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank
+    private String exKeyName;
+
+    @NotBlank
+    private String exKeyValue;
+    
+    @NotBlank
+    private String exVisible;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExKeyName() {
+		return exKeyName;
+	}
+
+	public void setExKeyName(String exKeyName) {
+		this.exKeyName = exKeyName;
+	}
+
+	public String getExKeyValue() {
+		return exKeyValue;
+	}
+
+	public void setExKeyValue(String exKeyValue) {
+		this.exKeyValue = exKeyValue;
+	}
+
+	public String getExVisible() {
+		return exVisible;
+	}
+
+	public void setExVisible(String exVisible) {
+		this.exVisible = exVisible;
+	}
+
+	@Override
+	public String toString() {
+		return "Settings [id=" + id + ", exKeyName=" + exKeyName + ", exKeyValue=" + exKeyValue + ", exVisible="
+				+ exVisible + "]";
+	}
+
+	
+}

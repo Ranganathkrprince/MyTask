@@ -1,0 +1,122 @@
+package com.niftem.app.model;
+
+public class CertificatesRequest {
+	 private String exRollNo;
+		private String refNo;
+		private Long colleges;
+		private Long programmes;
+		private Long degree;
+		private Long enrollmentYear;
+		private Long scrutinize;
+		
+		private String dateinEnglish;
+		
+		private String dateinKannada;
+		private String dateOfDeclaration;
+		
+		private Long semester;
+		private Long academicyear;
+		private Long department;
+		private Long user;
+		
+		public Long getUser() {
+			return user;
+		}
+		public void setUser(Long user) {
+			this.user = user;
+		}
+		public Long getColleges() {
+			return colleges;
+		}
+		public void setColleges(Long colleges) {
+			this.colleges = colleges;
+		}
+		public Long getProgrammes() {
+			return programmes;
+		}
+		public void setProgrammes(Long programmes) {
+			this.programmes = programmes;
+		}
+		public Long getDegree() {
+			return degree;
+		}
+		public void setDegree(Long degree) {
+			this.degree = degree;
+		}
+		public Long getDepartment() {
+			return department;
+		}
+		public void setDepartment(Long department) {
+			this.department = department;
+		}
+		public Long getAcademicyear() {
+			return academicyear;
+		}
+		public void setAcademicyear(Long academicyear) {
+			this.academicyear = academicyear;
+		}
+		public Long getSemester() {
+			return semester;
+		}
+		public void setSemester(Long semester) {
+			this.semester = semester;
+		}
+		
+		public String getExRollNo() {
+			return exRollNo;
+		}
+		public void setExRollNo(String exRollNo) {
+			this.exRollNo = exRollNo;
+		}
+		public String getRefNo() {
+			return refNo;
+		}
+		public void setRefNo(String refNo) {
+			this.refNo = refNo;
+		}
+	
+		public Long getEnrollmentYear() {
+			return enrollmentYear;
+		}
+		public void setEnrollmentYear(Long enrollmentYear) {
+			this.enrollmentYear = enrollmentYear;
+		}
+		public Long getScrutinize() {
+			return scrutinize;
+		}
+		public void setScrutinize(Long scrutinize) {
+			this.scrutinize = scrutinize;
+		}
+		public String getDateinEnglish() {
+			return dateinEnglish;
+		}
+		public void setDateinEnglish(String dateinEnglish) {
+			this.dateinEnglish = dateinEnglish;
+		}
+		public String getDateinKannada() {
+			return dateinKannada;
+		}
+		public void setDateinKannada(String dateinKannada) {
+			this.dateinKannada = dateinKannada;
+		}
+		public String getDateOfDeclaration() {
+			return dateOfDeclaration;
+		}
+		public void setDateOfDeclaration(String dateOfDeclaration) {
+			this.dateOfDeclaration = dateOfDeclaration;
+		}
+		@Override
+		public String toString() {
+			return "CertificatesRequest [exRollNo=" + exRollNo + ", refNo=" + refNo + ", colleges=" + colleges
+					+ ", programmes=" + programmes + ", degree=" + degree + ", enrollmentYear=" + enrollmentYear
+					+ ", scrutinize=" + scrutinize + ", dateinEnglish=" + dateinEnglish + ", dateinKannada="
+					+ dateinKannada + ", dateOfDeclaration=" + dateOfDeclaration + ", semester=" + semester
+					+ ", academicyear=" + academicyear + ", department=" + department + ", user=" + user + "]";
+		}
+		
+		
+		
+		
+		
+		
+}

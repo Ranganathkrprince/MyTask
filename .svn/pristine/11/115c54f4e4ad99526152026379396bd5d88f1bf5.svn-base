@@ -1,0 +1,57 @@
+package com.niftem.app.repository;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Category;
+
+public interface CategoryRepository extends CrudRepository<Category, Long> {
+
+	List<Category> findByExNameAndExIsDelete(String exName, boolean exIsDelete);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_category set ex_name = ?1 ,ex_is_active =?2 , ex_update_date = ?3,ex_is_fee_apply =?4 where id =?5", nativeQuery = true)
+	
+	int updateCategoryRecord(String exName, Boolean exIsActive, Date date, Integer exIsFeeApply, Long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_category set ex_is_delete = ?1 ,ex_is_active = ?2 where id =?3", nativeQuery = true)
+	int deleteCategory(Boolean exIsDelete, Boolean is_active, Long id);
+
+	List<Category> findByExIsDelete(boolean exIsDelete);
+
+	Optional<Category> findByIdAndExIsDeleteAndExIsActive(Long result, Boolean exIsDelete, Boolean is_active);
+
+	Optional<Category> findByExNameAndExIsDeleteAndExIsActive(String stringCellValue, boolean b, boolean c);
+
+	@Query(value = "SELECT * FROM ex_category WHERE ex_name IN ?1 and ex_is_delete = ?2 and ex_is_active=?3", nativeQuery = true)
+	ArrayList<Object[]> checkCategorylist(List<String> categoryList, Boolean exIsDelete, Boolean is_active);
+
+	List<Category> findByExNameAndExIsDeleteAndExIsFeeApply(String trim, boolean b, Integer exIsFeeApply);
+
+	//Optional<Category> findByIdAndExIsDeleteAndExIsActive(boolean b, boolean exIsDelete, String trim);
+
+	Optional<Category> findByIdAndExIsDeleteAndExIsActive(String trim, boolean exIsDelete, boolean b);
+	//newly added
+
+	Optional<Category> findByIdAndExIsDeleteAndExIsActive(List<Long> category, boolean exIsDelete, boolean b);
+
+	
+	
+@Query(value = "SELECT *  FROM ex_category WHERE ex_name IN ?1 and  ex_is_delete = ?2 and ex_is_active=?3", nativeQuery = true)
+
+	ArrayList<Object[]> category(List<String> categoryList, boolean b, boolean c);
+
+
+	
+
+}

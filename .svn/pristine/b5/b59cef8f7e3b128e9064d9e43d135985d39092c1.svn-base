@@ -1,0 +1,262 @@
+package com.niftem.app.model;
+
+public class ComplaintRequest {
+
+    private Long id;
+    
+    private Long uplodedByUserId;
+    
+	
+	private String exTicketNumber;
+	
+	private String studentId;
+	
+	private String orderId;
+	
+	private Long degree; 
+	
+	private Long staffid; 
+	
+	private Integer complaintStatus ;
+	
+	private String txnReferenceNo;
+	 
+	private String bankReferenceNo;
+
+	private String exDescription;
+	
+    private Boolean exIsActive;
+	
+	private Boolean exIsDelete;
+
+	private Long programmes; 
+			
+	private Long programmeYear; 	
+	
+	private Long semester; 
+	
+	private Long role; 
+	
+	private Long academicYear;
+	
+	private Long complaintType;
+	
+	private Long user;
+	
+	private Long colleges;
+
+	private String exremark;
+	
+	private String exStartDate;
+	
+	private String exEndDate;
+
+	public Long getId() {
+		return id;
+	}
+
+	public Long getUplodedByUserId() {
+		return uplodedByUserId;
+	}
+
+	public String getExTicketNumber() {
+		return exTicketNumber;
+	}
+
+	public String getStudentId() {
+		return studentId;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public Long getDegree() {
+		return degree;
+	}
+
+	public Long getStaffid() {
+		return staffid;
+	}
+
+	public Integer getComplaintStatus() {
+		return complaintStatus;
+	}
+
+	public String getTxnReferenceNo() {
+		return txnReferenceNo;
+	}
+
+	public String getBankReferenceNo() {
+		return bankReferenceNo;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public Long getSemester() {
+		return semester;
+	}
+
+	public Long getRole() {
+		return role;
+	}
+
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+
+	public Long getComplaintType() {
+		return complaintType;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public Long getColleges() {
+		return colleges;
+	}
+
+	public String getExremark() {
+		return exremark;
+	}
+
+	public String getExStartDate() {
+		return exStartDate;
+	}
+
+	public String getExEndDate() {
+		return exEndDate;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setUplodedByUserId(Long uplodedByUserId) {
+		this.uplodedByUserId = uplodedByUserId;
+	}
+
+	public void setExTicketNumber(String exTicketNumber) {
+		this.exTicketNumber = exTicketNumber;
+	}
+
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+	public void setStaffid(Long staffid) {
+		this.staffid = staffid;
+	}
+
+	public void setComplaintStatus(Integer complaintStatus) {
+		this.complaintStatus = complaintStatus;
+	}
+
+	public void setTxnReferenceNo(String txnReferenceNo) {
+		this.txnReferenceNo = txnReferenceNo;
+	}
+
+	public void setBankReferenceNo(String bankReferenceNo) {
+		this.bankReferenceNo = bankReferenceNo;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+
+	public void setRole(Long role) {
+		this.role = role;
+	}
+
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setComplaintType(Long complaintType) {
+		this.complaintType = complaintType;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setExremark(String exremark) {
+		this.exremark = exremark;
+	}
+
+	public void setExStartDate(String exStartDate) {
+		this.exStartDate = exStartDate;
+	}
+
+	public void setExEndDate(String exEndDate) {
+		this.exEndDate = exEndDate;
+	}
+
+	@Override
+	public String toString() {
+		return "ComplaintRequest [id=" + id + ", uplodedByUserId=" + uplodedByUserId + ", exTicketNumber="
+				+ exTicketNumber + ", studentId=" + studentId + ", orderId=" + orderId + ", degree=" + degree
+				+ ", staffid=" + staffid + ", complaintStatus=" + complaintStatus + ", txnReferenceNo=" + txnReferenceNo
+				+ ", bankReferenceNo=" + bankReferenceNo + ", exDescription=" + exDescription + ", exIsActive="
+				+ exIsActive + ", exIsDelete=" + exIsDelete + ", programmes=" + programmes + ", programmeYear="
+				+ programmeYear + ", semester=" + semester + ", role=" + role + ", academicYear=" + academicYear
+				+ ", complaintType=" + complaintType + ", user=" + user + ", colleges=" + colleges + ", exremark="
+				+ exremark + ", exStartDate=" + exStartDate + ", exEndDate=" + exEndDate + "]";
+	}
+
+
+	
+	
+	
+}

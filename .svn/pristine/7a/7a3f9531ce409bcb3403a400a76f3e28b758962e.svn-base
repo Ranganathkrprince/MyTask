@@ -1,0 +1,112 @@
+package com.niftem.app.service;
+
+import java.util.Map;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.niftem.app.model.ClassTimeTableRequest;
+import com.niftem.app.model.CoursesRequest;
+import com.niftem.app.model.ExamAttendanceRequest;
+import com.niftem.app.model.ExternalMarksRequest;
+import com.niftem.app.model.MidTermMarksRequest;
+import com.niftem.app.model.QuestionpaperRequest;
+
+public interface UploadService {
+
+	Map<String, Object> uploadCourses(MultipartFile exCourseFile, Long user);
+
+	Map<String, Object> uploadStudentProfile(MultipartFile studentProfilefile);
+	
+	Map<String, Object> uploadStaffProfile(MultipartFile staffProfilefile);
+
+	//Map<String, Object> updateOmrFile(OmrMarksRequest request);
+
+	//Map<String, Object> uploadExternalMarks(OmrMarksRequest request);
+
+	Map<String, Object> uploadExternalMarks(ExternalMarksRequest request);
+
+	Map<String, Object> uploadFeeMaster(MultipartFile exFeeMasterFile, Long user);
+
+	Map<String, Object> uploadTeacherCourse(MultipartFile exTeacherCourseFile, Long user);
+
+	Map<String, Object> uploadImage(MultipartFile file, Long id, String userType);
+
+
+
+	Map<String, Object> uploadMidTermMarks(MidTermMarksRequest request);
+
+	
+
+	Map<String, Object> uploadQuizMarks(MidTermMarksRequest request);
+
+	
+
+	Map<String, Object> uploadAssignmentMarks(MidTermMarksRequest request);
+	
+
+	Map<String, Object> uploadPracticalMarks(MidTermMarksRequest request);
+
+	Map<String, Object> uploadClassAttendance(ClassTimeTableRequest request);
+
+	Map<String, Object> uploadAttendenceMarks(MidTermMarksRequest request);
+
+	
+
+	Map<String, Object> uploadPracticalLabExperminent(ExamAttendanceRequest request);
+
+
+
+	Map<String, Object> uploadGradePoint(MultipartFile exGradePointFile, Long user);
+
+	Map<String, Object> uploadMagrationExcel(MultipartFile studentProfilefile);
+
+	Map<String, Object> uploadModerationExcel(MultipartFile excel);
+
+	Map<String, Object> downloadQuestionPapers(QuestionpaperRequest request);
+
+	Map<String, Object> uploadSemesterSerialNumberExcel(MultipartFile excel);
+
+	Map<String, Object> uploadEvaluatorList(MultipartFile exEvaluatorFile, Long user);
+
+	Map<String, Object> bulkRegistration(MultipartFile exGradePointFile, Long user);
+
+	Map<String, Object> uploadSyllabus(CoursesRequest request);
+
+	Map<String, Object> uploadMarksheet(CoursesRequest request);
+
+	Map<String, Object> uploadCoursesType(MultipartFile file, Long user);
+
+	Map<String, Object> downloadMarksheet(CoursesRequest request);
+
+	Map<String, Object> uploadStudentDocument(MultipartFile file, String exRollNo, Long documentType);
+
+	Map<String, Object> uploadDateOfBirth(MultipartFile excel);
+
+	Map<String, Object> uploadStudentCertificate(MultipartFile[]  file, String student, Long documentType);
+
+	Map<String, Object> uploadStudentMarks(MidTermMarksRequest request);
+
+	Map<String, Object> uploadMultipleMarksheet(CoursesRequest request);
+	
+
+	Map<String, Object> uploadIAMarks(MidTermMarksRequest request);
+
+	Map<String, Object> uploadIAMarksPractical(MidTermMarksRequest request);
+
+	Map<String, Object> uploadStudentsDetails(MultipartFile StudentsDetails);
+	
+	Map<String, Object> uploadStudentpassbook(MultipartFile file, Long student);
+
+	Map<String, Object> uploadQuestionPaper(CoursesRequest request);
+
+	Map<String, Object> uploadFeedetailsofstudent(MultipartFile exFeeFile, Long user);
+
+	Map<String, Object> uploadActivity(MultipartFile exFeeFile, Long user);
+
+	Map<String, Object> uploadCalender(MultipartFile exFeeFile, Long user);
+
+	Map<String, Object> uploadStudentsAdmissionDetails(MultipartFile studentsDetails);
+
+	Map<String, Object> uploadStudentSupplyReceipt(CoursesRequest request);
+
+}

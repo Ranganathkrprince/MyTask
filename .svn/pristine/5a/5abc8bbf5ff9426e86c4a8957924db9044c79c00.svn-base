@@ -1,0 +1,96 @@
+package com.niftem.app.model;
+
+
+import java.util.List;
+
+public class Count {
+
+	private List<Long> colleges;
+	private List<Long> programmes;
+	private List<Long> academicYear;
+	private List<Long> programmeYear;
+	private List<Long> semester;
+    private List<Long> examAnnouncement; 
+    private List<Long> courses;
+    private List<Long> degree;
+    
+      
+    private Long user; 
+	
+	private String startDate;
+	private String endDate;
+	public List<Long> getColleges() {
+		return colleges;
+	}
+	public void setColleges(List<Long> colleges) {
+		this.colleges = colleges;
+	}
+	public List<Long> getProgrammes() {
+		return programmes;
+	}
+	public List<Long> getAcademicYear() {
+		return academicYear;
+	}
+	public void setAcademicYear(List<Long> academicYear) {
+		this.academicYear = academicYear;
+	}
+	public List<Long> getProgrammeYear() {
+		return programmeYear;
+	}
+	public void setProgrammeYear(List<Long> programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public List<Long> getDegree() {
+		return degree;
+	}
+	public void setDegree(List<Long> degree) {
+		this.degree = degree;
+	}
+	public void setProgrammes(List<Long> programmes) {
+		this.programmes = programmes;
+	}
+	public List<Long> getSemester() {
+		return semester;
+	}
+	public void setSemester(List<Long> semester) {
+		this.semester = semester;
+	}
+	public List<Long> getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public void setExamAnnouncement(List<Long> examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public List<Long> getCourses() {
+		return courses;
+	}
+	public void setCourses(List<Long> courses) {
+		this.courses = courses;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	@Override
+	public String toString() {
+		return "Count [colleges=" + colleges + ", programmes=" + programmes + ", academicYear=" + academicYear
+				+ ", programmeYear=" + programmeYear + ", semester=" + semester + ", examAnnouncement="
+				+ examAnnouncement + ", courses=" + courses + ", degree=" + degree + ", user=" + user + ", startDate="
+				+ startDate + ", endDate=" + endDate + "]";
+	}	
+}

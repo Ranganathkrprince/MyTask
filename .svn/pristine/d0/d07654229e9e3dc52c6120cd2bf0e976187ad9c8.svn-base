@@ -1,0 +1,86 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+
+import com.niftem.app.entity.Mentor;
+
+public interface MentorRepository  extends CrudRepository<Mentor, Long>{
+	
+
+	List<Mentor> findByExNameAndStaffpersonalIdAndProgrammesIdAndBatchIdAndStreamIdAndDegreeIdAndExIsDeleteAndExIsActiveAndCollegesIdAndDepartmentId(
+			String exName, Long staffId, Long programmes, Long batch, Long stream, Long degree, boolean b, boolean c,
+			Long colleges, Long department);
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mentor set ex_name = ?1,staff_id=?2 ,programmes_id=?3 ,ex_update_date =?4 , ex_is_active = ?5 , batch_id = ?6 , degree_id =?7 , department_id = ?8 , stream_id = ?9 ,collage_id=?10  where id =?11", nativeQuery = true)
+
+	
+	int updateMentor(String exName, Long staffId, Long programmes, Date date, Boolean exIsActive, Long batch,
+			Long degree, Long department, Long stream, Long colleges, Long id);
+
+
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mentor set ex_is_delete = ?1,ex_is_active=?2  where id =?3", nativeQuery = true)
+
+
+	int deleteMentor(Boolean exIsDelete, Boolean is_active, Long id);
+
+
+	List<Mentor> findByBatchIdAndCollegesIdAndDegreeIdAndProgrammesId(Long batch, Long colleges, Long degree,
+			Long programmes);
+
+
+	Optional<Mentor> findByIdAndExIsDeleteAndExIsActive(Long mentor, boolean b, boolean c);
+
+
+
+	Optional<Mentor> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, Long mentor);
+
+
+
+
+	List<Mentor> findByExNameAndExIsDelete(String trim, boolean b);
+
+	List<Mentor> findByExIsDelete(boolean b);
+
+
+
+
+	Optional<Mentor> findByExIsDeleteAndExIsActiveAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentId(boolean b,
+			boolean c, Long colleges, Long degree, Long programmes, Long department);
+
+
+
+	List<Mentor> findByBatchIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndStreamId(Long batch, Long degree,
+			Long programmes, Long department, Long stream);
+
+
+
+	List<Mentor> findByBatchIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndStreamIdAndExIsActiveAndExIsDelete(Long batch,
+			Long degree, Long programmes, Long department, Long stream, boolean b, boolean c);
+
+
+
+	List<Mentor> findByExIsActiveAndExIsDeleteAndStaffpersonalId(boolean b, boolean c, Long staffpersonal);
+
+
+
+
+
+
+
+}

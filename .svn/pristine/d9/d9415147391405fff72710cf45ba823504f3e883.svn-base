@@ -1,0 +1,16 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.StudentCertificate;
+
+public interface StudentCertificateRepository extends CrudRepository<StudentCertificate, Long>{
+	List<StudentCertificate> findByStudentadmissionIdAndCertificateTypeId(Long student ,  Long document);
+	
+	List<StudentCertificate> findByExRollNoAndCertificateTypeId(String student ,  Long document);
+	
+	
+	List<StudentCertificate> findByStudentadmissionId(Long student);
+}

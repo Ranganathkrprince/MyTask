@@ -1,0 +1,275 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_exam_attendance")
+public class ExamAttendance {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "room_id", nullable = false)
+	 private RoomMaster roomId;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+	
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "registration_type_id", nullable = false)
+	private RegistrationType registration;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "courses_id", nullable = false)
+	private Courses courses;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "student_admission_id", nullable = false)
+	private Studentadmission studentadmission;
+
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "exam_announcement_id", nullable = false)
+	private ExamAnnouncement examAnnouncement;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "stream_id", nullable = false)
+	private Stream stream;
+
+	private String exRollNo;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	private String exRemarks;
+
+	private String exBarcode;
+	private Boolean exReportType;
+	
+	private String exCustomField1;
+	private String exCustomField2;
+	private String exCustomField3;
+	private String exCustomField4;
+	public Long getId() {
+		return id;
+	}
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+	public RoomMaster getRoomId() {
+		return roomId;
+	}
+	public User getUser() {
+		return user;
+	}
+	public Colleges getColleges() {
+		return colleges;
+	}
+	public RegistrationType getRegistration() {
+		return registration;
+	}
+	public Department getDepartment() {
+		return department;
+	}
+	public Semster getSemester() {
+		return semester;
+	}
+	public Degree getDegree() {
+		return degree;
+	}
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+	public Courses getCourses() {
+		return courses;
+	}
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public Stream getStream() {
+		return stream;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+	public String getExRemarks() {
+		return exRemarks;
+	}
+	public String getExBarcode() {
+		return exBarcode;
+	}
+	public Boolean getExReportType() {
+		return exReportType;
+	}
+	public String getExCustomField1() {
+		return exCustomField1;
+	}
+	public String getExCustomField2() {
+		return exCustomField2;
+	}
+	public String getExCustomField3() {
+		return exCustomField3;
+	}
+	public String getExCustomField4() {
+		return exCustomField4;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setRoomId(RoomMaster roomId) {
+		this.roomId = roomId;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+	public void setRegistration(RegistrationType registration) {
+		this.registration = registration;
+	}
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public void setStream(Stream stream) {
+		this.stream = stream;
+	}
+	
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+	public void setExRemarks(String exRemarks) {
+		this.exRemarks = exRemarks;
+	}
+	public void setExBarcode(String exBarcode) {
+		this.exBarcode = exBarcode;
+	}
+	public void setExReportType(Boolean exReportType) {
+		this.exReportType = exReportType;
+	}
+	public void setExCustomField1(String exCustomField1) {
+		this.exCustomField1 = exCustomField1;
+	}
+	public void setExCustomField2(String exCustomField2) {
+		this.exCustomField2 = exCustomField2;
+	}
+	public void setExCustomField3(String exCustomField3) {
+		this.exCustomField3 = exCustomField3;
+	}
+	public void setExCustomField4(String exCustomField4) {
+		this.exCustomField4 = exCustomField4;
+	}
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	@Override
+	public String toString() {
+		return "ExamAttendance [id=" + id + ", academicYear=" + academicYear + ", roomId=" + roomId + ", user=" + user
+				+ ", colleges=" + colleges + ", registration=" + registration + ", department=" + department
+				+ ", semester=" + semester + ", degree=" + degree + ", programmes=" + programmes + ", courses="
+				+ courses + ", studentadmission=" + studentadmission + ", examAnnouncement=" + examAnnouncement
+				+ ", stream=" + stream + ", exRollNo=" + exRollNo + ", exIsActive=" + exIsActive + ", exIsDelete="
+				+ exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", exRemarks="
+				+ exRemarks + ", exBarcode=" + exBarcode + ", exReportType=" + exReportType + ", exCustomField1="
+				+ exCustomField1 + ", exCustomField2=" + exCustomField2 + ", exCustomField3=" + exCustomField3
+				+ ", exCustomField4=" + exCustomField4 + "]";
+	}
+	
+	
+}

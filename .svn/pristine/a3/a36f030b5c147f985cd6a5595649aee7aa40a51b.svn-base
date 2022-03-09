@@ -1,0 +1,93 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+public class CoursesRegistrationRequest {
+
+	private Long examAnnouncement;
+	private Long academicYear;
+	private Long student;
+	private Long course;
+	private List<Long> courses;
+	private Long programmeYear;
+	private Long semester;
+	private Long registrationType;
+	private List<Long> studentLists;
+	private String exRollNo; 	
+	public Long user;
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public Long getStudent() {
+		return student;
+	}
+	public Long getCourse() {
+		return course;
+	}
+	public List<Long> getCourses() {
+		return courses;
+	}
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public Long getSemester() {
+		return semester;
+	}
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+	public List<Long> getStudentLists() {
+		return studentLists;
+	}
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setStudent(Long student) {
+		this.student = student;
+	}
+	public void setCourse(Long course) {
+		this.course = course;
+	}
+	public void setCourses(List<Long> courses) {
+		this.courses = courses;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+	public void setStudentLists(List<Long> studentLists) {
+		this.studentLists = studentLists;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	@Override
+	public String toString() {
+		return "CoursesRegistrationRequest [examAnnouncement=" + examAnnouncement + ", academicYear=" + academicYear
+				+ ", student=" + student + ", course=" + course + ", courses=" + courses + ", programmeYear="
+				+ programmeYear + ", semester=" + semester + ", registrationType=" + registrationType
+				+ ", studentLists=" + studentLists + ", exRollNo=" + exRollNo + ", user=" + user + "]";
+	}
+	
+	
+}

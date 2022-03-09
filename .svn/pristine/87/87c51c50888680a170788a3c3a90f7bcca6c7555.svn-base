@@ -1,0 +1,622 @@
+
+package com.niftem.app.dao;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
+
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.niftem.app.model.ReportRequest;
+import com.niftem.app.repository.ExamTimeTableLogsRepository;
+
+@Transactional
+
+@Repository
+public class AcademicDao {
+
+	private static org.slf4j.Logger logger = LoggerFactory.getLogger("master-log");
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@Autowired
+	ExamTimeTableLogsRepository examlogRepo;
+	
+	
+	public List<Object[]> examAttendanceReport(ReportRequest request) {
+		// TODO Auto-generated method stub	   
+		try {
+			   String hql = "";           
+			   hql = "select academicYear.exYear , colleges.exIdentifier,degree.exName,programmes.exIdentifier,"
+			   		+ "department.exIdentifier, programmeYear.exName,semester.exName ,courses.exName,courses.exCoursesCode,"
+			   		+ "registrationType.exName,examAnnouncement.exName,studentadmission.exName,studentadmission.exRollNo,"
+			   		+ "exBarcode from ExamBarcodes where "
+			   	    + " academicYear  IN (" + validateRepor(request.getAcademicYear()) +") AND colleges  IN (" + validateRepor(request.getColleges()) +") AND degree  IN (" + validateRepor(request.getDegree()) +") "
+			   	    		+ " AND programmes  IN (" + validateRepor(request.getProgrammes()) +") ORDER BY studentadmission.exRollNo ";        
+			   Query query = entityManager.createQuery(hql);         
+			   logger.info("Sql Script to get aluminiReport"+hql);        
+			   entityManager.close();         
+			   	return   query.getResultList();
+				
+			   	
+	} catch (Exception e) {
+		// TODO: handle exception
+		e.printStackTrace();
+		logger.error("Exception occured" + e);
+		StringWriter errors = new StringWriter();
+		e.printStackTrace(new PrintWriter(errors));
+		logger.error(errors.toString());
+	}
+		return null;
+	}
+	public List<Object[]> findById(Long programmes, Long academicYear, Long degree, Long programmeYear, Long semester) {
+		try {
+			String hql = "";
+			hql = "Select e.programmes.exName,e.degree.exName,e.academicYear.exIdentifier,e.examAnnouncement.exName,e.exTimeTableUrl,e.exCreateDate,e.user.exName from ExamTimeTableLogs e ,ExamAnnouncement s where e.programmes="
+					+ programmes + " AND e.academicYear =" + academicYear + " AND e.degree=" + degree
+					+ " AND s.semester =" + semester + " AND  s.programmeYear=" + programmeYear + "";
+			Query query = entityManager.createQuery(hql);
+			entityManager.close();
+			return query.getResultList();
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("exception", e);
+			return null;
+		}
+
+	}
+
+	public String validateRepor(List<Long> list) {
+		String validatereport  = "";
+		if(list.size()>0) {		
+			for(int i =0 ; i<list.size() ; i++) {
+				Long number =list.get(i);
+			validatereport = validatereport+number+",";
+			}	
+			validatereport =  validatereport.substring(0, validatereport.length() -1);
+		}
+		return validatereport;
+	}
+	
+	public List<Object[]> midtermReport(List<Long> college, List<Long> program, List<Long> department, List<Long> programyear, List<Long> academicyear, boolean active, boolean delete, List<Long> degre, List<Long> semester) {
+		// TODO Auto-generated method stub
+
+		try {
+			String hql = "";
+			hql = "Select m.colleges.exName,   m.degree.exName,   m.programmes.exName,   m.department.exName, "
+					+ "    m.stream.exName,    m.academicYear.exIdentifier,   m.programmeYear.exName,  "
+					+ " m.semester.exName ,  m.courses.exName,  m.exRollNo    ,UPPER(m.studentadmission.exName), "
+					+ "  m.exQuizMarks ,   m.exAssignmentMarks  ,   m.exPracticalRecordMarks,   m.exMidTermMarks "
+					+ ",m.exAttendenceMarks , m.exMidTermRemarks , m.exAssignmentMarkRemark , m.exQuizRemark ,m.exAttendenceRemark , m.exCaseStudy , m.exCaseStudyRemark  ,"
+					+ " m.exCreateDate,case when m.staff.exName is null then 'NA' else c.exName end ,m.exIsSubmit,m.courses.exCoursesCode,case when m.staff.exEmail is null then 'NA' else c.exEmail end ,"
+					+ " case when m.staff.exEmployeeId is null then 'NA' else c.exEmployeeId end ,"
+					+ "case when m.staff.exContactDetails is null then 'NA' else c.exContactDetails end ,case when m.exPracticalLearning is null then 'NA' else m.exPracticalLearning end ,"
+					+ "case when b.exLabExperiment is null then 'NA' else b.exLabExperiment end,case when b.exViva is null then 'NA' else b.exViva end  from MidTermMarks m LEFT JOIN ExamBarcodes b ON  m.exRollNo = b.exRollNo AND m.courses.id=b.courses.id "
+					+ " LEFT JOIN Staffpersonal c ON c.id=m.staff.id where m.programmes IN ("
+					+ validateRepor(program) + ") AND m.academicYear  IN (" + validateRepor(academicyear) +") AND m.semester IN (" + validateRepor(semester) + ") AND  m.programmeYear IN ("
+					+ validateRepor(programyear) + ") AND m.colleges IN (" + validateRepor(college) + ") AND m.department IN ("
+					+ validateRepor(department) + ") AND m.degree IN (" + validateRepor(degre) + ") ORDER BY  m.courses.exName, m.exRollNo";
+			
+			 logger.info("Sql Script to get midtermReport "+hql);  
+			Query query = entityManager.createQuery(hql);
+		    
+			   logger.info("Sql Script to get midtermReport "+hql);  
+			entityManager.close();
+
+			return query.getResultList();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			logger.error("exception", e);
+			return null;
+		}
+
+	}
+	public List<Object[]> getExamdetails(boolean is_delete, Long academicYear, Long colleges, Long courses, Long degree,
+			Long examAnnouncement, Long programmes, Long registrationType, Long department, String sectionval) {
+		String hql = "";
+		hql = "select e.exRollNo,CASE WHEN s.section IS NULL THEN 'NA' ELSE s.section.id END,s.id  from ExamAttendance e , Studentadmission s where  e.exRollNo = s.exRollNo AND e.colleges = "
+				+ colleges + " AND e.exIsDelete = " + is_delete + "" + " AND e.academicYear  = " + academicYear
+				+ "  AND e.courses = " + courses + " AND e.degree = " + degree + " AND e.examAnnouncement = " + examAnnouncement
+				+ " AND e.registration = " + registrationType + " AND e.department = " + department+sectionval+" order by e.exRollNo ";
+		Query query = entityManager.createQuery(hql);
+		logger.info("Sql Script to getExamdetails" + hql);
+		entityManager.close();
+		return query.getResultList();
+	}
+	public List<Object[]> gradereportLogReport(ReportRequest request) {
+		String hql = "";
+		hql = "select o.colleges.exName ,o.degree.exName, o.programmes.exName,o.department.exName , o.academicYear.exYear, e.programmeYear.exName, e.semester.exName,o.registrationType.exName,CONCAT(o.courses.exCoursesCode, ' - '  ,o.courses.exName) as courses , o.exReportType, o.exReportCategory  ,o.exIsReGenerated,o.exRemark,o.exUrl ,o.exCreateDate ,o.user.exUserName from GradeReportLog o , ExamAnnouncement e  where e.id=o.examAnnouncement  "
+				+ "and e.programmeYear IN (" + validateRepor(request.getProgrammeYear()) +") "  
+				+ "and e.semester IN (" + validateRepor(request.getSemester()) +") " 
+				+"and  o.colleges IN (" + validateRepor(request.getColleges()) +") " 
+				+ "and o.programmes IN (" + validateRepor(request.getProgrammes()) +") " 
+				+ "and o.degree  IN (" + validateRepor(request.getDegree()) +") " 
+				+ " and o.academicYear IN (" + validateRepor(request.getAcademicYear()) +")"; 
+		Query query = entityManager.createQuery(hql);
+		logger.info("getanswerbookletstatus " + hql);
+		entityManager.close();
+		return query.getResultList();
+	}
+	
+	public List<Object[]> semesterreportLogReport(ReportRequest request  , String reportype) {
+		String hql = "";
+		hql = "select o.colleges.exName ,o.degree.exName, o.programmes.exName,o.department.exName , o.academicYear.exYear, e.programmeYear.exName, e.semester.exName, o.exReportType, o.exReportCategory  ,o.exIsReGenerated,o.exRemark,o.exUrl ,o.exCreateDate ,o.user.exUserName from GradeReportLog o , ExamAnnouncement e  where e.id=o.examAnnouncement  "
+				+ "and e.programmeYear IN (" + validateRepor(request.getProgrammeYear()) +") "
+				+ "and e.semester IN (" + validateRepor(request.getSemester()) +") "
+				+"and  o.colleges IN (" + validateRepor(request.getColleges()) +") "
+				+ "and o.programmes IN (" + validateRepor(request.getProgrammes()) +") "
+				+ "and o.degree IN (" + validateRepor(request.getDegree()) +") "
+				+ " and o.academicYear IN (" + validateRepor(request.getAcademicYear()) +") "+" and o.courses IS Null";
+		Query query = entityManager.createQuery(hql);
+		logger.info("getanswerbookletstatus " + hql);
+		entityManager.close();
+		return query.getResultList();
+	}
+	public List<Object[]> getMigExamdetails(boolean is_delete, Long academicYear, Long colleges, Long courses, Long degree,
+			Long programmes, Long registrationType, Long department, String sectionval) {
+		String hql = "";
+		hql = "select e.exRollNo,CASE WHEN s.section IS NULL THEN 'NA' ELSE s.section.id END,s.id  from ExamBarcodes e , Studentadmission s where  e.exRollNo = s.exRollNo AND e.colleges = "
+				+ colleges + " AND e.exIsDelete = " + is_delete + "" + " AND e.academicYear  = " + academicYear
+				+ "  AND e.courses = " + courses + " AND e.degree = " + degree 
+				+ " AND e.registrationType = " + registrationType + " AND e.department = " + department+sectionval+" order by e.exRollNo ";
+		Query query = entityManager.createQuery(hql);
+		logger.info("Sql Script to getExamdetails" + hql);
+		entityManager.close();
+		return query.getResultList();
+	}
+	//report
+	public List<Object[]> auditLogReport(String startDate, String endDate, String privilegesModulesId) throws ParseException {
+		String hql = "";
+		String query1 = "";
+		SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");	
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		
+		if(!startDate.equals("")) {
+			 String sDate = dateFormat.format(date.parse(startDate+" 00:00:00"));  
+			query1 = query1 + " DATE(a.exCreateDate) >= '"+sDate+"' ";
+		}	
+		
+		if(!endDate.equals("")) {
+			 String eDate = dateFormat.format(date.parse(endDate+" 23:59:59")); 
+			query1 = query1 + " AND   DATE(a.exCreateDate) <=  '"+eDate+"' ";
+		}			
+		hql = "select a.PrivilegesModules.exPrivilegeModule ,a.PrivilegesFeatures.exFeaturename ,a.exRecordType, a.exDescription  , a.staff.exName ,a.exCreateDate from AuditLog a where " + query1+" AND a.PrivilegesModules = "+privilegesModulesId;	
+		Query query = entityManager.createQuery(hql);
+			logger.info("Sql Script to Complaint" + hql);
+			entityManager.close();
+			return  query.getResultList();  
+	}
+/*	public List<Object[]> getBookletallocationStatus(boolean active, boolean allocate, Long academicYear, Long colleges,
+			Long examAnnouncement, Long programmes, Long registrationType) {
+		// TODO Auto-generated method stub
+		try {
+		String hql = "";
+		hql = "select o.exBarcode ,  s.exEmployeeId, s.exName as staffname  ,e.allocationUser.exUserName ,s.exContactDetails ,o.courses.exName, o.courses.exCoursesCode from ExamBarcodes o ,User u , EvaluationDetails e  ,Staffpersonal s where  e.academicYear =o.academicYear and o.degree=e.degree and e.programmes=o.programmes and e.courses=o.courses  and e.examAnnouncement=o.examAnnouncement and e.registrationType=o.registrationType  and o.staff =e.staff and u.id=e.allocationUser and s.id=o.staff  and o.colleges = " + colleges 
+				 + " and o.programmes = " + programmes + " and o.examAnnouncement = " + examAnnouncement
+				+ " and o.registrationType = " + registrationType+  " and e.exIsActive = " + active  +" and e.exIsReallocated = " + allocate  + " and o.academicYear = " + academicYear + "";
+		Query query = entityManager.createQuery(hql);
+		logger.info("getbookletallocationstatus " + hql);
+		entityManager.close();
+		System.out.println(">>>>>>>>>.query"+query);
+		return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+			logger.error("exception", e);
+			return null;
+		}
+	}*/
+	public List<Object[]> getevaluatorstatus(boolean active, Long academicYear, Long colleges, Long courses,
+			Long examAnnouncement) {
+	try {
+		String hql = "";
+		hql ="select  s.exFullName as staffname , s.exEmail , s.exContactDetails , o.exEvaluationTime , o.exEvaluationFrom , o.exEvaluationTo , o.exEvaluationVenue , e.exName from EvaluatorSelection o , EvaluatorList s , EvaluationType e where e.id=o.evaluation and s.id=o.expert  and o.colleges = " + colleges  
+				 + " and o.courses = " + courses + " and o.exIsActive = " + active + " and o.examAnnouncement = " + examAnnouncement
+				+ " and o.academicYear = " + academicYear + "";
+		Query query = entityManager.createQuery(hql);
+		logger.info("getevaluatorstatus " + hql);
+		entityManager.close();
+		return query.getResultList();
+	} catch (Exception e) {
+		e.printStackTrace();
+		logger.error("exception", e);
+		return null;
+	}
+}
+	
+	public List<Object[]> getanswerbookletstatus(Long academicYear, Long degree, Long colleges, Long course,
+			Long examAnnouncement, Long programmes, Long registrationType, Long semester, Long programmeyear) {
+		try {
+		String hql = "";
+		hql = "select o.exBarcode , o.exAnsBookletPath ,o.exRollNo  from ExamBarcodes o where  o.colleges = " + colleges + " and o.degree = "
+				+ degree + " and o.programmes = " + programmes + " and o.semester =" + semester +" and programmeYear = " + programmeyear + " and o.courses = " + course + " and o.examAnnouncement = " + examAnnouncement
+				+ " and o.registrationType = " + registrationType + " and o.academicYear = " + academicYear + " AND o.bookletuser IS Null";
+		Query query = entityManager.createQuery(hql);
+		logger.info("getanswerbookletstatus " + hql);
+		entityManager.close();
+		return query.getResultList();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<Object[]> getUseranswerbookletstatus(Long academicYear, Long degree, Long colleges, Long course,
+			Long examAnnouncement, Long programmes, Long registrationType, Long semester, Long programmeyear) {
+		String hql = "";
+		hql = "select o.exBarcode , o.exAnsBookletPath ,o.exRollNo ,o.bookletuser.exUserName  from ExamBarcodes o where  o.colleges = " + colleges + " and o.degree = "
+				+ degree + " and o.programmes = " + programmes + " and o.semester = " + semester +"  and programmeYear = " + programmeyear + " and o.courses = " + course + " and o.examAnnouncement = " + examAnnouncement
+				+ " and o.registrationType = " + registrationType + " and o.academicYear = " + academicYear + "";
+		Query query = entityManager.createQuery(hql);
+		logger.info("getanswerbookletstatus " + hql);
+		entityManager.close();
+		return query.getResultList();
+	}
+	public List<Object[]> getbookletallocationstatus(boolean active, boolean allocate, Long academicYear, Long colleges,
+			Long examAnnouncement, Long programmes, Long registrationType) {
+		try {
+			String hql = "";
+			hql = "select o.exBarcode ,s.exEmail, s.exName as staffname  ,e.allocationUser.exUserName ,s.exContactDetails ,o.courses.exName, o.courses.exCoursesCode from ExamBarcodes o ,User u , EvaluationDetails e  ,EvaluatorList s where  e.academicYear =o.academicYear and o.degree=e.degree and e.programmes=o.programmes and e.courses=o.courses  and e.examAnnouncement=o.examAnnouncement and e.registrationType=o.registrationType  and o.expert =e.id and u.id=e.allocationUser and s.id=o.expert  and o.colleges = " + colleges 
+					 + " and o.programmes = " + programmes + " and o.examAnnouncement = " + examAnnouncement
+					+ " and o.registrationType = " + registrationType+  " and e.exIsActive = " + active  +" and e.exIsReallocated = " + allocate  + " and o.academicYear = " + academicYear + "";
+			Query query = entityManager.createQuery(hql);
+			logger.info("getbookletallocationstatus " + hql);
+			entityManager.close();
+			System.out.println(">>>>>>>>>.query"+query);
+			return query.getResultList();
+			} catch (Exception e) {
+				e.printStackTrace();
+				// TODO: handle exception
+				logger.error("exception", e);
+				return null;
+			}
+		}
+	public List<Object[]> getbookletreallocationstatus(boolean active, boolean allocate, Long academicYear, Long colleges,
+			Long examAnnouncement, Long programmes, Long registrationType) {
+		String hql = "";
+		hql = "select o.exBarcode ,  s.exEmail, s.exName as staffname   ,e.reAllocationUser.exUserName ,s.exContactDetails ,o.courses.exName, o.courses.exCoursesCode from ExamBarcodes o ,User u , EvaluationDetails e  ,EvaluatorList s where  e.academicYear =o.academicYear and o.degree=e.degree and e.programmes=o.programmes and e.courses=o.courses  and e.examAnnouncement=o.examAnnouncement and e.registrationType=o.registrationType  and o.expert =e.expert and u.id=e.reAllocationUser and s.id=o.expert  and o.colleges = " + colleges 
+				 + " and o.programmes = " + programmes + " and o.examAnnouncement = " + examAnnouncement
+				+ " and o.registrationType = " + registrationType+  " and e.exIsActive = " + active  +" and e.exIsReallocated = " + allocate  + " and o.academicYear = " + academicYear + "";
+		Query query = entityManager.createQuery(hql);
+		logger.info("getbookletallocationstatus " + hql);
+		entityManager.close();
+		return query.getResultList();
+	   
+	}
+	
+	public List<Object[]> getTransactionReport(String sql) {
+		try {
+		String hql = "";	
+		 hql = "select  o.orderId ,o.mihpayId, o.bankRefNum  ,  o.academicYear.exYear , o.programmes.exIdentifier"
+			 		+ " ,o.programmeYear.exName , o.semester.exName "
+			 		+ ",o.exRollNo ,o.name as studentname  , o.mobile ,o.email, o.txnDate  , o.paymentstatus , o.txnAmount  ,"
+			 		+ " o.feemaster.exFeeName, o.feemaster.feecategory.exName , o.mode,  o.pgType ,o.error , o.errorMessage  from Studentadmission s ,Studentpersonal sp, OrderTransaction o where sp.studentadmission=s.id and s.id= o.studentadmission "+sql;
+				Query query = entityManager.createQuery(hql);
+				logger.info("Sql Script to getTransactionReport" + hql);
+				entityManager.close();
+		
+		
+			return query.getResultList();
+	} catch (Exception e) {
+		e.printStackTrace();
+		// TODO: handle exception
+		logger.error("exception", e);
+		return null;
+	}
+}
+	public List<Object[]> getTopperListReport(String sql) {
+		try{
+			String hql = "";	
+
+			 hql = "select s.colleges.exIdentifier,s.degree.exName,s.programmes.exIdentifier,s.programmeYear.exName,s.academicYear.exIdentifier,s.semester.exName,s.exRollNo,UPPER(s.studentadmission.exName),a.exContactDetails,a.exEmailId,s.exGradePointAv FROM SemesterProgressReport s INNER JOIN Studentpersonal a ON s.studentadmission.id=a.studentadmission.id where "+sql +"  ORDER BY  s.studentadmission.batch.id desc,s.exGradePointAv desc";
+					Query query = entityManager.createQuery(hql);
+					//logger.info("Sql Script to getTransactionReport" + hql);
+					System.out.println("'??hql"+hql);
+					System.out.println("'??qruy"+query);
+					entityManager.close();
+					return query.getResultList();
+} catch (Exception e) {
+	// TODO: handle exception
+	e.printStackTrace();
+	logger.error("Exception occured" + e);
+	StringWriter errors = new StringWriter();
+	e.printStackTrace(new PrintWriter(errors));
+	logger.error(errors.toString());
+
+}
+		return null;
+	
+	}
+	
+	public List<Object[]> getCriteriaListReport(Long academicYear, Long degree, Long programme, Long programmeYear,
+			Long semster, String collagestatus, String exCGPA) {
+		String hql = "";	
+		 hql = "select s.colleges.exIdentifier,s.degree.exName,s.programmes.exIdentifier,s.programmeYear.exName,s.academicYear.exYear,s.semester.exName,s.exRollNo,UPPER(s.studentadmission.exName),a.exContactDetails,a.exEmailId,s.exCamuGradePointAv" + 
+				" FROM SemesterProgressReport s INNER JOIN Studentpersonal a ON s.studentadmission.id=a.studentadmission.id where s.exCamuGradePointAv >= "+exCGPA+""
+						+ " AND s.academicYear="+academicYear+" AND s.degree="+degree+" "
+								+ "AND s.programmes="+programme+" AND s.programmeYear="+programmeYear+" "
+										+ "AND s.semester="+semster+""+collagestatus+ "ORDER BY s.exCamuGradePointAv desc";
+			 Query query = entityManager.createQuery(hql);	
+			  logger.info("Sql Script to get criteriaListReport"+hql);
+			 entityManager.close();
+			return   query.getResultList();
+	}
+	
+	/*
+	 * public List<Object[]> getExcelGoldmedalReport(Long academicYear, String
+	 * collagestatus) { // TODO Auto-generated method stub String hql = ""; // hql =
+	 * "select distinct o.colleges.exName,o.degree.exName,o.programmes.exName,o.academicYear.exYear,UPPER(sp.exName) as studentname,o.exRollNo,o.overallGradePoint,s.exContactDetails,s.exEmailId from OGPA o ,Studentadmission sp ,Studentpersonal s,SemesterProgressReport f where s.studentadmission=sp.id and sp.id= o.studentadmission  and  o.exIsReGenerated =true and o.scrutinize='0' AND o.overallGradePoint>='8' AND o.academicYear="
+	 * +academicYear+""+collagestatus // +"ORDER BY  o.overallGradePoint desc";
+	 * 
+	 * Query query = entityManager.createQuery(hql);
+	 * logger.info("Sql Script to get goldMedalReport Details For goldMedal Report"
+	 * +hql); entityManager.close(); return query.getResultList(); }
+	 */
+	public List<Object[]> backlogReport(String exRollNo, Long registration) {
+		String hql = "";
+		hql = "select s.courses.exName , s.registration.exName , s.exIsPaid , s.courses.exCoursesCode , s.programmes.exName ,"
+				+ "s.programmeYear.exName , s.semester.exName , r.programmeYear.exName as pyear, r.semester.exName as sem"
+				+ ", s.colleges.exName , s.degree.exName ,g.exRemark from CoursesRegistration s,GradeReport g, SupplementaryRegistration r where g.examAnnouncement =s.examAnnouncement  AND g.programmes = s.programmes AND g.studentadmission = s.studentadmission and s.courses=g.courses and s.courses=r.courses and s.examAnnouncement = r.examAnnouncement"
+				+ " AND s.registration = r.registration  AND s.studentadmission = r.studentadmission "
+				+ " AND s.registration  = "+registration+" AND  g.exRollNo  = '"+exRollNo+"' ";
+		logger.info("backlogReport > " + hql);
+		Query query = entityManager.createQuery(hql);
+		logger.info("backlogReport > " + hql);
+		entityManager.close();
+		return query.getResultList();
+	}
+	public List<Object[]> getExcelQuestionPaperReport(List<Long> academicyear, Long degree, List<Long> courses) {
+		try{	
+		String hql = "";
+		
+		 hql = "select  q.exversion,q.exQuestionNum,q.exQuestionType,q.exQuestion,q.questionPaperPattern.exEachQuestionMark,q.academicYear.exYear,q.degree.exName from QuestionPaper q  where  q.academicYear='"+academicyear+"' AND q.degree='"+degree+"' AND q.courses='"+courses+"' ";
+		 System.out.println("??????????????/"+hql);
+		 /* hql = "select q.exversion,q.exQuestionNum,q.exQuestionType,q.exQuestion,q.questionPaperPattern.exEachQuestionMark,q.academicYear.exYear ," 
+				+ "q.degree.exName,q.courses.exName "
+				+ ", q.courses.exCoursesCode from QuestionPaper q where "
+				+ "q.academicYear="+academicyear+" AND q.degree="+degree+" AND q.courses="+courses+" ";*/
+		
+	/*	 hql = "select q.exversion,q.exQuestionNum,q.exQuestionType,q.exQuestion,q.questionPaperPattern.exEachQuestionMark,q.academicYear.exYear,q.degree.exName " 
+		+ ",q.courses.exName,q.courses.exCoursesCode"
+				+ "FROM QuestionPaper q"
+				+ " where q.academicYear="+academicyear+" AND q.degree="+degree+" AND q.courses="+courses+" ";*/
+			 Query query = entityManager.createQuery(hql);	
+			  logger.info("Sql Script to get getQuestionPaper Details"+hql);
+			 entityManager.close();
+			return   query.getResultList();
+	} catch (Exception e) {
+		// TODO: handle exception
+		e.printStackTrace();
+		logger.error("Exception occured" + e);
+		StringWriter errors = new StringWriter();
+		e.printStackTrace(new PrintWriter(errors));
+		logger.error(errors.toString());
+
+	}
+			return null;
+		
+		}
+	public List<Object[]> getExcelQuestionPaperReports(String sql) {
+		// TODO Auto-generated method stub
+		try {
+			String hql = "";	
+			 hql = 	"select  q.degree.exName,q.academicYear.exYear,q.courses.exName,q.exCourseCodeNo,q.exversion,q.exQuestionNum,q.exQuestionType,q.exQuestion,q.questionPaperPattern.exEachQuestionMark from QuestionPaper q  where  "+sql;
+			
+					Query query = entityManager.createQuery(hql);
+					logger.info("Sql Script to getTransactionReport" + hql);
+					entityManager.close();
+			
+			
+				return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+			logger.error("exception", e);
+			return null;
+		}
+	}
+	public List<Object[]> getExcelInvigilatorReports(String sql) {
+		// TODO Auto-generated method stub
+				try {
+					String hql = "";	
+				 hql = 	"select q.colleges.exName, q.degree.exName,q.academicYear.exYear,q.programmes.exName,q.department.exName,q.examAnnouncement.exName,q.roomid.exName,q.user.exName,q.staff.exName,q.stafftype.exName,i.exStartDate,i.exStartTime,i.exEndTime from InvigilatorAllocation q , InvigilatorDateAllocation i  where q.id = i.invigilator   AND  " +sql;
+					// hql = "select q.colleges.exName, q.degree.exName,q.academicYear.exYear,q.programmes.exName"
+			         //        + " , q.department.exName,q.examAnnouncement.exName,q.roomid.exName,q.user.exName,q.staff.exName,q.stafftype.exName,i.exStartDate,i.exStartTime"
+			        //         + " ,i.exEndTime from InvigilatorAllocation q , InvigilatorDateAllocation i   where   q.id = i.invigilator  " +sql  ; 
+			   
+					 
+							Query query = entityManager.createQuery(hql);
+							logger.info("Sql Script to getInvigilatorReport" + hql);
+							entityManager.close();
+					
+					
+						return query.getResultList();
+				} catch (Exception e) {
+					e.printStackTrace();
+					// TODO: handle exception
+					logger.error("exception", e);
+					return null;
+				}
+			}
+	  public List<Object[]> SubmittedReport(List<Long> college, List<Long> program, List<Long> department, List<Long> programyear, List<Long> course, List<Long> academicyear, boolean active, boolean delete, List<Long> degre, List<Long> semester) {
+			// TODO Auto-generated method stub
+
+			try {
+				String hql = "";
+				hql = "Select m.colleges.exName, m.programmes.exName,   m.department.exName, "
+						+ "m.academicYear.exIdentifier,   m.programmeYear.exName,  "
+						+ " m.semester.exName ,  m.courses.exCoursesCode, m.courses.exName,  m.exRollNo, "
+						+ "  m.exQuizMarks ,   m.exAssignmentMarks  ,   m.exPracticalRecordMarks,   m.exMidTermMarks,"
+						+ " m.exAttendenceMarks ,m.staff.exName ,m.staff.exContactDetails, m.staff.exEmail , m.exIsSubmit , m.exUpdateDate, m.exMidTermRemarks , m.exAssignmentMarkRemark , m.exQuizRemark ,m.exAttendenceRemark  from MidTermMarks m where m.programmes IN ("
+						+ validateRepor(program) + ") AND m.academicYear  IN (" + validateRepor(academicyear) +") AND m.semester IN (" + validateRepor(semester) + ") AND  m.programmeYear IN ("
+						+ validateRepor(programyear) + ") AND m.colleges IN (" + validateRepor(college) + ") AND m.department IN ("
+						+ validateRepor(department) + ") AND m.courses IN (" + validateRepor(course) + ") AND m.degree IN (" + validateRepor(degre) + ") ORDER BY courses.exName ";
+				
+				 logger.info("Sql Script to get SubmittedReport "+hql);  
+				Query query = entityManager.createQuery(hql);
+			    
+				   logger.info("Sql Script to get SubmittedReport "+hql);  
+				entityManager.close();
+
+				return query.getResultList();
+
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+				logger.error("exception", e);
+				return null;
+			}
+
+		}
+	public List<Object[]> getInternalMarks(Long courseid , String rollnumber , Long acdemic ) {
+		// TODO Auto-generated method stub
+		try {
+			String hql = "";	
+			 hql = 	"select exAssignmentMarks , exAssignmentMarkRemark , exQuizMarks ,exQuizRemark , exAttendenceMarks , exAttendenceRemark , exMidTermMarks , exMidTermRemarks , exCaseStudy ,exCaseStudyRemark  , exPracticalLearning , exPracticalRecordMarks , exIsSubmit, exIsSave from MidTermMarks   where  courses = '"+courseid+"'  and academicYear =  '"+acdemic+"' and exRollNo = '"+rollnumber+"' ";
+			
+					Query query = entityManager.createQuery(hql);
+					logger.info("Sql Script to getTransactionReport" + hql);
+					entityManager.close();						
+				return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+			logger.error("exception", e);
+			return null;
+		}
+	}	
+	
+	public List<Object[]> getExternalMarks(Long courseid , String rollnumber , Long acdemic ) {
+		// TODO Auto-generated method stub
+		try {
+			String hql = "";	
+			 hql = 	"select exLabExperiment , exViva from ExamBarcodes   where  courses = '"+courseid+"'  and academicYear =  '"+acdemic+"' and exRollNo = '"+rollnumber+"' ";
+			
+					Query query = entityManager.createQuery(hql);
+					logger.info("Sql Script to getTransactionReport" + hql);
+					entityManager.close();						
+				return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+			logger.error("exception", e);
+			return null;
+		}
+	}
+	
+
+	public List<Object[]> masterofall(List<Long> college, List<Long> program, List<Long> department, List<Long> programyear, List<Long> course, List<Long> academicyear, boolean active, boolean delete, List<Long> degre, List<Long> semester) {
+		// TODO Auto-generated method stub
+		try {
+			String hql = "";
+			hql ="Select b.colleges.exIdentifier,   b.degree.exName,b.programmes.exIdentifier,b.department.exIdentifier, b.stream.exIdentifier,"
+					+" b.academicYear.exIdentifier,CONCAT(MONTHNAME(o.exEndTermExamEndDate),'/', YEAR(o.exEndTermExamEndDate)),a.registrationType.exName ,b.programmeYear.exName,"
+					+" b.semester.exName , b.courses.exName,b.courses.exCoursesCode,b.courses.creditHours.exCreditHourTitle, "
+					+"b.exRollNo ,UPPER(b.studentadmission.exName), d.exContactDetails, d.exEmailId, ROUND(a.exEndTermMarks,2),"
+					+" ROUND(e.exEndTermMarks,2) AS Endmarks, ROUND(b.exMidTermMarks,2), ROUND(e.exMidTermMarks) AS midmarks,"
+					+"b.exAssignmentMarks, b.exQuizMarks,b.exCaseStudy,b.exAttendenceMarks,b.exAssignmentMarkRemark ,"
+					+" b.exQuizRemark ,b.exCaseStudyRemark,b.exAttendenceRemark,"
+					+" (Round(CASE WHEN b.exAssignmentMarks IS NULL THEN 0 ELSE b.exAssignmentMarks END,2) +Round(CASE WHEN b.exQuizMarks IS NULL THEN 0 ELSE b.exQuizMarks END,2) +ROUND(CASE WHEN b.exCaseStudy IS NULL THEN 0 ELSE b.exCaseStudy END,2) +ROUND(CASE WHEN b.exAttendenceMarks IS NULL THEN 0 ELSE b.exAttendenceMarks END ,2)) AS TotalInternal,"
+					+"ROUND(e.exEndTermMarks + e.exMidTermMarks+ROUND(CASE WHEN b.exAssignmentMarks IS NULL THEN 0 ELSE b.exAssignmentMarks END +CASE WHEN b.exQuizMarks IS NULL THEN 0 ELSE b.exQuizMarks END + CASE WHEN b.exCaseStudy IS NULL THEN 0 ELSE b.exCaseStudy END +CASE WHEN b.exAttendenceMarks IS NULL THEN 0 ELSE b.exAttendenceMarks END ,2),2) AS TheoryPass,"
+					+" b.exPracticalRecordMarks,b.exPracticalLearning,a.exLabExperiment,a.exViva,"
+					+"  e.exPracticalExternalMarks,e.exGrandTotal,ROUND(e.exGrandTotal),e.exLetterGrades,e.exGradePoint,(case when b.staff.id IS NULL then 'teacher is not  mapped' ELSE b.staff.exName END ),b.staff.exEmployeeId,b.staff.exEmail,b.staff.exContactDetails,"
+					+"b.exUpdateDate From MidTermMarks b LEFT OUTER JOIN ExamBarcodes a ON b.courses.id=a.courses.id AND b.exRollNo=a.exRollNo LEFT OUTER JOIN CoursesRegistration q ON b.courses.id=q.courses.id AND b.studentadmission.id=q.studentadmission.id"
+					+"  LEFT OUTER JOIN GradeReport e ON b.courses.id=e.courses.id AND b.exRollNo=e.exRollNo  LEFT OUTER JOIN Studentpersonal d ON b.studentadmission.id=d.studentadmission.id LEFT JOIN ExamAnnouncement o ON b.examAnnouncement.id=o.id where b.programmes IN ("
+					+ validateRepor(program) + ") AND b.academicYear  IN (" + validateRepor(academicyear) +") AND b.semester IN (" + validateRepor(semester) + ") AND  b.programmeYear IN ("
+					+ validateRepor(programyear) + ") AND b.colleges IN (" + validateRepor(college) + ") AND b.department IN ("
+					+ validateRepor(department) + ") AND b.courses IN (" + validateRepor(course) + ") AND b.degree IN (" + validateRepor(degre) + ") GROUP BY b.courses.exName,b.exRollNo ORDER BY b.courses.exName,b.exRollNo ";
+			
+			logger.info("Sql Script to get masterofall "+hql);  
+			Query query = entityManager.createQuery(hql);
+			logger.info("Sql Script to get masterofall "+hql);  
+			entityManager.close();
+			return query.getResultList();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			logger.error("exception", e);
+			return null;
+		}
+	}
+	
+	/*
+	 * public List<Object[]> getTopperListReport1(List<Long> academicYear,
+	 * List<Long> semester, List<Long> degree, List<Long> programmes, List<Long>
+	 * programmeYear) { try{ String hql = "";
+	 * 
+	 * hql =
+	 * "select s.colleges.exName,s.degree.exName,s.programmes.exName,s.programmeYear.exName,s.academicYear.exYear,s.semester.exName,s.exRollNo,s.studentadmission.exName,s.serialNumber,s.serialNumber,s.exGradePointAv FROM SemesterProgressReport s INNER JOIN Studentpersonal a where   ORDER BY  s.exGradePointAv desc"
+	 * ;
+	 * 
+	 * Query query = entityManager.createQuery(hql);
+	 * //logger.info("Sql Script to getTransactionReport" + hql);
+	 * System.out.println("'??hql"+hql); System.out.println("'??qruy"+query);
+	 * entityManager.close(); return query.getResultList(); } catch (Exception e) {
+	 * // TODO: handle exception e.printStackTrace();
+	 * logger.error("Exception occured" + e); StringWriter errors = new
+	 * StringWriter(); e.printStackTrace(new PrintWriter(errors));
+	 * logger.error(errors.toString());
+	 * 
+	 * } return null;
+	 * 
+	 * }
+	 */
+	public List<Object[]> getTransactionReportPDF(String sql) {
+		try {
+		String hql = "";	
+		 hql = "select  o.orderId ,o.mihpayId, o.bankRefNum  ,  o.academicYear.exYear , o.programmes.exIdentifier"
+			 		+ " ,o.programmeYear.exName , o.semester.exName "
+			 		+ ",o.exRollNo ,o.name as studentname  , o.mobile ,o.email, o.txnDate  , o.paymentstatus , SUM(o.txnAmount) ,"
+			 		+ " o.feemaster.exFeeName, o.feemaster.feecategory.exName , o.mode,  o.pgType ,o.error , o.errorMessage  from Studentadmission s ,Studentpersonal sp, OrderTransaction o where sp.studentadmission=s.id and s.id= o.studentadmission "+sql;
+				Query query = entityManager.createQuery(hql);
+				logger.info("Sql Script to getTransactionReport" + hql);
+				entityManager.close();
+		
+		
+			return query.getResultList();
+	} catch (Exception e) {
+		e.printStackTrace();
+		// TODO: handle exception
+		logger.error("exception", e);
+		return null;
+	}
+	}
+	
+	
+	public List<Object[]> getStudentDynamicreport(String str) {
+		try {
+			
+			Query query = entityManager.createQuery(str);
+			entityManager.close();
+			return query.getResultList();
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("exception", e);
+			return null;
+		}
+
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
+
+}

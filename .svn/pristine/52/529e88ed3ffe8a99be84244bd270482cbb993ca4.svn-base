@@ -1,0 +1,253 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_exam_announcement")
+public class ExamAnnouncement {
+
+	
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	
+	private Boolean exIsLive;
+	public Boolean getExIsLive() {
+		return exIsLive;
+	}
+
+	public void setExIsLive(Boolean exIsLive) {
+		this.exIsLive = exIsLive;
+	}
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	private String exName;
+
+	@Column(columnDefinition = "TEXT")
+	private String exLocalLangName;
+
+
+
+
+	@Column(columnDefinition = "TEXT")
+	private String exDescription;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exEndTermExamStartDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exEndTermExamEndDate;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exMidTermExamStartDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exMidTermExamEndDate;
+
+
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	public String getExLocalLangName() {
+		return exLocalLangName;
+	}
+
+	public void setExLocalLangName(String exLocalLangName) {
+		this.exLocalLangName = exLocalLangName;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public Date getExEndTermExamStartDate() {
+		return exEndTermExamStartDate;
+	}
+
+	public void setExEndTermExamStartDate(Date exEndTermExamStartDate) {
+		this.exEndTermExamStartDate = exEndTermExamStartDate;
+	}
+
+	public Date getExEndTermExamEndDate() {
+		return exEndTermExamEndDate;
+	}
+
+	public void setExEndTermExamEndDate(Date exEndTermExamEndDate) {
+		this.exEndTermExamEndDate = exEndTermExamEndDate;
+	}
+
+	public Date getExMidTermExamStartDate() {
+		return exMidTermExamStartDate;
+	}
+
+	public void setExMidTermExamStartDate(Date exMidTermExamStartDate) {
+		this.exMidTermExamStartDate = exMidTermExamStartDate;
+	}
+
+	public Date getExMidTermExamEndDate() {
+		return exMidTermExamEndDate;
+	}
+
+	public void setExMidTermExamEndDate(Date exMidTermExamEndDate) {
+		this.exMidTermExamEndDate = exMidTermExamEndDate;
+	}
+
+	@Override
+	public String toString() {
+		return "ExamAnnouncement [id=" + id + ", academicYear=" + academicYear + ", exIsLive=" + exIsLive
+				+ ", programmeYear=" + programmeYear + ", semester=" + semester + ", programmes=" + programmes
+				+ ", exName=" + exName + ", exLocalLangName=" + exLocalLangName + ", exDescription=" + exDescription
+				+ ", exEndTermExamStartDate=" + exEndTermExamStartDate + ", exEndTermExamEndDate="
+				+ exEndTermExamEndDate + ", exMidTermExamStartDate=" + exMidTermExamStartDate
+				+ ", exMidTermExamEndDate=" + exMidTermExamEndDate + ", exIsActive=" + exIsActive + ", exIsDelete="
+				+ exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", degree="
+				+ degree + "]";
+	}
+
+	
+	
+
+}

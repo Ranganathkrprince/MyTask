@@ -1,0 +1,164 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_privileges")
+public class Privileges {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+    private Boolean addrole;
+	
+
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean updaterole;
+	
+
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean approverole;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean deleterole;
+
+    @ManyToOne( optional = false)
+   	@JoinColumn(name = "role_id", nullable = false)
+   	private Role role;  
+    
+    @ManyToOne( optional = false)
+   	@JoinColumn(name = "privilegesFeatures_id", nullable = false)
+   	private PrivilegesFeatures privilegesFeatures;  
+   
+	
+	  @Column(columnDefinition="BOOLEAN DEFAULT false")
+	   	private Boolean exIsActive;
+
+	   	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	   	private Boolean exIsDelete;
+
+	   	@Temporal(TemporalType.TIMESTAMP)
+	   	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	   	private Date exCreateDate;
+
+	   	@Temporal(TemporalType.TIMESTAMP)
+	   	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	   	private Date exUpdateDate;
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public Boolean getAddrole() {
+			return addrole;
+		}
+
+		public void setAddrole(Boolean addrole) {
+			this.addrole = addrole;
+		}
+
+		public Boolean getUpdaterole() {
+			return updaterole;
+		}
+
+		public void setUpdaterole(Boolean updaterole) {
+			this.updaterole = updaterole;
+		}
+
+		public Boolean getApproverole() {
+			return approverole;
+		}
+
+		public void setApproverole(Boolean approverole) {
+			this.approverole = approverole;
+		}
+
+		public Boolean getDeleterole() {
+			return deleterole;
+		}
+
+		public void setDeleterole(Boolean deleterole) {
+			this.deleterole = deleterole;
+		}
+
+		
+
+		public Role getRole() {
+			return role;
+		}
+
+		public void setRole(Role role) {
+			this.role = role;
+		}
+
+		public PrivilegesFeatures getPrivilegesFeatures() {
+			return privilegesFeatures;
+		}
+
+		public void setPrivilegesFeatures(PrivilegesFeatures privilegesFeatures) {
+			this.privilegesFeatures = privilegesFeatures;
+		}
+
+		public Boolean getExIsActive() {
+			return exIsActive;
+		}
+
+		public void setExIsActive(Boolean exIsActive) {
+			this.exIsActive = exIsActive;
+		}
+
+		public Boolean getExIsDelete() {
+			return exIsDelete;
+		}
+
+		public void setExIsDelete(Boolean exIsDelete) {
+			this.exIsDelete = exIsDelete;
+		}
+
+		public Date getExCreateDate() {
+			return exCreateDate;
+		}
+
+		public void setExCreateDate(Date exCreateDate) {
+			this.exCreateDate = exCreateDate;
+		}
+
+		public Date getExUpdateDate() {
+			return exUpdateDate;
+		}
+
+		public void setExUpdateDate(Date exUpdateDate) {
+			this.exUpdateDate = exUpdateDate;
+		}
+
+		@Override
+		public String toString() {
+			return "Privileges [id=" + id + ", addrole=" + addrole
+					+ ", updaterole=" + updaterole + ", approverole="
+					+ approverole + ", deleterole=" + deleterole
+					+ ",  role=" + role
+					+ ", privilegesFeatures=" + privilegesFeatures
+					+ ", exIsActive=" + exIsActive + ", exIsDelete="
+					+ exIsDelete + ", exCreateDate=" + exCreateDate
+					+ ", exUpdateDate=" + exUpdateDate + "]";
+		}
+
+}

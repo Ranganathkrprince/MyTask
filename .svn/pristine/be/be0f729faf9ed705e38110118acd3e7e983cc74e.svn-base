@@ -1,0 +1,94 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+public class CriteriaRequest {
+	private List<Long> colleges;
+	private List<Long> programmes;
+	private Long semester;
+	private Long academicYear;
+	private Long degree;
+	private Long examAnnouncement;
+	private Long programmeYear;
+	private Long  programme;
+	private String exRollNo;
+	private String exCGPA;
+	private Long courses;
+	public List<Long> getColleges() {
+		return colleges;
+	}
+	public void setColleges(List<Long> colleges) {
+		this.colleges = colleges;
+	}
+	public List<Long> getProgrammes() {
+		return programmes;
+	}
+	public void setProgrammes(List<Long> programmes) {
+		this.programmes = programmes;
+	}
+	
+	public Long getSemester() {
+		return semester;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public Long getProgramme() {
+		return programme;
+	}
+	public void setProgramme(Long programme) {
+		this.programme = programme;
+	}
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	public String getExCGPA() {
+		return exCGPA;
+	}
+	public void setExCGPA(String exCGPA) {
+		this.exCGPA = exCGPA;
+	}
+	public Long getCourses() {
+		return courses;
+	}
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+	@Override
+	public String toString() {
+		return "CriteriaRequest [colleges=" + colleges + ", programmes=" + programmes + ", semester=" + semester
+				+ ", academicYear=" + academicYear + ", degree=" + degree + ", examAnnouncement=" + examAnnouncement
+				+ ", programmeYear=" + programmeYear + ", programme=" + programme + ", exRollNo=" + exRollNo
+				+ ", exCGPA=" + exCGPA + ", courses=" + courses + "]";
+	}
+	
+	
+
+}

@@ -1,0 +1,60 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ex_report_request")
+public class ReportRequestEntity {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String exName;
+	private String exValue;
+	private String tableNamevalue;
+	private String tableMappingvalue;
+	public Long getId() {
+		return id;
+	}
+	public String getExName() {
+		return exName;
+	}
+	public String getExValue() {
+		return exValue;
+	}
+	public String getTableNamevalue() {
+		return tableNamevalue;
+	}
+	public String getTableMappingvalue() {
+		return tableMappingvalue;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+	public void setExValue(String exValue) {
+		this.exValue = exValue;
+	}
+	public void setTableNamevalue(String tableNamevalue) {
+		this.tableNamevalue = tableNamevalue;
+	}
+	public void setTableMappingvalue(String tableMappingvalue) {
+		this.tableMappingvalue = tableMappingvalue;
+	}
+	@Override
+	public String toString() {
+		return "ReportRequestEntity [id=" + id + ", exName=" + exName + ", exValue=" + exValue + ", tableNamevalue="
+				+ tableNamevalue + ", tableMappingvalue=" + tableMappingvalue + "]";
+	}
+	
+	
+	
+
+}

@@ -1,0 +1,37 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Complaint;
+
+@Repository
+public interface ComplaintRepository  extends JpaRepository<Complaint, Long>{
+
+	Optional<Complaint> findByExTicketNumber(String exTicketNumber);
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_complaint set complaint_status = ?1 ,ex_remark=?3 ,user_id=?5  ,ex_update_date=?4 where ex_ticket_number =?2", nativeQuery = true)
+	int updateComplaintRecord(Integer complaintStatus, String exTicketNumber, String exRemark, Date date, Long user);
+
+	List<Complaint> findByComplaintStatus(Integer complaintStatus);
+	
+	List<Complaint> findByComplaintStatusAndComplaintTypeRoleId(Integer complaintStatus , Long role);
+
+//	List<Complaint> findByProgrammesIdAndCollegesIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDegreeIdAndComplaintTypeIdAndExStartDateAndExEndDate(
+//			Long programmes, Long colleges, Long academicYear, Long programmeYear, Long semester, Long degree,
+//			Long complaintType, String exStartDate, String exEndDate);
+	List<Complaint> findByProgrammesIdAndCollegesIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDegreeIdAndComplaintTypeIdAndExCreateDateBetween(
+			Long programmes, Long colleges, Long academicYear, Long programmeYear, Long semester, Long degree,
+			Long complaintType, Date sdate, Date edate);
+	List<Complaint> findByExRollNo(String studentId);
+
+	
+}

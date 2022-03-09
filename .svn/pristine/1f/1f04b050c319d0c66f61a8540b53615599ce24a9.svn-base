@@ -1,0 +1,37 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ex_certificate_type")
+public class CertificateType {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private String exCertificateType;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExCertificateType() {
+		return exCertificateType;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExCertificateType(String exCertificateType) {
+		this.exCertificateType = exCertificateType;
+	}
+	
+	
+	
+}

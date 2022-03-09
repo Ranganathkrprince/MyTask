@@ -1,0 +1,368 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Studentadmission;
+import com.niftem.app.entity.Studentpersonal;
+import com.niftem.app.entity.User;
+
+public interface StudentpersonalRepository extends CrudRepository<Studentpersonal, Long> {
+
+	List<Studentpersonal> findByStudentadmissionExIsDelete(boolean b);
+
+	List<Studentpersonal> findByStudentadmissionId(Long student);
+
+	List<Studentpersonal> findByStudentadmissionExIsActive(boolean b);
+
+
+	@Query(value = "select e. FROM ex_student_personal e INNER JOIN ex_student_admission where ex_user_name= ?2  and ex_is_delete = ?1", nativeQuery = true)
+	List<Studentpersonal> findByExAdmissionExIsDeleteAndExsAdmissionUserName(boolean b, String userName);
+
+	
+	@Query(value = "Select p.ex_name,p.colleges.ex_name,p.degree.ex_name,p.programmes.ex_name,p.stream.ex_name,p.ex_enrollement_no,p.ex_roll_no,e.ex_email_id,e.ex_contact_details from ex_student_personal e INNER JOIN ex_student_admission p    ON p.id = e.student_admission_id where    ex_is_active = ?1   AND ex_is_delete =?2    AND colleges_id = ?3 AND degree_id = ?4  AND programmes_id = ?5 ", nativeQuery = true)
+	List<Object[]> getStudentDetails(boolean b, boolean c, Long colleges, Long degree, Long programmes, List<Long> list1);
+	
+    List<Studentpersonal> findByStudentadmissionExIsActiveAndStudentadmissionExIsDeleteAndStudentadmissionCollegesIdAndStudentadmissionDegreeIdAndStudentadmissionProgrammesId(
+            boolean b, boolean c, Long colleges, Long degree, Long programmes);
+ 
+
+
+	/*
+	 * List<Studentpersonal>
+	 * findByStudentadmissionExIsActiveAndStudentadmissionExIsDeleteAndStudentadmissionCollegesIdInAndStudentadmissionDegreeIdInAndStudentadmissionProgrammesIdInAndStudentadmissionDepartmentIdInAndStudentadmissionAcademicYearIdIn(
+	 * boolean b, boolean c, List<Long> college, List<Long> degree, List<Long>
+	 * program, List<Long> department ,List<Long> academicyear);
+	 */
+	
+	////@Query(value = "SELECT * FROM ex_student_personal p , ex_student_admission a where a.id = p.student_admission_id AND a.colleges_id IN ?1 AND a.degree_id IN ?2 AND a.programmes_id IN ?3  AND a.academic_year_id IN ?4 ORDER BY  ex_roll_no", nativeQuery = true)
+	//List<Studentpersonal> getAdmisionRecord(List<Long> college, List<Long> degree, List<Long> program ,List<Long> academicyear);
+	
+    @Query(value = "SELECT * FROM ex_student_personal p , ex_student_admission a \r\n" + 
+			" WHERE  a.id = p.student_admission_id AND a.colleges_id IN ?1 AND a.degree_id IN ?2 AND a.programmes_id IN ?3  AND a.academic_year_id IN ?4 ORDER BY  a.ex_roll_no", nativeQuery = true)
+	List<Studentpersonal> getAdmisionRecord(List<Long> college, List<Long> degree, List<Long> program ,List<Long> academicyear);
+	
+    
+	List<Studentpersonal> findByStudentadmissionExIsActiveAndStudentadmissionExIsDeleteAndStudentadmissionExIsApproveAndStudentadmissionCollegesIdAndStudentadmissionDegreeIdAndStudentadmissionProgrammesIdAndStudentadmissionDepartmentId(
+			boolean b, boolean c, int i, Long colleges, Long degree, Long programmes, Long department);
+
+
+	@Query(value = "SELECT * FROM ex_student_personal e INNER JOIN ex_student_admission p ON p.id = e.student_admission_id where ex_roll_no= ?1 and ex_is_active =?2 and ex_is_delete = ?3", nativeQuery = true)
+	List<Studentpersonal> checkExRollNo(String exRollNo, boolean b, boolean c);
+
+
+
+	List<Studentpersonal> findByStudentadmissionExIsActiveAndStudentadmissionId(boolean b, Long id);
+	
+	List<Studentpersonal> findByStudentadmissionExIsActiveAndStudentadmissionExUserName(boolean b, String id);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_student_personal set ex_email_id = ?1,ex_contact_details=?2 where student_admission_id =?3", nativeQuery = true)
+
+	int updateStudentPersonalbystudent(String exEmailId, String exContactDetails, Long id);
+
+
+	@Query(value = "SELECT * FROM ex_student_personal e INNER JOIN ex_student_admission p ON p.id = e.student_admission_id where ex_roll_no= ?1 and ex_is_active =?2 and ex_is_delete = ?3", nativeQuery = true)
+
+	List<Studentpersonal> checkStudentId(String exRollNo, boolean b, boolean c);
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_student_personal set ex_contact_details = ?1 , ex_email_id = ?2,  ex_adhaar_number = ?3, ex_blood_group = ?4, ex_date_of_birth = ?5 ,ex_mother_tounge=?6 , ex_religion=?7 , ex_native_state=?8, ex_nationality=?9 ,ex_father_name=?11,ex_father_name_in_hindi=?12,ex_father_occupation=?13 ,ex_annual_income=?14 ,ex_mother_name=?15 ,ex_mother_name_in_hindi=?16 ,ex_local_gurdian=?17 ,ex_permanent_address=?18 ,ex_present_address=?19 ,ex_parent_contact_details=?20, ex_gender=?21 where id =?10", nativeQuery = true)
+	int updateStudentpersonal(String exContactDetails, String exEmailId, String exAdhaarNumber, String exBloodGroup,
+			String exDateOfBirth, String exMotherTounge, String exReligion, String exNativeState, String exNationality,
+			Long id, String exFatherName, String exFatherNameInHindi, String exFatherOccupation, Double exAnnualIncome,
+			String exMotherName, String exMotherNameInHindi, String exLocalGurdian, String exPermanentAddress,
+			String exPresentAddress, String exParentContactDetails,String exGender);
+
+
+
+	@Query(value ="	SELECT * FROM ex_student_personal e , ex_student_admission a WHERE a.id = e.student_admission_id  AND a.batch_id =?7 AND  e.student_admission_id  NOT IN (SELECT r.student_admission_id FROM ex_semester_registration r where r.degree_id IN ?2 and r.department_id IN ?5 and r.programmes_id IN ?1  and r.programmeyear_id IN ?3 and r.semester_id IN ?4 and r.academicyear_id IN ?6)", nativeQuery = true)
+	List<Studentpersonal> getUnregistertBetween(List<Long> programmes,  List<Long> degree,
+ 			List<Long> programmeYear, List<Long> semester, List<Long> department ,  List<Long> academic , Long batch_id);
+
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_student_personal set ex_adhaar_number = ?2, ex_blood_group = ?3, ex_is_personal_details_approve = 1,user_id=?4,ex_contact_details=?5,ex_date_of_birth=?6,ex_email_id=?7,ex_father_name=?8,ex_father_name_in_hindi=?9,ex_father_occupation=?10,ex_gender=?11,ex_height=?12,ex_local_gurdian=?13,exlocal_gurdian_in_hindi=?14,ex_mother_name=?15,ex_mother_name_in_hindi=?16,ex_mother_tounge=?17,ex_nationality=?18,ex_native_state=?19,ex_parent_contact_details=?20,ex_permanent_address=?21,ex_present_address=?22,ex_religion=?23,ex_weight=?24 where student_admission_id =?1", nativeQuery = true)
+	
+	int updateApproval(Long id, String exAdhaarNumber, String exBloodGroup, User user, String exContactDetails,
+			String exDateOfBirth, String exEmailId, String exFatherName, String exFatherNameInHindi,
+			String exFatherOccupation, String exGender, Double exHeight, String exLocalGurdian,
+			String exlocalGurdianInHindi, String exMotherName, String exMotherNameInHindi, String exMotherTounge,
+			String exNationality, String exNativeState, String exParentContactDetails, String exPermanentAddress,
+			String exPresentAddress, String exReligion, Double exWeight);
+
+	
+	@Query(value = "SELECT * FROM ex_student_personal e INNER JOIN ex_student_admission p ON p.id = e.student_admission_id  where ex_roll_no= ?1 and ex_is_active =?2 and ex_is_delete = ?3", nativeQuery = true)
+	List<Studentpersonal> checkStudentExRollNo(String exRollNo, boolean b, boolean c);
+
+	List<Studentpersonal> findByStudentadmissionExIsActiveAndStudentadmissionExIsDeleteAndStudentadmissionExIsApproveAndStudentadmissionCollegesIdAndStudentadmissionDegreeIdAndStudentadmissionProgrammesIdAndStudentadmissionDepartmentIdAndStudentadmissionAcademicYearId(
+			boolean b, boolean c, int i, Long colleges, Long degree, Long programmes, Long department,
+			Long academicYear);
+
+	
+	
+	@Query(value = "SELECT * FROM ex_student_personal e INNER JOIN ex_student_admission p ON p.id = e.student_admission_id  where ex_is_personal_details_approve= ?1 and ex_is_active =?2 and ex_is_delete = ?3", nativeQuery = true)
+
+	List<Studentpersonal> checkApproval(Studentadmission studentadmission);
+
+
+	List<Studentpersonal> findByExIsPersonalDetailsApproveAndStudentadmissionId(int i,
+			Studentadmission studentadmission);
+
+	List<Studentpersonal> findByExIsPersonalDetailsApproveAndStudentadmissionId(int i, Long id);
+
+	List<Studentpersonal> findByStudentadmissionIdAndExIsPersonalDetailsApprove(Long id, int i);
+
+	
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_student_personal set ex_is_personal_details_approve =?2 where student_admission_id =?1", nativeQuery = true)
+	
+	int updateApproval(Long id, int i);
+
+	
+
+	/*
+	 * @Modifying
+	 * 
+	 * @Transactional
+	 * 
+	 * @Query(value =
+	 * "update ex_student_personal set ex_date_of_birth =?1 where student_admission_id =?2"
+	 * , nativeQuery = true) int updateDob(String dob , Long id);
+	 */
+	
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE ex_student_personal a SET a.ex_date_of_birth=?1,a.ex_email_id=?3,a.ex_contact_details=?4 WHERE a.student_admission_id=?2", nativeQuery = true)	
+	int updateDob(String myDateAsString, Long id, String Email, String Contact);
+	
+	
+	
+	 
+	@Query(value ="SELECT \r\n" + 
+			"       c1.ex_identifier AS collage,\r\n" + 
+			"       q.ex_identifier AS Academicyear,\r\n" + 
+			"       t.ex_identifier AS Batch,\r\n" + 
+			"       z.ex_name AS Degree,\r\n" + 
+			"       p.ex_name AS pogramesss,\r\n" +
+			"       b.ex_create_date AS createdate,\r\n" + 
+			"       b.ex_update_date AS Updatedate,\r\n" + 
+			"		count(case when a.ex_gender='Male' then 1 end) as male_cnt_sc,\r\n" + 
+			"  		count(case when a.ex_gender='Female' then 1 end) as female_cnt_sc,\r\n" + 
+			" 		(count(case when a.ex_gender='Male' then 1 end)+count(case when a.ex_gender='Female' then 1 end)) as total_cnt_sc,\r\n" + 
+			"  \r\n" + 
+			" 		count(case when a1.ex_gender='Male' then 1 end) as male_cnt_st,\r\n" + 
+			" 		count(case when a1.ex_gender='Female' then 1 end) as female_cnt_st,\r\n" + 
+			"		(count(case when a1.ex_gender='Male' then 1 end)+count(case when a1.ex_gender='Female' then 1 end)) as total_cnt_st ,\r\n" +
+			"  \r\n" + 
+			" 		count(case when a2.ex_gender='Male' then 1 end) as male_cnt_OBC,\r\n" + 
+			" 		count(case when a2.ex_gender='Female' then 1 end) as female_cnt_OBC,\r\n" + 
+			"		(count(case when a2.ex_gender='Male' then 1 end)+count(case when a2.ex_gender='Female' then 1 end)) as total_cnt_obc ,\r\n" +
+			"  \r\n" + 
+			" 		count(case when a3.ex_gender='Male' then 1 end) as male_cnt_ur,\r\n" + 
+			" 		count(case when a3.ex_gender='Female' then 1 end) as female_cnt_ur,\r\n" + 
+			"		(count(case when a3.ex_gender='Male' then 1 end)+count(case when a3.ex_gender='Female' then 1 end)) as total_cnt_ur ,\r\n" +
+
+			"  \r\n" + 
+			" 		count(case when a4.ex_gender='Male' then 1 end) as male_cnt_km,\r\n" + 
+			" 		count(case when a4.ex_gender='Female' then 1 end) as female_cnt_km,\r\n" + 
+			"		(count(case when a4.ex_gender='Male' then 1 end)+count(case when a4.ex_gender='Female' then 1 end)) as total_cnt_km ,\r\n" +
+
+			"  \r\n" + 
+			" 		count(case when a5.ex_gender='Male' then 1 end) as male_cnt_nri,\r\n" + 
+			" 		count(case when a5.ex_gender='Female' then 1 end) as female_cnt_nri,\r\n" + 
+			"		(count(case when a5.ex_gender='Male' then 1 end)+count(case when a5.ex_gender='Female' then 1 end)) as total_cnt_nri ,\r\n" +
+
+			"  \r\n" + 
+			" 		count(case when a6.ex_gender='Male' then 1 end) as male_cnt_Gaicte,\r\n" + 
+			" 		count(case when a6.ex_gender='Female' then 1 end) as female_cnt_Gaicte,\r\n" + 
+			"		(count(case when a6.ex_gender='Male' then 1 end)+count(case when a6.ex_gender='Female' then 1 end)) as total_cnt_Gaicte ,\r\n" +
+
+			"  \r\n" + 
+			" 		count(case when a7.ex_gender='Male' then 1 end) as male_cnt_obcpc,\r\n" + 
+			" 		count(case when a7.ex_gender='Female' then 1 end) as female_cnt_obcpc,\r\n" + 
+			"		(count(case when a7.ex_gender='Male' then 1 end)+count(case when a7.ex_gender='Female' then 1 end)) as total_cnt_obcpc ,\r\n" +
+
+			"  \r\n" + 
+			" 		count(case when a8.ex_gender='Male' then 1 end) as male_cnt_ph,\r\n" + 
+			" 		count(case when a8.ex_gender='Female' then 1 end) as female_cnt_ph,\r\n" + 
+			"		(count(case when a8.ex_gender='Male' then 1 end)+count(case when a8.ex_gender='Female' then 1 end)) as total_cnt_ph ,\r\n" +
+
+			"  \r\n" + 
+			" 		count(case when a9.ex_gender='Male' then 1 end) as male_cnt_general,\r\n" + 
+			" 		count(case when a9.ex_gender='Female' then 1 end) as female_cnt_general,\r\n" + 
+			"		(count(case when a9.ex_gender='Male' then 1 end)+count(case when a9.ex_gender='Female' then 1 end)) as total_cnt_general ,\r\n" +
+
+			"  \r\n" + 
+			" 		count(case when a10.ex_gender='Male' then 1 end) as male_cnt_genews,\r\n" + 
+			" 		count(case when a10.ex_gender='Female' then 1 end) as female_cnt_genews,\r\n" + 
+			"		(count(case when a10.ex_gender='Male' then 1 end)+count(case when a10.ex_gender='Female' then 1 end)) as total_cnt_genews ,\r\n" +
+			
+			"  \r\n" + 
+			" 		count(case when a11.ex_gender='Male' then 1 end) as male_cnt_obcncl,\r\n" + 
+			" 		count(case when a11.ex_gender='Female' then 1 end) as female_cnt_obcncl,\r\n" + 
+			"		(count(case when a11.ex_gender='Male' then 1 end)+count(case when a11.ex_gender='Female' then 1 end)) as total_cnt_obcncl ,\r\n" +
+			
+			"  \r\n" + 
+			" 		count(case when a12.ex_gender='Male' then 1 end) as male_cnt_open,\r\n" + 
+			" 		count(case when a12.ex_gender='Female' then 1 end) as female_cnt_open,\r\n" + 
+			"		(count(case when a12.ex_gender='Male' then 1 end)+count(case when a12.ex_gender='Female' then 1 end)) as total_cnt_open ,\r\n" +
+			
+			"  \r\n" + 
+			" 		count(case when a13.ex_gender='Male' then 1 end) as male_cnt_ews,\r\n" + 
+			" 		count(case when a13.ex_gender='Female' then 1 end) as female_cnt_ews,\r\n" + 
+			"		(count(case when a13.ex_gender='Male' then 1 end)+count(case when a13.ex_gender='Female' then 1 end)) as total_cnt_ews ,\r\n" +
+			
+			"  \r\n" + 
+			" 		count(case when a14.ex_gender='Male' then 1 end) as male_cnt_foreignn,\r\n" + 
+			" 		count(case when a14.ex_gender='Female' then 1 end) as female_cnt_foreignn,\r\n" + 
+			"		(count(case when a14.ex_gender='Male' then 1 end)+count(case when a14.ex_gender='Female' then 1 end)) as total_cnt_foreignn ,\r\n" +
+			
+			"  \r\n" + 
+			" 		count(case when a15.ex_gender='Male' then 1 end) as male_cnt_foreigner,\r\n" + 
+			" 		count(case when a15.ex_gender='Female' then 1 end) as female_cnt_foreigner,\r\n" + 
+			"		(count(case when a15.ex_gender='Male' then 1 end)+count(case when a15.ex_gender='Female' then 1 end)) as total_cnt_foreigner ,\r\n" +
+			
+			"  \r\n" + 
+			" 		count(case when a16.ex_gender='Male' then 1 end) as male_cnt_openpwd,\r\n" + 
+			" 		count(case when a16.ex_gender='Female' then 1 end) as female_cnt_openpwd,\r\n" + 
+			"		(count(case when a16.ex_gender='Male' then 1 end)+count(case when a16.ex_gender='Female' then 1 end)) as total_cnt_openpwd ,\r\n" +
+			
+			"  \r\n" + 
+			" 		count(case when a17.ex_gender='Male' then 1 end) as male_cnt,\r\n" + 
+			" 		count(case when a17.ex_gender='Female' then 1 end) as female_cnt,\r\n" + 
+			"		(count(case when a17.ex_gender='Male' then 1 end)+count(case when a17.ex_gender='Female' then 1 end)) as total_cnt ,\r\n" +
+ 
+			" 		count(case when w.ex_gender='Male' then 1 end) as male_cnt_total,\r\n" + 
+			" 		count(case when w.ex_gender='Female' then 1 end) as female_cnt_total,\r\n" + 
+			"		(count(case when w.ex_gender='Male' then 1 end)+count(case when w.ex_gender='Female' then 1 end)) as total_cnt_total ,\r\n" +
+
+			"	ROUND((count(case when w.ex_gender='Male' then 1 end)) / ((count(case when w.ex_gender='Male' then 1 end)+count(case when w.ex_gender='Female' then 1 end)))*100) AS Percentage_of_Male ,\r\n" +
+			"	ROUND((count(case when w.ex_gender='Female' then 1 end)) / ((count(case when w.ex_gender='Male' then 1 end)+count(case when w.ex_gender='Female' then 1 end)))*100) AS Percentage_of_FeMale, \r\n" +	
+
+			" 		count(case when g.ex_gender='Male' then 1 end) as male_cnt_lefttotal,\r\n" + 
+			" 		count(case when g.ex_gender='Female' then 1 end) as female_cnt_lefttotal,\r\n" + 
+			"		(count(case when g.ex_gender='Male' then 1 end)+count(case when g.ex_gender='Female' then 1 end)) as total_cnt_lefttotal \r\n" +
+			"  \r\n" + 
+			"  		FROM ex_student_admission b LEFT JOIN ex_category c ON b.category_id=c.id\r\n" + 
+			"      LEFT JOIN ex_colleges c1 ON c1.id = b.colleges_id\r\n" + 
+			"      LEFT JOIN ex_programmes p ON p.id = b.programmes_id\r\n" + 
+			"      LEFT JOIN ex_academic_year q ON q.id =b.academic_year_id\r\n"+
+			"      LEFT JOIN ex_batch t ON t.id =b.batch_id\r\n"+
+			"      LEFT JOIN ex_degree z ON z.id =b.degree_id\r\n"+
+			"  	   LEFT  JOIN ex_student_personal a ON b.id=a.student_admission_id AND c.ex_name='Sc' \r\n" + 
+			"  	   LEFT  JOIN ex_student_personal a1 ON b.id=a1.student_admission_id AND c.ex_name='ST'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a2 ON b.id=a2.student_admission_id AND c.ex_name='OBC'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a3 ON b.id=a3.student_admission_id AND c.ex_name='UR'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a4 ON b.id=a4.student_admission_id AND c.ex_name='KM'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a5 ON b.id=a5.student_admission_id AND c.ex_name='NRI'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a6 ON b.id=a6.student_admission_id AND c.ex_name='GENERAL-AICTE'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a7 ON b.id=a7.student_admission_id AND c.ex_name='OBC-PC'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a8 ON b.id=a8.student_admission_id AND c.ex_name='PH'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a9 ON b.id=a9.student_admission_id AND c.ex_name='GENERAL'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a10 ON b.id=a10.student_admission_id AND c.ex_name='GEN-EWS'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a11 ON b.id=a11.student_admission_id AND c.ex_name='OBC-NCL'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a12 ON b.id=a12.student_admission_id AND c.ex_name='OPEN'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a13 ON b.id=a13.student_admission_id AND c.ex_name='EWS'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a14 ON b.id=a14.student_admission_id AND c.ex_name='FOREIGN N'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a15 ON b.id=a15.student_admission_id AND c.ex_name='FOREIGNER'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a16 ON b.id=a16.student_admission_id AND c.ex_name='OPEN (PWD)'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal a17 ON b.id=a17.student_admission_id AND c.ex_name='OPEN-EWS'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal g ON b.id=g.student_admission_id AND  b.ex_study_status='left'\r\n" +
+			"  	   LEFT  JOIN ex_student_personal w ON b.id=w.student_admission_id \r\n" +
+			
+			"	   WHERE b.colleges_id=?1 AND b.academic_year_id = ?2 GROUP BY b.programmes_id ", nativeQuery = true)
+	List<Object[]> getcompletedetails(Long colleges, Long academicYear);
+
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE ex_student_personal a SET a.ex_date_of_birth=?1 WHERE a.student_admission_id=?2", nativeQuery = true)	
+	int updateDobv(String trim, Long id);
+
+	
+	
+	
+	@Query(value = "SELECT * FROM ex_student_personal e  WHERE e.student_admission_id=?1", nativeQuery = true)
+	Optional<Studentpersonal> Studentadmission(Long id);
+
+	
+	
+	
+	
+	
+	 @Query(value = "SELECT c1.ex_identifier AS clg, c2.ex_name AS degree, c3.ex_identifier AS program, c4.ex_identifier AS dept,\r\n" + 
+	    		"c5.ex_identifier AS batch , c6.ex_identifier AS ay ,c7.ex_name AS cat, c8.ex_name AS allcat, a.ex_name AS NAMs, a.ex_roll_no AS roll,a.ex_enrollement_no AS enroll,\r\n" + 
+	    		"a.ex_study_status AS St, b.ex_email_id AS email , b.ex_contact_details AS cont,b.ex_date_of_birth AS db , b.ex_gender AS gender , b.ex_father_name AS fn, b.ex_mother_name AS mn, b.ex_native_state AS ns, \r\n" + 
+	    		"b.ex_religion AS rl, b.ex_adhaar_number AS anumber, b.ex_parent_contact_details AS pcn, b.ex_permanent_address AS pa,\r\n" + 
+	    		"c.ex_account_number AS an,c.ex_account_type AS aty, c.ex_bank_address AS ba, c.ex_branch AS branch ,c.ex_ifsc_code AS ifsc, c.ex_create_date AS dates FROM ex_student_admission a \r\n" + 
+	    		"LEFT JOIN ex_student_personal b ON a.id = b.student_admission_id\r\n" + 
+	    		"LEFT JOIN ex_student_bank_details c ON c.student_admission_id=a.id\r\n" + 
+	    		"\r\n" + 
+	    		"\r\n" + 
+	    		"LEFT JOIN ex_colleges c1 ON c1.id=a.colleges_id\r\n" + 
+	    		"LEFT JOIN ex_degree c2 ON c2.id=a.degree_id\r\n" + 
+	    		"LEFT JOIN ex_programmes c3 ON c3.id=a.programmes_id\r\n" + 
+	    		"LEFT JOIN ex_department c4 ON c4.id = a.department_id\r\n" + 
+	    		"LEFT JOIN ex_batch c5 ON c5.id = a.batch_id\r\n" + 
+	    		"LEFT JOIN ex_academic_year c6 ON c6.id=a.academic_year_id\r\n" + 
+	    		"LEFT JOIN ex_category c7 ON c7.id=a.category_id\r\n" + 
+	    		"LEFT JOIN ex_category c8 ON c8.id = a.allocated_category_id\r\n" + 
+	    		"\r\n" + 
+	    		"\r\n" + 
+	    		"WHERE\r\n" + 
+	    		"a.colleges_id IN ?1 AND a.degree_id IN ?2 AND a.programmes_id IN ?3  AND a.academic_year_id IN ?4 ORDER BY  a.ex_roll_no", nativeQuery = true)		
+	List<Object[]> getAdmisionRecords(List<Long> colleges, List<Long> degree, List<Long> programmes,
+			List<Long> academicYear);
+
+	
+	
+	@Query(value = "SELECT * FROM ex_student_admission_log a, ex_student_admission b , ex_student_personal c  WHERE a.student_admission_id=b.id AND c.student_admission_id=b.id AND b.colleges_id =?1 AND b.degree_id=?2 AND b.programmes_id IN ?3 GROUP BY c.ex_native_state", nativeQuery = true)
+	List<Studentpersonal> getstates(Long colleges, Long degree, List<Long> programmesId);
+
+	
+
+
+	
+	@Query(value = "SELECT * FROM ex_student_admission_log a, ex_student_admission b , ex_student_personal c  WHERE a.student_admission_id=b.id AND c.student_admission_id=b.id AND b.colleges_id =?1 AND b.degree_id=?2 AND b.programmes_id IN ?3 GROUP BY c.ex_nationality", nativeQuery = true)
+	List<Studentpersonal> getNationality(Long colleges, Long degree, List<Long> programmesId);
+
+	
+
+	@Query(value = "SELECT * FROM ex_student_personal where ex_blood_group IS not null and ex_blood_group != '' GROUP BY ex_blood_group", nativeQuery = true)
+	List<Studentpersonal> getbloodgroup();
+
+	
+	
+
+    @Query(value = "SELECT * FROM ex_student_personal p , ex_student_admission a,ex_student_admission_log b \r\n" + 
+			" WHERE  a.id = p.student_admission_id AND a.id=b.student_admission_id AND a.colleges_id IN ?1 AND a.degree_id IN ?2 AND a.programmes_id IN ?3  AND a.academic_year_id IN ?4 AND b.ex_tenth_board_of_pass IN ?5 AND p.ex_native_state IN ?6 AND p.ex_religion IN ?7 AND p.ex_nationality IN ?8 AND p.ex_blood_group IN ?9 AND b.ex_minority_category IN ?10 AND p.ex_mother_tounge IN ?11 ORDER BY  a.ex_roll_no", nativeQuery = true)
+	List<Studentpersonal> getCompleteAdmisionRecord(List<Long> colleges, List<Long> degree, List<Long> programmes,
+			List<Long> academicYear, List<String> boards, List<String> states, List<String> religion,
+			List<String> nationality, List<String> bloodgroup, List<String> minority, List<String> mothertongue);
+
+	@Query(value = "SELECT * FROM  ex_student_personal c where c.ex_native_state IS not null and  LTRIM(RTRIM(c.ex_native_state)) != ''  GROUP BY c.ex_native_state", nativeQuery = true)
+	List<Studentpersonal> getStudentstates();
+
+
+	@Query(value = "SELECT * FROM  ex_student_personal c where c.ex_religion IS not null and  LTRIM(RTRIM(c.ex_religion)) != ''  GROUP BY c.ex_religion", nativeQuery = true)
+	List<Studentpersonal> getreligion();
+
+	
+}

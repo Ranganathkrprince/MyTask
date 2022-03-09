@@ -1,0 +1,71 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+public class AcademicClenderForPdfRequest {
+	
+	@NotNull(message = "AcademicYear is required")
+	private Long academicYear;
+	
+	@NotNull(message = "Please provide a IsEven 0/1")
+	private Boolean exIsEven;
+	
+	private Long user;
+	@NotNull(message="please provide batch")
+	private List<Long> batch ;
+	
+	private String exRollNo;
+	
+	
+	
+	
+	
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	public List<Long> getBatch() {
+		return batch;
+	}
+
+	public void setBatch(List<Long> batch) {
+		this.batch = batch;
+	}
+
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public Boolean getExIsEven() {
+		return exIsEven;
+	}
+
+	public void setExIsEven(Boolean exIsEven) {
+		this.exIsEven = exIsEven;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "AcademicClenderForPdfRequest [academicYear=" + academicYear + ", exIsEven=" + exIsEven + ", user="
+				+ user + ", batch=" + batch + ", exRollNo=" + exRollNo + "]";
+	}
+
+}

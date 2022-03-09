@@ -1,0 +1,58 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ex_feeMasterProgrameMapping")
+public class FeeMasterProgrameMapping {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "feemaster_id", nullable = false)
+	private FeeMaster feemaster;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public FeeMaster getFeemaster() {
+		return feemaster;
+	}
+
+	public void setFeemaster(FeeMaster feemaster) {
+		this.feemaster = feemaster;
+	}
+
+	@Override
+	public String toString() {
+		return "FeeMasterProgrameMapping [id=" + id + ", programmes=" + programmes + ", feemaster=" + feemaster + "]";
+	}
+
+
+}

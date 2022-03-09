@@ -1,0 +1,227 @@
+package com.niftem.app.repository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.dto.NoDueDTO;
+import com.niftem.app.entity.SemesterRegistration;
+
+public interface SemesterRegistrationRepository extends CrudRepository<SemesterRegistration, Long>{
+
+
+	
+	List<SemesterRegistration> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionId(
+			boolean b, boolean c, Long academicYear, Long programmeYear,
+			Long semester,  Long studentadmission);
+	
+	
+	List<SemesterRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndStudentadmissionIdAndExIsRegistration(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department, Long studentadmission, boolean d);
+	
+	
+	List<SemesterRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndStudentadmissionIdAndExIsRegistration(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree,  Long programmeYear,
+			Long semester, Long department, Long studentadmission, boolean d);
+	
+	List<SemesterRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndExIsAttendence(
+			boolean delete, boolean active, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long department,  boolean attendance);
+
+	@Modifying
+	@Transactional
+	@Query(value = "SELECT sr.ex_roll_no FROM ex_student_admission sr,ex_semester_registration sa where sa.student_admission_id != sr.id and sa.colleges_id=sr.colleges_id and sa.degree_id=sr.degree_id and sa.department_id= sr.department_id and sr.programmes_id = sa.programmes_id and sr.stream_id= sa.stream_id and sr.colleges_id=?2\r\n" + 
+			"and sr.degree_id =?3 and sr.department_id=1 and sr.programmes_id=?1 and sr.stream_id=1 and sa.programmeyear_id=?4 and sa.semester_id=5;", nativeQuery = true)
+ 	List<SemesterRegistration> checkunreglist(Long programmes, Long colleges, Long degree,
+			Long programmeYear, Long semester, Long department, Long stream);
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "SELECT * FROM ex_student_admission sr,ex_semester_registration sa where sa.student_admission_id != sr.id and sa.colleges_id=sr.colleges_id and sa.degree_id=sr.degree_id and sa.department_id= sr.department_id and sr.programmes_id = sa.programmes_id " + 
+			"and sr.degree_id In ?3 and sr.colleges_id IN ?2 and sr.department_id IN ?6 and sr.programmes_id IN ?1  and sa.programmeyear_id IN ?4 and sa.semester_id IN ?5 group by sa.student_admission_id", nativeQuery = true)
+ 	List<SemesterRegistration> getUnregister(List<Long> programmes, List<Long> colleges, List<Long> degree,
+ 			List<Long> programmeYear, List<Long> semester, List<Long> department);
+	
+
+	@Query(value = "select * from ex_semester_registration  where student_admission_id =?1 AND ex_is_active = ?2  and ex_is_delete  = ?3 ORDER BY ID DESC LIMIT 1", nativeQuery = true)
+	List<SemesterRegistration> validateStudent(Long studentid , Boolean is_active  , Boolean is_delete);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_semester_registration set ex_is_attendence=?1 , ex_attendence_precentage=?2  where academicyear_id=?3 and semester_id=?4 and programmeyear_id=?5 and student_admission_id =?6 ", nativeQuery = true)
+	int updateattendec(Boolean isattendednce, float percent, Long academicYear, Long semester, Long programyear, Long studentid);
+
+
+	List<SemesterRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndSemesterIdAndDepartmentIdAndProgrammeYearIdOrderByStudentadmissionIdAsc(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long semester,
+			Long department , Long progrmyear);
+
+	List<SemesterRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndSemesterIdAndDepartmentIdAndProgrammeYearIdAndStudentadmissionMentorIdOrderByStudentadmissionIdAsc(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long semester,
+			Long department , Long progrmyear , Long mentor);
+	
+	
+	List<SemesterRegistration> findByExIsDeleteAndExIsActiveAndStudentadmissionIdAndExSemesterStatus(boolean delete, boolean active,Long admision ,  boolean semesterstatus);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_semester_registration set ex_is_library_approve = ?1 where academicyear_id =?2 and programmes_id =?3 and programmeyear_id =?4 and semester_id =?5 and student_admission_id =?6 AND degree_id =?7 AND colleges_id =?8", nativeQuery = true)
+	int updateLibraryApprove(boolean is_library_approve, Long academicYear, Long programmes, Long programmeYear, Long semester, Long studentId , long degree_id , long college);
+
+	List<SemesterRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdInAndCollegesIdInAndDegreeIdInAndAcademicYearIdInAndSemesterIdInAndDepartmentIdInAndProgrammeYearIdInOrderByStudentadmissionIdAsc(
+			boolean b, boolean c, List<Long> program, List<Long> college, List<Long> degree, List<Long> academic, List<Long> smester,
+			List<Long> department , List<Long> programyear);
+
+	List<SemesterRegistration> findByExIsDeleteAndAcademicYearIdAndProgrammeYearIdAndProgrammesIdAndSemesterIdAndStudentadmissionId(
+			boolean b, Long academicYear, Long programmeYear, Long programmes, Long semester, Long long1);
+
+	
+	@Query(value ="SELECT s.ex_roll_no, s.ex_name, r.ex_is_library_approve,r.ex_is_hostel_approve FROM ex_semester_registration r inner join ex_student_admission s on r.student_admission_id=s.id inner join ex_student_personal sp on sp.student_admission_id=s.id where r.academicyear_id = ?1 and r.programmes_id = ?2 and r.programmeyear_id = ?3 and r.semester_id =?4 and s.colleges_id =?5 and s.degree_id =?6", nativeQuery = true)
+
+	ArrayList<Object[]> getAllStudentList(Long academicYear, Long programmes, Long programmeYear, Long semester,
+			Long colleges, Long degree);
+
+	List<SemesterRegistration> findByAcademicYearIdAndSemesterIdAndProgrammeYearIdAndStudentadmissionExRollNoAndProgrammesIdAndExIsActiveAndExIsDelete(
+			Long academicYear, Long semester, Long programmeYear, String student, Long programmes, boolean b,
+			boolean c);
+
+	List<SemesterRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndDepartmentIdAndStudentadmissionIdAndExIsRegistration(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long department, Long id, boolean d);
+
+
+	// Update for approval API 
+	
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_semester_registration set ex_is_library_approve = 1  , ex_is_accounts_approve = 1 , ex_is_computerlab_approve = 1 , ex_is_dean_approve = 1 , ex_is_examination_approve = 1 , ex_is_it_department_approve = 1 , ex_is_mentor_approve = 1 where id  IN ?1", nativeQuery = true)
+		int updateAllApproval(List<Long> list);	
+		
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_semester_registration set  ex_is_accounts_approve = 1  where id IN ?1", nativeQuery = true)
+		int accountApprove(List<Long> list);
+		
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_semester_registration set  ex_is_computerlab_approve = 1  where id IN ?1", nativeQuery = true)
+		int ex_is_computerlab_approve(List<Long> list);
+		
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_semester_registration set  ex_is_dean_approve = 1  where id IN ?1", nativeQuery = true)
+		int ex_is_dean_approve(List<Long> list);
+		
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_semester_registration set  ex_is_examination_approve = 1  where id IN ?1", nativeQuery = true)
+		int ex_is_examination_approve(List<Long> list);
+		
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_semester_registration set  ex_is_it_department_approve = 1  where id IN ?1", nativeQuery = true)
+		int ex_is_it_department_approve(List<Long> list);
+		
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_semester_registration set  ex_is_mentor_approve = 1  where id IN ?1", nativeQuery = true)
+		int ex_is_mentor_approve(List<Long> list);
+		
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_semester_registration set  ex_is_library_approve = 1  where id IN ?1", nativeQuery = true)
+		int ex_is_library_approve(List<Long> list);
+		
+		List<SemesterRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndSemesterIdAndDepartmentIdAndProgrammeYearIdAndExIsLibraryApproveAndExIsAccountsApproveAndExIsComputerlabApproveAndExIsDeanApproveAndExIsExaminationApproveAndExIsItDepartmentApproveAndExIsMentorApprove(
+				boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long semester,Long department , Long progrmyear , boolean library , boolean account , boolean computer , boolean dean , boolean exam , boolean iddept , boolean mentor);
+
+		
+		List<SemesterRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndSemesterIdAndDepartmentIdAndProgrammeYearIdOrderByStudentadmissionId(
+				boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long semester,Long department , Long progrmyear);
+	
+		
+		
+	/*
+	 * List<SemesterRegistration>
+	 * findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndSemesterIdAndDepartmentIdAndProgrammeYearIdAndExIsLibraryApproveAndExIsAccountsApproveAndExIsComputerlabApproveAndExIsDeanApproveAndExIsExaminationApproveAndExIsItDepartmentApproveAndExIsMentorApprove(
+	 * boolean b, boolean c, Long programmes, Long colleges, Long degree, Long
+	 * academicYear, Long semester, Long department, Long programmeYear, boolean d,
+	 * boolean e, boolean f, boolean g, boolean h, boolean i, boolean j);
+	 */
+
+		List<SemesterRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndSemesterIdAndDepartmentIdAndProgrammeYearIdAndExIsLibraryApproveAndExIsAccountsApproveAndExIsComputerlabApproveAndExIsDeanApproveAndExIsExaminationApproveAndExIsItDepartmentApproveAndExIsMentorApproveAndExIsAttendenceAndExIsEligibleAndStudentadmissionExRollNo(
+				boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long semester,
+				Long department, Long programmeYear, boolean d, boolean e, boolean f, boolean g, boolean h, boolean i,
+				boolean j, boolean k, boolean l, Long student);
+
+		
+		@Query(value ="SELECT  s.ex_roll_no as studentid ,s.ex_name,"
+				+ " s.ex_enrollement_no,sp.ex_contact_details,sp.ex_email_id,case when r.ex_is_accounts_approve=1 AND  r.ex_is_approved=1 AND  r.ex_is_computerlab_approve=1 AND r.ex_is_dean_approve=1 AND r.ex_is_examination_approve=1 AND r.ex_is_it_department_approve=1 AND r.ex_is_mentor_approve=1 AND r.ex_is_library_approve=1 then 'Semester Eligible' ELSE 'Not Eligible' END,"
+				+" case when r.ex_is_accounts_approve=1 then 'YES' ELSE 'NO' END , case when r.ex_is_computerlab_approve=1 then 'YES' ELSE 'NO' END ,case when  r.ex_is_dean_approve=1 then 'YES' ELSE 'NO' END , case when  r.ex_is_examination_approve=1 then 'YES' ELSE 'NO' END , case when  r.ex_is_it_department_approve=1 then 'YES' ELSE 'NO' END ,case when  r.ex_is_mentor_approve=1 then 'YES' ELSE 'NO' END ,case when r.ex_is_library_approve=1 then 'YES' ELSE 'NO' END, case when r.ex_is_hostel_approve=1 then 'YES' ELSE 'NO' END "
+				+" FROM  ex_semester_registration r ,ex_student_admission s ,ex_student_personal sp   where r.student_admission_id = s.id   "
+				+ " AND s.id = r.student_admission_id AND r.student_admission_id = sp.student_admission_id AND sp.student_admission_id = r.student_admission_id  	AND r.degree_id = ?1 AND  r.academicyear_id =?2 AND r.programmes_id = ?3  AND r.programmeyear_id = ?4 AND  r.semester_id = ?5 AND r.colleges_id = ?6 and r.department_id=?7  ORDER BY  s.ex_roll_no ", nativeQuery = true)
+		List<Object[]> getDetails(Long degree, Long academicYear, Long programmes, Long programmeYear, Long semester,
+				Long colleges, Long department);
+
+		List<SemesterRegistration> findByStudentadmissionExRollNoAndProgrammesId(String studentid, Long programmesid);
+		
+		List<SemesterRegistration> findByAcademicYearIdAndSemesterIdAndProgrammeYearIdAndProgrammesIdAndExIsActiveAndExIsDeleteAndDepartmentIdAndDegreeId(
+				Long academicYear, Long semester, Long programmeYear, Long programmes, boolean b,boolean c , Long dept , Long degree);
+
+
+		List<SemesterRegistration> findByAcademicYearIdAndSemesterIdAndProgrammeYearIdAndProgrammesIdAndExIsActiveAndExIsDeleteAndDegreeId(
+				Long academicYear, Long semester, Long programmeYear, Long programmes, boolean b,boolean c , Long degree);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_semester_registration set ex_semester_status = 1 where semester_id = ?1 AND student_admission_id =?2 AND registrationtype_id = 1", nativeQuery = true)
+	int updateStudentStatus(Long semester_id,Long studentid);
+
+	
+	@Query(value = "SELECT r.id as id , n.remark as remark , n.approve_type as approvetype, n.amount , n.ispaid as isPaid , n.is_approve as isapprove FROM ex_semester_registration r, ex_nodues_penalty n where r.academicyear_id=?1 and r.semester_id=?3 and r.programmeyear_id=?2 and r.student_admission_id = ?4 and r.id = n.registration_id", nativeQuery = true)
+	List<NoDueDTO[]> getNODDetails(Long academicYear,  Long programmeYear,
+			Long semester, Long student);
+
+	@Query(value = "SELECT r.id as id , n.remark as remark , n.approve_type as approvetype, n.amount , n.ispaid as isPaid FROM ex_semester_registration r, ex_nodues_penalty n where   r.semester_id=?1 and r.student_admission_id = ?2 and r.id = n.registration_id", nativeQuery = true)
+	ArrayList<Object[]> NoDuesDetails(Long semester, Long student);
+
+	
+	List<SemesterRegistration> findByStudentadmissionIdAndExSemesterStatus(Long studentid, boolean status);
+
+	@Query(value = "SELECT * FROM ex_semester_registration a,ex_student_admission b WHERE a.student_admission_id=b.id AND\r\n" + 
+			" a.programmes_id IN ?1 AND a.colleges_id IN ?2 AND a.degree_id IN ?3 AND a.academicyear_id IN ?4 AND \r\n" + 
+			" a.semester_id IN ?5 AND a.department_id IN ?6 AND a.programmeyear_id IN ?7\r\n" + 
+			"AND b.batch_id=?8  ORDER BY a.student_admission_id,b.ex_roll_no", nativeQuery = true)
+	List<SemesterRegistration> semRegistration(List<Long> programmes, List<Long> colleges, List<Long> degree,
+			List<Long> academicYear, List<Long> semester, List<Long> department, List<Long> programmeYear, Long batch);
+
+	
+	
+	
+	@Query(value = "SELECT a.ex_identifier AS college , b.ex_identifier AS programe , c.ex_identifier AS deapartment, q.ex_identifier AS stream ,d.ex_identifier as Ay , e.ex_name AS sem,n.ex_roll_no as rollnumber,v.ex_name as sname, r.id as id , n.remark as remark , n.approve_type as approvetype, n.amount , n.ispaid as isPaid FROM ex_semester_registration r, ex_nodues_penalty n ,ex_colleges a ,ex_programmes b , ex_department c , ex_academic_year d, ex_semester e,ex_student_admission v , ex_stream q  where  r.student_admission_id = v.id and r.colleges_id=a.id AND r.programmes_id=b.id AND r.department_id=c.id AND r.academicyear_id=d.id AND r.semester_id =e.id AND r.stream_id=q.id AND r.semester_id IN ?1 and r.academicyear_id IN ?2 and r.programmes_id IN ?3 and r.id = n.registration_id", nativeQuery = true)
+	ArrayList<Object[]> NoDuesDetailss(List<Long> semester, List<Long> academicYear, List<Long> programmes);
+
+
+	List<SemesterRegistration> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndProgrammeYearIdAndSemesterId(boolean b,
+			boolean c, Long academicYear, Long programmeYear, Long semester);
+
+
+
+	List<SemesterRegistration> findByExIsDeleteAndExIsActiveAndProgrammesIdInAndCollegesIdInAndDegreeIdInAndAcademicYearIdInAndSemesterIdInAndDepartmentIdInAndProgrammeYearIdInOrderByDepartmentId(
+			boolean b, boolean c, List<Long> programmes, List<Long> colleges, List<Long> degree,
+			List<Long> academicYear, List<Long> semester, List<Long> department, List<Long> programmeYear);
+
+
+
+	
+
+}

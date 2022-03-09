@@ -1,0 +1,52 @@
+package com.niftem.app.repository;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.EvaluationDetails;
+
+public interface EvaluationDetailsRepository extends CrudRepository<EvaluationDetails, Long> {
+
+	List<EvaluationDetails> findByAcademicYearIdAndExamAnnouncementIdAndExpertId(Long academicYear,
+			Long examAnnouncement, Long ExpertId);
+
+	
+	List<EvaluationDetails> findByExamAnnouncementIdAndAcademicYearIdAndCoursesIdAndDegreeIdAndProgrammesIdAndRegistrationTypeIdAndExpertId(
+			Long examAnnouncement, Long academicYear, Long course, Long colleges, Long programmes,
+			Long registrationType, Long ExpertId);
+
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_evaluation_details set ex_is_active =?1 , ex_update_date=?2 ,re_allocation_expert_id = ?10,ex_allocated_booklet=?11 where academicyear_id=?3 and programmes_id=?4 and courses_id=?5  and exam_announcement_id =?6 and  registration_type_id = ?7  and degree_id = ?8 and expert_id=?9", nativeQuery = true)
+	int updatebookletlog(boolean b, Date date, Long academicYear, Long programmes, Long course, Long examAnnouncement,
+			Long registrationType, Long degree, Long oldExpertId, Long newExpertId, Long remaining);
+	
+
+
+	
+	@Query(value ="SELECT  sp.ex_name,sp.ex_name as empid ,sp.ex_contact_details ,sp.id  FROM  ex_evaluation_details ba  , ex_export_list sp  where sp.id= ba.expert_id and ba.programmes_id = ?5 AND ba.courses_id =?3 AND ba.degree_id =?4  AND ba.exam_announcement_id =?1 AND ba.academicyear_id =?2 and ba.registration_type_id=?6 and ba.ex_is_reallocated=?7 group by ba.expert_id", nativeQuery = true)
+	ArrayList<Object[]> stafflist(Long examAnnouncement, Long academicYear,Long course, Long degree, Long programmes, Long registrationType, Boolean isreallocate);
+
+
+	List<EvaluationDetails> findByAcademicYearIdAndExamAnnouncementIdAndCoursesIdAndProgrammesId(Long academicYear,
+			Long examAnnouncement, Long course, Long programmes);
+
+
+	
+
+
+	List<EvaluationDetails> findByAcademicYearIdAndExamAnnouncementIdAndCoursesIdAndProgrammesIdAndProgrammeYearIdAndSemesterId(
+			Long academicYear, Long examAnnouncement, Long course, Long programmes, Long programmeYear, Long semster);
+
+
+
+}

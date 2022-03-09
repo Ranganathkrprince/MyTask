@@ -1,0 +1,25 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.ExamRegulations;
+
+public interface ExamRegulationsRepository  extends CrudRepository<ExamRegulations, Long>{
+
+	List<ExamRegulations> findByExIsDelete(boolean b);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_exam_regulation set ex_is_delete = ?1 ,ex_is_active = ?2  where id =?3", nativeQuery = true)
+	int deletePublish(Boolean exIsDelete, Boolean is_active, Long id);
+
+	
+	List<ExamRegulations> findByExIsDeleteAndExIsActiveAndBatchId(boolean delete , boolean active , Long batch);
+	
+	List<ExamRegulations> findByExIsDeleteAndExIsActive(boolean delete , boolean active );
+}

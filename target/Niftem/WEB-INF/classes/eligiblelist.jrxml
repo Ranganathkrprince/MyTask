@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="GradeReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f706c4c3-d6c0-4477-b153-64a1344f3368">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="university" class="java.lang.String"/>
+	<parameter name="college" class="java.lang.String"/>
+	<parameter name="exCourseName" class="java.lang.String"/>
+	<parameter name="excerdithour" class="java.lang.String"/>
+	<parameter name="programe" class="java.lang.String"/>
+	<parameter name="department" class="java.lang.String"/>
+	<parameter name="semester" class="java.lang.String"/>
+	<parameter name="academicyear" class="java.lang.String"/>
+	<parameter name="programeYear" class="java.lang.String"/>
+	<parameter name="logo" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="exRollNo" class="java.lang.String"/>
+	<field name="exName" class="java.lang.String"/>
+	<field name="studentcount" class="java.lang.Integer"/>
+	<group name="DescriptionGroup">
+		<groupHeader>
+			<band height="92">
+				<staticText>
+					<reportElement isPrintRepeatedValues="false" x="0" y="60" width="90" height="32" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="7a12a163-681b-4373-a0aa-3dd3edafd6a9"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[SI.No]]></text>
+				</staticText>
+				<staticText>
+					<reportElement isPrintRepeatedValues="false" x="90" y="60" width="140" height="32" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="38e383ec-868e-44ce-a93c-2515c92663c2"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Roll No]]></text>
+				</staticText>
+				<staticText>
+					<reportElement isPrintRepeatedValues="false" x="230" y="60" width="315" height="32" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="47f929fb-3923-4813-9552-7c1a3c2e5c48"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Student Name]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="120" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="554" height="30" uuid="610101e5-4b59-41b1-b1f7-fe117563dbab">
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{university}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement positionType="Float" x="-10" y="30" width="100" height="70" uuid="5ef03c3b-1b79-4f3d-83a1-d164611ed8f7"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="180" y="80" width="203" height="20" uuid="c3cb7c14-0453-4499-affe-967306db0f54">
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+				</reportElement>
+				<textElement verticalAlignment="Top">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{department}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="143" y="60" width="270" height="20" uuid="610101e5-4b59-41b1-b1f7-fe117563dbab">
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{programe}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="100" width="483" height="20" forecolor="#6E0A09" uuid="12d3996a-61b3-4f27-9788-71b5d6acee16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{programeYear}+" "+"YEAR"+" "+$P{semester}+" "+"SEMESTER" +" "+$P{academicyear}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="70" y="30" width="419" height="30" forecolor="#6E0A09" uuid="48459807-feda-4424-ad90-625a4286d2c2"/>
+				<textElement textAlignment="Center">
+					<font size="20" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Eligible List Report"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="92" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}>1]]></printWhenExpression>
+			<staticText>
+				<reportElement isPrintRepeatedValues="false" x="0" y="20" width="30" height="32" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="6de426d3-eeca-4933-b710-0cac2b11dbb2"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[SI.No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement isPrintRepeatedValues="false" x="30" y="20" width="70" height="32" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="6425afb8-e817-4c3b-b7e7-42b3dd69ea7b"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Roll No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement isPrintRepeatedValues="false" x="100" y="20" width="180" height="32" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="ea19baac-f8cc-4fc8-ad65-f3603e7eb481"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Student Name]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="38" splitType="Stretch">
+			<textField>
+				<reportElement stretchType="ContainerHeight" x="0" y="0" width="90" height="20" isRemoveLineWhenBlank="true" uuid="d4497475-1f80-4597-a409-e34f6330719d">
+					<printWhenExpression><![CDATA[$F{exRollNo}!=null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="90" y="0" width="140" height="20" isRemoveLineWhenBlank="true" uuid="1fa8465d-dc83-4c7e-be2e-cd300c67b813"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exRollNo}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="230" y="0" width="315" height="20" isRemoveLineWhenBlank="true" uuid="c2844415-9544-4858-9c21-ad76dc200f2c">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="360" y="20" width="195" height="18" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="f9d80c61-617f-4fca-8eb9-d2b6dd32cbe7">
+					<printWhenExpression><![CDATA[$F{studentcount}.intValue()!=0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{studentcount}.intValue()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="0" y="20" width="360" height="18" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="7f2c2107-1320-40ed-ba66-4539510ccda3">
+					<printWhenExpression><![CDATA[$F{studentcount}.intValue()!=0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Student"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="470" y="0" width="20" height="19" uuid="f1486438-a405-42c1-82bc-7b95cf0114a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="440" y="0" width="30" height="19" uuid="abc65a8b-c8a8-4936-b65f-6d7743b179fa"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Page]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="490" y="0" width="10" height="19" uuid="f1d1b34d-cb5e-4f53-bd90-94e01512aefb"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[of]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="500" y="0" width="24" height="19" uuid="887421fc-d2cb-4366-839e-da2771de6802"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="103"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,160 @@
+package com.niftem.app.model;
+
+public class EvaluatorSelectionRequest {
+
+	 private String exFirstName;
+	 private String exMobile;
+	 private String exEmployeeId;
+	 private String exEvaluationTime;
+	 private String exEvaluationFrom ;
+	 private String exEvaluationTo;
+	 private String exEvaluationVenue;
+	 
+	 private Long academicYear; 
+	 private Long examAnnouncement; 
+	 private Long colleges; 
+	 private Long evaluationType;
+	 private Long courses;
+	 private Long staffId;
+	 private Long programmes;
+	 private Long department;
+
+	 private Long degree;
+	 private Long user;
+	 private Long evaluatorId;
+	 private Long registrationType;	 
+	 private Long id;
+	public String getExFirstName() {
+		return exFirstName;
+	}
+	public String getExMobile() {
+		return exMobile;
+	}
+	public String getExEmployeeId() {
+		return exEmployeeId;
+	}
+	public String getExEvaluationTime() {
+		return exEvaluationTime;
+	}
+	public String getExEvaluationFrom() {
+		return exEvaluationFrom;
+	}
+	public String getExEvaluationTo() {
+		return exEvaluationTo;
+	}
+	public String getExEvaluationVenue() {
+		return exEvaluationVenue;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public Long getEvaluationType() {
+		return evaluationType;
+	}
+	public Long getCourses() {
+		return courses;
+	}
+	public Long getStaffId() {
+		return staffId;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public Long getDepartment() {
+		return department;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public Long getEvaluatorId() {
+		return evaluatorId;
+	}
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setExFirstName(String exFirstName) {
+		this.exFirstName = exFirstName;
+	}
+	public void setExMobile(String exMobile) {
+		this.exMobile = exMobile;
+	}
+	public void setExEmployeeId(String exEmployeeId) {
+		this.exEmployeeId = exEmployeeId;
+	}
+	public void setExEvaluationTime(String exEvaluationTime) {
+		this.exEvaluationTime = exEvaluationTime;
+	}
+	public void setExEvaluationFrom(String exEvaluationFrom) {
+		this.exEvaluationFrom = exEvaluationFrom;
+	}
+	public void setExEvaluationTo(String exEvaluationTo) {
+		this.exEvaluationTo = exEvaluationTo;
+	}
+	public void setExEvaluationVenue(String exEvaluationVenue) {
+		this.exEvaluationVenue = exEvaluationVenue;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public void setEvaluationType(Long evaluationType) {
+		this.evaluationType = evaluationType;
+	}
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+	public void setStaffId(Long staffId) {
+		this.staffId = staffId;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public void setEvaluatorId(Long evaluatorId) {
+		this.evaluatorId = evaluatorId;
+	}
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	@Override
+	public String toString() {
+		return "EvaluatorSelectionRequest [exFirstName=" + exFirstName + ", exMobile=" + exMobile + ", exEmployeeId="
+				+ exEmployeeId + ", exEvaluationTime=" + exEvaluationTime + ", exEvaluationFrom=" + exEvaluationFrom
+				+ ", exEvaluationTo=" + exEvaluationTo + ", exEvaluationVenue=" + exEvaluationVenue + ", academicYear="
+				+ academicYear + ", examAnnouncement=" + examAnnouncement + ", colleges=" + colleges
+				+ ", evaluationType=" + evaluationType + ", courses=" + courses + ", staffId=" + staffId
+				+ ", programmes=" + programmes + ", department=" + department + ", degree=" + degree + ", user=" + user
+				+ ", evaluatorId=" + evaluatorId + ", registrationType=" + registrationType + ", id=" + id + "]";
+	}
+	
+	 
+	 
+}

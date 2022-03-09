@@ -1,0 +1,78 @@
+package com.niftem.app.repository;
+
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.SeatArrangement;
+import com.niftem.app.entity.StudentadmissionLog;
+
+public interface SeatArrangementRepository extends CrudRepository<SeatArrangement, Long> {
+
+	List<SeatArrangement> findByDegreeIdAndCoursesIdInAndAcademicYearIdAndProgrammesIdAndSemesterIdInAndCollegesIdAndRoomIdAndExIsActiveAndExIsDelete(
+			Long degree, List<Long> course, Long academicYear, Long programmes, List<Long> semesters, Long colleges,
+			Long id, boolean b, boolean c);
+
+
+
+	@Query(value ="SELECT * FROM ex_seat_arrangement a ,ex_student_admission b WHERE a.student_id=b.id AND a.academicyear_id =?1 And a.programmes_id=?2 And a.semester_id IN ?3 And a.courses_id IN ?4 And a.room_id =?5 And a.`row`=?6" , nativeQuery = true)
+	List<SeatArrangement> getresults(Long academicYear, Long programmes, List<Long> semesters, List<Long> course,
+			Long roomid, long l);
+
+
+
+	List<SeatArrangement> findByAcademicYearIdAndRoomIdAndExIsActiveAndExIsDelete(Long academicYear, Long id, boolean b,
+			boolean c);
+
+	@Modifying
+	@Transactional
+	@Query(value = "delete from  ex_seat_arrangement where invigilator = ?1 ", nativeQuery = true)
+	int deleteSeatArrangment(Long invigilator);
+
+	@Query(value ="SELECT * FROM ex_seat_arrangement a ,ex_student_admission b WHERE a.student_id=b.id AND a.academicyear_id =?1  And a.room_id =?2 And a.`row`=?3" , nativeQuery = true)
+	List<SeatArrangement> getresults(Long academicYear, Long roomId, long l);
+
+
+
+	@Query(value = "select * from  ex_seat_arrangement where academicyear_id = ?1  and ex_start_date =?2 and ex_exam_type = ?3 and ex_semester_type = ?4 and room_id =?5", nativeQuery = true)
+	List<SeatArrangement> validation(Long academicyear , String ex_start_date , Long ex_exam_type , String ex_semester_type , Long room_id);
+
+	@Query(value ="SELECT * FROM ex_seat_arrangement a ,ex_student_admission b WHERE a.student_id=b.id AND a.academicyear_id =?1  And a.room_id =?2 And a.ex_is_active=?3 And a.ex_is_delete=?4 GROUP BY a.programmes_id, a.semester_id" , nativeQuery = true)
+	List<SeatArrangement> findrecords(Long academicYear, Long id, boolean b, boolean c);
+
+	@Query(value ="SELECT * FROM ex_seat_arrangement a ,ex_student_admission b WHERE a.student_id=b.id AND a.academicyear_id =?1  And a.room_id =?2 And a.`row`=?3 And a.ex_start_date =?4 And a.ex_exam_type =?5 And a.ex_semester_type=?6" , nativeQuery = true)
+	List<SeatArrangement> getresults(Long academicYear, Long roomId, long l, String sDate, Long exExamType,
+			String semeserType);
+
+
+	
+	List<SeatArrangement> findByAcademicYearIdAndRoomIdAndExStartDateAndExExamTypeAndExSemesterTypeAndExIsActiveAndExIsDelete(
+			Long academicYear, Long id, String dates, Long exExamType, String semeserType, boolean b, boolean c);
+
+
+	@Query(value ="SELECT * FROM ex_seat_arrangement a ,ex_student_admission b WHERE a.student_id=b.id AND a.academicyear_id =?1  And a.room_id =?2 And a.ex_start_date=?3  And a.ex_exam_type =?4 And a.ex_semester_type=?5 And a.ex_is_active=?6 AND a.ex_is_delete=?7" , nativeQuery = true)
+	List<SeatArrangement> Seatingplan(Long academicYear, Long id, String sDate, Long exExamType, String semeserType,
+			boolean b, boolean c);
+
+
+	@Query(value ="SELECT COUNT(a.ex_roll_no) FROM ex_seat_arrangement a ,ex_student_admission b WHERE a.student_id=b.id AND a.academicyear_id =?1  And a.room_id =?2 And a.ex_start_date=?3  And a.ex_exam_type =?4 And a.ex_semester_type=?5 And a.ex_is_active=?6 AND a.ex_is_delete=?7" , nativeQuery = true)
+	List<Object[]> Seatingplans(Long academicYear, Long id, String sDate, Long exExamType, String semeserType,
+			boolean b, boolean c);
+
+
+
+	
+
+	
+}

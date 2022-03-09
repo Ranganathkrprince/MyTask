@@ -1,0 +1,16 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.StudentDocument;
+
+public interface StudentDocumentRepository extends CrudRepository<StudentDocument, Long>{
+
+	List<StudentDocument> findByStudentadmissionIdAndDocumenttypeId(Long student ,  Long document);
+	
+	List<StudentDocument> findByStudentadmissionId(Long student);
+	
+	List<StudentDocument> findByExRollNoAndDocumenttypeId(String student ,  Long document);
+}

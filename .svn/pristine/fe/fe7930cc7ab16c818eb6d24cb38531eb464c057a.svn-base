@@ -1,0 +1,34 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.NotificationCategory;
+
+public interface NotificationCategoryRepository extends CrudRepository<NotificationCategory, Long> {
+
+	List<NotificationCategory> findByCategoryAndExIsActiveAndExIsDelete(String category, boolean b, boolean c);
+
+	List<NotificationCategory> findByExIsDelete(boolean b);
+
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_notification_category set ex_is_delete = ?1 ,ex_is_active = ?2 where id =?3", nativeQuery = true)
+
+	int deleteCategory(Boolean exIsDelete, Boolean is_active, Long id);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_notification_category  set category = ?1 , ex_update_date = ?2  where id =?3", nativeQuery = true)
+
+	int updateCategory(String category, Date date, Long id);
+
+}

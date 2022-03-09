@@ -1,0 +1,155 @@
+package com.niftem.app.repository;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.ExamTimeTable;
+import com.niftem.app.entity.ProgrammeYear;
+import com.niftem.app.entity.RegistrationType;
+import com.niftem.app.entity.Semster;
+import com.niftem.app.entity.User;
+
+public interface ExamTimeTableRepository extends CrudRepository<ExamTimeTable, Long>{
+	
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_exam_timetable set ex_start_date = ?1 ,ex_is_update = ?2 ,ex_update_date=?4 where id =?3", nativeQuery = true)
+
+	int updateExamtimeTable(Date parse, Boolean is_update, Long exTimeTableId, Date modifieddate);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationId(
+			boolean b, Long id, Long id2, Long examAnnouncement, Long id3);
+
+	
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndExIsUpdate(
+			boolean b, Long academicYear, Long programmes, Long examannouncement, Long registrationType, boolean c);
+	
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndCoursesId(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long registrationType, Long courses);
+
+//	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndProgrammeYearId(
+//			boolean b, Long id, Long id2, Long examAnnouncement, Long id3, ProgrammeYear programmeYear);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndProgrammeYearId(
+			boolean b, Long id, Long id2, Long examAnnouncement, Long id3, Long id4);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_exam_timetable set ex_start_date = ?1 ,ex_is_update = ?2 ,ex_update_date=?4 where id =?3", nativeQuery = true)
+	int updateExamTimeTable(Date parse, Boolean is_update, Long exTimeTableId, Date modifieddate);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_exam_timetable set ex_start_time = ?1 , ex_end_time =?2  where id =?3", nativeQuery = true)
+	int updateExamTimeSlot(Date parse, Date ex_end_time,Long exTimeTableId);
+
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndExIsUpdateAndDegreeId(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long registrationType, boolean c,
+			Long degree);
+
+
+
+	List<ExamTimeTable> findByDegreeIdAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndExIsActiveAndExIsDelete(
+			Long degree, Long academicYear, Long programmes, Long examAnnouncement, Long registrationType, boolean b,
+			boolean c);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndDegreeId(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long registrationType, Long degree);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndProgrammeYearIdAndExExamTypeAndDepartmentId (
+			boolean b, Long id, Long id2, Long examAnnouncement, Long id3, Long id4, Long exExamType , Long dept);
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndExExamTypeAndDegreeIdAndDepartmentId(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long registrationType,
+			Long exExamType, Long degree , Long dept);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndExIsUpdateAndDegreeIdAndExExamTypeAndDepartmentId(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long registrationType, boolean c,
+			Long degree, Long exExamType , Long dept);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndDegreeIdAndExExamType(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long registrationType, Long degree,
+			Long exExamType);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndCoursesIdAndExExamType(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long registrationType, Long courses,
+			long l);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndCoursesIdAndExExamType(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long courses, long l);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndProgrammeYearIdAndExExamType(
+			boolean b, Long id, Long id2, Long examAnnouncement, RegistrationType regType, Long id3, Long exExamType);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndProgrammeYearIdAndExExamTypeAndDepartmentId (
+			boolean b, Long id, Long id2, Long examAnnouncement, Long id3, Long exExamType , Long dept);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndExExamTypeAndDegreeIdAndDepartmentId(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement,
+			Long exExamType, Long degree , Long dept);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndExIsUpdateAndDegreeIdAndExExamTypeAndDepartmentId(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, boolean c, Long degree,
+			Long exExamType , Long dept);
+
+	Optional<ExamTimeTable> findByExIsDeleteAndExIsActiveAndCoursesIdAndExamAnnouncementIdAndAcademicYearIdAndRegistrationId(
+			boolean b, boolean c, Long courses, Long examAnnouncement, Long academicYear, Long id);
+
+	
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndExExamTypeAndDegreeIdAndCoursesId(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long l, Long degree, Long id);
+
+	
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndDegreeIdAndExExamTypeAndExamAnnouncementSemesterIdAndDepartmentId(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long registrationType, Long degree,
+			Long exExamType, Long id , Long dept);
+
+	
+	
+	@Query(value = "select * from ex_exam_timetable where ex_is_delete = ?1 and academicyear_id = ?2 and exam_announcement_id=?4 and programmes_id =?3 and  registration_type_id = ?5 and degree_id = ?6 and ex_exam_type = ?7 and department_id = ?8 ", nativeQuery = true)
+	List<ExamTimeTable> findrecords(boolean b, Long academicYear, Long programmes, Long examAnnouncement,Long registrationType, Long degree, Long exExamType,  Long deparment);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndExExamTypeAndDegreeIdAndDepartmentIdOrderByExStartDateAscExStartTimeAsc(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long exExamType, Long degree,
+			Long deparment);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndDegreeIdAndExExamTypeAndExamAnnouncementSemesterIdAndDepartmentIdOrderByExStartDate(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long registrationType, Long degree,
+			Long exExamType, Long id, Long deparment);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndDegreeIdAndExExamTypeAndDepartmentId(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long degree,
+			Long exExamType, Long department);
+
+	List<ExamTimeTable> findByExIsDeleteAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndRegistrationIdAndDegreeIdAndExExamTypeAndExamAnnouncementSemesterIdAndDepartmentIdOrderByExStartDateAscExStartTimeAsc(
+			boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long registrationType, Long degree,
+			Long exExamType, Long id, Long deparment);
+
+	
+		@Query(value = "select * from ex_exam_timetable e , ex_courses c where c.id = e.courses_id and  e.ex_is_delete = 0 and e.academicyear_id = ?1 and e.programmes_id =?2 and  e.registration_type_id = ?3 and e.degree_id = ?4 and e.ex_exam_type = ?5 and e.department_id = ?6 and e.ex_start_date = ?7 and e.programmeyear_id =?8 and e.semester_id = ?9 and c.batch_id = ?10", nativeQuery = true)
+		List<ExamTimeTable> getCoursesId( Long academicYear, Long programmes,Long registrationType, Long degree, Long exExamType,  Long deparment , String  date , Long programmeyear_id ,Long  semester_id , Long batch_id);
+
+		
+		@Query(value = "select * from ex_exam_timetable e  where  e.ex_is_delete = 0 and e.academicyear_id = ?1  and e.ex_exam_type = ?2 AND e.ex_is_update = 1 GROUP BY e.ex_start_date order by e.ex_start_date", nativeQuery = true)
+		List<ExamTimeTable> getDate( Long academicYear, Long exExamType );
+		
+		
+		@Query(value = "select COUNT(*) OVER () AS TotalRecords from ex_exam_timetable e  where  e.ex_is_delete = 0 and e.academicyear_id = ?1  and e.ex_exam_type = ?2 and e.semester_id In ?3 group by e.ex_start_date", nativeQuery = true)
+		List<Integer> getTotalExam( Long academicYear,Long exExamType  , List<Long>  semester);
+
+
+}

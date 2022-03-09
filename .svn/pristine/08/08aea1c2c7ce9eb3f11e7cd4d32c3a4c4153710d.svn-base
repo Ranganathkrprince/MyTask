@@ -1,0 +1,17 @@
+package com.niftem.app.service;
+
+import java.util.Map;
+
+import com.niftem.app.model.Count;
+
+
+public interface DashBoardService {
+	Map<String, String> saveDashboardCount(Count request);
+	Map<String, Object> displayDashboardCount(Count request);
+	Map<String, String> updateDashboardCount(Count request);
+//	Map<String, Object> getDashboard(Count request);
+	Map<String, Object> getCountOnAcademicYear(Count request);
+	Map<String, Object> getCountOnProgram(Count request);
+	Map<String, Object> getCountOnGender(Count request);
+
+}

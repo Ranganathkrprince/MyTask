@@ -1,0 +1,246 @@
+package com.niftem.app.controller;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.niftem.app.model.InitiatePayment;
+import com.niftem.app.model.LivePaymentResponse;
+import com.niftem.app.model.PaymentResponse;
+import com.niftem.app.service.PaymentService;
+import com.niftem.app.util.CommonHelper;
+
+@RequestMapping("/api/payment/")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@Controller
+public class ChannelController {
+	private static Logger logger = LoggerFactory.getLogger("payment-log");
+	
+	/*
+	 * @Autowired private PaymentImpl paymentImpl;
+	 */
+	
+	@Autowired
+	private CommonHelper commonHelper;
+	
+	@Autowired
+	private PaymentService paymentService;
+	
+	@PostMapping(value = "/initiatePayment")
+	public String initiatePayment(InitiatePayment request , ModelMap model) {
+		Map<String, Object> returnvalue = null;
+		try {	
+			logger.info("initiatePayment Request : "+request.toString());	
+			if(commonHelper.getSettingValue("LIVE_PAYMENT").equals("0")) {				
+				returnvalue  = paymentService.initiateLivePayment(request , model);	
+				if(returnvalue.size() >0 && returnvalue.get("status").equals("1")) {	
+					 model.addAttribute("amt", request.getExTotalAmount());	
+					 model.addAttribute("mer_txn", returnvalue.get("orderid"));
+					 model.addAttribute("mmp_txn", returnvalue.get("txnReferenceNo"));
+					 model.addAttribute("bank_txn", returnvalue.get("bankReferenceNo"));
+					 model.addAttribute("action", commonHelper.getSettingValue("RESPONSE_URL"));
+					 return "doPayment";	
+				}else {
+					
+					String redirectUrl = commonHelper.getSettingValue("WEB_REDIRECT_URL");
+					redirectUrl = redirectUrl+"/NA/NA/NA/Failed/NA/"+returnvalue.get("message");
+					 return "redirect:" + redirectUrl;		
+				}					
+			}
+			
+				//Live payment sart rom here 
+				returnvalue  = paymentService.initiateLivePayment(request , model);	
+				if(returnvalue.size() >0 && returnvalue.get("status").equals("1")) {	
+					model.addAttribute("surl", returnvalue.get("surl"));	
+					model.addAttribute("furl", returnvalue.get("furl"));	
+					model.addAttribute("curl", returnvalue.get("curl"));	
+					model.addAttribute("firstname", returnvalue.get("firstname"));	
+					model.addAttribute("lastname", returnvalue.get("lastname"));	
+					model.addAttribute("phone", returnvalue.get("phone"));	
+					model.addAttribute("key", returnvalue.get("key"));	
+					model.addAttribute("hash", returnvalue.get("hash"));	
+					model.addAttribute("txnid", returnvalue.get("txnid"));	
+					model.addAttribute("productinfo", returnvalue.get("productinfo"));	
+					model.addAttribute("amount", returnvalue.get("amount"));	
+					model.addAttribute("email", returnvalue.get("email"));
+					model.addAttribute("action", returnvalue.get("action"));
+					
+					model.addAttribute("udf1", returnvalue.get("udf1"));
+					model.addAttribute("udf2", returnvalue.get("udf2"));
+					model.addAttribute("udf3", returnvalue.get("udf3"));
+					model.addAttribute("udf4", returnvalue.get("udf4"));
+					model.addAttribute("udf5", returnvalue.get("udf5"));
+					
+					 return "doLivePayment";
+				}else {
+					
+					String redirectUrl = commonHelper.getSettingValue("WEB_REDIRECT_URL");
+					redirectUrl = redirectUrl+"/NA/NA/NA/Failed/NA/"+returnvalue.get("message");
+					 return "redirect:" + redirectUrl;		
+				}		
+				
+				
+		}catch(Exception e) {
+			logger.error("Exception occured"+ e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+		}
+		 return "error";	
+	}
+	
+	@PostMapping(value = "/paymentResponse1")
+	public String paymentResponse(PaymentResponse request , ModelMap model) {
+		try {	
+			logger.info("Payment Response : "+request.toString());		
+			Map<String, Object> returnvalue = paymentService.updatePaymentStatus(request);
+			if(returnvalue.size() >0 && returnvalue.get("status").equals("1")) {				
+					model.addAttribute("amount", request.getAmt().trim());	
+					 model.addAttribute("orderid", request.getMer_txn().trim());
+					 model.addAttribute("txnReferenceNo", request.getMmp_txn().trim());
+					 model.addAttribute("bankReferenceNo", request.getBank_txn().trim());
+					 model.addAttribute("error", "NA");
+					 model.addAttribute("status", request.getF_code().trim());				 
+					 return "paymentStatus";	
+				}else {
+					String redirectUrl = commonHelper.getSettingValue("WEB_REDIRECT_URL");
+				   	redirectUrl = redirectUrl+"/"+request.getMmp_txn().trim()+"/"+request.getBank_txn().trim()+"/"+request.getAmt().trim()+"/"+request.getF_code().trim()+"/"+request.getMer_txn().trim()+"/NA";
+				   	return "redirect:" + redirectUrl;	
+				}
+			   	
+		}catch(Exception e) {
+			logger.error("Exception occured"+ e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+		}
+		 return "error";	
+	}
+	
+	@PostMapping(value = "/paymentResponse")
+	public String livepaymentResponse(LivePaymentResponse request , ModelMap model) {
+		try {	
+			logger.info("Payment Response : "+request.toString());		
+			Map<String, Object> returnvalue = paymentService.updateLivePaymentStatus(request);
+			if(returnvalue.size() >0 && returnvalue.get("status").equals("1")) {				
+					model.addAttribute("amount", request.getAmount().trim());	
+					 model.addAttribute("orderid", request.getTxnid().trim());
+					 model.addAttribute("txnReferenceNo", request.getMihpayid().trim());
+					 model.addAttribute("bankReferenceNo", request.getBank_ref_num().trim());
+					 model.addAttribute("error", "NA");
+					 model.addAttribute("status", request.getStatus().trim());				 
+					 return "paymentStatus";	
+				}else {
+					String bankrefnumber = request.getBank_ref_num() == null ||  request.getBank_ref_num().trim().equals("") ?"NA" :request.getBank_ref_num();
+					String amount = request.getAmount() == null ||  request.getAmount().trim().equals("") ?"NA" :request.getAmount();
+					String getMihpayid = request.getMihpayid() == null ||  request.getMihpayid().trim().equals("") ?"NA" :request.getMihpayid();
+					
+					String redirectUrl = commonHelper.getSettingValue("WEB_REDIRECT_URL");
+				   	redirectUrl = redirectUrl+"/"+request.getTxnid().trim()+"/"+bankrefnumber+"/"+amount+"/"+request.getStatus().trim()+"/"+getMihpayid+"/NA"+"/"+request.getEmail()+"/"+request.getUdf4();
+				   
+				   	logger.info("Response Sent "+redirectUrl);
+				   	return "redirect:" + redirectUrl;	
+				}
+			   	
+		}catch(Exception e) {
+			logger.error("Exception occured"+ e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+		}
+		 return "error";
+	}
+	
+	
+	@PostMapping(value = "/initiatePaymentForNoDue")
+	public String initiatePaymentForNoDue(InitiatePayment request , ModelMap model) {
+		Map<String, Object> returnvalue = null;
+		try {	
+			logger.info("initiatePaymentForNoDue Request : "+request.toString());	
+		//Live payment sart rom here 
+				returnvalue  = paymentService.initiatePaymentForNoDue(request , model);	
+				if(returnvalue.size() >0 && returnvalue.get("status").equals("1")) {	
+					model.addAttribute("surl", returnvalue.get("surl"));	
+					model.addAttribute("furl", returnvalue.get("furl"));	
+					model.addAttribute("curl", returnvalue.get("curl"));	
+					model.addAttribute("firstname", returnvalue.get("firstname"));	
+					model.addAttribute("lastname", returnvalue.get("lastname"));	
+					model.addAttribute("phone", returnvalue.get("phone"));	
+					model.addAttribute("key", returnvalue.get("key"));	
+					model.addAttribute("hash", returnvalue.get("hash"));	
+					model.addAttribute("txnid", returnvalue.get("txnid"));	
+					model.addAttribute("productinfo", returnvalue.get("productinfo"));	
+					model.addAttribute("amount", returnvalue.get("amount"));	
+					model.addAttribute("email", returnvalue.get("email"));
+					model.addAttribute("action", returnvalue.get("action"));
+					
+					model.addAttribute("udf1", returnvalue.get("udf1"));
+					model.addAttribute("udf2", returnvalue.get("udf2"));
+					model.addAttribute("udf3", returnvalue.get("udf3"));
+					model.addAttribute("udf4", returnvalue.get("udf4"));
+					model.addAttribute("udf5", returnvalue.get("udf5"));
+					
+					 return "doLivePayment";
+				}else {
+					
+					String redirectUrl = commonHelper.getSettingValue("WEB_REDIRECT_URL");
+					redirectUrl = redirectUrl+"/NA/NA/NA/Failed/NA/"+returnvalue.get("message");
+					 return "redirect:" + redirectUrl;		
+				}		
+				
+				
+		}catch(Exception e) {
+			logger.error("Exception occured"+ e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+		}
+		 return "error";	
+	}	
+	
+
+	@PostMapping(value = "/nodupaymentResponse")
+	public String nodupaymentResponse(LivePaymentResponse request , ModelMap model) {
+		try {	
+			logger.info("Payment Response : "+request.toString());		
+			Map<String, Object> returnvalue = paymentService.nodupaymentResponse(request);
+			if(returnvalue.size() >0 && returnvalue.get("status").equals("1")) {				
+					model.addAttribute("amount", request.getAmount().trim());	
+					 model.addAttribute("orderid", request.getTxnid().trim());
+					 model.addAttribute("txnReferenceNo", request.getMihpayid().trim());
+					 model.addAttribute("bankReferenceNo", request.getBank_ref_num().trim());
+					 model.addAttribute("error", "NA");
+					 model.addAttribute("status", request.getStatus().trim());				 
+					 return "paymentStatus";	
+				}else {
+					String bankrefnumber = request.getBank_ref_num() == null ||  request.getBank_ref_num().trim().equals("") ?"NA" :request.getBank_ref_num();
+					String amount = request.getAmount() == null ||  request.getAmount().trim().equals("") ?"NA" :request.getAmount();
+					String getMihpayid = request.getMihpayid() == null ||  request.getMihpayid().trim().equals("") ?"NA" :request.getMihpayid();
+					
+					String redirectUrl = commonHelper.getSettingValue("WEB_REDIRECT_URL");
+				   	redirectUrl = redirectUrl+"/"+request.getTxnid().trim()+"/"+bankrefnumber+"/"+amount+"/"+request.getStatus().trim()+"/"+getMihpayid+"/NA"+"/"+request.getEmail()+"/"+request.getUdf4();
+				   
+				   	logger.info("Response Sent "+redirectUrl);
+				   	return "redirect:" + redirectUrl;	
+				}
+			   	
+		}catch(Exception e) {
+			logger.error("Exception occured"+ e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+		}
+		 return "error";
+	}	
+	
+	
+}

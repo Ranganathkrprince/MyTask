@@ -1,0 +1,237 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+@Entity
+@Table(name = "ex_overall_grade_report")
+public class OGPA {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private String exRollNo;
+	private Double overallGradePoint;
+	private Double overallGradePointInprecentage;
+	
+	private String passoutyear;
+	
+	private String dateOfDeclaration;
+	
+	private String admittedDate;
+	
+	
+	private String maigrationSrNo;
+	
+	private Long scrutinize;
+
+
+
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "student_id", nullable = false)
+	private Studentadmission studentadmission;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+    private Boolean exIsReGenerated;   // first time value will be 0(false) next time will be 1(true). 
+	
+
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "department_id", nullable = true)
+	private Department department;
+
+	@ManyToOne( optional = true)
+	@JoinColumn(name = "academicYear_id", nullable = true)
+	private AcademicYear academicYear;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public Double getOverallGradePoint() {
+		return overallGradePoint;
+	}
+
+	public Double getOverallGradePointInprecentage() {
+		return overallGradePointInprecentage;
+	}
+
+	public String getPassoutyear() {
+		return passoutyear;
+	}
+
+	public String getDateOfDeclaration() {
+		return dateOfDeclaration;
+	}
+
+	public String getAdmittedDate() {
+		return admittedDate;
+	}
+
+	public String getMaigrationSrNo() {
+		return maigrationSrNo;
+	}
+
+	public Long getScrutinize() {
+		return scrutinize;
+	}
+
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public Boolean getExIsReGenerated() {
+		return exIsReGenerated;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	public void setOverallGradePoint(Double overallGradePoint) {
+		this.overallGradePoint = overallGradePoint;
+	}
+
+	public void setOverallGradePointInprecentage(Double overallGradePointInprecentage) {
+		this.overallGradePointInprecentage = overallGradePointInprecentage;
+	}
+
+	public void setPassoutyear(String passoutyear) {
+		this.passoutyear = passoutyear;
+	}
+
+	public void setDateOfDeclaration(String dateOfDeclaration) {
+		this.dateOfDeclaration = dateOfDeclaration;
+	}
+
+	public void setAdmittedDate(String admittedDate) {
+		this.admittedDate = admittedDate;
+	}
+
+	public void setMaigrationSrNo(String maigrationSrNo) {
+		this.maigrationSrNo = maigrationSrNo;
+	}
+
+	public void setScrutinize(Long scrutinize) {
+		this.scrutinize = scrutinize;
+	}
+
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setExIsReGenerated(Boolean exIsReGenerated) {
+		this.exIsReGenerated = exIsReGenerated;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	@Override
+	public String toString() {
+		return "OGPA [id=" + id + ", exRollNo=" + exRollNo + ", overallGradePoint=" + overallGradePoint
+				+ ", overallGradePointInprecentage=" + overallGradePointInprecentage + ", passoutyear=" + passoutyear
+				+ ", dateOfDeclaration=" + dateOfDeclaration + ", admittedDate=" + admittedDate + ", maigrationSrNo="
+				+ maigrationSrNo + ", scrutinize=" + scrutinize + ", studentadmission=" + studentadmission
+				+ ", colleges=" + colleges + ", exIsReGenerated=" + exIsReGenerated + ", degree=" + degree
+				+ ", programmes=" + programmes + ", department=" + department + ", academicYear=" + academicYear
+				+ ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + "]";
+	}
+	
+}

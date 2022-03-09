@@ -1,0 +1,175 @@
+package com.niftem.app.util;
+
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Component;
+
+@Component
+public class EmailSending {
+	private static Logger emailutil = LoggerFactory.getLogger("email-utility");
+	private static Logger logger = LoggerFactory.getLogger("master-log");
+	@Autowired
+    private JavaMailSender javaMailSender;
+	
+	// send mail for photocopy
+	
+	public boolean sendPhotocopyMail(String to, String body, String subject  ,  File file) {
+		// TODO Auto-generated method stub
+		try {
+			MimeMessage msg = javaMailSender.createMimeMessage();
+			 // true = multipart message
+		        MimeMessageHelper helper  = new MimeMessageHelper(msg, true);
+			    helper.setTo(to);
+		        helper.setSubject(subject);
+		        helper.setText(body, true);	   
+		        helper.addAttachment("Marks.zip", file);
+		        javaMailSender.send(msg);
+		        return true;		
+		} catch (MessagingException e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+	        return false;		
+
+		}		
+	}
+	
+	public Boolean sendSemesterRegistrationMail(String to,  String body,String subject, String fileToAttach) throws MessagingException 
+	{
+			emailutil.info("fileToAttach : "+ fileToAttach);		
+			MimeMessage msg = javaMailSender.createMimeMessage();
+		 // true = multipart message
+	        MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+	        helper.setTo(to);
+	        helper.setSubject(subject);
+	        helper.setText(body, true);
+	       // helper.addAttachment("my_photo.png", new ClassPathResource(fileToAttach));	       
+	        FileSystemResource file = new FileSystemResource(new File(fileToAttach));
+	        helper.addAttachment("FeeReceipt.pdf", file);
+	        javaMailSender.send(msg);
+	        return true;
+	}
+	
+	
+	public boolean sendPasswordMail(String to, String body, String subject) {
+		try {
+			new Thread(new Runnable() {
+				public void run() {
+			MimeMessage msg = javaMailSender.createMimeMessage();
+			 // true = multipart message		     
+			    try {
+			    MimeMessageHelper helper  = new MimeMessageHelper(msg, true);
+					helper.setTo(to);
+			        helper.setSubject(subject);				      
+			        msg.setContent(body, "text/html");
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					logger.error("Exception occured" + e);
+					StringWriter errors = new StringWriter();
+					e.printStackTrace(new PrintWriter(errors));
+					logger.error(errors.toString());
+				}
+
+		      //  helper.setText(body, true);	   
+		        javaMailSender.send(msg);
+		       
+				}
+			}).start();
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+	        return false;		
+
+		}
+		return true;
+       			
+		}
+	
+	
+	public boolean qpMail(String to, String body, String subject) {
+		try {
+			new Thread(new Runnable() {
+				public void run() {
+			MimeMessage msg = javaMailSender.createMimeMessage();
+			 // true = multipart message		     
+			    try {
+			    	System.out.println("sssssssssss"+body);
+			    MimeMessageHelper helper  = new MimeMessageHelper(msg, true);
+					helper.setTo(to);
+			        helper.setSubject(subject);				      
+			        msg.setContent(body, "text/html");
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					logger.error("Exception occured" + e);
+					StringWriter errors = new StringWriter();
+					e.printStackTrace(new PrintWriter(errors));
+					logger.error(errors.toString());
+				}
+
+		      //  helper.setText(body, true);	   
+		        javaMailSender.send(msg);
+		       
+				}
+			}).start();
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+	        return false;		
+
+		}
+		return true;
+       			
+		}
+	
+	public boolean nonEligibleMail(String to, String body, String subject) {
+		try {
+			new Thread(new Runnable() {
+				public void run() {
+			MimeMessage msg = javaMailSender.createMimeMessage();
+			 // true = multipart message		     
+			    try {
+			    MimeMessageHelper helper  = new MimeMessageHelper(msg, true);
+					helper.setTo(to);
+			        helper.setSubject(subject);				      
+			        msg.setContent(body, "text/html");
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					logger.error("Exception occured" + e);
+					StringWriter errors = new StringWriter();
+					e.printStackTrace(new PrintWriter(errors));
+					logger.error(errors.toString());
+				}
+
+		      //  helper.setText(body, true);	   
+		        javaMailSender.send(msg);
+		       
+				}
+			}).start();
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+	        return false;		
+
+		}
+		return true;
+       			
+		}	
+}

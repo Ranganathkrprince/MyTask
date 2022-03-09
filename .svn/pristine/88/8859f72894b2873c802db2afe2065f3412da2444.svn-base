@@ -1,0 +1,138 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_academicYear")
+public class AcademicYear {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String exYear;
+
+	@Column(columnDefinition = "TEXT")
+	private String exDescription;
+
+	private String exIdentifier;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	@Temporal(TemporalType.DATE)
+	private Date exStartdate;
+
+	@Temporal(TemporalType.DATE)
+	private Date exEnddate;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExYear() {
+		return exYear;
+	}
+
+	public void setExYear(String exYear) {
+		this.exYear = exYear;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	public String getExIdentifier() {
+		return exIdentifier;
+	}
+
+	public void setExIdentifier(String exIdentifier) {
+		this.exIdentifier = exIdentifier;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public Date getExStartdate() {
+		return exStartdate;
+	}
+
+	public void setExStartdate(Date exStartdate) {
+		this.exStartdate = exStartdate;
+	}
+
+	public Date getExEnddate() {
+		return exEnddate;
+	}
+
+	public void setExEnddate(Date exEnddate) {
+		this.exEnddate = exEnddate;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	@Override
+	public String toString() {
+		return "AcademicYear [id=" + id + ", exYear=" + exYear + ", exDescription=" + exDescription + ", exIdentifier="
+				+ exIdentifier + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", exStartdate="
+				+ exStartdate + ", exEnddate=" + exEnddate + ", exIsDelete=" + exIsDelete + ", exIsActive=" + exIsActive
+				+ "]";
+	}
+}

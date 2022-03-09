@@ -1,0 +1,9 @@
+package com.niftem.app.repository;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.QuestionPaperLog;
+
+public interface QuestionPaperLogRepository extends CrudRepository<QuestionPaperLog, Long>{
+
+}

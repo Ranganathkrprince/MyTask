@@ -1,0 +1,99 @@
+package com.niftem.app.model;
+
+import java.util.Date;
+import java.util.List;
+
+public class PrivilegesRequest {
+	
+	
+	    private Long id;  
+	    private String addrole;
+		private String updaterole;
+		private String approverole;
+		private String deleterole;
+		private String privilegesFeatures;  
+	   	private Boolean exIsActive;	
+	   	private Boolean exIsDelete;
+	   	private Date exCreateDate;	   
+	   	private Date exUpdateDate;
+	   	private Long role;
+		public Long getId() {
+			return id;
+		}
+		public void setId(Long id) {
+			this.id = id;
+		}
+		public String getAddrole() {
+			return addrole;
+		}
+		public void setAddrole(String addrole) {
+			this.addrole = addrole;
+		}
+		public String getUpdaterole() {
+			return updaterole;
+		}
+		public void setUpdaterole(String updaterole) {
+			this.updaterole = updaterole;
+		}
+		public String getApproverole() {
+			return approverole;
+		}
+		public void setApproverole(String approverole) {
+			this.approverole = approverole;
+		}
+		public String getDeleterole() {
+			return deleterole;
+		}
+		public void setDeleterole(String deleterole) {
+			this.deleterole = deleterole;
+		}
+	
+		public String getPrivilegesFeatures() {
+			return privilegesFeatures;
+		}
+		public void setPrivilegesFeatures(String privilegesFeatures) {
+			this.privilegesFeatures = privilegesFeatures;
+		}
+		public Boolean getExIsActive() {
+			return exIsActive;
+		}
+		public void setExIsActive(Boolean exIsActive) {
+			this.exIsActive = exIsActive;
+		}
+		public Boolean getExIsDelete() {
+			return exIsDelete;
+		}
+		public void setExIsDelete(Boolean exIsDelete) {
+			this.exIsDelete = exIsDelete;
+		}
+		public Date getExCreateDate() {
+			return exCreateDate;
+		}
+		public void setExCreateDate(Date exCreateDate) {
+			this.exCreateDate = exCreateDate;
+		}
+		public Date getExUpdateDate() {
+			return exUpdateDate;
+		}
+		public void setExUpdateDate(Date exUpdateDate) {
+			this.exUpdateDate = exUpdateDate;
+		}
+		public Long getRole() {
+			return role;
+		}
+		public void setRole(Long role) {
+			this.role = role;
+		}
+		@Override
+		public String toString() {
+			return "PrivilegesRequest [id=" + id + ", addrole=" + addrole
+					+ ", updaterole=" + updaterole + ", approverole="
+					+ approverole + ", deleterole=" + deleterole
+					+ ",  privilegesFeatures="
+					+ privilegesFeatures + ", exIsActive=" + exIsActive
+					+ ", exIsDelete=" + exIsDelete + ", exCreateDate="
+					+ exCreateDate + ", exUpdateDate=" + exUpdateDate
+					+ ", role=" + role + "]";
+		}
+		
+}

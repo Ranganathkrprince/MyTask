@@ -1,0 +1,107 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotNull;
+
+public class StudentMentorAllocation {
+	
+	private String studentIdFrom;
+	
+	private String studentIdto;
+	
+	
+	private Long colleges;
+	private Long stream; 
+	public Long getStream() {
+		return stream;
+	}
+
+	public void setStream(Long stream) {
+		this.stream = stream;
+	}
+
+	@NotNull(message = "degree is required")
+	private Long degree;
+
+	@NotNull(message = "Programme is required")
+	private Long programmes;
+	
+	@NotNull(message = "department is required")
+	private Long department;
+
+		private Long user;
+private Long mentor;
+		public Long getMentor() {
+	return mentor;
+}
+
+public void setMentor(Long mentor) {
+	this.mentor = mentor;
+}
+
+		public Long getColleges() {
+			return colleges;
+		}
+
+		public void setColleges(Long colleges) {
+			this.colleges = colleges;
+		}
+
+		public Long getDegree() {
+			return degree;
+		}
+
+		public void setDegree(Long degree) {
+			this.degree = degree;
+		}
+
+		public Long getProgrammes() {
+			return programmes;
+		}
+
+		public void setProgrammes(Long programmes) {
+			this.programmes = programmes;
+		}
+
+		public Long getDepartment() {
+			return department;
+		}
+
+		public void setDepartment(Long department) {
+			this.department = department;
+		}
+
+		public Long getUser() {
+			return user;
+		}
+
+		public void setUser(Long user) {
+			this.user = user;
+			
+		}
+
+		public String getStudentIdFrom() {
+			return studentIdFrom;
+		}
+
+		public void setStudentIdFrom(String studentIdFrom) {
+			this.studentIdFrom = studentIdFrom;
+		}
+
+		public String getStudentIdto() {
+			return studentIdto;
+		}
+
+		public void setStudentIdto(String studentIdto) {
+			this.studentIdto = studentIdto;
+		}
+
+		@Override
+		public String toString() {
+			return "StudentMentorAllocation [studentIdFrom=" + studentIdFrom + ", studentIdto=" + studentIdto
+					+ ", colleges=" + colleges + ", stream=" + stream + ", degree=" + degree + ", programmes="
+					+ programmes + ", department=" + department + ", user=" + user + ", mentor=" + mentor + "]";
+		}
+
+		
+
+}

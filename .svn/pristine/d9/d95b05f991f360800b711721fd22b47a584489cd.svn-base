@@ -1,0 +1,59 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ex_courseGroupMapping")
+public class CourseGroupMapping {
+	
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Long id;
+		
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "Courses_id", nullable = false)
+		private Courses courses;
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "CourseGroup_id", nullable = false)
+		private CourseGroup courseGroup;
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public Courses getCourses() {
+			return courses;
+		}
+
+		public void setCourses(Courses courses) {
+			this.courses = courses;
+		}
+
+		public CourseGroup getCourseGroup() {
+			return courseGroup;
+		}
+
+		public void setCourseGroup(CourseGroup courseGroup) {
+			this.courseGroup = courseGroup;
+		}
+
+		@Override
+		public String toString() {
+			return "CourseGroupMapping [id=" + id + ", courses=" + courses
+					+ ", courseGroup=" + courseGroup + "]";
+		}
+		
+
+}

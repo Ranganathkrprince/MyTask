@@ -1,0 +1,123 @@
+package com.niftem.app.model;
+
+public class BookletStaffRequest {
+	private Long examAnnouncement;
+	private Long academicYear;
+	private Long course;
+	private Long programmes;
+	private Long colleges;
+	private String exTimeLimit;
+	private String exTimePerLimit;
+	private String exEvaluactionDays;
+	private Long staffId;
+	private Long allocatedbooklet;
+	private Long limitperday;
+	private Long registrationType;
+	private Long user;
+	private Long programmeYear;
+	private Long semster;
+	
+	public Long getSemster() {
+		return semster;
+	}
+	public void setSemster(Long semster) {
+		this.semster = semster;
+	}
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public Long getCourse() {
+		return course;
+	}
+	public void setCourse(Long course) {
+		this.course = course;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public String getExTimeLimit() {
+		return exTimeLimit;
+	}
+	public void setExTimeLimit(String exTimeLimit) {
+		this.exTimeLimit = exTimeLimit;
+	}
+	public String getExTimePerLimit() {
+		return exTimePerLimit;
+	}
+	public void setExTimePerLimit(String exTimePerLimit) {
+		this.exTimePerLimit = exTimePerLimit;
+	}
+	public String getExEvaluactionDays() {
+		return exEvaluactionDays;
+	}
+	public void setExEvaluactionDays(String exEvaluactionDays) {
+		this.exEvaluactionDays = exEvaluactionDays;
+	}
+	public Long getStaffId() {
+		return staffId;
+	}
+	public void setStaffId(Long staffId) {
+		this.staffId = staffId;
+	}
+	public Long getAllocatedbooklet() {
+		return allocatedbooklet;
+	}
+	public void setAllocatedbooklet(Long allocatedbooklet) {
+		this.allocatedbooklet = allocatedbooklet;
+	}
+	public Long getLimitperday() {
+		return limitperday;
+	}
+	public void setLimitperday(Long limitperday) {
+		this.limitperday = limitperday;
+	}
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	@Override
+	public String toString() {
+		return "BookletStaffRequest [examAnnouncement=" + examAnnouncement + ", academicYear=" + academicYear
+				+ ", course=" + course + ", programmes=" + programmes + ", colleges=" + colleges + ", exTimeLimit="
+				+ exTimeLimit + ", exTimePerLimit=" + exTimePerLimit + ", exEvaluactionDays=" + exEvaluactionDays
+				+ ", staffId=" + staffId + ", allocatedbooklet=" + allocatedbooklet + ", limitperday=" + limitperday
+				+ ", registrationType=" + registrationType + ", user=" + user + ", programmeYear=" + programmeYear
+				+ ", semster=" + semster + "]";
+	}
+	
+	
+	
+
+}

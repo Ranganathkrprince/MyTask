@@ -1,0 +1,131 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_student_rollno")
+public class StudentRollNo {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String exName;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	private String exIdStartWith;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public boolean isExIsActive() {
+		return exIsActive;
+	}
+
+	public boolean isExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public String getExIdStartWith() {
+		return exIdStartWith;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public void setExIsActive(boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setExIdStartWith(String exIdStartWith) {
+		this.exIdStartWith = exIdStartWith;
+	}
+
+	@Override
+	public String toString() {
+		return "StudentRollNo [id=" + id + ", exName=" + exName + ", exIsActive=" + exIsActive + ", exIsDelete="
+				+ exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", colleges="
+				+ colleges + ", degree=" + degree + ", exIdStartWith=" + exIdStartWith + "]";
+	}
+	
+	
+
+}

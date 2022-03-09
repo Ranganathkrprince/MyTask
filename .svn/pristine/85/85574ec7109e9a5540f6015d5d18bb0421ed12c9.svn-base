@@ -1,0 +1,157 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.Colleges;
+import com.niftem.app.entity.Degree;
+import com.niftem.app.entity.Department;
+import com.niftem.app.entity.ExamAnnouncement;
+import com.niftem.app.entity.ProgrammeYear;
+import com.niftem.app.entity.Programmes;
+import com.niftem.app.entity.SemesterProgressReport;
+import com.niftem.app.entity.Semster;
+import com.niftem.app.entity.User;
+
+public interface SemesterProgressReportRepository extends CrudRepository<SemesterProgressReport, Long>{
+
+	@Query(value = "SELECT * FROM ex_semester_progress_report where colleges_id =?1 AND degree_id =?2 AND  programmes_id =?3 AND ex_Roll_No =?4 AND programmeyear_id <=?5 AND semester_id <?6 and department_id =?7", nativeQuery = true)	
+	List<SemesterProgressReport> getStudentCGPADetails(Long colleges, Long degree,
+			Long programmes, String exRollNo, Long programmeYear, Long sem, Long department);
+
+
+
+	List<SemesterProgressReport> findByCollegesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndExamAnnouncementIdAndAcademicYearIdAndProgrammeYearIdAndExRollNoAndDepartmentId(
+			Long colleges, Long degree, Long programmes, Long semester, Long examAnnouncement, Long academicYear,
+			Long programmeYear, String exRollNo, Long department);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_semester_progress_report set ex_camu_grade_point_av = ?1 ,ex_grade_point_av = ?2 , ex_total_credit_hour =?3, ex_total_grade_point = ?4 ,ex_update_date = ?5 ,user_id=?14 , ex_total_camu_grade_point = ?15 where programmes_id=?6 and semester_id =?7 and programmeyear_id=?8 and ex_Roll_No=?9 and academicyear_id=?10 and colleges_id=?11 and degree_id=?12 and exam_announcement_id=?13 and department_id=?16", nativeQuery = true)
+	int updateSemesterReport(double finalpoint, double roundOff, double regularcredithour, double totalcreditPoint,
+			Date date, Programmes programmes, Semster semster, ProgrammeYear programmeYear, String exRollNo,
+			AcademicYear academicYear, Colleges colleges, Degree degree, ExamAnnouncement examAnnouncement,
+			User userresult, double finalcgpapoint, Department department);
+
+
+
+	List<SemesterProgressReport> findByCollegesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndExamAnnouncementIdAndExRollNo(
+			Long colleges, Long degree, Long programmes, Long semester, Long examAnnouncement, String exRollNo);
+	
+
+
+
+	@Query(value = "SELECT * FROM ex_semester_progress_report where colleges_id =?1 AND degree_id =?2 AND  programmes_id =?3 AND ex_Roll_No =?4 AND semester_id <?5 and  department_id=?6", nativeQuery = true)	
+	List<SemesterProgressReport> getStudentMIGCGPADetails(Long colleges, Long degree, Long programmes, String exRollNo,
+			Long sem, Long department);
+
+
+
+	List<SemesterProgressReport> findByCollegesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndAcademicYearIdAndProgrammeYearIdAndExRollNoAndDepartmentId(
+			Long colleges, Long degree, Long programmes, Long semester, Long academicYear, Long programmeYear,
+			String exRollNo, Long department);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_semester_progress_report set ex_camu_grade_point_av = ?1 ,ex_grade_point_av = ?2 , ex_total_credit_hour =?3, ex_total_grade_point = ?4 ,ex_update_date = ?5 ,user_id=?13 , ex_total_camu_grade_point = ?14 where programmes_id=?6 and semester_id =?7 and programmeyear_id=?8 and ex_Roll_No=?9 and academicyear_id=?10 and colleges_id=?11 and degree_id=?12 and department_id=?15", nativeQuery = true)
+	int updateMigSemesterReport(double finalpoint, double roundOff, double regularcredithour, double totalcreditPoint,
+			Date date, Programmes programmes, Semster semster, ProgrammeYear programmeYear, String exRollNo,
+			AcademicYear academicYear, Colleges colleges, Degree degree, User userresult, double finalcgpapoint,
+			Department department);
+
+
+
+	List<SemesterProgressReport> findByCollegesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndExRollNo(Long colleges,
+			Long degree, Long programmes, Long semester, String exRollNo);
+
+
+	List<SemesterProgressReport> findByExRollNoAndCollegesIdAndProgrammesIdAndDegreeId(String studentid,
+			Long collegesid, Long programmesid, Long degreeid);
+
+
+	List<SemesterProgressReport> findByStudentadmissionId(Long studentid);	
+	
+	List<SemesterProgressReport> findByStudentadmissionIdAndProgrammeYearIdAndSemesterId(Long studentid , Long programyear , Long seester);	
+	
+	@Query(value = "SELECT ex_camu_grade_point_av  FROM ex_semester_progress_report where ex_roll_no =?1 and semester_id =8  ", nativeQuery = true)
+		List<Object[]> getOgpa(String studentid);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_semester_progress_report set serial_number = ?1 , declared_on =?6 where programmes_id = ?2 and semester_id =?3 and programmeyear_id =?4 and ex_roll_no =?5" , nativeQuery = true)
+	int updateSerialNumber(String serialNumber, Long programmes, Long semster, Long programmeYear, String exRollNo, String date);
+
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_semester_progress_report set marksheet_path = ?1  where programmes_id = ?2 and semester_id =?3 and programmeyear_id =?4 and ex_roll_no =?5" , nativeQuery = true)
+	int updateMarksheetPath(String marksheet_path, Long programmes, Long semster, Long programmeYear, String exRollNo);
+
+
+	
+	List<SemesterProgressReport> findByCollegesIdAndProgrammesIdAndExRollNo(Long collegesid, Long programmesid,
+			String studentid);
+
+	List<SemesterProgressReport> findByCollegesIdAndDegreeIdAndProgrammesIdAndExRollNo(Long collegesid, Long degreeid,
+			Long programmesid, String studentid);
+
+
+	List<SemesterProgressReport> findByCollegesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndExRollNoAndProgrammeYearId(
+			Long collegesid, Long degreeid, Long programmesid, Long id, String studentid, Long id2);
+
+
+	List<SemesterProgressReport> findByAcademicYearIdAndProgrammesIdAndSemesterIdAndExRollNoAndProgrammeYearId(
+			Long academic, Long programmesid, Long sem, String studentid, Long id2);
+
+	List<SemesterProgressReport> findByCollegesIdAndDegreeIdAndProgrammesIdAndExRollNoAndSemesterId(Long collegesid,
+			Long degreeid, Long programmesid, String studentid, long l);
+
+
+
+	List<SemesterProgressReport> findByCollegesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndExamAnnouncementId(
+			Long colleges, Long degree, Long programmes, Long semester, Long examAnnouncement);
+
+
+	List<SemesterProgressReport> findByCollegesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndAcademicYearId(Long colleges,
+			Long degree, Long programmes, Long semester, Long academicYear);
+
+
+	List<SemesterProgressReport> findByCollegesIdAndDegreeIdAndProgrammesIdAndProgrammeYearIdAndExamAnnouncementIdAndAcademicYearIdAndSemesterIdOrderByExRollNo(
+			Long colleges, Long degree, Long programmes, Long programmeYear, Long examAnnouncement, Long academicYear,
+			Long semester);
+
+
+	@Query(value = "SELECT ex_camu_grade_point_av  FROM ex_semester_progress_report where ex_roll_no =?1 and semester_id =4  ", nativeQuery = true)
+
+	List<Object[]> getOgpam(String exRollNo);
+
+
+	@Query(value = "SELECT ex_camu_grade_point_av  FROM ex_semester_progress_report where ex_roll_no =?1 and semester_id =4  ", nativeQuery = true)
+	
+	List<Object[]> getmtechOgpa(String exRollNo);
+
+
+	@Query(value = "SELECT ex_camu_grade_point_av  FROM ex_semester_progress_report where ex_roll_no =?1 and semester_id =2  ", nativeQuery = true)
+
+	List<Object[]> getphdOgpa(String exRollNo);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_semester_progress_report set marksheet_path = ?1  where id =?2" , nativeQuery = true)
+	int updatePath(String marksheet_path, Long id);
+	
+	
+	
+	List<SemesterProgressReport> findByCollegesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndAcademicYearIdAndProgrammeYearIdAndDepartmentIdAndStudentadmissionBatchIdAndExIsActive(
+			Long colleges, Long degree, Long programmes, Long semester, Long academicYear, Long programmeYear,Long department, Long batch, boolean active);
+}

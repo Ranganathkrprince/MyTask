@@ -1,0 +1,230 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+
+@Entity
+@Table(name = "ex_hostel_configuration")
+public class HostelConfiguration {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String exMonthName;
+	private Double exAmount;
+	private String exFeename;
+
+	private String exRollNo;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academic_year_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "hostel_id", nullable = false)
+	private Hostel hostel;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "hostelfeetype_id", nullable = false)
+	private HostelFeeType hostelfeetype;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeyear;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "start_date", columnDefinition = "DATETIME")
+	private Date exStartDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "end_date", columnDefinition = "DATETIME")
+	private Date exEndDate;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsPaid; 
+	private String orderId;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	public Colleges getColleges() {
+		return colleges;
+	}
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+	public Degree getDegree() {
+		return degree;
+	}
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+	public Semster getSemester() {
+		return semester;
+	}
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+	public Hostel getHostel() {
+		return hostel;
+	}
+	public void setHostel(Hostel hostel) {
+		this.hostel = hostel;
+	}
+	public HostelFeeType getHostelfeetype() {
+		return hostelfeetype;
+	}
+	public void setHostelfeetype(HostelFeeType hostelfeetype) {
+		this.hostelfeetype = hostelfeetype;
+	}
+	public ProgrammeYear getProgrammeyear() {
+		return programmeyear;
+	}
+	public void setProgrammeyear(ProgrammeYear programmeyear) {
+		this.programmeyear = programmeyear;
+	}
+	
+	public Date getExStartDate() {
+		return exStartDate;
+	}
+	public void setExStartDate(Date exStartDate) {
+		this.exStartDate = exStartDate;
+	}
+	public Date getExEndDate() {
+		return exEndDate;
+	}
+	public void setExEndDate(Date exEndDate) {
+		this.exEndDate = exEndDate;
+	}
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+	public Boolean getExIsPaid() {
+		return exIsPaid;
+	}
+	public void setExIsPaid(Boolean exIsPaid) {
+		this.exIsPaid = exIsPaid;
+	}
+	public String getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+	public String getExMonthName() {
+		return exMonthName;
+	}
+	public void setExMonthName(String exMonthName) {
+		this.exMonthName = exMonthName;
+	}
+	public Double getExAmount() {
+		return exAmount;
+	}
+	public void setExAmount(Double exAmount) {
+		this.exAmount = exAmount;
+	}
+	public String getExFeename() {
+		return exFeename;
+	}
+	public void setExFeename(String exFeename) {
+		this.exFeename = exFeename;
+	}
+	@Override
+	public String toString() {
+		return "HostelConfiguration [id=" + id + ", exMonthName=" + exMonthName + ", exAmount=" + exAmount
+				+ ", exFeename=" + exFeename + ", exRollNo=" + exRollNo + ", colleges=" + colleges + ", degree="
+				+ degree + ", semester=" + semester + ", academicYear=" + academicYear + ", programmes=" + programmes
+				+ ", hostel=" + hostel + ", hostelfeetype=" + hostelfeetype + ", programmeyear=" + programmeyear
+				+ ", exStartDate=" + exStartDate + ", exEndDate=" + exEndDate + ", exIsActive=" + exIsActive
+				+ ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate
+				+ ", exIsPaid=" + exIsPaid + ", orderId=" + orderId + "]";
+	}
+	
+	
+	
+	
+}

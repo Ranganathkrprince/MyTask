@@ -1,0 +1,302 @@
+package com.niftem.app.model;
+
+import org.springframework.web.multipart.MultipartFile;
+
+public class MidTermMarksRequest {
+	
+	private Long degree;
+	
+	private Long programmes;
+
+	private Long courses;
+	private Long examAnnouncement;
+	
+	private Long colleges;
+	
+	private Long programmeYear;
+	private Long staff;
+	
+	private Long academicYear;
+	
+	private Long department;
+	private Long stream;
+
+	private Long semster;
+
+	private String exrollno;
+	private Long coursesType;
+	private String exMidTermRemarks;
+	private String exQuizRemarks;
+	private Double exAssignmentMarks;
+	private Double exMaxAssignmentMarks;
+	private String exRollNo;
+	private Double exMidTermMarks;
+	private Double exMaxMidTermMarks;
+	private Double exQuizMarks;
+	private Double exMaxQuizMarks;
+	private Double exAttendanceMarks;
+	private MultipartFile exQuizFile;
+	private MultipartFile exAssignmentFile;
+	private MultipartFile exAttendenceFile;
+	private MultipartFile exPracticalFile;
+	private MultipartFile exMidTermFile;
+	private MultipartFile exIAMarksFile;
+	private MultipartFile exPracticalIAMarksFile;
+	private String exPracticalRemarks;
+	private Double exPracticalRecordMarks;
+	private Double exMaxPracticalRecordMarks;
+	private MultipartFile exPracticalLearningFile;
+	private Double exPracticalLearning;
+
+	private Double exCaseStudy;
+	private MultipartFile exFile;
+
+	public MultipartFile getExMidTermFile() {
+		return exMidTermFile;
+
+	}
+	public Long getDegree() {
+		return degree;
+	}
+
+	
+	
+	
+	public MultipartFile getExPracticalIAMarksFile() {
+		return exPracticalIAMarksFile;
+	}
+	public void setExPracticalIAMarksFile(MultipartFile exPracticalIAMarksFile) {
+		this.exPracticalIAMarksFile = exPracticalIAMarksFile;
+	}
+	public Double getExAttendanceMarks() {
+		return exAttendanceMarks;
+	}
+	public void setExAttendanceMarks(Double exAttendanceMarks) {
+		this.exAttendanceMarks = exAttendanceMarks;
+	}
+	public Double getExCaseStudy() {
+		return exCaseStudy;
+	}
+	public void setExCaseStudy(Double exCaseStudy) {
+		this.exCaseStudy = exCaseStudy;
+	}
+	public MultipartFile getExIAMarksFile() {
+		return exIAMarksFile;
+	}
+	public void setExIAMarksFile(MultipartFile exIAMarksFile) {
+		this.exIAMarksFile = exIAMarksFile;
+	}
+
+	public Long getProgrammes() {
+		return programmes;
+
+	}
+	public Long getCourses() {
+		return courses;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public Long getStaff() {
+		return staff;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public Long getDepartment() {
+		return department;
+	}
+	public Long getStream() {
+		return stream;
+	}
+	public Long getSemster() {
+		return semster;
+	}
+	public String getExrollno() {
+		return exrollno;
+	}
+	public Long getCoursesType() {
+		return coursesType;
+	}
+	public String getExMidTermRemarks() {
+		return exMidTermRemarks;
+	}
+	public String getExQuizRemarks() {
+		return exQuizRemarks;
+	}
+	public Double getExAssignmentMarks() {
+		return exAssignmentMarks;
+	}
+	public Double getExMaxAssignmentMarks() {
+		return exMaxAssignmentMarks;
+	}
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public Double getExMidTermMarks() {
+		return exMidTermMarks;
+	}
+	public Double getExMaxMidTermMarks() {
+		return exMaxMidTermMarks;
+	}
+	public Double getExQuizMarks() {
+		return exQuizMarks;
+	}
+	public Double getExMaxQuizMarks() {
+		return exMaxQuizMarks;
+	}
+	public MultipartFile getExQuizFile() {
+		return exQuizFile;
+	}
+	public MultipartFile getExAssignmentFile() {
+		return exAssignmentFile;
+	}
+	public MultipartFile getExAttendenceFile() {
+		return exAttendenceFile;
+	}
+	public MultipartFile getExPracticalFile() {
+		return exPracticalFile;
+	}
+	public String getExPracticalRemarks() {
+		return exPracticalRemarks;
+	}
+	public Double getExPracticalRecordMarks() {
+		return exPracticalRecordMarks;
+	}
+	public Double getExMaxPracticalRecordMarks() {
+		return exMaxPracticalRecordMarks;
+	}
+	public MultipartFile getExPracticalLearningFile() {
+		return exPracticalLearningFile;
+	}
+	public Double getExPracticalLearning() {
+		return exPracticalLearning;
+	}
+	public MultipartFile getExFile() {
+		return exFile;
+	}
+	public void setExMidTermFile(MultipartFile exMidTermFile) {
+		this.exMidTermFile = exMidTermFile;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public void setStaff(Long staff) {
+		this.staff = staff;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+	public void setStream(Long stream) {
+		this.stream = stream;
+	}
+	public void setSemster(Long semster) {
+		this.semster = semster;
+	}
+	public void setExrollno(String exrollno) {
+		this.exrollno = exrollno;
+	}
+	public void setCoursesType(Long coursesType) {
+		this.coursesType = coursesType;
+	}
+	public void setExMidTermRemarks(String exMidTermRemarks) {
+		this.exMidTermRemarks = exMidTermRemarks;
+	}
+	public void setExQuizRemarks(String exQuizRemarks) {
+		this.exQuizRemarks = exQuizRemarks;
+	}
+	public void setExAssignmentMarks(Double exAssignmentMarks) {
+		this.exAssignmentMarks = exAssignmentMarks;
+	}
+	public void setExMaxAssignmentMarks(Double exMaxAssignmentMarks) {
+		this.exMaxAssignmentMarks = exMaxAssignmentMarks;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	public void setExMidTermMarks(Double exMidTermMarks) {
+		this.exMidTermMarks = exMidTermMarks;
+	}
+	public void setExMaxMidTermMarks(Double exMaxMidTermMarks) {
+		this.exMaxMidTermMarks = exMaxMidTermMarks;
+	}
+	public void setExQuizMarks(Double exQuizMarks) {
+		this.exQuizMarks = exQuizMarks;
+	}
+	public void setExMaxQuizMarks(Double exMaxQuizMarks) {
+		this.exMaxQuizMarks = exMaxQuizMarks;
+	}
+	public void setExQuizFile(MultipartFile exQuizFile) {
+		this.exQuizFile = exQuizFile;
+	}
+	public void setExAssignmentFile(MultipartFile exAssignmentFile) {
+		this.exAssignmentFile = exAssignmentFile;
+	}
+	public void setExAttendenceFile(MultipartFile exAttendenceFile) {
+		this.exAttendenceFile = exAttendenceFile;
+	}
+	public void setExPracticalFile(MultipartFile exPracticalFile) {
+		this.exPracticalFile = exPracticalFile;
+	}
+	public void setExPracticalRemarks(String exPracticalRemarks) {
+		this.exPracticalRemarks = exPracticalRemarks;
+	}
+	public void setExPracticalRecordMarks(Double exPracticalRecordMarks) {
+		this.exPracticalRecordMarks = exPracticalRecordMarks;
+	}
+	public void setExMaxPracticalRecordMarks(Double exMaxPracticalRecordMarks) {
+		this.exMaxPracticalRecordMarks = exMaxPracticalRecordMarks;
+	}
+	public void setExPracticalLearningFile(MultipartFile exPracticalLearningFile) {
+		this.exPracticalLearningFile = exPracticalLearningFile;
+	}
+	public void setExPracticalLearning(Double exPracticalLearning) {
+		this.exPracticalLearning = exPracticalLearning;
+	}
+	public void setExFile(MultipartFile exFile) {
+		this.exFile = exFile;
+	}
+	@Override
+	public String toString() {
+		return "MidTermMarksRequest [degree=" + degree + ", programmes=" + programmes + ", courses=" + courses
+				+ ", examAnnouncement=" + examAnnouncement + ", colleges=" + colleges + ", programmeYear="
+				+ programmeYear + ", staff=" + staff + ", academicYear=" + academicYear + ", department=" + department
+				+ ", stream=" + stream + ", semster=" + semster + ", exrollno=" + exrollno + ", coursesType="
+				+ coursesType + ", exMidTermRemarks=" + exMidTermRemarks + ", exQuizRemarks=" + exQuizRemarks
+				+ ", exAssignmentMarks=" + exAssignmentMarks + ", exMaxAssignmentMarks=" + exMaxAssignmentMarks
+				+ ", exRollNo=" + exRollNo + ", exMidTermMarks=" + exMidTermMarks + ", exMaxMidTermMarks="
+				+ exMaxMidTermMarks + ", exQuizMarks=" + exQuizMarks + ", exMaxQuizMarks=" + exMaxQuizMarks
+				+ ", exAttendanceMarks=" + exAttendanceMarks + ", exQuizFile=" + exQuizFile + ", exAssignmentFile="
+				+ exAssignmentFile + ", exAttendenceFile=" + exAttendenceFile + ", exPracticalFile=" + exPracticalFile
+				+ ", exMidTermFile=" + exMidTermFile + ", exIAMarksFile=" + exIAMarksFile + ", exPracticalIAMarksFile="
+				+ exPracticalIAMarksFile + ", exPracticalRemarks=" + exPracticalRemarks + ", exPracticalRecordMarks="
+				+ exPracticalRecordMarks + ", exMaxPracticalRecordMarks=" + exMaxPracticalRecordMarks
+				+ ", exPracticalLearningFile=" + exPracticalLearningFile + ", exPracticalLearning="
+				+ exPracticalLearning + ", exCaseStudy=" + exCaseStudy + ", exFile=" + exFile + "]";
+	}
+	
+}

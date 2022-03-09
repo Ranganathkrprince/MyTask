@@ -1,0 +1,52 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class SectionRequest {
+	 private Long id;
+	 
+	 @NotEmpty@NotNull@NotBlank(message = "Please provide a name")
+		private String exName;
+	 @NotNull(message = "Please provide a exIsActive 0/1")
+	  private Boolean exIsActive;
+		private Boolean exIsDelete;
+		private Long user;
+		
+		public Long getId() {
+			return id;
+		}
+		public void setId(Long id) {
+			this.id = id;
+		}
+		public String getExName() {
+			return exName;
+		}
+		public void setExName(String exName) {
+			this.exName = exName;
+		}
+		public Boolean getExIsActive() {
+			return exIsActive;
+		}
+		public void setExIsActive(Boolean exIsActive) {
+			this.exIsActive = exIsActive;
+		}
+		public Boolean getExIsDelete() {
+			return exIsDelete;
+		}
+		public void setExIsDelete(Boolean exIsDelete) {
+			this.exIsDelete = exIsDelete;
+		}
+		public Long getUser() {
+			return user;
+		}
+		public void setUser(Long user) {
+			this.user = user;
+		}
+		@Override
+		public String toString() {
+			return "SectionRequest [id=" + id + ", exName=" + exName + ", exIsActive=" + exIsActive + ", exIsDelete="
+					+ exIsDelete + ", user=" + user + "]";
+		}
+}

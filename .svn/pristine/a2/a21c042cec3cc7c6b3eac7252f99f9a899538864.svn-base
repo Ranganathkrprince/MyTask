@@ -1,0 +1,54 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.SemesterRegistrationConfiguration;
+
+
+public interface SemesterConfigurationRepository extends CrudRepository<SemesterRegistrationConfiguration, Long>{
+	
+	
+//	List<SemesterRegistrationConfiguration> findByExIsDeleteAndExamAnnouncementIdAndRegistrationId(Boolean is_delete ,Long id , Long registration);
+
+	List<SemesterRegistrationConfiguration> findByExIsDelete(Boolean is_delete);	
+	
+	//List<SemesterRegistrationConfiguration> findByExIsDeleteAndExIsActiveAndExamAnnouncementIdAndRegistrationId(Boolean is_delete , Boolean is_active ,Long id , Long registration);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_semester_registration_configuration set ex_is_delete = ?1,ex_is_active =?2  where id =?3", nativeQuery = true)
+	int deleteSemesterRegistration(Boolean exIsDelete, Boolean exIsActive, Long id);
+
+//===========	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_semester_registration_configuration set ex_is_active = ?1 ,ex_end_date=?2 ,ex_start_date =?3 , ex_update_date = ?4 , ex_extend_date =?5 , compulsory =?6 , not_compulsory = ?7 , batch_id =?9  where id =?8", nativeQuery = true)
+	int updateConfig(Boolean exIsActive, Date parse, Date parse2, Date date, Date exExtendDate, Integer compl , Integer notcoplt,Long id , Long batch);
+//=============
+	List<SemesterRegistrationConfiguration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndRegistrationIdAndDepartmentIdAndBatchId(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long registration , Long dept, Long batch);
+
+	List<SemesterRegistrationConfiguration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndDepartmentIdAndBatchId(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester ,  Long dept, Long batch);
+
+		
+
+	List<SemesterRegistrationConfiguration> findByExIsDeleteAndExIsActiveAndProgrammesIdAndCollegesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndRegistrationIdAndExamAnnouncementIdAndDepartmentIdAndBatchId(
+			boolean b, boolean c, Long programmes, Long colleges, Long degree, Long academicYear, Long programmeYear,
+			Long semester, Long registrationType, Long examAnnouncement ,  Long dept, Long batch);
+
+	List<SemesterRegistrationConfiguration> findByExIsDeleteAndExIsActiveAndExamAnnouncementId(boolean b, boolean c,
+			Long examAnnouncement2);
+
+	
+	
+	List<SemesterRegistrationConfiguration> findByExIsDeleteAndExIsActiveAndExEndDateAndRegistrationId(boolean delete, boolean active, Date enddate , Long registration);
+}

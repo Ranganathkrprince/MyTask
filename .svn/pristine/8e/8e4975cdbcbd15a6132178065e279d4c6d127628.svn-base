@@ -1,0 +1,153 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class CoursesCoverageRequest {
+	
+	private Long id;
+	
+	 @NotEmpty@NotNull@NotBlank(message = "Please provide exUnitName")
+	private String exUnitName;
+	
+	 @NotEmpty@NotNull@NotBlank(message = "Please provide exTotalTopics")
+	private Double exTotalTopics;
+	
+	 @NotEmpty@NotNull@NotBlank(message = "Please provide exTopicsCovered")
+	private Double exTopicsCovered;
+	
+	 @NotEmpty@NotNull@NotBlank(message = "Please provide exTopicsNotCovered")
+	private Double exTopicsNotCovered;
+	
+	 @NotEmpty@NotNull@NotBlank(message = "Please provide courses")
+	private Long courses;
+	 
+	 private List<Long> academicYear;
+	 
+	 @NotEmpty@NotNull@NotBlank(message = "Please provide staff")
+	private Long staff;
+	
+	 @NotEmpty@NotNull@NotBlank(message = "Please provide a exIsActive 0/1")
+	private Boolean exIsActive;
+
+	
+
+	public Long getId() {
+		return id;
+	}
+
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+
+	public String getExUnitName() {
+		return exUnitName;
+	}
+
+
+
+	public void setExUnitName(String exUnitName) {
+		this.exUnitName = exUnitName;
+	}
+
+
+
+	public Double getExTotalTopics() {
+		return exTotalTopics;
+	}
+
+
+
+	public void setExTotalTopics(Double exTotalTopics) {
+		this.exTotalTopics = exTotalTopics;
+	}
+
+
+
+	public Double getExTopicsCovered() {
+		return exTopicsCovered;
+	}
+
+
+
+	public void setExTopicsCovered(Double exTopicsCovered) {
+		this.exTopicsCovered = exTopicsCovered;
+	}
+
+
+
+	public Double getExTopicsNotCovered() {
+		return exTopicsNotCovered;
+	}
+
+
+
+	public void setExTopicsNotCovered(Double exTopicsNotCovered) {
+		this.exTopicsNotCovered = exTopicsNotCovered;
+	}
+
+
+
+	public Long getCourses() {
+		return courses;
+	}
+
+
+
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+
+
+
+	public Long getStaff() {
+		return staff;
+	}
+
+
+
+	public void setStaff(Long staff) {
+		this.staff = staff;
+	}
+
+
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+
+
+	public List<Long> getAcademicYear() {
+		return academicYear;
+	}
+
+
+
+	public void setAcademicYear(List<Long> academicYear) {
+		this.academicYear = academicYear;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "CoursesCoverageRequest [id=" + id + ", exUnitName=" + exUnitName + ", exTotalTopics=" + exTotalTopics
+				+ ", exTopicsCovered=" + exTopicsCovered + ", exTopicsNotCovered=" + exTopicsNotCovered + ", courses="
+				+ courses + ", academicYear=" + academicYear + ", staff=" + staff + ", exIsActive=" + exIsActive + "]";
+	}
+
+	}

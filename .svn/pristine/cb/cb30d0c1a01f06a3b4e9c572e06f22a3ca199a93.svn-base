@@ -1,0 +1,939 @@
+package com.niftem.app.implementation;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.Colleges;
+import com.niftem.app.entity.Degree;
+import com.niftem.app.entity.Department;
+import com.niftem.app.entity.NotificationCategory;
+import com.niftem.app.entity.NotificationTemplate;
+import com.niftem.app.entity.ProgrammeYear;
+import com.niftem.app.entity.Programmes;
+import com.niftem.app.entity.PushAlertLog;
+import com.niftem.app.entity.PushAlertNotification;
+import com.niftem.app.entity.Semster;
+import com.niftem.app.entity.User;
+import com.niftem.app.model.LoadAlertRequest;
+import com.niftem.app.model.NotificationTemplateRequest;
+import com.niftem.app.model.PushAlertNotificationRequest;
+import com.niftem.app.service.NotificationService;
+import com.niftem.app.util.AutoManager;
+
+@Service
+@Transactional
+
+public class NotificationImpl extends AutoManager implements NotificationService{
+	private static Logger logger = LoggerFactory.getLogger("master-log");
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@Override
+	public Map<String, String> saveNotificationCategory(NotificationCategory request) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			if (request.getCategory() == null || request.getCategory().trim().length() == 0) {
+				info.put("status", "2");
+				info.put("message", "Template is required");
+				return info;
+			}
+		
+			 List<NotificationCategory> tasks = super.notificationcat.findByCategoryAndExIsActiveAndExIsDelete(request.getCategory() , true , false);
+			 if (tasks.size() > 0) {
+			 info.put("status", "2");
+		     info.put("message","Notification Category already exists"); 
+			 return info;
+			 }
+			Date date = new Date();
+			NotificationCategory NotificationTemplate = new NotificationCategory();
+			NotificationTemplate.setId(null);
+			NotificationTemplate.setCategory(request.getCategory());
+			NotificationTemplate.setExCreateDate(date);
+			NotificationTemplate.setExIsActive(true);
+			NotificationTemplate.setExIsDelete(false);
+			super.notificationcat.save(NotificationTemplate);
+			info.put("status", "1");
+			info.put("message", "Notification Category Saved successfully");
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getNotificationCategory(NotificationCategory request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List dataList = new LinkedList();
+			List<NotificationCategory> tasks = super.notificationcat.findByExIsDelete(false);
+			if (tasks.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "NotificationCategory not created");
+				return info;
+			} else {
+				for (NotificationCategory e : tasks) {
+					Map<Object, Object> Categorydata = new HashMap<Object, Object>();
+					Categorydata.put("id", e.getId());
+					Categorydata.put("category", e.getCategory());
+					Categorydata.put("exCreateDate", e.getExCreateDate());
+					Categorydata.put("exIsActive", e.getExIsActive());
+					Categorydata.put("exUpdateDate", e.getExUpdateDate());
+					Categorydata.put("exIsDelete", e.getExIsDelete());
+					dataList.add(Categorydata);
+				}								
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("details", dataList);
+				return info;
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, String> deleteNotificationCategory(NotificationCategory request) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			Optional<NotificationCategory> task = super.notificationcat.findById(request.getId());
+			if (task.isPresent()) {
+				if (task.get().getExIsDelete()) {
+					info.put("status", "2");
+					info.put("message", "NotificationCategory already deleted");
+					return info;
+				}
+				Boolean exIsDelete = true;
+				Boolean is_active = false;
+				int result = super.notificationcat.deleteCategory(exIsDelete, is_active, task.get().getId());
+				if (result == 0) {
+					info.put("status", "2");
+					info.put("message", "Something went wrong");
+					return info;
+				}
+				info.put("status", "1");
+				info.put("message", "NotificationCategory deleted successfully");
+				return info;
+			}
+			info.put("status", "2");
+			info.put("message", "NotificationCategory id not present");
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, String> updateNotificationCategory(NotificationCategory request) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			Optional<NotificationCategory> Category = super.notificationcat.findById(request.getId());			
+			if (request.getId() == null || !Category.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Category id not present");
+				return info;
+			}
+			List<NotificationCategory> tasks = new ArrayList<NotificationCategory>();
+			tasks = super.notificationcat.findByCategoryAndExIsActiveAndExIsDelete(request.getCategory().trim(), true , false);
+			if (tasks.size() > 0 && tasks.get(0).getId() != request.getId()) {
+				info.put("status", "2");
+				info.put("message", "Notification Category name already exists");
+				return info;
+			}
+			Date date = new Date();
+
+			int retval = super.notificationcat.updateCategory(request.getCategory(), date,request.getId());
+			if (retval == 1) {
+				info.put("status", "1");
+				info.put("message", "Notification Category updated successfully");
+				return info;
+			} else {
+				info.put("status", "2");
+				info.put("message", "Notification Category id not present");
+				return info;
+			}
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+	@Override
+	public Map<String, String> createNotificationTemplate(NotificationTemplateRequest request) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			
+			Optional<NotificationCategory> task = super.notificationcat.findById(request.getCategoryId());
+			if (!task.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Notification Category Not present");
+				return info;
+			}			
+			 List<NotificationTemplate> tasks = super.notificationTemplate.findByCategoryIdAndExIsActiveAndExIsDelete(request.getCategoryId() , true , false);
+			 if (tasks.size() > 0) {
+			 info.put("status", "2");
+		     info.put("message","Notification Templates already exists"); 
+			 return info;
+			 }
+			 
+							
+			Date date = new Date();
+			NotificationTemplate  templ = new NotificationTemplate();
+			templ.setCategory(task.get());
+			templ.setTitle(request.getTitle());
+			templ.setMessage(request.getMessage());
+			templ.setExIsActive(true);
+			templ.setExIsDelete(false);
+			templ.setExCreateDate(date);		
+			super.notificationTemplate.save(templ);
+			info.put("status", "1");
+			info.put("message", "Notification Template Saved successfully");
+			return info;
+			
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getNotificationTemplate(NotificationTemplateRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List dataList = new LinkedList();
+			List<NotificationTemplate> tasks = super.notificationTemplate.findByExIsDelete(false);
+			if (tasks.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Notification Templates not created");
+				return info;
+			} else {
+				for (NotificationTemplate e : tasks) {
+					Map<Object, Object> data = new HashMap<Object, Object>();
+					data.put("id", e.getId());
+					data.put("category", e.getCategory().getCategory());
+					data.put("categoryId", e.getCategory().getId());
+					data.put("message", e.getMessage());
+					data.put("title", e.getTitle());
+					data.put("exCreateDate", e.getExCreateDate());
+					data.put("exIsActive", e.getExIsActive());
+					data.put("exUpdateDate", e.getExUpdateDate());
+					data.put("exIsDelete", e.getExIsDelete());
+					dataList.add(data);
+				}								
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("details", dataList);
+				return info;
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, String> deleteNotificationTemplate(NotificationTemplateRequest request) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			Optional<NotificationTemplate> task = super.notificationTemplate.findById(request.getId());
+			if (task.isPresent()) {
+				if (task.get().getExIsDelete()) {
+					info.put("status", "2");
+					info.put("message", "Notification Template already deleted");
+					return info;
+				}
+				Boolean exIsDelete = true;
+				Boolean is_active = false;
+				int result = super.notificationTemplate.deleteTemplate(exIsDelete, is_active, task.get().getId());
+				if (result == 0) {
+					info.put("status", "2");
+					info.put("message", "Something went wrong");
+					return info;
+				}
+				info.put("status", "1");
+				info.put("message", "Notification Template deleted successfully");
+				return info;
+			}
+			info.put("status", "2");
+			info.put("message", "Notification Template id not present");
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, String> updateNotificationTemplate(NotificationTemplateRequest request) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {			
+							
+			Optional<NotificationCategory> task = super.notificationcat.findById(request.getCategoryId());
+			if (!task.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Notificatio Category Not present");
+				return info;
+			}			
+			 List<NotificationTemplate> tasks = super.notificationTemplate.findByCategoryIdAndExIsActiveAndExIsDelete(request.getCategoryId() , true , false);
+		
+				 if (tasks.size() > 0 && tasks.get(0).getId() != request.getId()) {
+					 info.put("status", "2");
+				     info.put("message","Notification Templates already exists"); 
+					 return info;
+				} 
+				 Date date = new Date();
+					int retval = super.notificationTemplate.updateTemplatRecord(request.getMessage(), date,request.getTitle(),request.getId());
+					if (retval == 1) {
+						info.put("status", "1");
+						info.put("message", "Notification Templates updated successfully");
+						return info;
+					} else {
+						info.put("status", "2");
+						info.put("message", "Notification Templates id not present");
+						return info;
+					}
+
+			
+			
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+	@Override
+	public Map<String, String> createAlert(PushAlertNotificationRequest request) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			Optional<NotificationCategory> Category = super.notificationcat.findById(request.getCategory());			
+			if (!Category.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Category id not present");
+				return info;
+			}
+			Optional<NotificationTemplate> task = super.notificationTemplate.findById(request.getTemplate());
+			System.out.println(">"+task);
+			if (!task.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Notification Template id not present");
+				return info;
+			}
+			Optional<Semster> sem = super.semester.findByIdAndExIsActiveAndExIsDelete(request.getSemester() ,true ,false);
+			if (!sem.isPresent()){
+				info.put("status", "2");
+				info.put("message", " Semester not present");
+				return info;
+			}
+			Optional<AcademicYear> academicYearid = super.academicYear.findByExIsDeleteAndExIsActiveAndId(false,	true, request.getAcademicYear());
+			if (!academicYearid.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "AcademicYear id not present");
+				return info;
+			}
+			if(request.getCollege().size() ==0) {
+				info.put("status", "2");
+				info.put("message", "Please select college");
+				return info;
+			}
+			if(request.getProgrammeYear().size() ==0) {
+				info.put("status", "2");
+				info.put("message", "Please select ProgramYear");
+				return info;
+			}
+			List<Colleges> collist  = new ArrayList<Colleges>(); 			
+			for(int i = 0 ;i<request.getCollege().size() ; i++) {
+				Long number =request.getCollege().get(i);
+				Long col = new Long(number);
+				Optional<Colleges>  college =   super.colleges.findByIdAndExIsDeleteAndExIsActive(col, false, true);
+				if(!college.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Selected college not present");
+					return info;
+				}
+				collist.add(college.get());
+			}
+			
+			List<ProgrammeYear> programyear  = new ArrayList<ProgrammeYear>(); 			
+			for(int i = 0 ;i<request.getProgrammeYear().size() ; i++) {
+				Long number =request.getProgrammeYear().get(i);
+				Long po = new Long(number);
+				Optional<ProgrammeYear>  pyear =   super.programmeYear.findByExIsDeleteAndExIsActiveAndId(false , true , po);
+				if(!pyear.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Selected ProgrammeYear not present");
+					return info;
+				}
+				programyear.add(pyear.get());
+			}
+			List<Programmes> pgmlist  = new ArrayList<Programmes>(); 			
+			for(int i = 0 ;i<request.getProgrammes().size() ; i++) {
+				Long number =request.getProgrammes().get(i);
+				Long col = new Long(number);
+				Optional<Programmes>  program =   super.programmes.findByIdAndExIsDeleteAndExIsActive(col, false, true);
+				if(!program.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Selected program not present");
+					return info;
+				}
+				pgmlist.add(program.get());
+			}
+			List<Department> departmentlist  = new ArrayList<Department>(); 			
+			for(int i = 0 ;i<request.getDepartment().size() ; i++) {
+				Long number =request.getDepartment().get(i);
+				Long col = new Long(number);
+				Optional<Department>  depart =   super.department.findByIdAndExIsDeleteAndExIsActive(col, false, true);
+				if(!depart.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Selected department not present");
+					return info;
+				}
+				departmentlist.add(depart.get());
+			}
+			List<Degree> degreelist  = new ArrayList<Degree>(); 			
+			for(int i = 0 ;i<request.getDegree().size() ; i++) {
+				Long number =request.getDegree().get(i);
+				Long col = new Long(number);
+				Optional<Degree>  degr =   super.degree.findByIdAndExIsDeleteAndExIsActive(col, false, true);
+				if(!degr.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Selected degree not present");
+					return info;
+				}
+				degreelist.add(degr.get());
+			}
+			User userid =super.commonHelper.getuser(request.getUser()) ;
+			Date date = new Date();
+			PushAlertNotification alert  = new PushAlertNotification();
+			alert.setAcademicYear(academicYearid.get());
+			alert.setSemester(sem.get());
+			alert.setCollege(collist);
+			alert.setDegree(degreelist);
+			alert.setProgrammes(pgmlist);
+			alert.setDepartment(departmentlist);
+			alert.setProgrammeYear(programyear);
+			alert.setExCreateDate(date);
+			alert.setUser(userid);
+			alert.setExIsActive(true);
+			alert.setExIsDelete(false);
+			alert.setCategory(Category.get());
+			alert.setTemplate(task.get());
+			alert.setMessage(task.get().getMessage());
+			alert.setTitle(task.get().getTitle());			
+			super.alertnotification.save(alert);			
+			info.put("status", "1");
+			info.put("message", "Alert Notification created successfully");
+			return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+		
+	}
+
+	@Override
+	public Map<String, String> deleteAlert(PushAlertNotificationRequest request) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			Optional<PushAlertNotification> task = super.alertnotification.findById(request.getId());
+			if (task.isPresent()) {
+				if (task.get().getExIsDelete()) {
+					info.put("status", "2");
+					info.put("message", "PushAlertNotification  already deleted");
+					return info;
+				}
+				Boolean exIsDelete = true;
+				Boolean is_active = false;
+				int result = super.alertnotification.deleteAlert(exIsDelete, is_active, task.get().getId());
+				if (result == 0) {
+					info.put("status", "2");
+					info.put("message", "Something went wrong");
+					return info;
+				}
+				info.put("status", "1");
+				info.put("message", "PushAlertNotification deleted successfully");
+				return info;
+			}
+			info.put("status", "2");
+			info.put("message", "PushAlertNotification id not present");
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+	
+
+	@Override
+	public Map<String, Object> getAlert(PushAlertNotificationRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List<PushAlertNotification> tasks = super.alertnotification.findByExIsDelete(false);
+			if (tasks.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "PushAlertNotification not created");
+				return info;
+			} else {
+				List dataList = new LinkedList();
+				for (PushAlertNotification e : tasks) {
+					List college = new LinkedList();
+					List collegeId = new LinkedList();
+					List department = new LinkedList();
+					List departmentId = new LinkedList();
+					List programmes = new LinkedList();
+					List programmesId = new LinkedList();
+					List programmeYear = new LinkedList();
+					List programmeYearId = new LinkedList();
+					List degree = new LinkedList();
+					List degreeId = new LinkedList();
+					Map<Object, Object> Departmentdata = new HashMap<Object, Object>(); //
+
+					for (int i = 0; i < e.getCollege().size(); i++) {
+						college.add(e.getCollege().get(i).getExName());
+						collegeId.add(e.getCollege().get(i).getId());
+					}
+					for (int i = 0; i < e.getDepartment().size(); i++) {
+						department.add(e.getDepartment().get(i).getExName());
+						departmentId.add(e.getDepartment().get(i).getId());
+					}
+					for (int i = 0; i < e.getProgrammes().size(); i++) {
+						programmes.add(e.getProgrammes().get(i).getExName());
+						programmesId.add(e.getProgrammes().get(i).getId());
+					}
+					for (int i = 0; i < e.getProgrammeYear().size(); i++) {
+						programmeYear.add(e.getProgrammeYear().get(i).getExName());
+						programmeYearId.add(e.getProgrammeYear().get(i).getId());
+					}
+					for (int i = 0; i < e.getDegree().size(); i++) {
+						degree.add(e.getDegree().get(i).getExName());
+						degreeId.add(e.getDegree().get(i).getId());
+					}
+					Departmentdata.put("collegeId", collegeId);
+					Departmentdata.put("college", college);
+					Departmentdata.put("departmentId", departmentId);
+					Departmentdata.put("department", department);
+					Departmentdata.put("programmesId", programmesId);
+					Departmentdata.put("programmes", programmes);
+					Departmentdata.put("programmeYear", programmeYear);
+					Departmentdata.put("programmeYearId", programmeYearId);
+					Departmentdata.put("degreeId", degreeId);
+					Departmentdata.put("degree", degree);
+					Departmentdata.put("id", e.getId());
+					Departmentdata.put("exIsActive", e.getExIsActive());
+					Departmentdata.put("academicYear", e.getAcademicYear().getId());
+					Departmentdata.put("exYear", e.getAcademicYear().getExYear());
+					Departmentdata.put("categoryId", e.getCategory().getId());
+					Departmentdata.put("category", e.getCategory().getCategory());
+					Departmentdata.put("message", e.getMessage());
+					Departmentdata.put("exIsDelete", e.getExIsDelete());
+					Departmentdata.put("semesterId", e.getSemester().getId());
+					Departmentdata.put("semester", e.getSemester().getExName());
+					Departmentdata.put("template", e.getTemplate().getId());
+					Departmentdata.put("title", e.getTitle());
+					Departmentdata.put("exCreateDate", e.getExCreateDate());
+					Departmentdata.put("exUpdateDate", e.getExUpdateDate());
+					dataList.add(Departmentdata);
+				}
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("details", dataList);
+				return info;
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, String> updateAlert(PushAlertNotificationRequest request) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			Optional<NotificationCategory> Category = super.notificationcat.findById(request.getCategory());			
+			if (!Category.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Category id not present");
+				return info;
+			}
+			Optional<NotificationTemplate> task = super.notificationTemplate.findById(request.getTemplate());
+			System.out.println(">"+task);
+			if (!task.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Notification Template id not present");
+				return info;
+			}
+			Optional<Semster> sem = super.semester.findByIdAndExIsActiveAndExIsDelete(request.getSemester() ,true ,false);
+			if (!sem.isPresent()){
+				info.put("status", "2");
+				info.put("message", " Semester not present");
+				return info;
+			}
+			Optional<AcademicYear> academicYearid = super.academicYear.findByExIsDeleteAndExIsActiveAndId(false,	true, request.getAcademicYear());
+			if (!academicYearid.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "AcademicYear id not present");
+				return info;
+			}
+			List<Colleges> collist  = new ArrayList<Colleges>(); 			
+			for(int i = 0 ;i<request.getCollege().size() ; i++) {
+				Long number =request.getCollege().get(i);
+				Long col = new Long(number);
+				Optional<Colleges>  college =   super.colleges.findByIdAndExIsDeleteAndExIsActive(col, false, true);
+				if(!college.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Selected college not present");
+					return info;
+				}
+				collist.add(college.get());
+			}
+			
+			List<ProgrammeYear> programyear  = new ArrayList<ProgrammeYear>(); 			
+			for(int i = 0 ;i<request.getProgrammeYear().size() ; i++) {
+				Long number =request.getProgrammeYear().get(i);
+				Long po = new Long(number);
+				Optional<ProgrammeYear>  pyear =   super.programmeYear.findByExIsDeleteAndExIsActiveAndId(false , true , po);
+				if(!pyear.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Selected ProgrammeYear not present");
+					return info;
+				}
+				programyear.add(pyear.get());
+			}
+			List<Programmes> pgmlist  = new ArrayList<Programmes>(); 			
+			for(int i = 0 ;i<request.getProgrammes().size() ; i++) {
+				Long number =request.getProgrammes().get(i);
+				Long col = new Long(number);
+				Optional<Programmes>  program =   super.programmes.findByIdAndExIsDeleteAndExIsActive(col, false, true);
+				if(!program.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Selected program not present");
+					return info;
+				}
+				pgmlist.add(program.get());
+			}
+			List<Department> departmentlist  = new ArrayList<Department>(); 			
+			for(int i = 0 ;i<request.getDepartment().size() ; i++) {
+				Long number =request.getDepartment().get(i);
+				Long col = new Long(number);
+				Optional<Department>  depart =   super.department.findByIdAndExIsDeleteAndExIsActive(col, false, true);
+				if(!depart.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Selected department not present");
+					return info;
+				}
+				departmentlist.add(depart.get());
+			}
+			List<Degree> degreelist  = new ArrayList<Degree>(); 			
+			for(int i = 0 ;i<request.getDegree().size() ; i++) {
+				Long number =request.getDegree().get(i);
+				Long col = new Long(number);
+				Optional<Degree>  degr =   super.degree.findByIdAndExIsDeleteAndExIsActive(col, false, true);
+				if(!degr.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Selected degree not present");
+					return info;
+				}
+				degreelist.add(degr.get());
+			}
+			List<PushAlertNotification> tasks = new ArrayList<PushAlertNotification>();
+		
+			tasks = super.alertnotification.findByMessageAndTitleAndTemplateIdAndCollegeIdInAndDegreeIdInAndDepartmentIdInAndProgrammesIdInAndProgrammeYearIdInAndSemesterIdAndCategoryIdAndExIsDelete(request.getMessage(),request.getTitle(),request.getTemplate(),request.getCollege(),request.getDegree(),request.getDepartment(),request.getProgrammes(),request.getProgrammeYear(),request.getSemester(),request.getCategory(), false);
+			if (tasks.size() > 0 && tasks.get(0).getId() != request.getId()) {
+				info.put("status", "2");
+				info.put("message", "Alert notification  already exists");
+				return info;
+			}
+	
+			Date date = new Date();
+			int retval = super.alertnotification.updatealertRecord( request.getTitle(),
+					request.getMessage(), date,
+					request.getId());
+			
+			if (retval == 0) {
+				info.put("status", "0");
+				info.put("message", "Something went wrong");
+				return info;
+			} else {
+				//
+				String hql = "delete from ex_notification_alert_collage where alert_id = " + request.getId();
+				Query query = entityManager.createNativeQuery(hql);
+				query.executeUpdate();
+				entityManager.close();
+				
+				for (int i = 0; i < request.getCollege().size(); i++) {
+					Long number = request.getCollege().get(i);
+					Long col = new Long(number);
+					super.alertnotification.savealertCollege(request.getId(), col);
+				}
+				String hql1 = "delete from ex_notification_alert_programme where alert_id = " + request.getId();
+				Query query1 = entityManager.createNativeQuery(hql1);
+				query1.executeUpdate();
+				entityManager.close();
+				
+				for (int i = 0; i < request.getProgrammes().size(); i++) {
+					Long number = request.getProgrammes().get(i);
+					Long pgm = new Long(number);
+					super.alertnotification.savealertProgramme(request.getId(), pgm);
+				}
+				String hql11 = "delete from ex_notification_alert_programmeyear where alert_id = " + request.getId();
+				Query query11 = entityManager.createNativeQuery(hql11);
+				query11.executeUpdate();
+				entityManager.close();
+				
+				for (int i = 0; i < request.getProgrammeYear().size(); i++) {
+					Long number = request.getProgrammeYear().get(i);
+					Long pgm = new Long(number);
+					super.alertnotification.savealertProgrammeYear(request.getId(), pgm);
+				}
+				String hql111 = "delete from ex_notification_alert_department where alert_id = " + request.getId();
+				Query query111 = entityManager.createNativeQuery(hql111);
+				query111.executeUpdate();
+				entityManager.close();
+				
+				for (int i = 0; i < request.getDepartment().size(); i++) {
+					Long number = request.getDepartment().get(i);
+					Long pgm = new Long(number);
+					super.alertnotification.savealertDepartment(request.getId(), pgm);
+				}
+				String hql3 = "delete from ex_notification_alert_degree where alert_id = " + request.getId();
+				Query query3 = entityManager.createNativeQuery(hql3);
+				query3.executeUpdate();
+				entityManager.close();
+				
+				for (int i = 0; i < request.getCollege().size(); i++) {
+					Long number = request.getCollege().get(i);
+					Long col = new Long(number);
+					super.alertnotification.savealertdegree(request.getId(), col);
+				}
+			}
+			info.put("status", "1");
+			info.put("message", "AlertNotification Updated Successfully");
+			return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> loadAlert(@Valid LoadAlertRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			Optional<AcademicYear> academicYearid = super.academicYear.findByExIsDeleteAndExIsActiveAndId(false,true, request.getAcademicYear()== null ?0: request.getAcademicYear());
+			if (!academicYearid.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Academic Year Not present");
+				return info;
+			}
+							
+			Optional<ProgrammeYear> programyear = super.programmeYear.findByExIsDeleteAndExIsActiveAndId(false, true,request.getProgrameYear()== null ?0:request.getProgrameYear());
+			if (!programyear.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "ProgrammeYear Not present");
+				return info;
+			}
+															
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false, true,request.getSemester()== null ?0:request.getSemester());
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Semster Not present");
+				return info;
+			}
+
+			Optional<Colleges> col = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges()== null ?0:request.getColleges(),false, true);
+			if (!col.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Colleges Not present");
+				return info;
+			}
+				// check in log table if alert id is null
+			List dataList = new LinkedList();
+			List<PushAlertLog> chcklog = super.pushalertlog.findByExRollNoAndAlertId(request.getExRollNo(), null);
+			for(PushAlertLog k:chcklog) {
+				Map<Object, Object> data1 = new HashMap<Object, Object>();
+				data1.put("message", k.getMessage());
+				data1.put("title", k.getTitle());
+				data1.put("alertId", k.getId());
+				dataList.add(data1);
+			}
+			
+			List<PushAlertNotification> tasks = super.alertnotification.findByExIsActiveAndExIsDeleteAndAcademicYearIdAndSemesterIdAndCollegeIdAndProgrammeYearId(true , false , request.getAcademicYear(),request.getSemester() , request.getColleges() , request.getProgrameYear());
+				if(tasks.size() <=0) {
+					info.put("status", "2");
+					info.put("message", "No Record found");
+					//return info;
+				}
+				Date date = new Date();
+				
+				for(PushAlertNotification e:tasks) {					
+					List<PushAlertLog> allog = super.pushalertlog.findByExRollNoAndId(request.getExRollNo(), e.getId());
+			 		Map<Object, Object> data = new HashMap<Object, Object>();
+						if(allog.size() <=0) {
+							PushAlertLog alg = new PushAlertLog();
+							alg.setAlertId(e);
+							alg.setExCreateDate(date);
+							alg.setIsView(false);
+							alg.setMessage(e.getMessage());
+							alg.setTitle(e.getCategory().getCategory());
+							alg.setExRollNo(request.getExRollNo());
+							alg.setExSentDate(date);;
+							alg.setAcademicYear(academicYearid.get());
+							alg.setColleges(col.get());
+							alg.setProgrammeYear(programyear.get());
+							alg.setSemester(sem.get());
+							super.pushalertlog.save(alg);		
+							data.put("message", e.getMessage());
+							data.put("title", e.getCategory().getCategory());
+							data.put("alertId", e.getId());
+							dataList.add(data);
+						}else {
+							if(allog.get(0).getIsView() == false) {
+								data.put("message", e.getMessage());
+								data.put("title", e.getCategory().getCategory());
+								data.put("alertId", e.getId());
+								dataList.add(data);
+							}
+						}	
+				}		
+				if(dataList.size() <=0) {
+					info.put("status", "3");
+					info.put("message", "No pending alert");
+					return info;
+				}
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("details", dataList);
+				return info;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, String> updateAlert(LoadAlertRequest request) {
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			if (request.getExRollNo() == null || request.getExRollNo().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Roll NO is required");
+				return info;
+			}	
+			/*
+			 * List<PushAlertLog> updatealert =
+			 * super.pushalertlog.findByExRollNoAndAlertId(request.getExRollNo(),request.
+			 * getAlertId()); if (!updatealert.isPresent()) { info.put("status", "2");
+			 * info.put("message", "AlertId not present"); return info; }
+			 */
+			int updateresult = super.pushalertlog.updateAlert(true ,request.getExRollNo() , request.getAlertId());			
+			if (updateresult == 0) {
+				info.put("status", "0");
+				info.put("message", "Something went wrong");
+				return info;
+			}
+			info.put("status", "1");
+			info.put("message", "PushAlertLog updated successfully");
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			e.printStackTrace();
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+}

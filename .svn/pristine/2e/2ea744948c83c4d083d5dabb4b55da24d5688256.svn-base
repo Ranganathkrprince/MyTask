@@ -1,0 +1,165 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_invigilator_duty")
+public class InvigilatorDuty {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exStartDate;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "invigilator1", nullable = true)
+	private Staffpersonal invigilator1;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "invigilator2", nullable = true)
+	private Staffpersonal invigilator2;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "invigilator3", nullable = true)
+	private Staffpersonal invigilator3;
+	
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "reserved", nullable = true)
+	private Staffpersonal reserved;
+	
+	private Long exExamType;
+	private int noOfStudent;
+	
+	private String exSemesterType;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "room_id", nullable = true)
+	private RoomMaster room;
+
+	public Long getId() {
+		return id;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExStartDate() {
+		return exStartDate;
+	}
+
+	public Staffpersonal getInvigilator1() {
+		return invigilator1;
+	}
+
+	public Staffpersonal getInvigilator2() {
+		return invigilator2;
+	}
+
+	public Staffpersonal getInvigilator3() {
+		return invigilator3;
+	}
+
+	public Staffpersonal getReserved() {
+		return reserved;
+	}
+
+	public Long getExExamType() {
+		return exExamType;
+	}
+
+	public int getNoOfStudent() {
+		return noOfStudent;
+	}
+
+	public String getExSemesterType() {
+		return exSemesterType;
+	}
+
+	public RoomMaster getRoom() {
+		return room;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExStartDate(Date exStartDate) {
+		this.exStartDate = exStartDate;
+	}
+
+	public void setInvigilator1(Staffpersonal invigilator1) {
+		this.invigilator1 = invigilator1;
+	}
+
+	public void setInvigilator2(Staffpersonal invigilator2) {
+		this.invigilator2 = invigilator2;
+	}
+
+	public void setInvigilator3(Staffpersonal invigilator3) {
+		this.invigilator3 = invigilator3;
+	}
+
+	public void setReserved(Staffpersonal reserved) {
+		this.reserved = reserved;
+	}
+
+	public void setExExamType(Long exExamType) {
+		this.exExamType = exExamType;
+	}
+
+	public void setNoOfStudent(int noOfStudent) {
+		this.noOfStudent = noOfStudent;
+	}
+
+	public void setExSemesterType(String exSemesterType) {
+		this.exSemesterType = exSemesterType;
+	}
+
+	public void setRoom(RoomMaster room) {
+		this.room = room;
+	}
+
+	@Override
+	public String toString() {
+		return "InvigilatorDuty [id=" + id + ", academicYear=" + academicYear + ", exCreateDate=" + exCreateDate
+				+ ", exStartDate=" + exStartDate + ", invigilator1=" + invigilator1 + ", invigilator2=" + invigilator2
+				+ ", invigilator3=" + invigilator3 + ", reserved=" + reserved + ", exExamType=" + exExamType
+				+ ", noOfStudent=" + noOfStudent + ", exSemesterType=" + exSemesterType + ", room=" + room + "]";
+	}	
+}

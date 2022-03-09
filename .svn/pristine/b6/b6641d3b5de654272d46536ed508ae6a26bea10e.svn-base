@@ -1,0 +1,225 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class AboutFeedBackRequest {
+
+	private Long id ;	
+	
+	@NotNull@NotEmpty@NotBlank(message ="Please provide a name")
+	private String exName;	
+	private List  scale;	
+	private String exDescription;
+	
+	@NotNull(message = "Please provide exIsActive 0/1")
+	private Boolean exIsActive;
+	
+	private String exStudentId;                    //save feedback
+	private Long exTotalScaleValue;
+	private Long colleges ;	
+	private Long programmes ;
+	private Long programmeYear ;
+	private Long semster ;
+	private Long academicYear ;
+	private Long staff ;
+	private Long designation ;
+	private Long courses ;
+	private String exRemark;
+	private Long staffType;	
+	
+	
+	@NotNull@NotEmpty@NotBlank(message ="Please provide exType")
+	private String exType;
+	
+	private List aboutFeedBack ;
+	
+	private Long degree ;
+	private Long user;	
+	
+	
+	
+	
+	public Long getUser() {
+		return user;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public List getScale() {
+		return scale;
+	}
+
+	public void setScale(List scale) {
+		this.scale = scale;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public String getExStudentId() {
+		return exStudentId;
+	}
+
+	public void setExStudentId(String exStudentId) {
+		this.exStudentId = exStudentId;
+	}
+
+	public Long getExTotalScaleValue() {
+		return exTotalScaleValue;
+	}
+
+	public void setExTotalScaleValue(Long exTotalScaleValue) {
+		this.exTotalScaleValue = exTotalScaleValue;
+	}
+
+	public Long getColleges() {
+		return colleges;
+	}
+
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public Long getSemster() {
+		return semster;
+	}
+
+	public void setSemster(Long semster) {
+		this.semster = semster;
+	}
+
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public Long getStaff() {
+		return staff;
+	}
+
+	public void setStaff(Long staff) {
+		this.staff = staff;
+	}
+
+	public Long getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(Long designation) {
+		this.designation = designation;
+	}
+
+	public Long getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+
+	public String getExRemark() {
+		return exRemark;
+	}
+
+	public void setExRemark(String exRemark) {
+		this.exRemark = exRemark;
+	}
+
+	public Long getStaffType() {
+		return staffType;
+	}
+
+	public void setStaffType(Long staffType) {
+		this.staffType = staffType;
+	}
+
+	public String getExType() {
+		return exType;
+	}
+
+	public void setExType(String exType) {
+		this.exType = exType;
+	}
+
+	public List getAboutFeedBack() {
+		return aboutFeedBack;
+	}
+
+	public void setAboutFeedBack(List aboutFeedBack) {
+		this.aboutFeedBack = aboutFeedBack;
+	}
+
+	public Long getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+	@Override
+	public String toString() {
+		return "AboutFeedBackRequest [id=" + id + ", exName=" + exName + ", scale=" + scale + ", exDescription="
+				+ exDescription + ", exIsActive=" + exIsActive + ", exStudentId=" + exStudentId + ", exTotalScaleValue="
+				+ exTotalScaleValue + ", colleges=" + colleges + ", programmes=" + programmes + ", programmeYear="
+				+ programmeYear + ", semster=" + semster + ", academicYear=" + academicYear + ", staff=" + staff
+				+ ", designation=" + designation + ", courses=" + courses + ", exRemark=" + exRemark + ", staffType="
+				+ staffType + ", exType=" + exType + ", aboutFeedBack=" + aboutFeedBack + ", degree=" + degree
+				+ ", user=" + user + "]";
+	}
+	
+}

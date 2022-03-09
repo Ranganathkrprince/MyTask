@@ -1,0 +1,944 @@
+package com.niftem.app.implementation;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
+
+import javax.mail.MessagingException;
+import javax.transaction.Transactional;
+
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
+
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.EmailTemplates;
+import com.niftem.app.entity.FeeMaster;
+import com.niftem.app.entity.OrderTransaction;
+import com.niftem.app.entity.ProgrammeYear;
+import com.niftem.app.entity.RegistrationType;
+import com.niftem.app.entity.Semster;
+import com.niftem.app.entity.StudentPenaltyDetails;
+import com.niftem.app.entity.Studentadmission;
+import com.niftem.app.entity.Studentpersonal;
+import com.niftem.app.model.InitiatePayment;
+import com.niftem.app.model.LivePaymentResponse;
+import com.niftem.app.model.PaymentResponse;
+import com.niftem.app.repository.EmailTemplatesRepository;
+import com.niftem.app.repository.StudentPenaltyDetailsRepository;
+import com.niftem.app.service.PaymentService;
+import com.niftem.app.service.PdfService;
+import com.niftem.app.util.AutoManager;
+import com.niftem.app.util.EmailSending;
+import com.niftem.app.util.GFG;
+
+
+@Service
+@Transactional
+public class PaymentImpl extends AutoManager implements PaymentService{
+	
+	private static Logger logger = LoggerFactory.getLogger("payment-log");
+	  @Autowired private PdfService PdfService;
+	  
+		@Autowired
+		EmailTemplatesRepository emailTemplatesRepository;
+		
+		@Autowired
+		EmailSending emailSending;	
+		
+		@Autowired
+		GFG gfg;
+		@Autowired
+		private StudentPenaltyDetailsRepository studentPenaltyDetailsRepository;
+
+	@Override
+	public Map<String, Object> onlinePayInit(InitiatePayment request) {
+		Map<String, Object> info = new LinkedHashMap<>();		
+		try {				
+			if(request.getStudent() == null || request.getStudent().equals("")) {
+				info.put("status", "2");
+				info.put("message", "student Id are missing");
+				return info;
+			}						
+			Optional<Studentadmission> studentadmission = super.studentadmission.findByExIsDeleteAndExIsActiveAndId(false, true, request.getStudent());
+			if (!studentadmission.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "student not present");
+				return info;
+			}							
+			List<FeeMaster> feemaster = super.feeMaster.findByExIsDeleteAndProgrammesIdAndBatchIdAndDegreeIdAndSemsterIdAndProgrammeyearIdAndAcademicYearIdAndCategoryId
+					(false, studentadmission.get().getProgrammes().getId() , studentadmission.get().getBatch().getId() , studentadmission.get().getDegree().getId() , request.getSemester() , request.getProgrammeYear() , request.getAcademicYear() , studentadmission.get().getCategory().getId());
+			if(feemaster.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "Fee not created");
+				return info;	
+			}
+			List dataList = new LinkedList();
+			for(FeeMaster f :feemaster) {
+				Map<Object, Object> studentinfo = new HashMap<Object, Object>();
+				studentinfo.put("feename", f.getExFeeName());
+				studentinfo.put("amount", f.getExFeeAmount());
+				studentinfo.put("feeType", f.getFeetype().get(0).getExName());
+				studentinfo.put("feeId", f.getId());
+				studentinfo.put("feeTypeId",  f.getFeetype().get(0).getId());					
+				
+				List<OrderTransaction> transaction = transactionRepository.findByFeemasterIdAndPaymentstatusAndStudentadmissionIdAndAcademicYearIdAndSemesterIdAndProgrammeYearId(f.getId() , "Success",studentadmission.get().getId() , request.getAcademicYear() , request.getSemester() ,request.getProgrammeYear());
+				if(transaction.size() >0) {
+					 studentinfo.put("paymentStatus", 1);
+				}else {
+					 studentinfo.put("paymentStatus", 0);
+				}
+				
+				dataList.add(studentinfo);
+			}
+			
+			//info.put("semester", sem.get().getExName());	
+			//info.put("academicYear", academic.get().getExYear());					
+			////info.put("semesterId", sem.get().getId());	
+		//	info.put("academicYearId", academic.get().getId());	
+			info.put("details", dataList);																											
+			info.put("status", "1");
+			info.put("message", "success");
+			return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> initiatePayment(InitiatePayment request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {					
+			if(request.getExTotalAmount() == null || request.getExTotalAmount().equals("") || request.getExTotalAmount().equals("NA") || request.getExTotalAmount().startsWith("00") || request.getExTotalAmount().startsWith("0.0") || request.getExTotalAmount().equals("0")){				
+				info.put("status","2");
+				info.put("message","amount is invalid");
+				return info;
+			}
+			
+						
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false,true,request.getSemester());
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}
+			
+			Optional<ProgrammeYear> programmeYear = super.programmeYear.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(), true, false);
+			if (!programmeYear.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}			
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear(), false , true);
+			if (!academic.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+			Optional<Studentadmission> studentadmission = super.studentadmission.findByExIsDeleteAndExIsActiveAndId(false, true, request.getStudent());
+			if (!studentadmission.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "student not present");
+				return info;
+			}	
+			
+			Optional<RegistrationType> registration = super.registrationType.findByExIsDeleteAndExIsActiveAndId(false, true ,request.getRegistrationType());
+			if (!registration.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "RegistrationType not present");
+				return info;
+			}
+			
+			if(request.getRegistrationType() !=1) {			
+				if(request.getCourses().size()==0){
+					info.put("status", "2");
+					info.put("message", "Please select courses");
+					return info;
+				}
+			}
+			
+			List<FeeMaster> feemaster = super.feeMaster.findByExIsDeleteAndProgrammesIdAndBatchIdAndDegreeIdAndSemsterIdAndProgrammeyearIdAndAcademicYearIdAndCategoryIdAndIdIn
+					(false, studentadmission.get().getProgrammes().getId() , studentadmission.get().getBatch().getId() , studentadmission.get().getDegree().getId() , request.getSemester() , request.getProgrammeYear() , request.getAcademicYear() , studentadmission.get().getAllocatedCategory().getId() , request.getFeeId());
+			if(feemaster.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "Fee not created");
+				return info;	
+			}
+			
+			List<Studentpersonal> task = super.studentpersonal.findByStudentadmissionExIsActiveAndStudentadmissionId(true,registration.get().getId());
+			
+			  if (task.size() <= 0) {
+				  info.put("status", "2");
+				  info.put("message","Student not Present"); 
+				  return info; 
+				  }
+			
+			boolean ismobile = false; 
+			if(request.getIsMobile() !=null && request.getIsMobile() == true) {
+				ismobile = true;
+			}
+			
+			List<OrderTransaction> dataList = new LinkedList<OrderTransaction>();					
+			String orderid = super.commonHelper.genrateOrderId();
+			double paybleamount = 0;
+			Date date = new Date();
+			for(FeeMaster result: feemaster){
+				double amount = super.commonHelper.getAmount(result.getExFeeAmount());
+				OrderTransaction transaction = new OrderTransaction();
+				transaction.setTxnAmount(amount);
+				transaction.setPaymentSource(ismobile);
+				transaction.setStudentadmission(studentadmission.get());
+				transaction.setOrderId(orderid);					
+				transaction.setTxnDate(date);
+				transaction.setRegistration(registration.get());
+				transaction.setName(studentadmission.get().getExName());
+				transaction.setExRollNo(studentadmission.get().getExRollNo());
+				transaction.setEmail(task.get(0).getExEmailId());
+				transaction.setMobile(task.get(0).getExContactDetails());
+				transaction.setDegree(studentadmission.get().getDegree());
+				transaction.setAcademicYear(academic.get());				
+				transaction.setProgrammes(studentadmission.get().getProgrammes());
+				transaction.setSemester(sem.get());
+				transaction.setProgrammeYear(programmeYear.get());				
+				transaction.setPaymentstatus("initiated");	
+				transaction.setFeemaster(result);
+				dataList.add(transaction);					
+				paybleamount = paybleamount+amount;										
+			}
+			
+			
+			if(!dataList.isEmpty()) {
+				transactionRepository.saveAll(dataList);
+				// Update ex_student_registration table for supply/reEvaluation and xeroxCopy  
+				if(request.getRegistrationType() !=1) {
+					updateStudentRegistration(orderid , request.getRegistrationType() , request.getStudent(), request.getCourses());
+					
+				}		
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("orderid", orderid);
+				Random rnd = new Random();
+				int n = 100000 + rnd.nextInt(9000);					
+				info.put("txnReferenceNo", "WIN"+n);
+				info.put("bankReferenceNo", "WINFO"+n);			
+				info.put("amount", paybleamount);			
+				return info;
+			}else {
+				info.put("status", "0");
+				info.put("message", "Invalid Fee");
+				return info;					
+			}												
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+
+	private void updateStudentRegistration(String orderid, long registrationType, Long student,List<Long> courses) {
+		coursesRegistration.updateSupplyRevelOrderId(orderid, courses, registrationType, student);
+		
+	}
+
+	@Override
+	public Map<String, Object> updatePaymentStatus(PaymentResponse request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		transactionRepository.updateTrRecord(request.getF_code(), request.getMmp_txn(), request.getBank_txn(), request.getMer_txn());
+		// udpate payment status
+		String checkpaymetsource   = "false";
+		boolean status = false;
+		if(request.getF_code().equalsIgnoreCase("success")) {
+			status = true;
+		}
+		coursesRegistration.orderIdStatus(status, request.getMer_txn());
+		
+		List<OrderTransaction> val =  transactionRepository.findByOrderId(request.getMer_txn());
+		if(val.size() >0 &&(val.get(0).getPaymentSource() !=null && val.get(0).getPaymentSource() == true)){
+			info.put("status", "1");
+			
+		}else {
+			info.put("status", 2);
+		}	
+		if(val.size()>0) {
+			if(status) {
+				try {
+					
+		    		String localurl = commonHelper.getSettingValue("SEND_EMAIL");  	
+		        	if(localurl.equalsIgnoreCase("1")) {
+		        		sendEmail(val.get(0).getEmail(), val.get(0).getOrderId(), val.get(0).getName() ,request.getF_code());  
+		        	}
+					
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}		
+		}
+	
+		return info;
+	
+	}
+
+	private void sendEmail(String email, String orderid, String name, String stats) throws MessagingException {
+
+		// Get Email content from
+		new Thread(new Runnable() {
+			public void run() {
+				List<EmailTemplates> temlate = emailTemplatesRepository
+						.findByEmailCategoryIdIdAndExIsActiveAndExIsDelete(1L, true, false);
+				if (temlate.size() > 0) {
+					String messagebody = temlate.get(0).getEmailBody();
+					String localurl = commonHelper.getSettingValue("DOCUMENT_PATH");
+					// send Email to Student
+					Map<String, Object> tasks = PdfService.generateFeeReceiptPdf(orderid, null);
+					String status = (String) tasks.get("status");
+					if (status != null && status.equals("1")) {
+						String url = (String) tasks.get("url");
+						messagebody = messagebody.replace("Student_Name", name);
+						messagebody = messagebody.replace("Payment_status", stats);
+						localurl = localurl.replace("\\\\", "//");
+						try {
+							emailSending.sendSemesterRegistrationMail(email, messagebody, temlate.get(0).getSubject(),
+									localurl + url);
+						} catch (MessagingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+
+				}
+			}
+		}).start();
+	}
+	// live payment start from here
+
+	@Override
+	public Map<String, Object> initiateLivePayment(InitiatePayment request ,  ModelMap model) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {					
+			if(request.getExTotalAmount() == null || request.getExTotalAmount().equals("") || request.getExTotalAmount().equals("NA") || request.getExTotalAmount().startsWith("00") || request.getExTotalAmount().startsWith("0.0") || request.getExTotalAmount().equals("0")){				
+				info.put("status","2");
+				info.put("message","amount is invalid");
+				return info;
+			}
+			
+						
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false,true,request.getSemester());
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}
+			
+			Optional<ProgrammeYear> programmeYear = super.programmeYear.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(), true, false);
+			if (!programmeYear.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}			
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear(), false , true);
+			if (!academic.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+			Optional<Studentadmission> studentadmission = super.studentadmission.findByExIsDeleteAndExIsActiveAndId(false, true, request.getStudent());
+			if (!studentadmission.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "student not present");
+				return info;
+			}	
+			
+			Optional<RegistrationType> registration = super.registrationType.findByExIsDeleteAndExIsActiveAndId(false, true ,request.getRegistrationType());
+			if (!registration.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "RegistrationType not present");
+				return info;
+			}
+			
+			if(request.getRegistrationType() !=1) {			
+				if(request.getCourses().size()==0){
+					info.put("status", "2");
+					info.put("message", "Please select courses");
+					return info;
+				}
+			}
+			
+			List<FeeMaster> feemaster = super.feeMaster.findByExIsDeleteAndProgrammesIdAndBatchIdAndDegreeIdAndSemsterIdAndProgrammeyearIdAndAcademicYearIdAndCategoryIdAndIdIn
+					(false, studentadmission.get().getProgrammes().getId() , studentadmission.get().getBatch().getId() , studentadmission.get().getDegree().getId() , request.getSemester() , request.getProgrammeYear() , request.getAcademicYear() , studentadmission.get().getAllocatedCategory().getId() , request.getFeeId());
+			if(feemaster.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "Fee not created");
+				return info;	
+			}
+			
+			List<Studentpersonal> task = super.studentpersonal.findByStudentadmissionExIsActiveAndStudentadmissionId(true,studentadmission.get().getId());
+			
+			  if (task.size() <= 0) {
+				  info.put("status", "2");
+				  info.put("message","Student not Present"); 
+				  return info; 
+				  }
+			
+			boolean ismobile = false; 
+			if(request.getIsMobile() !=null && request.getIsMobile() == true) {
+				ismobile = true;
+			}
+			
+			List<OrderTransaction> dataList = new LinkedList<OrderTransaction>();					
+			String orderid = super.commonHelper.genrateOrderId();
+			double paybleamount = 0;
+			Date date = new Date();
+			for(FeeMaster result: feemaster){
+				double amount = super.commonHelper.getAmount(result.getExFeeAmount());
+				OrderTransaction transaction = new OrderTransaction();
+				
+				if(registration.get().getId() == 1) {
+					transaction.setTxnAmount(amount);
+				}else {
+					transaction.setTxnAmount(commonHelper.getAmount(request.getExTotalAmount()));
+					amount = commonHelper.getAmount(request.getExTotalAmount());
+				}	
+				
+				
+				transaction.setQueryStatus("N");
+				transaction.setPaymentSource(ismobile);
+				transaction.setStudentadmission(studentadmission.get());
+				transaction.setOrderId(orderid);					
+				transaction.setTxnDate(date);
+				transaction.setRegistration(registration.get());
+				transaction.setName(studentadmission.get().getExName());
+				transaction.setExRollNo(studentadmission.get().getExRollNo());
+				transaction.setEmail(task.get(0).getExEmailId());
+				transaction.setMobile(task.get(0).getExContactDetails());
+				transaction.setDegree(studentadmission.get().getDegree());
+				transaction.setQueryStatus("N");
+				transaction.setAcademicYear(academic.get());				
+				transaction.setProgrammes(studentadmission.get().getProgrammes());
+				transaction.setSemester(sem.get());
+				transaction.setProgrammeYear(programmeYear.get());				
+				transaction.setPaymentstatus("initiated");	
+				transaction.setFeemaster(result);
+				dataList.add(transaction);					
+				paybleamount = paybleamount+amount;										
+			}			
+			if(!dataList.isEmpty()) {
+				 DecimalFormat df = new DecimalFormat("0.00");
+				String amount = df.format(paybleamount);
+				transactionRepository.saveAll(dataList);
+				// Update ex_student_registration table for supply/reEvaluation and xeroxCopy  
+				if(request.getRegistrationType() !=1) {
+					updateStudentRegistration(orderid , request.getRegistrationType() , request.getStudent(), request.getCourses());
+					
+				}		
+				//calculate checksum
+				String key = commonHelper.getSettingValue("HDFC_KEY");
+				String SALT = commonHelper.getSettingValue("HDFC_SALT");
+				String productinfo = "ACADEMIC";
+				String udf1 = studentadmission.get().getExRollNo();	
+				String udf2 = studentadmission.get().getColleges().getExIdentifier();
+				String udf3 = studentadmission.get().getProgrammes().getExName();
+				String udf4 = task.get(0).getExContactDetails();
+				String udf5 = orderid;				
+				String cheksum = key+"|"+orderid+"|"+amount+"|"+productinfo+"|"+studentadmission.get().getExName()+"|"+task.get(0).getExEmailId()+"|"+udf1+"|"+udf2+"|"+udf3+"|"+udf4+"|"+udf5+"||||||"+SALT;
+				logger.info("Request Hash Key : "+cheksum);
+				
+				String response  = commonHelper.getSettingValue("RESPONSE_URL");
+				String surl = response;
+				String furl = response;
+				String curl = response;				
+				String hash = gfg.encryptThisString(cheksum);
+				
+				info.put("surl", surl);	
+				info.put("furl", furl);	
+				info.put("curl", curl);	
+				info.put("firstname", studentadmission.get().getExName());	
+				info.put("lastname", "NA");	
+				info.put("phone", task.get(0).getExContactDetails());	
+				info.put("key", key);	
+				info.put("hash", hash);	
+				info.put("txnid", orderid);	
+				info.put("productinfo", productinfo);	
+				info.put("amount", amount);	
+				info.put("email", task.get(0).getExEmailId());										
+				info.put("udf1", udf1);	
+				info.put("udf2", udf2);	
+				info.put("udf3", udf3);	
+				info.put("udf4", udf4);	
+				info.put("udf5", udf5);	
+				info.put("orderid", orderid);					
+				info.put("action", commonHelper.getSettingValue("HDFC_URL"));
+				
+				logger.info("Payment Request : "+info);
+				
+				info.put("status", "1");
+				info.put("message", "success");				
+				return info;
+			}else {
+				info.put("status", "0");
+				info.put("message", "Invalid Fee");
+				return info;					
+			}												
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> updateLivePaymentStatus(LivePaymentResponse request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {					
+			if(validateChecksum(request)) {
+				logger.info("CheckSum Match : ");
+				// check for duplicate update				
+				if(transactionRepository.findByOrderIdAndPaymentstatus(request.getTxnid(), request.getStatus()).size() >0) {
+					logger.info(" found duplicate transaction"+request.getTxnid());
+					info.put("status", 2);
+					return info;
+				}
+				
+				transactionRepository.updatetLiverRecord(request.getBankcode(), request.getBank_ref_num(), request.getDiscount(), request.getError() ,request.getMihpayid(), request.getMode() , request.getOffer(), request.getStatus(), request.getPG_TYPE(), request.getProductinfo() ,request.getUnmappedstatus() , request.getTxnid());
+				// udpate payment status
+				String checkpaymetsource   = "false";
+				boolean status = false;
+				if(request.getStatus().equalsIgnoreCase("success")) {
+					status = true;
+					
+				}
+				coursesRegistration.orderIdStatus(status, request.getTxnid());
+				
+				List<OrderTransaction> val =  transactionRepository.findByOrderId(request.getTxnid());
+				if(val.size() >0 &&(val.get(0).getPaymentSource() !=null && val.get(0).getPaymentSource() == true)){
+					info.put("status", "1");
+					
+				}else {
+					info.put("status", 2);
+				}	
+				if(val.size()>0) {
+					if(status) {
+						try {
+							
+				    		String localurl = commonHelper.getSettingValue("SEND_EMAIL");  	
+				        	if(localurl.equalsIgnoreCase("1")) {
+				        		sendEmail(val.get(0).getEmail(), val.get(0).getOrderId(), val.get(0).getName() ,request.getStatus());  
+				        	}
+							
+						} catch (MessagingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							logger.error("Exception occured" + e);
+							StringWriter errors = new StringWriter();
+							e.printStackTrace(new PrintWriter(errors));
+							logger.error(errors.toString());
+							info.put("status", "0");
+							info.put("message", "something went wrong");
+							return info;
+						}
+					}		
+				}
+				
+			}else {
+				logger.info("CheckSum Not Match : ");
+				info.put("status", 2);
+			}
+			return info;									
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+	
+	private boolean validateChecksum(LivePaymentResponse request) {
+		// calculate checksum
+		String key = commonHelper.getSettingValue("HDFC_KEY");
+		String SALT = commonHelper.getSettingValue("HDFC_SALT");
+		String hash = SALT+"|"+request.getStatus()+"||||||"+request.getUdf5()+"|"+request.getUdf4()+"|"+request.getUdf3()+"|"+request.getUdf2()+"|"+request.getUdf1()+"|"+request.getEmail()+"|"+request.getFirstname()+"|"+request.getProductinfo()+"|"+request.getAmount()+"|"+request.getTxnid()+"|"+key;		
+		logger.info("Response Hash Key : "+hash);		
+		String cheksum = gfg.encryptThisString(hash);
+		if(cheksum.equalsIgnoreCase(request.getHash())) {
+			return true;
+		}		
+		return false;		
+	}
+
+	@Override
+	public Map<String, Object> checkTransaction(String rderid) {
+		{
+			Map<String, Object> info = new LinkedHashMap<>();
+			Map<String, Object> info1 = new LinkedHashMap<>();
+			String mkey = commonHelper.getSettingValue("HDFC_KEY");
+			String salt = commonHelper.getSettingValue("HDFC_SALT");
+			String HDFC_ACK_API = commonHelper.getSettingValue("HDFC_ACK_API");
+			
+			String command = "verify_payment";
+			String hashstr = mkey  + "|" + command + "|" + rderid + "|" + salt ;
+			logger.info("Request Hash Key for Re-query: "+hashstr);
+			String hash = gfg.encryptThisString(hashstr);
+		
+			StringBuilder response=new StringBuilder();
+			
+			try {
+			URL wsUrl = new URL(HDFC_ACK_API);
+			Map<String,Object> params = new LinkedHashMap<String,Object>();
+	        params.put("key", mkey);
+	        params.put("hash", hash);
+	        params.put("var1", rderid);
+	        params.put("command", command);
+
+	        StringBuilder postData = new StringBuilder();
+	        for (Map.Entry<String,Object> param : params.entrySet()) {
+	            if (postData.length() != 0) postData.append('&');
+	            postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+	            postData.append('=');
+	            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+	        }
+	        logger.info("ReQuery Request"+params);
+	        byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+			
+	        HttpURLConnection conn = (HttpURLConnection)wsUrl.openConnection();
+	        conn.setRequestMethod("POST");
+	        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+	        conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+	        conn.setDoOutput(true);
+	        conn.getOutputStream().write(postDataBytes);
+
+	        Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+
+				
+				for (int c; (c = in.read()) >= 0;) {
+					response.append((char)c);
+				}
+				String resp = response.toString();
+				logger.info("Requery Response :"+resp);
+	
+					JSONObject json = new JSONObject(resp);  
+					System.out.println(json.toString());  
+					String statuscode = json.getString("status");  
+					List dataList = new LinkedList();
+					if(statuscode.equals("1")) {
+						
+						String transaction_details = json.getString("transaction_details");  
+						JSONObject json1 = new JSONObject(transaction_details); 
+						System.out.println(transaction_details); 				
+						 String mihpayid = json1.getJSONObject(rderid).getString("mihpayid");
+						 String status = json1.getJSONObject(rderid).getString("status");
+						 String amt = json1.getJSONObject(rderid).getString("amt");
+						 String bank_ref_num = json1.getJSONObject(rderid).getString("bank_ref_num");						 
+						 String error_Message = json1.getJSONObject(rderid).getString("error_Message");
+						 String bankcode = json1.getJSONObject(rderid).getString("bankcode");
+						 String error_code = json1.getJSONObject(rderid).getString("error_code");
+						 String mode = json1.getJSONObject(rderid).getString("mode");
+						 String card_no = json1.getJSONObject(rderid).getString("card_no");
+						 String PG_TYPE = json1.getJSONObject(rderid).getString("PG_TYPE");
+						 String productinfo = json1.getJSONObject(rderid).getString("productinfo");
+						 String unmappedstatus = json1.getJSONObject(rderid).getString("unmappedstatus");
+						 
+						 // update DB PG_TYPE
+							
+							transactionRepository.updatetRequeryRecord(bankcode, bank_ref_num, error_Message, error_code ,mihpayid, mode, card_no, status, PG_TYPE, productinfo ,unmappedstatus , rderid);
+							if(status.equalsIgnoreCase("success")) {								
+								coursesRegistration.orderIdStatus(true, rderid);
+							}
+							
+						 	info1.put("status", status);
+						 	info1.put("errormessage", error_Message);	
+							info1.put("txnReferenceNo", mihpayid);
+							info1.put("bankreferenceNo", bank_ref_num);
+							info1.put("txnamount", amt);
+							info1.put("orderid", rderid);							
+							dataList.add(info1);							
+							info.put("status", "1");
+							info.put("message", "success");
+							info.put("details", dataList);							
+							return info;
+					
+						 
+					}else {
+						info1.put("status", "NA");
+						info1.put("errormessage", "orderid not present");	
+						info1.put("txnReferenceNo", "NA");
+						info1.put("bankreferenceNo", "NA");
+						info1.put("txnamount", "NA");
+						info1.put("orderid", rderid);
+						dataList.add(info1);
+						info.put("status", "1");
+						info.put("message", "success");
+						info.put("details", dataList);
+						return info;
+					}
+									
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				info.put("status", "0");
+				info.put("message", "Something went wrong");
+				return info;
+			}	
+		}
+	}
+
+	 // Nodus Payment Start from here
+	
+	@Override
+	public Map<String, Object> initiatePaymentForNoDue(InitiatePayment request, ModelMap model) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {					
+			
+						
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false,true,request.getSemester());
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}
+			
+			Optional<ProgrammeYear> programmeYear = super.programmeYear.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(), true, false);
+			if (!programmeYear.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}			
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear(), false , true);
+			if (!academic.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+			Optional<Studentadmission> studentadmission = super.studentadmission.findByExIsDeleteAndExIsActiveAndId(false, true, request.getStudent());
+			if (!studentadmission.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "student not present");
+				return info;
+			}	
+			
+			Optional<RegistrationType> registration = super.registrationType.findByExIsDeleteAndExIsActiveAndId(false, true ,request.getRegistrationType());
+			if (!registration.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "RegistrationType not present");
+				return info;
+			}
+			
+			// get the no dues details
+			Optional<StudentPenaltyDetails> getpenalty = studentPenaltyDetailsRepository.findById(request.getPenaltyid());
+			if (!getpenalty.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Penalty  not present");
+				return info;
+			}
+		
+			List<Studentpersonal> task = super.studentpersonal.findByStudentadmissionExIsActiveAndStudentadmissionId(true,studentadmission.get().getId());			
+			  if (task.size() <= 0) {
+				  info.put("status", "2");
+				  info.put("message","Student not Present"); 
+				  return info; 
+				  }
+			
+			boolean ismobile = false; 
+			if(request.getIsMobile() !=null && request.getIsMobile() == true) {
+				ismobile = true;
+			}
+			
+							
+			String orderid = super.commonHelper.genrateOrderId();
+			Date date = new Date();
+			 DecimalFormat df = new DecimalFormat("0.00");
+				String amount = df.format(getpenalty.get().getAmount());
+				
+				OrderTransaction transaction = new OrderTransaction();
+				transaction.setTxnAmount(getpenalty.get().getAmount());
+				transaction.setQueryStatus("N");
+				transaction.setPaymentSource(ismobile);
+				transaction.setStudentadmission(studentadmission.get());
+				transaction.setNodueid(getpenalty.get().getId().toString());
+				transaction.setOrderId(orderid);					
+				transaction.setTxnDate(date);
+				transaction.setRegistration(registration.get());
+				transaction.setName(studentadmission.get().getExName());
+				transaction.setExRollNo(studentadmission.get().getExRollNo());
+				transaction.setEmail(task.get(0).getExEmailId());
+				transaction.setMobile(task.get(0).getExContactDetails());
+				transaction.setDegree(studentadmission.get().getDegree());
+				transaction.setQueryStatus("N");
+				transaction.setAcademicYear(academic.get());				
+				transaction.setProgrammes(studentadmission.get().getProgrammes());
+				transaction.setSemester(sem.get());
+				transaction.setProgrammeYear(programmeYear.get());				
+				transaction.setPaymentstatus("initiated");	
+			
+				transactionRepository.save(transaction);
+				
+					
+				//calculate checksum
+				String key = commonHelper.getSettingValue("HDFC_KEY");
+				String SALT = commonHelper.getSettingValue("HDFC_SALT");
+				String productinfo = "ACADEMIC";
+				String udf1 = studentadmission.get().getExRollNo();	
+				String udf2 = studentadmission.get().getColleges().getExIdentifier();
+				String udf3 = studentadmission.get().getProgrammes().getExName();
+				String udf4 = task.get(0).getExContactDetails();
+				String udf5 = orderid;				
+				String cheksum = key+"|"+orderid+"|"+amount+"|"+productinfo+"|"+studentadmission.get().getExName()+"|"+task.get(0).getExEmailId()+"|"+udf1+"|"+udf2+"|"+udf3+"|"+udf4+"|"+udf5+"||||||"+SALT;
+				logger.info("Request Hash Key : "+cheksum);
+				
+				String response  = commonHelper.getSettingValue("NODUE_RESPONSE_URL");
+				String surl = response;
+				String furl = response;
+				String curl = response;				
+				String hash = gfg.encryptThisString(cheksum);
+				
+				info.put("surl", surl);	
+				info.put("furl", furl);	
+				info.put("curl", curl);	
+				info.put("firstname", studentadmission.get().getExName());	
+				info.put("lastname", "NA");	
+				info.put("phone", task.get(0).getExContactDetails());	
+				info.put("key", key);	
+				info.put("hash", hash);	
+				info.put("txnid", orderid);	
+				info.put("productinfo", productinfo);	
+				info.put("amount", amount);	
+				info.put("email", task.get(0).getExEmailId());										
+				info.put("udf1", udf1);	
+				info.put("udf2", udf2);	
+				info.put("udf3", udf3);	
+				info.put("udf4", udf4);	
+				info.put("udf5", udf5);	
+				info.put("orderid", orderid);					
+				info.put("action", commonHelper.getSettingValue("HDFC_URL"));
+				
+				logger.info("Payment Request : "+info);
+				
+				info.put("status", "1");
+				info.put("message", "success");				
+				return info;
+													
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> nodupaymentResponse(LivePaymentResponse request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {					
+			if(validateChecksum(request)) {
+				logger.info("CheckSum Match : ");
+				// check for duplicate update				
+				if(transactionRepository.findByOrderIdAndPaymentstatus(request.getTxnid(), request.getStatus()).size() >0) {
+					logger.info(" found duplicate transaction"+request.getTxnid());
+					info.put("status", 2);
+					return info;
+				}
+				
+				transactionRepository.updatetLiverRecord(request.getBankcode(), request.getBank_ref_num(), request.getDiscount(), request.getError() ,request.getMihpayid(), request.getMode() , request.getOffer(), request.getStatus(), request.getPG_TYPE(), request.getProductinfo() ,request.getUnmappedstatus() , request.getTxnid());
+				// udpate payment status
+				String checkpaymetsource   = "false";
+				boolean status = false;
+				if(request.getStatus().equalsIgnoreCase("success")) {
+					status = true;
+					
+				}
+				coursesRegistration.orderIdStatus(status, request.getTxnid());
+				
+				List<OrderTransaction> val =  transactionRepository.findByOrderId(request.getTxnid());
+				if(val.size() >0 &&(val.get(0).getPaymentSource() !=null && val.get(0).getPaymentSource() == true)){
+					info.put("status", "1");
+					
+				}else {
+					info.put("status", 2);
+				}	
+				if(val.size()>0) {
+					if(status) {
+						try {
+							 studentPenaltyDetailsRepository.updatePayment(val.get(0).getNodueid());
+				    		 // update status 
+							
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							logger.error("Exception occured" + e);
+							StringWriter errors = new StringWriter();
+							e.printStackTrace(new PrintWriter(errors));
+							logger.error(errors.toString());
+							info.put("status", "0");
+							info.put("message", "something went wrong");
+							return info;
+						}
+					}		
+				}
+				
+			}else {
+				logger.info("CheckSum Not Match : ");
+				info.put("status", 2);
+			}
+			return info;									
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+
+
+	
+	
+}

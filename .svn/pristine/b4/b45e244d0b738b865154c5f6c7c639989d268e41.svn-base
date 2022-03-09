@@ -1,0 +1,112 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Stream;
+import com.niftem.app.entity.Studentadmission;
+
+public interface StreamRepository  extends CrudRepository<Stream, Long>{
+
+	Optional<Stream> findByIdAndExIsDeleteAndExIsActive(Long id,Boolean delete, Boolean active);
+
+	List<Stream> findByExNameAndExIsDelete(String trim, boolean b);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_stream set ex_name = ?1, ex_identifier = ?2 ,ex_is_active = ?3, ex_local_name = ?4 ,ex_description=?5 ,ex_update_date=?6 ,degree_id=?8,programmes_id=?9,department_id=?10 where id =?7", nativeQuery = true)
+	int updateStream(String exName, String exIdentifier, Boolean exIsActive, String exLocalName, String exDescription, Date date, Long id, Long degree_id, Long programmes_id, Long department_id);
+
+	List<Stream> findByExIsDelete(boolean b);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_stream set ex_is_delete = ?1,ex_is_active=?2 where id =?3", nativeQuery = true)
+	int DeleteStream(Boolean exIsDelete, Boolean is_active, Long id);
+
+	Optional<Stream> findByExIdentifierAndExIsActiveAndExIsDelete(String trim, boolean b, boolean c);
+	
+	@Modifying
+	@Transactional	
+	@Query(value = "insert into ex_stream_collage(stream_id,collage_id)values(?1,?2)", nativeQuery = true)
+	int saveStreamCollege(Long program_id, Long collage_id);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "delete from ex_stream_collage  where stream_id =?1", nativeQuery = true)
+	void deleteStreamCollege(Long id);
+
+	
+	
+	List<Stream> findByCollegeIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndExIsActiveAndExIsDelete (Long colleges, Long degree, Long programmes,
+			Long department , boolean actice , boolean delete);
+
+	List<Stream> findByExIdentifierAndExIsDeleteAndExIsActive(String trim, boolean b, boolean c);
+
+	List<Stream> findByExIdentifierAndExIsDelete(String exIdentifier, boolean b);
+
+	Optional<Stream> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, Long stream);
+
+	List<Stream> findByExNameAndExIsDeleteAndDepartmentId(String trim, boolean b, Long department);
+
+	List<Stream> findByExIdentifierAndExIsDeleteAndDepartmentId(String exIdentifier, boolean b, Long department);
+
+	List<Stream> findByCollegeIdInAndDegreeIdAndProgrammesIdAndDepartmentId(List<Long> colleges, Long degree,
+			Long programmes, Long department);
+
+	List<Stream> findByProgrammesIdAndDepartmentId(Long programmes, Long department);
+
+	Optional<Stream> findByIdAndExIsDeleteAndExIsActive(Long col, boolean b, boolean c);
+
+	Optional<Stream> findByIdAndExIsDeleteAndExIsActive(List<Long> stream, boolean b, boolean c);
+
+
+	List<Stream> findByExIdentifierAndExIsDeleteAndExIsActive(List<String> streamList, boolean b, boolean c);
+
+	List<Stream> findByExIdentifierAndExIsDeleteAndExIsActive(String[] streams, boolean b, boolean c);
+
+	Optional<Stream> findByIdAndExIsDeleteAndExIsActiveAndDegreeIdAndProgrammesIdAndDepartmentId(Long id, boolean b,
+			boolean c, Long id2, Long id3, Long id4);
+
+	Optional<Stream> findByIdAndExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeIdAndDepartmentId(Long id, boolean b,
+			boolean c, Long id2, Long id3, Long id4);
+
+	Optional<Stream> findByExIdentifierAndExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeIdAndDepartmentId(
+			String exIdentifier, boolean b, boolean c, Long id, Long id2, Long id3);
+
+	Optional<Stream> findByExIdentifierAndExIsActiveAndExIsDelete(Stream stream, boolean b, boolean c);
+
+	List<Stream> findByExIdentifierInAndExIsDeleteAndExIsActive(List<String> streamList, boolean b, boolean c);
+
+	
+	Optional<Stream> findByExIdentifierAndExIsActiveAndExIsDeleteAndDepartmentId(String trim, boolean b, boolean c,
+			Long id);
+
+	List<Stream> findByExIdentifierInAndExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeIdAndDepartmentId(
+			List<String> streamList, boolean b, boolean c, Long id, Long id2, Long id3);
+
+	Optional<Stream> findByExIdentifierInAndExIsDeleteAndExIsActiveAndProgrammesIdAndDepartmentIdAndDegreeId(
+			List<String> streamList, boolean b, boolean c, Long id, Long id2, Long id3);
+
+	List<Stream> findByIdAndExIsDelete(Long id, boolean b);
+
+	List<Stream> findByIdInAndExIsDelete(List<Stream> stream1, boolean b);
+
+	Optional<Stream> findByExIdentifierAndExIsDeleteAndExIsActiveAndProgrammesIdAndDepartmentIdAndDegreeId(String trim,
+			boolean b, boolean c, Long id, Long id2, Long id3);
+
+	Optional<Stream> findByDegreeIdAndProgrammesIdAndDepartmentIdAndExIsActiveAndExIsDelete(Long id,
+			 Long id2, Long id3, boolean b, boolean c);
+
+
+
+	
+
+
+}

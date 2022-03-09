@@ -1,0 +1,178 @@
+package com.niftem.app.model;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class UserRequest {
+    private Long id;
+	@NotEmpty@NotNull@NotBlank(message = "Please provide valid MobileNo")
+    private String exMobile;
+	@NotEmpty@NotNull@NotBlank(message = "Please provide valid EmailId")
+    private String exEmail;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a name")
+	private String exName;
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a userName")
+    private String exUserName;
+	@NotEmpty@NotNull@NotBlank(message = "Please provide password")
+	private String exPassword;
+	
+    private Long role; 
+    
+    private String exStartDate;
+    private String exEndDate;
+    private String exStartTime;
+    private String exEndTime;
+  
+    
+	@NotNull(message = "Please provide a exIsActive 0/1")
+	private Boolean exIsActive;
+    @Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+	private Date exUpdateDate;
+	private Boolean exIsAdmin;
+	@NotNull(message="please provide colleges")
+	private List<Long> colleges ;
+	
+	private List<Long> department ;
+	
+	private List<Long> degree ;
+	
+	private List<Long> programmes ;	
+	private Date exCreateDate;
+	public Long getId() {
+		return id;
+	}
+	public String getExMobile() {
+		return exMobile;
+	}
+	public String getExEmail() {
+		return exEmail;
+	}
+	public String getExName() {
+		return exName;
+	}
+	public String getExUserName() {
+		return exUserName;
+	}
+	public String getExPassword() {
+		return exPassword;
+	}
+	public Long getRole() {
+		return role;
+	}
+	public String getExStartDate() {
+		return exStartDate;
+	}
+	public String getExEndDate() {
+		return exEndDate;
+	}
+	public String getExStartTime() {
+		return exStartTime;
+	}
+	public String getExEndTime() {
+		return exEndTime;
+	}
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+	public Boolean getExIsAdmin() {
+		return exIsAdmin;
+	}
+	public List<Long> getColleges() {
+		return colleges;
+	}
+	public List<Long> getDepartment() {
+		return department;
+	}
+	public List<Long> getDegree() {
+		return degree;
+	}
+	public List<Long> getProgrammes() {
+		return programmes;
+	}
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setExMobile(String exMobile) {
+		this.exMobile = exMobile;
+	}
+	public void setExEmail(String exEmail) {
+		this.exEmail = exEmail;
+	}
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+	public void setExUserName(String exUserName) {
+		this.exUserName = exUserName;
+	}
+	public void setExPassword(String exPassword) {
+		this.exPassword = exPassword;
+	}
+	public void setRole(Long role) {
+		this.role = role;
+	}
+	public void setExStartDate(String exStartDate) {
+		this.exStartDate = exStartDate;
+	}
+	public void setExEndDate(String exEndDate) {
+		this.exEndDate = exEndDate;
+	}
+	public void setExStartTime(String exStartTime) {
+		this.exStartTime = exStartTime;
+	}
+	public void setExEndTime(String exEndTime) {
+		this.exEndTime = exEndTime;
+	}
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+	public void setExIsAdmin(Boolean exIsAdmin) {
+		this.exIsAdmin = exIsAdmin;
+	}
+	public void setColleges(List<Long> colleges) {
+		this.colleges = colleges;
+	}
+	public void setDepartment(List<Long> department) {
+		this.department = department;
+	}
+	public void setDegree(List<Long> degree) {
+		this.degree = degree;
+	}
+	public void setProgrammes(List<Long> programmes) {
+		this.programmes = programmes;
+	}
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+	@Override
+	public String toString() {
+		return "UserRequest [id=" + id + ", exMobile=" + exMobile + ", exEmail=" + exEmail + ", exName=" + exName
+				+ ", exUserName=" + exUserName + ", exPassword=" + exPassword + ", role=" + role + ", exStartDate="
+				+ exStartDate + ", exEndDate=" + exEndDate + ", exStartTime=" + exStartTime + ", exEndTime=" + exEndTime
+				+ ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete + ", exUpdateDate=" + exUpdateDate
+				+ ", exIsAdmin=" + exIsAdmin + ", colleges=" + colleges + ", department=" + department + ", degree="
+				+ degree + ", programmes=" + programmes + ", exCreateDate=" + exCreateDate + "]";
+	}
+
+}

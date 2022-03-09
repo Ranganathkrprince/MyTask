@@ -1,0 +1,84 @@
+package com.niftem.app.controller;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.niftem.app.entity.OrderTransaction;
+import com.niftem.app.repository.TransactionRepository;
+import com.niftem.app.service.PaymentService;
+import com.niftem.app.service.SchedulerService;
+@RestController
+public class SchedulerController {
+    private final int POOL_SIZE1 = 60000;   
+    
+	private static Logger logger = LoggerFactory.getLogger("master-log");
+	
+	@Autowired
+	SchedulerService schedulerService;
+	
+	@Autowired
+	public TransactionRepository transactionRepository;
+	
+	@Autowired
+	private PaymentService paymentService;
+
+    @Scheduled(fixedRate = POOL_SIZE1)
+    public void updateSeatAllocation(){
+    	try {   		
+    		schedulerService.updateStudentDetails();    		   	
+    	}catch(Exception e){
+			logger.error("Exception occured :" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+    	}   	
+     }
+    
+    
+    private final int POOL_SIZE = 60000;
+    
+    @Scheduled(fixedRate = POOL_SIZE)
+    public void scheduleTaskWithFixedRate(){
+    	try {
+    		 String duration = "15";	
+			DateFormat timeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			Date date = new Date();
+			Calendar cl = Calendar.getInstance();
+	        cl.setTime(date);
+	        cl.add(Calendar.MINUTE, -30-Integer.valueOf(duration));
+	        String currentTime  = timeformat.format(cl.getTime());
+	        
+	        Calendar c2 = Calendar.getInstance();
+	        c2.setTime(date);
+	        c2.add(Calendar.MINUTE, -30);
+	        String endTime  = timeformat.format(c2.getTime());	        
+	        System.out.println(">>>>>>currentTime>>>>"+currentTime);	        
+	        System.out.println(">>>>>endTime>>>>>"+endTime);						    		
+    		ArrayList<OrderTransaction> retvalue = transactionRepository.findUserByPaymentStatus("initiated"  ,currentTime+":00" ,endTime+":00");
+    		
+    		if(retvalue.size() >0){
+    			paymentService.checkTransaction(retvalue.get(0).getOrderId());
+    	   	}
+    		
+    	}catch(Exception e){
+			logger.error("Exception occured :" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+    	}
+    	
+     }
+}
+
+

@@ -1,0 +1,40 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.TeachingSummary;
+
+public interface TeachingSummaryRepository extends CrudRepository<TeachingSummary, Long>{
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_teaching_summary set ex_holiday_dates = ?1 , ex_teaching_days = ?2  , ex_update_date =?3  , ex_year =?4  , academic_year_id = ?5 , month_name_id =?6  , ex_is_even =?7 where id =?8", nativeQuery = true)
+	int updatesummaryRecord(String holiday , int teachingdate , Date updatedate, String year , Long academic , Long month ,Boolean is_even , Long id);
+
+	
+	List<TeachingSummary> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndMonthnameId(boolean delete, boolean active,Long academicYear, Long monthid);
+
+	List<TeachingSummary> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndMonthnameIdAndExYear(boolean delete, boolean active,Long academicYear, Long monthid , String year);
+
+
+	List<TeachingSummary> findByExIsDelete(boolean b);
+
+	@Query(value = "select * from ex_teaching_summary where  ex_is_active = ?1 AND ex_is_delete = ?2 AND academic_year_id = ?3 AND ex_is_even =?4 order by month_name_id", nativeQuery = true)
+	List<TeachingSummary> getRecord(boolean active, boolean delete,Long academicYear, Boolean ex_is_even);
+
+
+	List<TeachingSummary> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndExIsEven(boolean b, boolean c,
+			Long academicYear, Boolean exIsEven);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_teaching_summary set ex_is_delete = ?1 , ex_is_active = ?2 where id =?3", nativeQuery = true)
+	int deleteTeachingSummry(Boolean exIsDelete, Boolean is_active, Long id);
+}

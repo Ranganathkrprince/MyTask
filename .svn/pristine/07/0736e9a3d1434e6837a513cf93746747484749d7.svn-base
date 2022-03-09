@@ -1,0 +1,2812 @@
+package com.niftem.app.implementation;
+
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
+import java.util.UUID;
+
+import javax.transaction.Transactional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.niftem.app.dao.DashboardDao;
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.AccountApprove;
+import com.niftem.app.entity.ApproveType;
+import com.niftem.app.entity.AssignHostel;
+import com.niftem.app.entity.Batch;
+import com.niftem.app.entity.CertificateType;
+import com.niftem.app.entity.Colleges;
+import com.niftem.app.entity.Complaint;
+import com.niftem.app.entity.ComplaintType;
+import com.niftem.app.entity.CustomerSmsLog;
+import com.niftem.app.entity.Dashboard;
+import com.niftem.app.entity.Degree;
+import com.niftem.app.entity.EmailTemplates;
+import com.niftem.app.entity.EvaluatorList;
+import com.niftem.app.entity.ExamRegulations;
+import com.niftem.app.entity.Hostel;
+import com.niftem.app.entity.ModuleMapping;
+import com.niftem.app.entity.ProgrammeYear;
+import com.niftem.app.entity.Programmes;
+import com.niftem.app.entity.Role;
+import com.niftem.app.entity.SemesterProgressReport;
+import com.niftem.app.entity.Semster;
+import com.niftem.app.entity.StaffComplaint;
+import com.niftem.app.entity.StaffComplaintType;
+import com.niftem.app.entity.Staffpersonal;
+import com.niftem.app.entity.StudentBankDetails;
+import com.niftem.app.entity.StudentCertificate;
+import com.niftem.app.entity.StudentCertificateRequeest;
+import com.niftem.app.entity.StudentPenaltyDetails;
+import com.niftem.app.entity.Studentadmission;
+import com.niftem.app.entity.User;
+import com.niftem.app.model.AssignHostelRequest;
+import com.niftem.app.model.CommonRequest;
+import com.niftem.app.model.ComplaintRequest;
+import com.niftem.app.model.ComplaintTypeRequest;
+import com.niftem.app.model.EvaluationDetailsRequest;
+import com.niftem.app.model.ModuleMappingRequest;
+import com.niftem.app.model.NoduR;
+import com.niftem.app.model.Regulation;
+import com.niftem.app.model.SemesterEligibility;
+import com.niftem.app.model.SemesterRegistrationRequest;
+import com.niftem.app.model.StudentBankDetailsRequest;
+import com.niftem.app.repository.AccountApproveRepository;
+import com.niftem.app.repository.EmailTemplatesRepository;
+import com.niftem.app.repository.ExamRegulationsRepository;
+import com.niftem.app.repository.StaffComplaintRepository;
+import com.niftem.app.repository.StaffComplaintTypeRepository;
+import com.niftem.app.repository.StudentBankDetailsRepository;
+import com.niftem.app.repository.StudentCertificateRepository;
+import com.niftem.app.repository.StudentCertificateRequeestRepository;
+import com.niftem.app.repository.StudentPenaltyDetailsRepository;
+import com.niftem.app.service.HelpDeskService;
+import com.niftem.app.util.AutoManager;
+import com.niftem.app.util.EmailSending;
+
+
+
+@Service
+@Transactional
+public class HelpDeskImpl extends AutoManager implements HelpDeskService {
+
+	private static Logger logger = LoggerFactory.getLogger("master-log");
+	private static Logger excellog = LoggerFactory.getLogger("excel-log");
+
+	@Autowired
+	DashboardDao dashboardDao;
+	
+	@Autowired
+	EmailTemplatesRepository emailTemplatesRepository;
+	
+	@Autowired
+	EmailSending emailSending;	
+
+	@Autowired
+	AccountApproveRepository accountpprove;
+	
+	@Autowired
+	ExamRegulationsRepository regulation;
+	
+	@Autowired
+	StudentCertificateRequeestRepository studentrequest;
+	
+	@Autowired
+	private StudentBankDetailsRepository studentBankDetailsRepository;
+	
+	@Autowired
+	private StudentPenaltyDetailsRepository studentPenaltyDetailsRepository;
+	
+	@Autowired
+	private StaffComplaintTypeRepository staffComplaintTypeRepository;
+	
+	@Autowired
+	private StaffComplaintRepository staffComplaintRepository;
+	
+	@Autowired
+	private StudentCertificateRepository certificate;
+	
+	@Override
+	public Map<String, String> saveComplaintType(ComplaintTypeRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			Optional<Role> role = super.role.findByIdAndExIsDeleteAndExIsActive(request.getRole(), false, true);
+			if (!role.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Role Id  not present");
+				return info;
+			}
+			List<ComplaintType> result = super.complaintTypeRepository.findByExNameAndExIsDelete(request.getExName(),
+					false);
+			if (result.size() > 0) {
+				info.put("status", "2");
+				info.put("message", "ComplaintType already exists");
+			} else {
+				Date date = new Date();
+				ComplaintType ComplaintType = new ComplaintType();
+				ComplaintType.setExName(request.getExName());
+				ComplaintType.setExIsDelete(false);
+				ComplaintType.setExCreateDate(date);
+				ComplaintType.setExIsActive(request.getExIsActive());
+				ComplaintType.setRole(role.get());
+				super.complaintTypeRepository.save(ComplaintType);
+				info.put("status", "1");
+				info.put("message", "ComplaintType created successfully");
+				return info;
+			}
+			logger.info("saveComplaintType Request : " + info);
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			e.printStackTrace();
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getComplaintType(ComplaintType request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List<ComplaintType> task = super.complaintTypeRepository.findByExIsDelete(false);
+			List dataList = new LinkedList();
+			for (ComplaintType e : task) {
+				Map<Object, Object> ComplaintTypedata = new HashMap<Object, Object>();
+				ComplaintTypedata.put("id", e.getId());
+				ComplaintTypedata.put("exName", e.getExName());
+				ComplaintTypedata.put("exIsActive", e.getExIsActive());
+				ComplaintTypedata.put("exIsDelete", e.getExIsDelete());
+				ComplaintTypedata.put("exCreateDate", e.getExCreateDate());
+				ComplaintTypedata.put("exUpdateDate", e.getExUpdateDate());
+				ComplaintTypedata.put("role",e.getRole() == null ?"NA" : e.getRole().getExName());
+				ComplaintTypedata.put("roleId", e.getRole() == null ?"NA" :e.getRole().getId());
+				dataList.add(ComplaintTypedata);
+			}
+			info.put("status", "1");
+			info.put("message", "success");
+			info.put("details", dataList);
+			return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+
+	}
+
+	@Override
+	public Map<String, Object> updateComplaintType(ComplaintTypeRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			Optional<ComplaintType> complaintType = super.complaintTypeRepository
+					.findByExIsDeleteAndExIsActiveAndId( false, true,request.getId());
+			if (!complaintType.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "complaintType name not present");
+				return info;
+			}
+			Optional<Role> role = super.role.findByIdAndExIsDeleteAndExIsActive(request.getRole(), false, true);
+			if (!role.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Role Id  not present");
+				return info;
+			}
+			Date date = new Date();
+			int retval = super.complaintTypeRepository.updateComplaintType(request.getExName(), date, request.getId() ,request.getRole());
+			if (retval == 1) {
+				info.put("status", "1");
+				info.put("message", "Complainttype updated successfully");
+				return info;
+			} else {
+				info.put("status", "2");
+				info.put("message", "complaintType not present");
+				return info;
+
+			}
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+
+	}
+
+	@Override
+	public Map<String, Object> deleteComplaintType(ComplaintTypeRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			Optional<ComplaintType> complaintType = super.complaintTypeRepository
+					.findByExIsDeleteAndExIsActiveAndId( false, true,request.getId());
+			if (!complaintType.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "complaint name not present");
+				return info;
+			}
+
+			Date date = new Date();
+			int retval = super.complaintTypeRepository.deleteComplaintType(true, request.getId() ,false);
+			if (retval == 1) {
+				info.put("status", "1");
+				info.put("message", "ComplaintType deleted successfully");
+				return info;
+			} else {
+				info.put("status", "2");
+				info.put("message", "complaintType not present");
+				return info;
+
+			}
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+
+	}
+
+	@Override
+	public Map<String, Object> registerComplain(ComplaintRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			if (request.getStudentId() == null || request.getStudentId().equals("")
+					|| request.getStudentId().equals("NA")) {
+				info.put("status", "2");
+				info.put("message", "StudentId is required");
+				return info;
+			}
+			if (request.getExDescription() == null || request.getExDescription().equals("")
+					|| request.getExDescription().equals("NA")) {
+				info.put("status", "2");
+				info.put("message", "Description is required");
+				return info;
+			}
+
+			if (request.getProgrammes() == null || request.getProgrammes().equals("")
+					|| request.getProgrammes().equals("NA")) {
+				info.put("status", "2");
+				info.put("message", "Programmes is required");
+				return info;
+			}
+
+			if (request.getProgrammeYear() == null || request.getProgrammeYear().equals("")
+					|| request.getProgrammeYear().equals("NA")) {
+				info.put("status", "2");
+				info.put("message", "Programme year is required");
+				return info;
+			}
+
+			if (request.getSemester() == null || request.getSemester().equals("")
+					|| request.getSemester().equals("NA")) {
+				info.put("status", "2");
+				info.put("message", "Semester is required");
+				return info;
+			}
+			if (request.getAcademicYear() == null || request.getAcademicYear().equals("")
+					|| request.getAcademicYear().equals("NA")) {
+				info.put("status", "2");
+				info.put("message", "AcademicYear is required ");
+				return info;
+			}
+			if (request.getComplaintType() == null || request.getComplaintType().equals("")
+					|| request.getComplaintType().equals("NA")) {
+				info.put("status", "2");
+				info.put("message", "ComplaintType is required ");
+				return info;
+			}
+			if (request.getDegree() == null || request.getDegree().equals("") || request.getDegree().equals("NA")) {
+				info.put("status", "2");
+				info.put("message", "Degree is required ");
+				return info;
+			}
+
+			Optional<AcademicYear> academicYear = super.academicYear
+					.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear(), false, true);
+			if (!academicYear.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "AcademicYear not present");
+				return info;
+			}
+
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDegree());
+			if (!degree.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+
+			Optional<Programmes> uid = super.programmes.findByExIsDeleteAndExIsActiveAndId(false, true,
+					request.getProgrammes());
+			if (!uid.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Programmes not present");
+				return info;
+			}
+
+			Optional<ProgrammeYear> programyear = super.programmeYear
+					.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(), true, false);
+			if (!programyear.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "ProgrammeYear not present");
+				return info;
+			}
+
+			Optional<Semster> sem = super.semester.findByIdAndExIsActiveAndExIsDelete(request.getSemester(), true,
+					false);
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", " Semster not present");
+				return info;
+			}
+
+			Optional<ComplaintType> complaintType = super.complaintTypeRepository
+					.findByIdAndExIsActiveAndExIsDelete(request.getComplaintType(), true, false);
+			if (!sem.isPresent()) {
+				info.put("status", "2");
+				info.put("message", " complaintType not present");
+				return info;
+			}
+
+			Optional<Colleges> Colleges = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges(),
+					false, true);
+			if (!Colleges.isPresent()) {
+				info.put("status", "2");
+				info.put("message", " college not present");
+				return info;
+			}
+//			Optional<User> user = super.user.findByExIsDeleteAndId(request.getUser(), false);
+//			if (!user.isPresent()) {
+//				info.put("status", "2");
+//				info.put("message", " user not present");
+//				return info;
+//			}
+			String ticket_number = "";
+			String idIncrement = null;
+
+			List<Complaint> max_id = (List<Complaint>) super.complaintRepository.findAll();
+			System.out.println("??????????????max_id????????????????????" + max_id.size());
+			if (max_id.size() > 0) {
+				Optional<Complaint> task = super.complaintRepository.findById(max_id.get(max_id.size() - 1).getId());
+				idIncrement = String.format("%0" + task.get().getExTicketNumber().replace("TKT", "").length() + "d",
+						Integer.parseInt(task.get().getExTicketNumber().replace("TKT", "")) + 1);
+				ticket_number = "TKT" + idIncrement;
+			} else {
+				idIncrement = String.format("%08d", 1);
+				ticket_number = "TKT" + idIncrement;
+			}
+			Complaint complaint = new Complaint();
+			Date date = new Date();
+			complaint.setExTicketNumber(ticket_number);
+			complaint.setExCreateDate(date);
+			complaint.setExDescription(request.getExDescription());
+			complaint.setProgrammes(uid.get());
+			complaint.setAcademicYear(academicYear.get());
+			complaint.setProgrammeYear(programyear.get());
+			complaint.setSemester(sem.get());
+			complaint.setExRollNo(request.getStudentId());
+			complaint.setBankReferenceNo(request.getBankReferenceNo());
+			complaint.setTxnReferenceNo(request.getTxnReferenceNo());
+			complaint.setComplaintStatus(1);
+			complaint.setComplaintType(complaintType.get());
+			complaint.setOrderId(request.getOrderId());
+			complaint.setColleges(Colleges.get());
+			complaint.setDegree(degree.get());
+//			complaint.setUser(user.get());
+			super.complaintRepository.save(complaint);
+
+			info.put("status", "1");
+			info.put("message", "Complaint register successfully");
+			logger.info("Complaint Response : " + info);
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+
+	}
+
+	@Override
+	public Map<String, Object> updateComplaintStatus(ComplaintRequest request) {
+
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			if (request.getExTicketNumber() == null || request.getExTicketNumber().equals("")|| request.getExTicketNumber().equals("null") || request.getExTicketNumber().trim().isEmpty()) {
+				info.put("status", "2");
+				info.put("message", "TicketNumber is required");
+				return info;
+			}
+			if (request.getComplaintStatus() == null || request.getComplaintStatus().equals("")	|| request.getComplaintStatus().equals("null")) {
+				info.put("status", "2");
+				info.put("message", "ComplaintStatus is required");
+				return info;
+			}
+
+			if (request.getUser() == null || request.getUser().equals("") || request.getUser().equals("null")) {
+				info.put("status", "2");
+				info.put("message", "User is Required");
+				return info;
+			}
+			Optional<Complaint> complaint = super.complaintRepository.findByExTicketNumber(request.getExTicketNumber());
+			if (!complaint.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "TicketNumber not present");
+				return info;
+			}
+			System.out.println(">>>>>>>>>>>>>>>>>>>>" + complaint.get().getComplaintStatus());
+			if (complaint.get().getComplaintStatus() == 3) {
+				info.put("status", "2");
+				info.put("message", "Complaint resolved for particular TicketNumber");
+				return info;
+			} else {
+				Date date = new Date();
+				int retval = super.complaintRepository.updateComplaintRecord(request.getComplaintStatus(),
+						request.getExTicketNumber().trim(), request.getExremark(), date, request.getUser());
+				if (retval == 1) {
+					info.put("status", "1");
+					info.put("message", "ComplaintStatus updated successfully");
+					return info;
+				} else {
+					info.put("status", "2");
+					info.put("message", "TicketNumber not present");
+					return info;
+				}
+
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+
+	}
+
+	@Override
+	public Map<String, Object> getComplainList(ComplaintRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			ArrayList<Object[]> helpdesk = new ArrayList<Object[]>();
+			List dataList = new LinkedList();
+			logger.info("Request for complaint" + request.toString());
+			List<Dashboard> dashboardCount = super.dashboardRepository
+					.findByUserIdAndExIsDeleteAndExIsActive(request.getUser(), false, true);
+			if (dashboardCount.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Records not present ");
+				return info;
+			}
+			String sacademic = dashboardCount.get(0).getAcademicYear();
+			String sprogram = dashboardCount.get(0).getProgrammes();
+			String sprogramyear = dashboardCount.get(0).getProgrammeYear();
+			String ssemester = dashboardCount.get(0).getSemester();
+			String scollege = dashboardCount.get(0).getColleges();
+			String sdegree = dashboardCount.get(0).getDegree();
+
+			if (sacademic.equals("")) {
+				info.put("status", "2");
+				info.put("message", "Academic Year is required");
+				return info;
+			}
+			helpdesk = (ArrayList<Object[]>) dashboardDao.gethelpDEsk(sprogram, sacademic, ssemester, sprogramyear,
+					scollege, sdegree);
+			if (helpdesk.size() > 0) {
+				for (Object[] e : helpdesk) {
+					Map<Object, Object> data = new HashMap<Object, Object>();
+					data.put("exTicketNumber", e[0]);
+					data.put("exDescription", e[1]);
+					if (e[2].toString().equals("1")) {
+						data.put("complaintStatus", "Open");
+					} else if (e[2].toString().equals("2")) {
+						data.put("complaintStatus", "Progress");
+					} else if (e[2].toString().equals("3")) {
+						data.put("complaintStatus", "Resolved");
+					} else {
+						data.put("complaintStatus", "NA");
+					}
+					data.put("complaintType", e[3]);
+					data.put("studentId", e[4]);
+					data.put("complaintTypeId", e[5]);
+					data.put("orderId", e[6]);
+					dataList.add(data);
+				}
+
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("details", dataList);
+				return info;
+			}
+			info.put("status", "2");
+			info.put("message", "No Records Found");
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getComplainListOnStatus(ComplaintRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+
+			if (request.getComplaintStatus() == null || request.getComplaintStatus().equals("")
+					|| request.getComplaintStatus().equals("null")) {
+				info.put("status", "2");
+				info.put("message", "ComplaintStatus is required");
+				return info;
+			}
+
+			List dataList = new LinkedList();
+
+			List<Complaint> complaint = super.complaintRepository.findByComplaintStatus(request.getComplaintStatus());
+			if (complaint.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Records not present");
+				return info;
+			}
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/YYYY");
+
+			for (Complaint e : complaint) {
+				Map<Object, Object> data = new HashMap<Object, Object>();
+				data.put("exTicketNumber", e.getExTicketNumber());
+				if (e.getComplaintStatus().toString().equals("1")) {
+					data.put("complaintStatus", "Open");
+					data.put("exreslovedDate", "NA");
+					data.put("exRemark", "NA");
+
+				} else if (e.getComplaintStatus().toString().equals("2")) {
+					data.put("complaintStatus", "Progress");
+					data.put("exreslovedDate", "NA");
+					data.put("exRemark", "NA");
+
+				} else if (e.getComplaintStatus().toString().equals("3")) {
+					data.put("complaintStatus", "Resolved");
+					data.put("exReslovedDate", simpleDateFormat.format(e.getExUpdateDate()));
+					data.put("exRemark", e.getExRemark());
+
+				} else {
+					data.put("complaintStatus", "NA");
+				}
+				data.put("complaintType", e.getComplaintType().getExName());
+				data.put("studentId", e.getExRollNo());
+				data.put("complaintTypeId", e.getComplaintType().getId());
+				data.put("orderId", e.getOrderId());
+				data.put("exRegisterDate", simpleDateFormat.format(e.getExCreateDate()));
+				data.put("exDescription", e.getExDescription());
+
+				dataList.add(data);
+			}
+			info.put("status", "1");
+			info.put("message", "success");
+			info.put("details", dataList);
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getComplaitHistory(ComplaintRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+
+			if (request.getStudentId() == null || request.getStudentId().equals("")
+					|| request.getStudentId().equals("null")) {
+				info.put("status", "2");
+				info.put("message", "StudentId is required");
+				return info;
+			}
+
+			List dataList = new LinkedList();
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/YYYY");
+			List<Complaint> complaint = super.complaintRepository.findByExRollNo(request.getStudentId());
+			if (complaint.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Records not present");
+				return info;
+			}
+			for (Complaint e : complaint) {
+				Map<Object, Object> data = new HashMap<Object, Object>();
+				data.put("exTicketNumber", e.getExTicketNumber());
+				if (e.getComplaintStatus().toString().equals("1")) {
+					data.put("complaintStatus", "Open");
+					data.put("exreslovedDate", "NA");
+					data.put("exRemark", "NA");
+				} else if (e.getComplaintStatus().toString().equals("2")) {
+					data.put("complaintStatus", "Progress");
+					data.put("exReslovedDate", "NA");
+					data.put("exRemark", e.getExRemark());
+				} else if (e.getComplaintStatus().toString().equals("3")) {
+					data.put("complaintStatus", "Resolved");
+					data.put("exReslovedDate", simpleDateFormat.format(e.getExUpdateDate()));
+					data.put("exRemark", e.getExRemark());
+				} else {
+					data.put("complaintStatus", "NA");
+					data.put("exReslovedDate", "NA");
+				}
+				data.put("complaintType", e.getComplaintType().getExName());
+				data.put("exRollNo", e.getExRollNo());
+				data.put("complaintTypeId", e.getComplaintType().getId());
+				data.put("orderId", e.getOrderId());
+				data.put("exRegisterDate", simpleDateFormat.format(e.getExCreateDate()));
+				data.put("exDescription", e.getExDescription());
+
+				dataList.add(data);
+			}
+			info.put("status", "1");
+			info.put("message", "success");
+			info.put("details", dataList);
+			return info;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+
+	}
+
+	@Override
+	public Map<String, Object> sendRemark(ComplaintRequest request) {
+		List tasks = new ArrayList();
+		Map<String, Object> info = new LinkedHashMap<>();	
+		try {	
+			
+			logger.error("Request "+request.toString());
+			Optional<User> examann = super.user.findById(request.getUser());
+			if (!examann.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "User id not present");
+				return info;
+			}
+			
+			Optional<User> createby = super.user.findById(request.getUplodedByUserId());
+			if (!createby.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "User id not present");
+				return info;
+			}
+			
+			List<EmailTemplates> temlate = emailTemplatesRepository.findByEmailCategoryIdIdAndExIsActiveAndExIsDelete(4L, true, false);
+			if (temlate.size() < 0) {				
+				info.put("status", "2");
+				info.put("message", "Email template not present");
+				return info;
+			}
+				emailSending.qpMail(createby.get().getExEmail(), request.getExremark(), temlate.get(0).getSubject());
+				info.put("status", "1");
+				info.put("message", "Email has been sent successfully");
+				return info;
+						
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, String> getOtp(EvaluationDetailsRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			if (request.getStaffid() == null || request.getStaffid().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Expert is required");
+				return info;
+			}
+			
+			Optional<EvaluatorList> Staffpersonal = super.expertlist.findById(request.getStaffid());
+			if (!Staffpersonal.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Expert not present");
+				return info;
+			}  
+			CustomerSmsLog req = new CustomerSmsLog();
+				Date date = new Date();
+				String otp =genrateOtp();
+				req.setOtpcode(otp);
+				req.setExMobile(Staffpersonal.get().getExContactDetails());
+				req.setExCreateDate(date);
+				req.setExIsActive(0);
+				super.customersms.save(req);
+				
+				String Sms_Enable = commonHelper.getSettingValue("Sms_Enable");
+				  if(Sms_Enable.equalsIgnoreCase("1")) {
+					  return commonHelper.sendSms("Dear User , "+otp+" is the one time password for validate your login. please do not share this with anyone" ,Staffpersonal.get().getExContactDetails() , otp);
+				  }
+					  info.put("status", "1"); 
+					  info.put("otp", otp); 
+					  info.put("message", "OTP has been sent to your Mobile");
+				  
+					  return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			e.printStackTrace();
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+		
+	}
+
+	@Override
+	public Map<String, String> validateOtp(EvaluationDetailsRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, String> info = new LinkedHashMap<>();
+		try {
+			if (request.getStaffid() == null || request.getStaffid().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Expert is required");
+				return info;
+			}
+			
+			Optional<EvaluatorList> Staffpersonal = super.expertlist.findById(request.getStaffid());
+			if (!Staffpersonal.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Expert not present");
+				return info;
+			}
+			
+			if (request.getOtpcode() == null || request.getOtpcode().equals("")) {
+				info.put("status", "2");
+				info.put("message", "OTP is missing");
+				return info;
+			}
+			
+			List<CustomerSmsLog> temlate = customersms.findByExMobileAndOtpcode(Staffpersonal.get().getExContactDetails(), request.getOtpcode());
+			if (temlate.size() > 0) {	
+				if(temlate.get(0).getExIsActive() == 2) {
+					info.put("status", "2");
+					info.put("message", "OTP  Has  Expired");
+					return info;
+				}
+				if(temlate.get(0).getExIsActive() == 1) {
+					info.put("status", "2");
+					info.put("message", "OTP Already Used");
+					return info;
+				}
+				// update the status
+				customersms.updateCustomerLog( request.getOtpcode(), Staffpersonal.get().getExContactDetails());
+				info.put("status", "1");
+				info.put("message", "OTP Verified Successfully");	
+				return info;
+			}else {
+				info.put("status", "2");
+				info.put("message", "OTP Verification Failed");
+				return info;
+			}	
+			
+			
+			
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			e.printStackTrace();
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+	public  String genrateOtp() {
+		String genrateotp = "";
+		try {
+			String numbers = "0123456789";
+			String values = numbers;
+			Random rndm_method = new Random();
+			for (int i = 0; i < 6; i++) {
+				genrateotp = genrateotp + values.charAt(rndm_method.nextInt(values.length()));
+			}
+			return genrateotp;
+		} catch (Exception e) {
+			logger.error("genrate Random Number: "+e);
+			 StringWriter errors = new StringWriter();
+			 e.printStackTrace(new PrintWriter(errors));
+			 logger.error(errors.toString());
+		}
+		return genrateotp;
+	}
+
+	@Override
+	public Map<String, Object> getComplainOnStatusAndRole(ComplaintRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			if (request.getComplaintStatus() == null || request.getComplaintStatus().equals("")|| request.getComplaintStatus().equals("null")) {
+				info.put("status", "2");
+				info.put("message", "ComplaintStatus is required");
+				return info;
+			}
+			
+			Optional<Role> role = super.role.findByIdAndExIsDeleteAndExIsActive(request.getRole(), false, true);
+			if (!role.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Role Id  not present");
+				return info;
+			}
+
+			List dataList = new LinkedList();
+
+			List<Complaint> complaint = super.complaintRepository.findByComplaintStatusAndComplaintTypeRoleId(request.getComplaintStatus() , request.getRole());
+			if (complaint.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Records not present");
+				return info;
+			}
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/YYYY");
+
+			for (Complaint e : complaint) {
+				Map<Object, Object> data = new HashMap<Object, Object>();
+				data.put("exTicketNumber", e.getExTicketNumber());
+				if (e.getComplaintStatus().toString().equals("1")) {
+					data.put("complaintStatus", "Open");
+					data.put("exreslovedDate", "NA");
+					data.put("exRemark", "NA");
+
+				} else if (e.getComplaintStatus().toString().equals("2")) {
+					data.put("complaintStatus", "Progress");
+					data.put("exreslovedDate", "NA");
+					data.put("exRemark", "NA");
+
+				} else if (e.getComplaintStatus().toString().equals("3")) {
+					data.put("complaintStatus", "Resolved");
+					data.put("exReslovedDate", simpleDateFormat.format(e.getExUpdateDate()));
+					data.put("exRemark", e.getExRemark());
+
+				} else {
+					data.put("complaintStatus", "NA");
+				}
+				data.put("complaintType", e.getComplaintType().getExName());
+				data.put("studentId", e.getExRollNo());
+				data.put("complaintTypeId", e.getComplaintType().getId());
+				data.put("orderId", e.getOrderId());
+				data.put("exRegisterDate", simpleDateFormat.format(e.getExCreateDate()));
+				data.put("exDescription", e.getExDescription());
+
+				dataList.add(data);
+			}
+			info.put("status", "1");
+			info.put("message", "success");
+			info.put("details", dataList);
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getStudentForPayment(SemesterRegistrationRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear(), false, true);
+			if (!academic.isPresent() || !academic.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+
+			Optional<Programmes> Programmes = super.programmes.findByExIsDeleteAndExIsActiveAndId(false, true,request.getProgrammes());
+			if (!Programmes.isPresent() || !Programmes.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}
+
+			Optional<ProgrammeYear> programmeYear = super.programmeYear.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(), true, false);
+			if (!programmeYear.isPresent() || !programmeYear.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false, true,request.getSemester());
+			if (!sem.isPresent() || !sem.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}
+			List<Studentadmission> task = super.studentadmission.findByExIsDeleteAndExIsActiveAndDegreeIdAndProgrammesIdAndDepartmentIdAndBatchId(false, true , request.getDegree() , request.getProgrammes() ,request.getDepartment() , request.getBatch());
+			if (task.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Student not present");
+				return info;
+			} else {
+				List dataList = new LinkedList();
+				Date date = new Date();
+				for (Studentadmission e : task) {
+					Map<Object, Object> Studentadmissiondata = new HashMap<Object, Object>();
+					//Studentadmissiondata.put("id", e.getId());
+					Studentadmissiondata.put("exEnrollementNo", e.getExEnrollementNo());
+					Studentadmissiondata.put("exRollNo", e.getExRollNo());
+					Studentadmissiondata.put("exName", e.getExName());
+					//check student payment is done or not 					
+					List<AccountApprove> approve =  accountpprove.findByAcademicYearIdAndDepartmentIdAndStudentadmissionIdAndProgrammeYearIdAndSemesterId(request.getAcademicYear(), request.getDepartment(), e.getId(), request.getProgrammeYear(), request.getSemester());
+					if(approve.size()<=0) {
+						// insert 
+						AccountApprove account = new AccountApprove();
+						account.setAcademicYear(academic.get());
+						account.setColleges(e.getColleges());
+						account.setDepartment(e.getDepartment());
+						account.setExCreateDate(date);
+						account.setExIsPaid(false);
+						account.setExRollNo(e.getExRollNo());
+						account.setProgrammes(e.getProgrammes());
+						account.setProgrammeYear(programmeYear.get());
+						account.setSemester(sem.get());
+						account.setDegree(e.getDegree());
+						account.setStudentadmission(e);
+						accountpprove.save(account);
+						Studentadmissiondata.put("id", account.getId());
+						Studentadmissiondata.put("isPaid", false);
+					}else {
+						// check paid or not 
+						Studentadmissiondata.put("id", approve.get(0).getId());
+						Studentadmissiondata.put("isPaid", approve.get(0).getExIsPaid());
+					}
+										
+					dataList.add(Studentadmissiondata);
+				}
+				info.put("status", "1");
+				info.put("message", "success");
+
+				info.put("details", dataList);
+				return info;
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			e.printStackTrace();
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> paymentApprove(SemesterEligibility request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+					
+			Optional<User> createby = super.user.findById(request.getUser());
+			if (!createby.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "User id not present");
+				return info;
+			}
+			
+			if(request.getId() == null || request.getId().equals("")) {
+				info.put("status", "2");
+				info.put("message", "Id is missing");
+				return info;
+			}
+			int i = accountpprove.updateAllApproval(request.getId(), request.getUser());
+			if(i >0 ) {
+				info.put("status", "1");
+				info.put("message", "Approved Successfully");
+				return info;
+			}
+			
+										
+			info.put("status", "2");
+			info.put("message", "Id not present");
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> validatePayment(SemesterEligibility request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+		
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDegree());
+			if (!degree.isPresent() || !degree.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+
+			Optional<AcademicYear> academic = super.academicYear.findByIdAndExIsDeleteAndExIsActive(request.getAcademicYear(), false, true);
+			if (!academic.isPresent() || !academic.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "academicYear not present");
+				return info;
+			}
+
+			Optional<Programmes> Programmes = super.programmes.findByExIsDeleteAndExIsActiveAndId(false, true,request.getProgrammes());
+			if (!Programmes.isPresent() || !Programmes.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}
+
+			Optional<ProgrammeYear> programmeYear = super.programmeYear.findByIdAndExIsActiveAndExIsDelete(request.getProgrammeYear(), true, false);
+			if (!programmeYear.isPresent() || !programmeYear.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "programmeYear not present");
+				return info;
+			}
+			Optional<Semster> sem = super.semester.findByExIsDeleteAndExIsActiveAndId(false, true,request.getSemester());
+			if (!sem.isPresent() || !sem.get().getExIsActive()) {
+				info.put("status", "2");
+				info.put("message", "Semster not present");
+				return info;
+			}
+
+			List<AccountApprove> approve =  accountpprove.findByAcademicYearIdAndStudentadmissionIdAndProgrammeYearIdAndSemesterIdAndExIsPaid(request.getAcademicYear(),request.getStudent(), request.getProgrammeYear(), request.getSemester() , true);
+			if(approve.size()<=0) {
+				info.put("status", "2");
+				info.put("message", "Please contact account department");
+				return info;
+			}else {
+				info.put("status", "1");
+				info.put("message", "Approved");
+				return info;
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> createRegulation(Regulation request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			if(request.getExFilePath() == null || request.getExFilePath().isEmpty()) {
+				info.put("status", "2");
+				info.put("message", "please select file");
+				return info;
+			}
+			Optional<Colleges> collage = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges(), false,true);
+			if (!collage.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "College Id not Present");
+				return info;
+			}
+			
+			
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDegree());
+			if (!degree.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+
+			Optional<Programmes> Prog = super.programme.findByExIsDeleteAndExIsActiveAndId(false, true,request.getProgrammes());
+			if (!Prog.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Programmes not present");
+				return info;
+			}
+			
+			
+		
+				List<User> user = super.user.findByIdAndExIsDeleteAndExIsActive(request.getUser(), false, true);
+				if (user.size() <= 0) {
+					info.put("status", "2");
+					info.put("message", "User id not present");
+					return info;
+				}
+			
+		
+			List<Batch> list = new ArrayList<Batch>();			
+			if(request.getBatch().size()>0) {		
+				for(int i =0 ; i<request.getBatch().size() ; i++) {
+					Optional<Batch> semester  = super.batch.findByExIsDeleteAndExIsActiveAndId(false, true,request.getBatch().get(i));					
+					  if(!semester.isPresent()) {
+						  info.put("status", "2"); 
+						  info.put("message","Batch not present");
+						  return info;
+					}
+						
+					list.add(semester.get());
+				}	
+				
+			}else {
+				  info.put("status", "2"); 
+				  info.put("message","Batch not present");
+				  return info;
+			}
+			//check duplicate
+			String  UPLOADED_FOLDER =  createFolder(collage.get().getExIdentifier() , Prog.get().getExIdentifier(), degree.get().getExName(),"regulation" );			
+			if(UPLOADED_FOLDER.equals("NA")) {
+				info.put("status", "0");
+				info.put("message", "something went wrong");
+				return info;
+			}	
+			Random random = new Random();
+			String id = String.format("%04d", random.nextInt(10000));	
+            byte[] bytes = request.getExFilePath().getBytes();
+            String newfilename = id+"-"+request.getExFilePath().getOriginalFilename();
+            Path path = Paths.get(UPLOADED_FOLDER+newfilename);
+            Files.write(path, bytes);
+           String imagepath = "/"+collage.get().getExIdentifier()+"/"+Prog.get().getExIdentifier()+"/regulation/"+degree.get().getExName()+"/";
+	
+           String photopath = imagepath+newfilename;
+			
+			
+			Date date = new Date();			
+			ExamRegulations publish = new ExamRegulations();
+			publish.setBatch(list);
+			publish.setDegree(degree.get());
+			publish.setExFilePath(photopath);
+			publish.setColleges(collage.get());
+			publish.setExCreateDate(date);
+			publish.setExIsActive(request.getExIsActive());
+			publish.setExIsDelete(false);
+			publish.setExName(request.getExName());
+			publish.setExDescription(request.getExDescription());
+			publish.setProgrammes(Prog.get());			
+			publish.setUser(user.get(0));						
+			regulation.save(publish);
+			  info.put("status", "1"); 
+			  info.put("message","Record created successfully");
+			  return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong.");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getRegulation(Regulation request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List<ExamRegulations> tasks = regulation.findByExIsDelete(false);
+			if (tasks.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Record Not Present");
+				return info;
+			} else {
+				String serverurl = commonHelper.getSettingValue("SERVER_IP");
+				List dataList = new LinkedList();
+				for (ExamRegulations e : tasks) {
+					List section = new LinkedList();
+					List sectionId = new LinkedList();
+
+					Map<Object, Object> Programmesdata = new HashMap<Object, Object>();
+					Programmesdata.put("id", e.getId());
+					
+					
+					Programmesdata.put("exIsActive", e.getExIsActive());
+					Programmesdata.put("exIsDelete", e.getExIsDelete());
+					
+					Programmesdata.put("degree", e.getDegree().getExName());
+					Programmesdata.put("degreeId", e.getDegree().getId());
+
+					for (int i = 0; i < e.getBatch().size(); i++) {
+						section.add(e.getBatch().get(i).getExName());
+						sectionId.add(e.getBatch().get(i).getId());
+					}
+
+					Programmesdata.put("batchId", sectionId);
+					Programmesdata.put("batch", section);
+				
+				//	Programmesdata.put("exFilePath", e.getExFilePath());
+
+					Programmesdata.put("degree", e.getDegree().getExName());
+					Programmesdata.put("degreeId", e.getDegree().getId());
+
+					Programmesdata.put("colleges", e.getColleges().getExName());
+					Programmesdata.put("collegesId", e.getColleges().getId());
+
+					Programmesdata.put("exFilePath", serverurl+e.getExFilePath());	
+					
+					Programmesdata.put("programmes", e.getProgrammes().getExName());
+					Programmesdata.put("programmesId", e.getProgrammes().getId());
+					
+					Programmesdata.put("exDescription", e.getExDescription());
+					Programmesdata.put("exName", e.getExName());
+
+					dataList.add(Programmesdata);
+				}
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("details", dataList);
+				return info;
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> updateRegulation(Regulation request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			
+			if(request.getExFilePath() == null || request.getExFilePath().isEmpty()) {
+				info.put("status", "2");
+				info.put("message", "please select file");
+				return info;
+			}
+			
+			Optional<ExamRegulations> publish1 = regulation.findById(request.getId()) ;
+			if (!publish1.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Id not Present");
+				return info;
+			}
+			Optional<Colleges> collage = super.colleges.findByIdAndExIsDeleteAndExIsActive(request.getColleges(), false,true);
+			if (!collage.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "College Id not Present");
+				return info;
+			}
+			
+			
+			Optional<Degree> degree = super.degree.findByExIsDeleteAndExIsActiveAndId(false, true, request.getDegree());
+			if (!degree.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Degree not present");
+				return info;
+			}
+
+			Optional<Programmes> Prog = super.programme.findByExIsDeleteAndExIsActiveAndId(false, true,request.getProgrammes());
+			if (!Prog.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Programmes not present");
+				return info;
+			}
+	
+				List<User> user = super.user.findByIdAndExIsDeleteAndExIsActive(request.getUser(), false, true);
+				if (user.size() <= 0) {
+					info.put("status", "2");
+					info.put("message", "User id not present");
+					return info;
+				}
+			
+			String sectionval  = "";
+		
+			List<Batch> list = new ArrayList<Batch>();			
+			if(request.getBatch().size()>0) {		
+				for(int i =0 ; i<request.getBatch().size() ; i++) {
+					Optional<Batch> semester  = super.batch.findByExIsDeleteAndExIsActiveAndId(false, true,request.getBatch().get(i));					
+					  if(!semester.isPresent()) {
+						  info.put("status", "2"); 
+						  info.put("message","Batch not present");
+						  return info;
+					}
+						
+					list.add(semester.get());
+				}	
+				
+			}else {
+				  info.put("status", "2"); 
+				  info.put("message","Batch not present");
+				  return info;
+			}
+			//check duplicate
+			String  UPLOADED_FOLDER =  createFolder(collage.get().getExIdentifier() , Prog.get().getExIdentifier(), degree.get().getExName(),"regulation" );			
+			if(UPLOADED_FOLDER.equals("NA")) {
+				info.put("status", "0");
+				info.put("message", "something went wrong");
+				return info;
+			}	
+			Random random = new Random();
+			String id = String.format("%04d", random.nextInt(10000));	
+            byte[] bytes = request.getExFilePath().getBytes();
+            String newfilename = id+"-"+request.getExFilePath().getOriginalFilename();
+            Path path = Paths.get(UPLOADED_FOLDER+newfilename);
+            Files.write(path, bytes);
+           String imagepath = "/"+collage.get().getExIdentifier()+"/"+Prog.get().getExIdentifier()+"/regulation/"+degree.get().getExName()+"/";
+	
+           String photopath = imagepath+newfilename;
+			Date date = new Date();			
+			ExamRegulations publish = new ExamRegulations();
+			publish.setBatch(list);
+			publish.setDegree(degree.get());
+			publish.setExFilePath(photopath);
+			publish.setColleges(collage.get());
+			publish.setExUpdateDate(date);
+			publish.setExCreateDate(publish1.get().getExCreateDate());
+			publish.setExIsActive(request.getExIsActive());
+			publish.setId(request.getId());
+			publish.setExIsDelete(false);
+			publish.setExName(request.getExName());
+			publish.setExDescription(request.getExDescription());
+			publish.setProgrammes(Prog.get());			
+			publish.setUser(user.get(0));						
+			regulation.save(publish);
+			  info.put("status", "1"); 
+			  info.put("message","Record updated successfully");
+			  return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong.");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> deleteRegulation(Regulation request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			Optional<ExamRegulations> task = regulation.findById(request.getId());
+			if (task.isPresent()) {
+				if (task.get().getExIsDelete()) {
+					info.put("status", "2");
+					info.put("message", "Record already deleted");
+					return info;
+				}
+				Boolean exIsDelete = true;
+				Boolean is_active = false;
+				int result = regulation.deletePublish(exIsDelete, is_active, task.get().getId());
+				if (result == 0) {
+					info.put("status", "2");
+					info.put("message", "Something went wrong");
+					return info;
+				}
+				info.put("status", "1");
+				info.put("message", "Record deleted successfully");
+				return info;
+			}
+			info.put("status", "2");
+			info.put("message", " id not present");
+			return info;
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+	public String createFolder(  String academicyear , String collegename,String studentid , String usertype) {
+		try {
+			
+			String UPLOADED_FOLDER = commonHelper.getSettingValue("DOCUMENT_PATH");		
+			File file1 = new File(UPLOADED_FOLDER+"/"+academicyear);	
+			if (file1.mkdir()) {
+	            file1.setExecutable(true , false); 
+	            file1.setReadable(true , false); 
+	            file1.setWritable(true , false); 
+		     }			
+			String academicyearname= file1.getPath();
+			File file2 = new File(academicyearname+"/"+collegename);			
+			if (file2.mkdir()) {
+	            file2.setExecutable(true , false); 
+	            file2.setReadable(true , false); 
+	            file2.setWritable(true , false); 
+				
+			}
+			String collegenames= file2.getPath();	
+			File file3 = new File(collegenames+"/"+usertype+"/");	
+			if (file3.mkdir()) {
+				file3.setExecutable(true , false); 
+				file3.setReadable(true , false); 
+				file3.setWritable(true , false); 
+				
+			}			
+			String student= file3.getPath();			
+			File file4 = new File(student+"/"+studentid);
+			if (file4.mkdir()) {	
+	            file4.setExecutable(true , false); 
+	            file4.setReadable(true , false); 
+	            file4.setWritable(true , false); 
+			}	
+			
+			return UPLOADED_FOLDER+academicyear+"/"+collegename+"/"+usertype+"/"+studentid+"/";
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+		}
+		return "NA";
+	}
+
+	@Override
+	public Map<String, Object> studentCertificateRequest(CommonRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {					
+			Optional<Studentadmission> status = super.studentadmission.findById(request.getStudent());
+			if(!status.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Student is not present.");
+				return info;
+			}
+			
+			Optional<CertificateType> documenttype = super.certificate.findById(request.getCertificateType());
+			if(!documenttype.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "CertificateType not present.");
+				return info;
+			}
+
+					// check already uploded document 
+						if(studentrequest.findByStudentadmissionIdAndCertificateTypeId(request.getStudent(), request.getCertificateType()).size() <=0) {
+							Date date = new Date();
+							StudentCertificateRequeest document = new StudentCertificateRequeest();
+							document.setExRollNo(status.get().getExRollNo());
+							document.setExCreateDate(date);
+							document.setCertificateType(documenttype.get());
+							document.setExDescription(request.getExDescription());
+							document.setStudentadmission(status.get());
+							document.setStatus(0);
+							//document.setExdocumentPath("NA");
+							studentrequest.save(document);							
+							info.put("status", "1");
+							info.put("message", "Your request has been accepted successfully");
+							return info;
+						}else {
+							info.put("status", "2");
+							info.put("message", "you already apply for the selected certificate");
+							return info;
+						}
+				
+			
+					   
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getAllCertificate(CommonRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List dataList = new LinkedList();
+			List<StudentCertificateRequeest> complaint = studentrequest.findByStatus(0);
+			if (complaint.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Records not present");
+				return info;
+			}
+			for (StudentCertificateRequeest e : complaint) {
+				Map<Object, Object> data = new HashMap<Object, Object>();				
+				data.put("exRollNo",e.getExRollNo());
+				data.put("certificateType", e.getCertificateType().getExCertificateType());
+				data.put("certificateTypeId", e.getCertificateType().getId());
+				data.put("exDescription", e.getExDescription());
+				data.put("id", e.getId());
+				data.put("exRequestDate", e.getExCreateDate() == null ? "NA" : e.getExCreateDate().toString().substring(0, 10));
+				dataList.add(data);
+			}
+			info.put("status", "1");
+			info.put("message", "success");
+			info.put("details", dataList);
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getCertificateByStudent(CommonRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List dataList = new LinkedList();
+			
+			
+			List<StudentCertificate> complaint = certificate.findByStudentadmissionId(request.getStudent());
+			if (complaint.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "Records not present");
+				return info;
+			}
+			String serverurl = commonHelper.getSettingValue("SERVER_IP");
+			for (StudentCertificate e : complaint) {
+				Map<Object, Object> data = new HashMap<Object, Object>();				
+				data.put("exRollNo",e.getExRollNo());
+				data.put("certificateType", e.getCertificateType().getExCertificateType());
+				data.put("certificateTypeId", e.getCertificateType().getId());
+				data.put("exDescription", "NA");
+				data.put("id", e.getId());
+				data.put("requestDate", e.getExCreateDate() == null ? "NA" : e.getExCreateDate().toString().substring(0, 10));
+				data.put("approveDate", e.getExUpdateDate() == null ? "NA" : e.getExUpdateDate().toString().substring(0, 10));
+				//if(e.getStatus() == 0) {
+					//data.put("status", "Pending");
+				//}else {
+					data.put("status", "Approved");
+					
+				//}
+				data.put("exFilePath", e.getExdocumentPath() == null ?"NA" :serverurl+e.getExdocumentPath());	
+				dataList.add(data);
+			}
+			info.put("status", "1");
+			info.put("message", "success");
+			info.put("details", dataList);
+			return info;
+
+			
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> assignCertificate(CommonRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {					
+			Optional<StudentCertificateRequeest> validate = studentrequest.findById(request.getId());
+			if(!validate.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Id is not present.");
+				return info;
+			}
+			Optional<CertificateType> documenttype = super.certificate.findById(request.getCertificateType());
+			if(!documenttype.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "CertificateType not present.");
+				return info;
+			}
+			
+			List<User> user = super.user.findByIdAndExIsDeleteAndExIsActive(request.getUser(), false, true);
+			if (user.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "User id not present");
+				return info;
+			}
+			// update status
+			// check certificate uploded or not 
+			List<StudentCertificate> vaidate1  = certificaterepo.findByStudentadmissionIdAndCertificateTypeId(validate.get().getStudentadmission().getId(), request.getCertificateType());
+			
+			if(vaidate1.size() <=0) {							
+				info.put("status", "2");
+				info.put("message", "Certificate not uploaded");
+				return info;
+			}else {
+				Date date = new Date();
+				studentrequest.updateRecord(date, vaidate1.get(0).getExdocumentPath(), user.get(0).getId(), request.getId());
+				info.put("status", "1");
+				info.put("message", "Certificate Assign Successfully");
+				return info;
+			}
+					   
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> assignHostel(AssignHostelRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List<User> user = super.user.findByIdAndExIsDeleteAndExIsActive(request.getUser(), false, true);
+			if (user.size() <= 0) {
+				info.put("status", "2");
+				info.put("message", "User id not present");
+				return info;
+			}
+						
+			Optional<Batch> batch  = super.batch.findByExIsDeleteAndExIsActiveAndId(false, true,request.getBatch());					
+				  if(!batch.isPresent()) {
+					  info.put("status", "2"); 
+					  info.put("message","Batch not present");
+					  return info;
+				}
+						
+			Optional<Hostel> hostel = super.hostel.findByExIsDeleteAndExIsActiveAndId(false, true, request.getHostel());
+			if (!hostel.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Hostel not present");
+				return info;
+			}
+
+			Optional<Studentadmission> status1 = super.studentadmission.findByExRollNoAndBatchId(request.getExRollNo() , request.getBatch());
+			if(!status1.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Student is not present with selected batch");
+				return info;
+			}
+						
+			List<AssignHostel> validaate = super.assignHostelRepository.findByStudentadmissionIdAndExIsPresent(status1.get().getId(), 1);
+			if (validaate.size() > 0) {
+				info.put("status", "2");
+				info.put("message", "Student already taken hostel");
+				return info;
+			}
+			if (!isOpen(request)) {
+				info.put("status", "2");
+				info.put("message", "Selected Room is already full");
+				return info;
+			}
+			
+			
+			Date date = new Date();			
+			AssignHostel asign = new AssignHostel();
+			asign.setBatch(batch.get());
+			asign.setUser(user.get(0));
+			asign.setHostel(hostel.get());
+			asign.setExRollNo(request.getExRollNo());
+			asign.setExRemark(request.getExRemark());
+			asign.setExCreateDate(date);
+			asign.setExRoomType(request.getExRoomType());
+			asign.setExRoomNumber(request.getExRoomNumber().trim());
+			asign.setExStudentName(status1.get().getExName());
+			asign.setStudentadmission(status1.get());
+			asign.setExIsPresent(1);
+	
+			assignHostelRepository.save(asign);
+			  info.put("status", "1"); 
+			  info.put("message","Hostel Assigned Successfully");
+			  return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong.");
+			return info;
+		}
+	}
+
+	private boolean isOpen(AssignHostelRequest request) {		
+		if(request.getExRoomType().equalsIgnoreCase("single")) {
+			// check room number already allocated with single room type
+			List<AssignHostel> single = super.assignHostelRepository.findByExRoomNumberAndExRoomTypeAndExIsPresent(request.getExRoomNumber().trim() , request.getExRoomType().trim() , 1);
+			if (single.size() > 0) {
+				return false;
+			}
+			return true;
+		}
+		
+		if(request.getExRoomType().equalsIgnoreCase("double")) {
+			// check room number already allocated with single room type
+			List<AssignHostel> double1 = super.assignHostelRepository.findByExRoomNumberAndExRoomTypeAndExIsPresent(request.getExRoomNumber().trim() , request.getExRoomType().trim() , 1);
+			if (double1.size() > 1) {
+				return false;
+			}
+			return true;
+		}
+		
+		if(request.getExRoomType().equalsIgnoreCase("triple")) {
+			// check room number already allocated with single room type
+			List<AssignHostel> triple = super.assignHostelRepository.findByExRoomNumberAndExRoomTypeAndExIsPresent(request.getExRoomNumber().trim() , request.getExRoomType().trim() , 1);
+			if (triple.size() > 2) {
+				return false;
+			}
+			return true;
+		}
+		return true;
+	}
+	
+	
+	@Override
+	public Map<String, Object> getHostelAllocatedStudent(AssignHostelRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List dataList = new LinkedList();
+			
+			List<AssignHostel> allocate = super.assignHostelRepository.findByBatchIdAndHostelIdAndExIsPresent(request.getBatch() , request.getHostel() , 1);
+			if (allocate.size() <= 0) {
+				 info.put("status", "1"); 
+				  info.put("message","Student Not Allocated");
+				  return info;
+			}
+			
+			for (AssignHostel e : allocate) {
+				Map<Object, Object> data = new HashMap<Object, Object>();				
+				data.put("exRollNo",e.getExRollNo());
+				data.put("exStudentName",e.getExStudentName());
+				data.put("exRoomType", e.getExRoomType());
+				data.put("exRemark", e.getExRemark());
+				data.put("exRoomNumber", e.getExRoomNumber());
+				data.put("id", e.getId());
+				data.put("allocateDate", e.getExCreateDate() == null ? "NA" : e.getExCreateDate().toString().substring(0, 10));
+				dataList.add(data);
+			}
+			info.put("status", "1");
+			info.put("message", "success");
+			info.put("details", dataList);
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> vacatedHostel(AssignHostelRequest request) {		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List dataList = new LinkedList();
+			
+			Optional<AssignHostel> vacate = super.assignHostelRepository.findById(request.getId());
+			if (!vacate.isPresent()) {
+				 info.put("status", "1"); 
+				  info.put("message","Id Not present");
+				  return info;
+			}
+			super.assignHostelRepository.updateHostel(request.getId());
+					
+			info.put("status", "1");
+			info.put("message", "Student Vacated Successfully From Hostel.");		
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> updateBankDetailsByStudent(StudentBankDetailsRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {	
+			Optional<Studentadmission> status1 = super.studentadmission.findById(request.getStudent());
+			if(!status1.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Student is not present");
+				return info;
+			}			
+			List<StudentBankDetails> allocate = studentBankDetailsRepository.findByStudentadmissionId(request.getStudent());
+			if (allocate.size() > 0) {
+				 info.put("status", "2"); 
+				  info.put("message","Account details already submited");
+				  return info;
+			}
+			
+			Date date = new Date();			
+			StudentBankDetails vale = new StudentBankDetails();
+			vale.setExAccountNumber(request.getExAccountNumber());
+			vale.setExAccountType(request.getExAccountType());
+			vale.setExBranch(request.getExBranch());
+			vale.setExCreateDate(date);
+			vale.setExIfscCode(request.getExIfscCode());
+			vale.setExRollNo(status1.get().getExRollNo());
+			vale.setExStudentAddress(request.getExStudentAddress());
+			vale.setExStudentName(request.getExStudentName());
+			vale.setExBankAddress(request.getExBankAddress());
+			vale.setStudentadmission(status1.get());
+			
+			studentBankDetailsRepository.save(vale);
+			  info.put("status", "1"); 
+			  info.put("message","Bank Details Updated Successfully");
+			  return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong.");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getBankDetailsByStudent(StudentBankDetailsRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List dataList = new LinkedList();			
+			List<StudentBankDetails> allocate = studentBankDetailsRepository.findByStudentadmissionId(request.getStudent());
+			if (allocate.size() <= 0) {
+				 info.put("status", "2"); 
+				  info.put("message","Account details are pending");
+				  return info;
+			}
+			
+			for (StudentBankDetails e : allocate) {
+				Map<Object, Object> data = new HashMap<Object, Object>();				
+				data.put("exRollNo",e.getExRollNo());
+				data.put("exStudentName",e.getExStudentName());
+				data.put("exAccountType", e.getExAccountType());
+				data.put("exBranch", e.getExBranch());
+				data.put("exAccountNumber", e.getExAccountNumber());
+				data.put("exIfscCode", e.getExIfscCode());
+				data.put("exBankAddress", e.getExBankAddress());
+				data.put("exStudentAddress", e.getExStudentAddress());
+				
+				
+				dataList.add(data);
+			}
+			info.put("status", "1");
+			info.put("message", "success");
+			info.put("details", dataList);
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getBankDetailsByAdmin(StudentBankDetailsRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			List dataList = new LinkedList();			
+			List<StudentBankDetails> allocate = studentBankDetailsRepository.findByExRollNo(request.getExRollNo());
+			if (allocate.size() <= 0) {
+				 info.put("status", "2"); 
+				  info.put("message","Account details are pending");
+				  return info;
+			}
+			
+			for (StudentBankDetails e : allocate) {
+				Map<Object, Object> data = new HashMap<Object, Object>();				
+				data.put("exRollNo",e.getExRollNo());
+				data.put("exStudentName",e.getExStudentName());
+				data.put("exAccountType", e.getExAccountType());
+				data.put("exBranch", e.getExBranch());
+				data.put("exAccountNumber", e.getExAccountNumber());
+				data.put("exIfscCode", e.getExIfscCode());
+				data.put("exBankAddress", e.getExBankAddress());
+				data.put("exStudentAddress", e.getExStudentAddress());
+				
+				data.put("id", e.getId());
+				dataList.add(data);
+			}
+			info.put("status", "1");
+			info.put("message", "success");
+			info.put("details", dataList);
+			return info;
+
+		} catch (Exception e) {
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "Something went wrong");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> updateBankDetailsByAdmin(StudentBankDetailsRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {	
+					
+			Optional<StudentBankDetails> allocate = studentBankDetailsRepository.findById(request.getId());
+			if (!allocate.isPresent()) {
+				 info.put("status", "2"); 
+				  info.put("message","Id is missing");
+				  return info;
+			}
+			
+			Date date = new Date();			
+			StudentBankDetails vale = new StudentBankDetails();
+			vale.setExAccountNumber(request.getExAccountNumber());
+			vale.setExAccountType(request.getExAccountType());
+			vale.setExBranch(request.getExBranch());
+			vale.setExCreateDate(allocate.get().getExCreateDate());
+			vale.setExIfscCode(request.getExIfscCode());
+			vale.setExRollNo(allocate.get().getExRollNo());
+			vale.setExStudentAddress(request.getExStudentAddress());
+			vale.setExStudentName(request.getExStudentName());
+			vale.setExBankAddress(request.getExBankAddress());
+			vale.setStudentadmission(allocate.get().getStudentadmission());
+			vale.setId(request.getId());
+				studentBankDetailsRepository.save(vale);
+			  info.put("status", "1"); 
+			  info.put("message","Bank Details Updated Successfully");
+			  return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong.");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> saveModule(ModuleMappingRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {	
+					
+			Optional<Role> allocate = role.findById(request.getRole());
+			if (!allocate.isPresent()) {
+				 info.put("status", "2"); 
+				  info.put("message","Role Id Not present");
+				  return info;
+			}
+			List<ModuleMapping> check =  module.findByExModuleNameAndRoleId(request.getExModuleName().trim() ,request.getRole() );
+			if(check.size() >0) {
+				module.deleteById(check.get(0).getId());
+			}						
+			ModuleMapping vale = new ModuleMapping();
+			vale.setRole(allocate.get());
+			vale.setExModuleName(request.getExModuleName().trim());
+			vale.setExRoleName(allocate.get().getExName());
+			vale.setExSubModuleName(request.getExSubModule());
+			
+				module.save(vale);
+			  info.put("status", "1"); 
+			  info.put("message","Module Updated Successfully");
+			  return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong.");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> getModule(ModuleMappingRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {	
+				if(request.getRole() == null) {
+					 info.put("status", "2"); 
+					  info.put("message","Role Id Not present");
+					  return info;
+					
+				}
+			Optional<Role> allocate = role.findById(request.getRole());
+			if (!allocate.isPresent()) {
+				 info.put("status", "2"); 
+				  info.put("message","Role Id Not present");
+				  return info;
+			}
+			List<ModuleMapping> check =  module.findByRoleId(request.getRole() );
+			if(check.size() <=0) {
+				 info.put("status", "2"); 
+				  info.put("message","user not mapped");
+				  return info;
+			}			
+			List dataList = new LinkedList();	
+			for(ModuleMapping e : check ) {
+				Map<Object, Object> data = new HashMap<Object, Object>();
+				data.put("role", e.getExRoleName());
+				data.put("module", e.getExModuleName());
+				data.put("sub_module", e.getExSubModuleName());
+				dataList.add(data);
+			}
+			
+			
+			
+			  info.put("details",dataList);
+			  info.put("status", "1"); 
+			  info.put("message","success");
+			  return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong.");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> changeStudyStatus(StudentBankDetailsRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {	
+			Optional<Studentadmission> status1 = super.studentadmission.findById(request.getStudent());
+			if(!status1.isPresent()) {
+				info.put("status", "2");
+				info.put("message", "Student is not present");
+				return info;
+			}			
+			
+			super.studentadmission.updateStatus(request.getStatus(),request.getStudent());
+			
+			  info.put("status", "1"); 
+			  info.put("message","Status Updated Successfully");
+			  return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong.");
+			return info;
+		}
+	}
+
+	@Override
+	public Map<String, Object> changeMarksheet(CommonRequest request) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		try {
+			
+			List<SemesterProgressReport> status1 = super.semesterProgressReport.findByCollegesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndAcademicYearId(request.getColleges() , request.getDegree() , request.getProgrammes() , request.getSemester() , request.getAcademicYear());
+			if(status1.size() <=0) {
+				info.put("status", "2");
+				info.put("message", "Record not found");
+				return info;
+			}	
+			String path = commonHelper.getSettingValue("DOCUMENT_PATH");
+			
+			for(SemesterProgressReport s :status1) {
+				if(s.getMarksheetPath() !=null) {
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss.SSSSSS");		
+					Date date=new Date();		
+					String datecreate = dateFormat.format(date);
+					String filepath = s.getMarksheetPath();
+					 Path oldFile = Paths.get(path+s.getMarksheetPath());
+					
+					 String uuid = UUID.randomUUID().toString();
+					 String out =  commonHelper.generateKey(s.getExRollNo(),uuid,datecreate , 8).toUpperCase();
+					 
+					   int lengthOfFile = 0;
+					  String  NewFile = out+".pdf";
+					  lengthOfFile = filepath.lastIndexOf("/");
+					  filepath = filepath.substring(0, lengthOfFile);
+					String  NewURL = filepath + "/" + NewFile;		
+					 Files.move(oldFile, oldFile.resolveSibling(out+".pdf"));
+					 // update the file in DB
+					 super.semesterProgressReport.updatePath(NewURL, s.getId());
+				}
+				
+			}
+			
+			
+			  info.put("status", "1"); 
+			  info.put("message","Status Updated Successfully");
+			  return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Exception occured" + e);
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.error(errors.toString());
+			info.put("status", "0");
+			info.put("message", "something went wrong.");
+			return info;
+		}
+	}
+
+		@Override
+		public Map<String, Object> getStudentDetailsForPenlty(NoduR request) {
+			Map<String, Object> info = new LinkedHashMap<>();
+			try {	
+				List<Studentadmission> status1 = super.studentadmission.findByExRollNoAndExIsActive(request.getExRollNo() , true);
+				if(status1.size()<=0) {
+					info.put("status", "2");
+					info.put("message", "Student is not present");
+					return info;
+				}			
+				
+				List dataList = new LinkedList();
+				for (Studentadmission e : status1) {					
+					Map<Object, Object> Studentadmissiondata = new HashMap<Object, Object>();
+					Studentadmissiondata.put("id", e.getId());									
+					Studentadmissiondata.put("Degree", e.getDegree().getExName());
+					Studentadmissiondata.put("Programmes", e.getProgrammes().getExIdentifier());					
+					Studentadmissiondata.put("Batch", e.getBatch().getExName());					
+					Studentadmissiondata.put("Category", e.getCategory() == null ? null: e.getCategory().getExName());									
+					Studentadmissiondata.put("section", e.getSection() == null ? "NA": e.getSection().getExName());
+					Studentadmissiondata.put("exName", e.getExName());
+
+					Studentadmissiondata.put("exEnrollementNo", e.getExEnrollementNo());
+					Studentadmissiondata.put("exRollNo", e.getExRollNo());
+				dataList.add(Studentadmissiondata);
+				}
+				info.put("status", "1");
+				info.put("message", "success");
+
+				info.put("details", dataList);
+				return info;
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				info.put("status", "0");
+				info.put("message", "something went wrong.");
+				return info;
+			}
+		}
+		
+		@Override
+		public Map<String, Object> updateStudentPenlty(NoduR request) {
+			Map<String, Object> info = new LinkedHashMap<>();
+			try {	
+				List<Studentadmission> status1 = super.studentadmission.findByExRollNoAndExIsActive(request.getExRollNo() , true);
+				if(status1.size()<=0) {
+					info.put("status", "2");
+					info.put("message", "Student is not present");
+					return info;
+				}	
+				
+				List<ApproveType> task =  super.approvetype.findByExIdentifier(request.getApproveType());
+				
+				if(task.size() <=0 ) {
+					info.put("status", "2");
+					info.put("message", "ApproveType is not present");
+					return info;
+				}
+				
+				Date date = new Date();
+				StudentPenaltyDetails record = new StudentPenaltyDetails();
+				record.setAmount(getDouble(request.getAmount()));
+				record.setExRollNo(request.getExRollNo());
+				record.setRemark(request.getRemark());
+				record.setStudentadmission(status1.get(0));
+				record.setCreateDate(date);
+				
+				String UPLOADED_FOLDER = createFolder(status1.get(0).getAcademicYear().getExYear(),
+						status1.get(0).getColleges().getExIdentifier(), status1.get(0).getExRollNo().replace(" ", "-"),
+						"student");
+				
+				Random random = new Random(System.nanoTime() % 100000);
+				int randomInt = random.nextInt(1000000000);
+				byte[] bytes = request.getFile().getBytes();
+				
+				String newfilename = randomInt + "-" + request.getFile().getOriginalFilename();
+				Path path = Paths.get(UPLOADED_FOLDER + newfilename);
+				Files.write(path, bytes);
+				
+				String imagepath = "/" + status1.get(0).getAcademicYear().getExYear() + "/"
+						+ status1.get(0).getColleges().getExIdentifier() + "/student/"
+						+ status1.get(0).getExRollNo().replace(" ", "-") + "/" + newfilename;
+				
+				record.setDocumentPath(imagepath);
+				record.setName(status1.get(0).getExName());
+				record.setIsPaid(false);
+				record.setApprovetype(task.get(0));
+				//record.setOrderId(super.commonHelper.genrateOrderId());
+				studentPenaltyDetailsRepository.save(record);
+				info.put("status", "1");
+				info.put("message", "penalty has been updated successfully");			
+				return info;
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				info.put("status", "0");
+				info.put("message", "something went wrong.");
+				return info;
+			}
+		}
+	
+		
+		private Double getDouble(String str) {
+			try {
+				return Double.valueOf(str); 
+			}catch(Exception e) {
+				return 0.0;
+			}
+			
+		}
+		@Override
+		public Map<String, Object> getListPenaltyByStudent(NoduR request) {
+			Map<String, Object> info = new LinkedHashMap<>();
+			try {	
+				List<StudentPenaltyDetails> status1 = studentPenaltyDetailsRepository.findByExRollNo(request.getExRollNo());
+				if(status1.size()<=0) {
+					info.put("status", "2");
+					info.put("message", "No Penalty..");
+					return info;
+				}			
+				String serverurl = commonHelper.getSettingValue("SERVER_IP");
+				List dataList = new LinkedList();
+				for (StudentPenaltyDetails e : status1) {					
+					Map<Object, Object> Studentadmissiondata = new HashMap<Object, Object>();
+					Studentadmissiondata.put("id", e.getId());									
+					Studentadmissiondata.put("exRollNo", e.getExRollNo());
+					Studentadmissiondata.put("amount", e.getAmount());					
+					Studentadmissiondata.put("remark", e.getRemark());					
+					Studentadmissiondata.put("file", serverurl+e.getDocumentPath());									
+					Studentadmissiondata.put("approveType", e.getApprovetype().getExName());	
+					if(e.getIsPaid() != null && e.getIsPaid() == true) {
+						Studentadmissiondata.put("status", "submited");	
+					}else {
+						Studentadmissiondata.put("status","pending");	
+					}
+					
+				dataList.add(Studentadmissiondata);
+				}
+				info.put("status", "1");
+				info.put("message", "success");
+
+				info.put("details", dataList);
+				return info;
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				info.put("status", "0");
+				info.put("message", "something went wrong.");
+				return info;
+			}
+		}
+
+		@Override
+		public Map<String, String> saveStaffComplaintType(ComplaintTypeRequest request) {
+			// TODO Auto-generated method stub
+			Map<String, String> info = new LinkedHashMap<>();
+			try {
+				Optional<Role> role = super.role.findByIdAndExIsDeleteAndExIsActive(request.getRole(), false, true);
+				if (!role.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Role Id  not present");
+					return info;
+				}
+				List<ComplaintType> result = super.complaintTypeRepository.findByExNameAndExIsDelete(request.getExName(),
+						false);
+				if (result.size() > 0) {
+					info.put("status", "2");
+					info.put("message", "ComplaintType already exists");
+				} else {
+					Date date = new Date();
+					StaffComplaintType ComplaintType = new StaffComplaintType();
+					ComplaintType.setExName(request.getExName());
+					ComplaintType.setExIsDelete(false);
+					ComplaintType.setExCreateDate(date);
+					ComplaintType.setExIsActive(request.getExIsActive());
+					ComplaintType.setRole(role.get());
+					staffComplaintTypeRepository.save(ComplaintType);
+					info.put("status", "1");
+					info.put("message", "ComplaintType created successfully");
+					return info;
+				}
+				logger.info("saveComplaintType Request : " + info);
+				return info;
+			} catch (Exception e) {
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				e.printStackTrace();
+				info.put("status", "0");
+				info.put("message", "Something went wrong");
+				return info;
+		}
+	}
+		@Override
+		public Map<String, Object> getStaffComplaintType(ComplaintType request) {
+			// TODO Auto-generated method stub
+			Map<String, Object> info = new LinkedHashMap<>();
+			try {
+				List<StaffComplaintType> task = staffComplaintTypeRepository.findByExIsDelete(false);
+				List dataList = new LinkedList();
+				for (StaffComplaintType e : task) {
+					Map<Object, Object> ComplaintTypedata = new HashMap<Object, Object>();
+					ComplaintTypedata.put("id", e.getId());
+					ComplaintTypedata.put("exName", e.getExName());
+					ComplaintTypedata.put("exIsActive", e.getExIsActive());
+					ComplaintTypedata.put("exIsDelete", e.getExIsDelete());
+					ComplaintTypedata.put("exCreateDate", e.getExCreateDate());
+					ComplaintTypedata.put("exUpdateDate", e.getExUpdateDate());
+					ComplaintTypedata.put("role",e.getRole() == null ?"NA" : e.getRole().getExName());
+					ComplaintTypedata.put("roleId", e.getRole() == null ?"NA" :e.getRole().getId());
+					dataList.add(ComplaintTypedata);
+				}
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("details", dataList);
+				return info;
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				info.put("status", "0");
+				info.put("message", "Something went wrong");
+				return info;
+			}
+
+		}
+
+		@Override
+		public Map<String, Object> updateStaffComplaintType(ComplaintTypeRequest request) {
+			Map<String, Object> info = new LinkedHashMap<>();
+			try {
+				Optional<StaffComplaintType> complaintType = staffComplaintTypeRepository
+						.findByExIsDeleteAndExIsActiveAndId( false, true,request.getId());
+				if (!complaintType.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "complaintType name not present");
+					return info;
+				}
+				Optional<Role> role = super.role.findByIdAndExIsDeleteAndExIsActive(request.getRole(), false, true);
+				if (!role.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "Role Id  not present");
+					return info;
+				}
+				Date date = new Date();
+				int retval = staffComplaintTypeRepository.updateComplaintType(request.getExName(), date, request.getId() ,request.getRole());
+				if (retval == 1) {
+					info.put("status", "1");
+					info.put("message", "Complainttype updated successfully");
+					return info;
+				} else {
+					info.put("status", "2");
+					info.put("message", "complaintType not present");
+					return info;
+
+				}
+			} catch (Exception e) {
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				info.put("status", "0");
+				info.put("message", "something went wrong");
+				return info;
+			}
+		}
+
+		@Override
+		public Map<String, Object> deleteStaffComplaintType(ComplaintTypeRequest request) {
+			Map<String, Object> info = new LinkedHashMap<>();
+			try {
+				Optional<ComplaintType> complaintType = super.complaintTypeRepository
+						.findByExIsDeleteAndExIsActiveAndId( false, true,request.getId());
+				if (!complaintType.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "complaint name not present");
+					return info;
+				}
+
+				Date date = new Date();
+				int retval = staffComplaintTypeRepository.deleteComplaintType(true, request.getId() ,false);
+				if (retval == 1) {
+					info.put("status", "1");
+					info.put("message", "ComplaintType deleted successfully");
+					return info;
+				} else {
+					info.put("status", "2");
+					info.put("message", "complaintType not present");
+					return info;
+
+				}
+			} catch (Exception e) {
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				info.put("status", "0");
+				info.put("message", "something went wrong");
+				return info;
+			}
+		}
+
+		@Override
+		public Map<String, Object> registerComplainByStaff(ComplaintRequest request) {
+			// TODO Auto-generated method stub
+			Map<String, Object> info = new LinkedHashMap<>();
+			try {
+				
+				if (request.getExDescription() == null || request.getExDescription().equals("")
+						|| request.getExDescription().equals("NA")) {
+					info.put("status", "2");
+					info.put("message", "Description is required");
+					return info;
+				}
+				List<Staffpersonal> staff = super.staffpersonal.findByIdAndExIsDelete(request.getStaffid(), false);
+				if (staff.size() <= 0) {
+					info.put("status", "2");
+					info.put("message", "Staff id not present");
+					return info;
+				}
+				
+
+				Optional<StaffComplaintType> complaintType = staffComplaintTypeRepository
+						.findByIdAndExIsActiveAndExIsDelete(request.getComplaintType(), true, false);
+				if (!complaintType.isPresent()) {
+					info.put("status", "2");
+					info.put("message", " complaintType not present");
+					return info;
+				}
+
+//				}
+				String ticket_number = "";
+				String idIncrement = null;
+
+				List<StaffComplaint> max_id = (List<StaffComplaint>) staffComplaintRepository.findAll();
+				System.out.println("??????????????max_id????????????????????" + max_id.size());
+				if (max_id.size() > 0) {
+					Optional<StaffComplaint> task = staffComplaintRepository.findById(max_id.get(max_id.size() - 1).getId());
+					idIncrement = String.format("%0" + task.get().getExTicketNumber().replace("TKT", "").length() + "d",
+							Integer.parseInt(task.get().getExTicketNumber().replace("TKT", "")) + 1);
+					ticket_number = "TKT" + idIncrement;
+				} else {
+					idIncrement = String.format("%08d", 1);
+					ticket_number = "TKT" + idIncrement;
+				}
+				StaffComplaint complaint = new StaffComplaint();
+				Date date = new Date();
+				complaint.setExTicketNumber(ticket_number);
+				complaint.setExCreateDate(date);
+				complaint.setExDescription(request.getExDescription());
+				complaint.setStaff(staff.get(0));					
+				complaint.setComplaintStatus(1);
+				complaint.setComplaintType(complaintType.get());
+				staffComplaintRepository.save(complaint);
+				info.put("status", "1");
+				info.put("message", "Complaint register successfully");
+				logger.info("Complaint Response : " + info);
+				return info;
+
+			} catch (Exception e) {
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				info.put("status", "0");
+				info.put("message", "something went wrong");
+				return info;
+			}
+		}
+
+		@Override
+		public Map<String, Object> updateComplaintStatusForStaff(ComplaintRequest request) {
+
+			// TODO Auto-generated method stub
+			Map<String, Object> info = new LinkedHashMap<>();
+			try {
+				if (request.getExTicketNumber() == null || request.getExTicketNumber().equals("")|| request.getExTicketNumber().equals("null") || request.getExTicketNumber().trim().isEmpty()) {
+					info.put("status", "2");
+					info.put("message", "TicketNumber is required");
+					return info;
+				}
+				if (request.getComplaintStatus() == null || request.getComplaintStatus().equals("")	|| request.getComplaintStatus().equals("null")) {
+					info.put("status", "2");
+					info.put("message", "ComplaintStatus is required");
+					return info;
+				}
+
+				if (request.getUser() == null || request.getUser().equals("") || request.getUser().equals("null")) {
+					info.put("status", "2");
+					info.put("message", "User is Required");
+					return info;
+				}
+				Optional<StaffComplaint> complaint = staffComplaintRepository.findByExTicketNumber(request.getExTicketNumber());
+				if (!complaint.isPresent()) {
+					info.put("status", "2");
+					info.put("message", "TicketNumber not present");
+					return info;
+				}
+				System.out.println(">>>>>>>>>>>>>>>>>>>>" + complaint.get().getComplaintStatus());
+				if (complaint.get().getComplaintStatus() == 3) {
+					info.put("status", "2");
+					info.put("message", "Complaint resolved for particular TicketNumber");
+					return info;
+				} else {
+					Date date = new Date();
+					int retval = staffComplaintRepository.updateComplaintRecord(request.getComplaintStatus(),
+							request.getExTicketNumber().trim(), request.getExremark(), date, request.getUser());
+					if (retval == 1) {
+						info.put("status", "1");
+						info.put("message", "ComplaintStatus updated successfully");
+						return info;
+					} else {
+						info.put("status", "2");
+						info.put("message", "TicketNumber not present");
+						return info;
+					}
+
+				}
+
+			} catch (Exception e) {
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				info.put("status", "0");
+				info.put("message", "Something went wrong");
+				return info;
+			}
+		}
+
+		@Override
+		public Map<String, Object> getComplainListForStaff(ComplaintRequest request) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Map<String, Object> getComplainListOnStatusStaff(ComplaintRequest request) {
+			// TODO Auto-generated method stub
+			Map<String, Object> info = new LinkedHashMap<>();
+			try {
+
+				if (request.getComplaintStatus() == null || request.getComplaintStatus().equals("")
+						|| request.getComplaintStatus().equals("null")) {
+					info.put("status", "2");
+					info.put("message", "ComplaintStatus is required");
+					return info;
+				}
+
+				List dataList = new LinkedList();
+
+				List<StaffComplaint> complaint = staffComplaintRepository.findByComplaintStatus(request.getComplaintStatus());
+				if (complaint.size() <= 0) {
+					info.put("status", "2");
+					info.put("message", "Records not present");
+					return info;
+				}
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/YYYY");
+
+				for (StaffComplaint e : complaint) {
+					Map<Object, Object> data = new HashMap<Object, Object>();
+					data.put("exTicketNumber", e.getExTicketNumber());
+					if (e.getComplaintStatus().toString().equals("1")) {
+						data.put("complaintStatus", "Open");
+						data.put("exreslovedDate", "NA");
+						data.put("exRemark", "NA");
+
+					} else if (e.getComplaintStatus().toString().equals("2")) {
+						data.put("complaintStatus", "Progress");
+						data.put("exreslovedDate", "NA");
+						data.put("exRemark", "NA");
+
+					} else if (e.getComplaintStatus().toString().equals("3")) {
+						data.put("complaintStatus", "Resolved");
+						data.put("exReslovedDate", simpleDateFormat.format(e.getExUpdateDate()));
+						data.put("exRemark", e.getExRemark());
+
+					} else {
+						data.put("complaintStatus", "NA");
+					}
+					data.put("complaintType", e.getComplaintType().getExName());
+					data.put("staffname", e.getStaff().getExName());
+					data.put("mobile", e.getStaff().getExContactDetails());
+					data.put("complaintTypeId", e.getComplaintType().getId());
+					
+					data.put("exRegisterDate", simpleDateFormat.format(e.getExCreateDate()));
+					data.put("exDescription", e.getExDescription());
+
+					dataList.add(data);
+				}
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("details", dataList);
+				return info;
+
+			} catch (Exception e) {
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				info.put("status", "0");
+				info.put("message", "Something went wrong");
+				return info;
+			}
+		}
+
+		@Override
+		public Map<String, Object> getComplainHistoryStaff(ComplaintRequest request) {
+			// TODO Auto-generated method stub
+			Map<String, Object> info = new LinkedHashMap<>();
+			try {
+
+				
+
+				List dataList = new LinkedList();
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/YYYY");
+				List<StaffComplaint> complaint = staffComplaintRepository.findByStaffId(request.getStaffid());
+				if (complaint.size() <= 0) {
+					info.put("status", "2");
+					info.put("message", "Records not present");
+					return info;
+				}
+				for (StaffComplaint e : complaint) {
+					Map<Object, Object> data = new HashMap<Object, Object>();
+					data.put("exTicketNumber", e.getExTicketNumber());
+					if (e.getComplaintStatus().toString().equals("1")) {
+						data.put("complaintStatus", "Open");
+						data.put("exreslovedDate", "NA");
+						data.put("exRemark", "NA");
+					} else if (e.getComplaintStatus().toString().equals("2")) {
+						data.put("complaintStatus", "Progress");
+						data.put("exReslovedDate", "NA");
+						data.put("exRemark", e.getExRemark());
+					} else if (e.getComplaintStatus().toString().equals("3")) {
+						data.put("complaintStatus", "Resolved");
+						data.put("exReslovedDate", simpleDateFormat.format(e.getExUpdateDate()));
+						data.put("exRemark", e.getExRemark());
+					} else {
+						data.put("complaintStatus", "NA");
+						data.put("exReslovedDate", "NA");
+					}
+					data.put("complaintType", e.getComplaintType().getExName());
+			
+					data.put("complaintTypeId", e.getComplaintType().getId());
+				
+					data.put("exRegisterDate", simpleDateFormat.format(e.getExCreateDate()));
+					data.put("exDescription", e.getExDescription());
+
+					dataList.add(data);
+				}
+				info.put("status", "1");
+				info.put("message", "success");
+				info.put("details", dataList);
+				return info;
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				info.put("status", "0");
+				info.put("message", "Something went wrong");
+				return info;
+			}
+		}
+}

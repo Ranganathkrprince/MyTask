@@ -1,0 +1,178 @@
+package com.niftem.app.model;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class StreamRequest {
+	
+     private Long id;
+     
+ 	@NotNull@NotBlank@NotEmpty(message = "Please provide a name")
+    private String exName;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a Identifier")
+ 	private String exIdentifier;
+	
+	@Column(columnDefinition="TEXT")
+	private String exLocalName;
+	
+    @Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	@NotNull(message = "Please provide a exIsActive 0/1")
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+    private Boolean exIsActive;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+	
+	private Long department;
+	
+	private Long degree;
+	
+	private Long programmes;
+	
+	@Column(columnDefinition="TEXT")
+	private String exDescription;
+	
+	
+	@NotNull(message="please provide colleges")
+	private List<Long> colleges ;
+
+	
+	private Long user;
+	public Long getUser() {
+		return user;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public String getExIdentifier() {
+		return exIdentifier;
+	}
+
+	public void setExIdentifier(String exIdentifier) {
+		this.exIdentifier = exIdentifier;
+	}
+
+	public String getExLocalName() {
+		return exLocalName;
+	}
+
+	public void setExLocalName(String exLocalName) {
+		this.exLocalName = exLocalName;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Long getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+
+	public Long getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+	public List<Long> getColleges() {
+		return colleges;
+	}
+
+	public void setColleges(List<Long> colleges) {
+		this.colleges = colleges;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	@Override
+	public String toString() {
+		return "StreamRequest [id=" + id + ", exName=" + exName + ", exIdentifier=" + exIdentifier + ", exLocalName="
+				+ exLocalName + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", exIsActive="
+				+ exIsActive + ", exIsDelete=" + exIsDelete + ", department=" + department + ", degree=" + degree
+				+ ", programmes=" + programmes + ", exDescription=" + exDescription + ", colleges=" + colleges
+				+ ", user=" + user + "]";
+	}
+
+	
+}

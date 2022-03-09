@@ -1,0 +1,321 @@
+package com.niftem.app.model;
+
+public class LivePaymentResponse {
+	
+	
+	private String mihpayid;
+    private String mode;
+    private String status;
+
+	
+	private String key;
+    private String txnid;
+    private String amount;
+    
+	
+	private String discount;
+    private String offer;
+    private String productinfo;
+    
+	
+	private String firstname;
+    private String lastname;
+    private String address1;
+    
+	
+	private String address2;
+    private String city;
+    private String state;
+    
+	
+	private String country;
+    private String zipcode;
+    private String email;
+    
+	
+	private String phone;
+    private String udf1;
+    private String udf2;
+    
+	
+	private String udf3;
+    private String udf4;
+    private String udf5;
+    
+	
+	private String hash;
+    private String error;
+    private String bankcode;
+    
+	
+	private String PG_TYPE;
+    private String bank_ref_num;
+    private String shipping_firstname;
+    
+	
+	private String shipping_lastname;
+    private String shipping_address1;
+    private String shipping_address2;
+    
+	
+	private String shipping_city;
+    private String shipping_state;
+    private String shipping_country;
+    
+	
+	private String shipping_zipcode;
+    private String shipping_phone;
+    private String unmappedstatus;
+	public String getMihpayid() {
+		return mihpayid;
+	}
+	public String getMode() {
+		return mode;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public String getKey() {
+		return key;
+	}
+	public String getTxnid() {
+		return txnid;
+	}
+	public String getAmount() {
+		return amount;
+	}
+	public String getDiscount() {
+		return discount;
+	}
+	public String getOffer() {
+		return offer;
+	}
+	public String getProductinfo() {
+		return productinfo;
+	}
+	public String getFirstname() {
+		return firstname;
+	}
+	public String getLastname() {
+		return lastname;
+	}
+	public String getAddress1() {
+		return address1;
+	}
+	public String getAddress2() {
+		return address2;
+	}
+	public String getCity() {
+		return city;
+	}
+	public String getState() {
+		return state;
+	}
+	public String getCountry() {
+		return country;
+	}
+	public String getZipcode() {
+		return zipcode;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public String getUdf1() {
+		return udf1;
+	}
+	public String getUdf2() {
+		return udf2;
+	}
+	public String getUdf3() {
+		return udf3;
+	}
+	public String getUdf4() {
+		return udf4;
+	}
+	public String getUdf5() {
+		return udf5;
+	}
+	public String getHash() {
+		return hash;
+	}
+	public String getError() {
+		return error;
+	}
+	public String getBankcode() {
+		return bankcode;
+	}
+	public String getPG_TYPE() {
+		return PG_TYPE;
+	}
+	public String getBank_ref_num() {
+		return bank_ref_num;
+	}
+	public String getShipping_firstname() {
+		return shipping_firstname;
+	}
+	public String getShipping_lastname() {
+		return shipping_lastname;
+	}
+	public String getShipping_address1() {
+		return shipping_address1;
+	}
+	public String getShipping_address2() {
+		return shipping_address2;
+	}
+	public String getShipping_city() {
+		return shipping_city;
+	}
+	public String getShipping_state() {
+		return shipping_state;
+	}
+	public String getShipping_country() {
+		return shipping_country;
+	}
+	public String getShipping_zipcode() {
+		return shipping_zipcode;
+	}
+	public String getShipping_phone() {
+		return shipping_phone;
+	}
+	public String getUnmappedstatus() {
+		return unmappedstatus;
+	}
+	public void setMihpayid(String mihpayid) {
+		this.mihpayid = mihpayid;
+	}
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public void setKey(String key) {
+		this.key = key;
+	}
+	public void setTxnid(String txnid) {
+		this.txnid = txnid;
+	}
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+	public void setDiscount(String discount) {
+		this.discount = discount;
+	}
+	public void setOffer(String offer) {
+		this.offer = offer;
+	}
+	public void setProductinfo(String productinfo) {
+		this.productinfo = productinfo;
+	}
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public void setCountry(String country) {
+		this.country = country;
+	}
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public void setUdf1(String udf1) {
+		this.udf1 = udf1;
+	}
+	public void setUdf2(String udf2) {
+		this.udf2 = udf2;
+	}
+	public void setUdf3(String udf3) {
+		this.udf3 = udf3;
+	}
+	public void setUdf4(String udf4) {
+		this.udf4 = udf4;
+	}
+	public void setUdf5(String udf5) {
+		this.udf5 = udf5;
+	}
+	public void setHash(String hash) {
+		this.hash = hash;
+	}
+	public void setError(String error) {
+		this.error = error;
+	}
+	public void setBankcode(String bankcode) {
+		this.bankcode = bankcode;
+	}
+	public void setPG_TYPE(String pG_TYPE) {
+		PG_TYPE = pG_TYPE;
+	}
+	public void setBank_ref_num(String bank_ref_num) {
+		this.bank_ref_num = bank_ref_num;
+	}
+	public void setShipping_firstname(String shipping_firstname) {
+		this.shipping_firstname = shipping_firstname;
+	}
+	public void setShipping_lastname(String shipping_lastname) {
+		this.shipping_lastname = shipping_lastname;
+	}
+	public void setShipping_address1(String shipping_address1) {
+		this.shipping_address1 = shipping_address1;
+	}
+	public void setShipping_address2(String shipping_address2) {
+		this.shipping_address2 = shipping_address2;
+	}
+	public void setShipping_city(String shipping_city) {
+		this.shipping_city = shipping_city;
+	}
+	public void setShipping_state(String shipping_state) {
+		this.shipping_state = shipping_state;
+	}
+	public void setShipping_country(String shipping_country) {
+		this.shipping_country = shipping_country;
+	}
+	public void setShipping_zipcode(String shipping_zipcode) {
+		this.shipping_zipcode = shipping_zipcode;
+	}
+	public void setShipping_phone(String shipping_phone) {
+		this.shipping_phone = shipping_phone;
+	}
+	public void setUnmappedstatus(String unmappedstatus) {
+		this.unmappedstatus = unmappedstatus;
+	}
+	@Override
+	public String toString() {
+		return "LivePaymentResponse [mihpayid=" + mihpayid + ", mode=" + mode + ", status=" + status + ", key=" + key
+				+ ", txnid=" + txnid + ", amount=" + amount + ", discount=" + discount + ", offer=" + offer
+				+ ", productinfo=" + productinfo + ", firstname=" + firstname + ", lastname=" + lastname + ", address1="
+				+ address1 + ", address2=" + address2 + ", city=" + city + ", state=" + state + ", country=" + country
+				+ ", zipcode=" + zipcode + ", email=" + email + ", phone=" + phone + ", udf1=" + udf1 + ", udf2=" + udf2
+				+ ", udf3=" + udf3 + ", udf4=" + udf4 + ", udf5=" + udf5 + ", hash=" + hash + ", error=" + error
+				+ ", bankcode=" + bankcode + ", PG_TYPE=" + PG_TYPE + ", bank_ref_num=" + bank_ref_num
+				+ ", shipping_firstname=" + shipping_firstname + ", shipping_lastname=" + shipping_lastname
+				+ ", shipping_address1=" + shipping_address1 + ", shipping_address2=" + shipping_address2
+				+ ", shipping_city=" + shipping_city + ", shipping_state=" + shipping_state + ", shipping_country="
+				+ shipping_country + ", shipping_zipcode=" + shipping_zipcode + ", shipping_phone=" + shipping_phone
+				+ ", unmappedstatus=" + unmappedstatus + "]";
+	}
+    
+    
+    
+}

@@ -1,0 +1,40 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.CoursesCoverage;;
+
+@Repository
+@Service
+@Transactional
+public interface CoursesCoverageRepository  extends CrudRepository<CoursesCoverage, Long>{
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_coursecoverage set ex_unit_name = ?2 , ex_is_active=?4,ex_topics_covered=?3, ex_topics_not_covered =?5 , ex_total_topics =?6  where id =?1", nativeQuery = true)
+	int Update(Long id, String exUnitName, Double exTopicsCovered, Boolean exIsActive, Double exTopicsNotCovered,
+			Double exTotalTopics);
+
+
+	List<CoursesCoverage> findByExIsDelete(boolean b);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "DELETE FROM ex_coursecoverage where  id =?1", nativeQuery = true)
+	int deleteCourseCoverage(Long id);
+
+
+	List<CoursesCoverage> findByExIsDeleteAndCoursesId(boolean b, Long courses);
+	
+	List<CoursesCoverage> findByExIsDeleteAndStaffpersonalId(boolean b, Long staff);
+
+}

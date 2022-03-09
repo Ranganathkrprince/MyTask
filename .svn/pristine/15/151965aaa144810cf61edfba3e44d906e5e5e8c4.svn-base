@@ -1,0 +1,73 @@
+package com.niftem.app.model;
+
+public class ComplaintTypeRequest {
+	
+	
+    private Long id;
+    
+    private Long role;
+	
+	private String exName;
+	
+    private Boolean exIsActive;
+    private Boolean exIsDelete;
+      
+	private Long user;
+
+	public Long getId() {
+		return id;
+	}
+
+	public Long getRole() {
+		return role;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setRole(Long role) {
+		this.role = role;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "ComplaintTypeRequest [id=" + id + ", role=" + role + ", exName=" + exName + ", exIsActive=" + exIsActive
+				+ ", exIsDelete=" + exIsDelete + ", user=" + user + "]";
+	}
+	
+	
+    
+}

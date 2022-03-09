@@ -1,0 +1,423 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.ExamBarcodes;
+import com.niftem.app.entity.User;
+
+public interface ExamBarcodesRepository extends CrudRepository<ExamBarcodes, Long> {
+
+List<ExamBarcodes> findByExIsDeleteAndAcademicYearIdAndCollegesIdAndDegreeIdAndProgrammesIdAndRegistrationTypeIdAndDepartmentIdAndStudentadmissionIdAndSemesterIdAndProgrammeYearId(
+			boolean delete, Long academicYear, Long colleges, Long degree, Long programmes,Long registration, Long department,Long student , Long semester , Long programyaer);
+
+List<ExamBarcodes> findByExIsDeleteAndCollegesIdAndDegreeIdAndProgrammesIdAndRegistrationTypeIdAndDepartmentIdAndStudentadmissionIdAndSemesterIdAndProgrammeYearId(
+		boolean delete,  Long colleges, Long degree, Long programmes,Long registration, Long department,Long student , Long semester , Long programyaer);
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_end_term_marks = ?1 ,ex_update_date=?2  , ex_is_attendance = ?3,user_id=?13 ,ex_end_term_remark = ?17  where degree_id =?4 and semester_id=?5 and programmeyear_id=?6 and programmes_id=?7 and courses_id=?8 and ex_roll_no=?9 and ex_is_active=?10 and ex_is_delete=?11 and registration_type_id=?12 and exam_announcement_id =?14 and academicyear_id=?15 and department_id=?16", nativeQuery = true)
+int UpdateExtrenalMarks(Double externalScore, Date date, Boolean is_present, Long id, Long id2, Long id3, Long id4,
+		Long id5, String string, boolean b, boolean c, Long id6, User users, Long examAnnouncement, Long acdemic, Long department,String exEndTermMarks_remarks);
+
+
+
+
+List<ExamBarcodes> findByExIsActiveAndCollegesIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndProgrammesIdAndSemesterIdAndAcademicYearIdAndRegistrationTypeIdAndDepartmentId(
+		boolean b, Long colleges, Long courses, Long degree, Long examAnnouncement, Long programmes, Long semester,
+		Long academicYear, Long registrationType, Long department);
+
+List<ExamBarcodes> findByExIsActiveAndCollegesIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndProgrammesIdAndSemesterIdAndExRollNoAndProgrammeYearIdAndAcademicYearIdAndDepartmentId(
+		boolean b, Long colleges, Long courses, Long degree, Long examAnnouncement, Long programmes, Long semester,
+		String string, Long programmeYear, Long academicYear, Long department);
+
+
+
+List<ExamBarcodes> findByCoursesIdAndAcademicYearIdAndExIsActiveAndExIsDeleteAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndProgrammeYearIdAndSemesterIdAndExamAnnouncementIdAndRegistrationTypeId(
+		Long id, Long id2, boolean b, boolean c, Long colleges, Long degree, Long programmes, Long department,
+		Long programmeYear, Long semester, Long examAnnouncement, Long registrationType);
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_end_term_marks = ?1 ,ex_update_date=?7   where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?8 and exam_announcement_id=?9 and registration_type_id=?10   ", nativeQuery = true)	
+int updateEndTermMarks(Double exEndTermMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+		Long studentAdmissionId, Date date, Long degree, Long examAnnouncement, Long regType);
+
+List<ExamBarcodes> findByStudentadmissionIdAndCoursesIdAndAcademicYearIdAndExIsActiveAndExIsDelete(Long id, Long id2,
+		Long id3, boolean b, boolean c);
+
+List<ExamBarcodes> findByExIsActiveAndExIsDeleteAndExRollNo(boolean b, boolean c, String trim);
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_lab_experiment = ?1,ex_viva = ?2 ,ex_update_date=?3  , user_id=?13 , ex_is_practical_attendance=?15 where degree_id =?4 and semester_id=?5 and programmeyear_id=?6 and programmes_id=?7 and courses_id=?8 and ex_roll_no=?9 and ex_is_active=?10 and ex_is_delete=?11 and registration_type_id=?12 and exam_announcement_id =?14", nativeQuery = true)
+int UpdatelabExperiment(double exLabExperiment, double exViva, Date date, Long id, Long id2, Long id3, Long id4,
+		Long id5, String string, boolean b, boolean c, Long id6, User users, Long examAnnouncement, boolean is_present);
+
+
+
+List<ExamBarcodes> findByExIsActiveAndCollegesIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndProgrammesIdAndSemesterIdAndExRollNoAndProgrammeYearIdAndAcademicYearIdAndDepartmentIdAndExIsPracticalAttendance(
+		boolean b, Long id, Long id2, Long id3, Long id4, Long id5, Long id6, String string, Long id7, Long id8,
+		Long id9, boolean c);
+
+List<ExamBarcodes> findByExIsActiveAndCollegesIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndProgrammesIdAndSemesterIdAndExRollNoAndProgrammeYearIdAndAcademicYearIdAndDepartmentIdAndExIsAttendance(
+		boolean b, Long id, Long id2, Long id3, Long id4, Long id5, Long id6, String string, Long id7, Long id8,
+		Long id9, boolean c);
+
+List<ExamBarcodes> findByExIsActiveAndCollegesIdAndCoursesIdAndDegreeIdAndExamAnnouncementIdAndProgrammesIdAndSemesterIdAndExRollNoAndProgrammeYearIdAndAcademicYearIdAndDepartmentIdAndExIsPracticalAttendanceAndExIsAttendance(
+		boolean b, Long colleges, Long courses, Long degree, Long examAnnouncement, Long programmes, Long semester,
+		String string, Long programmeYear, Long academicYear, Long department, boolean c, boolean d);
+
+List<ExamBarcodes> findByExIsActiveAndExIsDeleteAndStudentadmissionId(boolean b, boolean c, Long studentAdmissionId);
+
+
+
+
+
+
+
+/*@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_lab_experiment = ?1,ex_viva = ?2 ,ex_is_practical_attendance =?3,ex_update_date=?4 , user_id=?13  where degree_id =?5 and semester_id=?6 and programmeyear_id=?7 and programmes_id=?8 and courses_id=?9 and student_admission_id=?10 and ex_is_active=?11 and ex_is_delete=?12  and exam_announcement_id =?14", nativeQuery = true)
+
+int UpdatelabExperiment(Double exLabExperiment, Double exViva, Boolean exIsPracticalAttendance, Date date, Long degree,
+		Long sem, Long programmeyear, Long programme, Long courses, Long studentadmission, boolean b, boolean c, User users,
+		Long examAnnouncement);*/
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_lab_experiment = ?1,ex_viva = ?2 ,ex_is_practical_attendance =?3,ex_update_date=?4 , user_id=?13  where degree_id =?5 and semester_id=?6 and programmeyear_id=?7 and programmes_id=?8 and courses_id=?9 and student_admission_id=?10 and ex_is_active=?11 and ex_is_delete=?12  and exam_announcement_id =?14 and registration_type_id =?15", nativeQuery = true)
+
+int UpdatelabExperiment(Double exLabExperiment, Double exViva, Boolean exIsPracticalAttendance, Date date, Long id,
+		Long id2, Long id3, Long id4, Long id5, Long studentAdmissionId, boolean b, boolean c, User users,
+		Long examAnnouncement, Long reg);
+
+List<ExamBarcodes> findByExIsDeleteAndExIsActiveAndStudentadmissionExRollNoAndCollegesIdAndDegreeIdAndProgrammesIdAndCoursesIdAndAcademicYearIdAndDepartmentId(
+		boolean b, boolean c, String trim, Long colleges, Long degree, Long programmes, Long courses, Long academicYear,
+		Long departmemt);
+
+
+List<ExamBarcodes> findByExIsDeleteAndExIsActiveAndStudentadmissionExRollNoAndCollegesIdAndDegreeIdAndProgrammesIdAndCoursesIdAndAcademicYearIdAndDepartmentIdAndRegistrationTypeId(
+		boolean b, boolean c, String trim, Long colleges, Long degree, Long programmes, Long courses, Long academicYear,
+		Long departmemt , Long rtpe);
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_end_term_marks = ?1 ,ex_update_date=?2  , ex_is_attendance = ?3,user_id=?13  where degree_id =?4 and semester_id=?5 and programmeyear_id=?6 and programmes_id=?7 and courses_id=?8 and ex_roll_no=?9 and ex_is_active=?10 and ex_is_delete=?11 and registration_type_id=?12 and department_id =?14", nativeQuery = true)
+int UpdateMigExtrenalMarks(Double externalScore, Date date, Boolean is_present, Long id, Long id2, Long id3, Long id4,
+		Long id5, String string, boolean b, boolean c, Long id6, User users, Long departmemt);
+
+List<ExamBarcodes> findByExIsActiveAndCollegesIdAndCoursesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndAcademicYearIdAndRegistrationTypeIdAndDepartmentId(
+		boolean b, Long colleges, Long courses, Long degree, Long programmes, Long semester, Long academicYear,
+		Long registrationType, Long department);
+
+List<ExamBarcodes> findByExIsActiveAndCollegesIdAndCoursesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndExRollNoAndProgrammeYearIdAndAcademicYearIdAndDepartmentIdAndExIsPracticalAttendanceAndExIsAttendanceAndRegistrationTypeId(
+		boolean b, Long colleges, Long courses, Long degree, Long programmes, Long semester, String string,
+		Long programmeYear, Long academicYear, Long department, boolean c, boolean d , Long rtye);
+
+List<ExamBarcodes> findByExIsActiveAndCollegesIdAndCoursesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndExRollNoAndProgrammeYearIdAndAcademicYearIdAndDepartmentIdAndRegistrationTypeId(
+		boolean b, Long colleges, Long courses, Long degree, Long programmes, Long semester, String string,
+		Long programmeYear, Long academicYear, Long department , Long rty);
+
+List<ExamBarcodes> findByExIsActiveAndCollegesIdAndCoursesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndExRollNoAndProgrammeYearIdAndAcademicYearIdAndDepartmentIdAndExIsAttendanceAndRegistrationTypeId(
+		boolean b, Long id, Long id2, Long id3, Long id4, Long id5, String string, Long id6, Long id7, Long id8,boolean c , Long rtye);
+
+List<ExamBarcodes> findByExIsActiveAndCollegesIdAndCoursesIdAndDegreeIdAndProgrammesIdAndSemesterIdAndExRollNoAndProgrammeYearIdAndAcademicYearIdAndDepartmentIdAndExIsPracticalAttendanceAndRegistrationTypeId(
+		boolean b, Long id, Long id2, Long id3, Long id4, Long id5, String string, Long id6, Long id7, Long id8,
+		boolean c , Long rtye);
+
+List<ExamBarcodes> findByExIsActiveAndCollegesIdAndCoursesIdAndExamAnnouncementIdAndProgrammesIdAndRegistrationTypeIdAndExBarcode(
+		boolean b, Long colleges, Long course, Long examAnnouncement, Long programmes, Long registrationType,
+		String string);
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_ans_booklet_path =?1 , ex_update_date=?2  , ex_is_attendance =?3,booklet_user_id=?9  where registration_type_id=?4 and programmes_id=?5 and courses_id=?6 and ex_barcode=?7 and exam_announcement_id =?8", nativeQuery = true)
+int updateAnswerBookletStatus(String string, Date date, boolean b, Long registrationType, Long programmes, Long course,
+		String string2, Long examAnnouncement, User userresult);
+
+List<ExamBarcodes> findByExIsActiveAndCollegesIdAndCoursesIdAndExamAnnouncementIdAndProgrammesIdAndRegistrationTypeIdAndExBarcodeAndDepartmentIdAndDegreeId(
+		boolean b, Long colleges, Long course, Long examAnnouncement, Long programmes, Long registrationType,
+		String string, Long department, Long degree);
+
+List<ExamBarcodes> findByAcademicYearIdAndExamAnnouncementIdAndExpertId(Long academicYear, Long examAnnouncement,
+		Long staffid);
+
+@Query(value = "select * from ex_exam_barcodes where exam_announcement_id =?1 and academicyear_id =?2  and colleges_id = ?3  and programmes_id = ?4 and ex_is_attendance = ?5 and registration_type_id = ?6 and courses_id = ?7 AND ex_ans_booklet_path IS NOT NULL  and expert_id is null ORDER BY RAND()", nativeQuery = true)
+List<ExamBarcodes> getStudentForEvalution(Long examAnnouncement, Long academicYear, Long colleges, Long programmes,
+		boolean is_attendence, Long registrationType, Long course, Pageable paging);
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set expert_id =?1 , ex_update_date=?2 where academicyear_id=?3 and programmes_id=?4 and courses_id=?5 and ex_barcode=?6 and exam_announcement_id =?7", nativeQuery = true)
+int updateStaffId(Long staffId, Date date, Long academicYear, Long programmes, Long course, String exBarcode,
+		Long examAnnouncement);
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set expert_id =?1 , ex_update_date=?2 where academicyear_id=?3 and programmes_id=?4 and courses_id=?5 and ex_barcode=?6 and exam_announcement_id =?7 and  registration_type_id = ?8  and degree_id = ?9 and id=?10 ", nativeQuery = true)
+int updateStaffIdReallocation(Long newstaffid, Date date, Long academicYear, Long programmes, Long course,
+		String exBarcode, Long examAnnouncement, Long registrationType, Long degree, Long id);
+
+List<ExamBarcodes> findByExIsAttendanceAndAcademicYearIdAndDegreeIdAndProgrammesIdAndExamAnnouncementIdAndCoursesIdAndExpertIdAndRegistrationTypeIdAndExIsEvaluatedAndIdIn(
+		boolean b, Long academicYear, Long degree, Long programmes, Long examAnnouncement, Long course, Long oldstaffid,
+		Long registrationType, Integer i, List<Long> barcodelist);
+
+@Query(value = "select * from ex_exam_barcodes where exam_announcement_id =?1 and academicyear_id =?2  and programmes_id = ?3 and registration_type_id =?4 and department_id =?5 group by courses_id", nativeQuery = true)
+List<ExamBarcodes> getCoursesDetailsOnDeptExam(Long examAnnouncement, Long academicYear, Long programmes, Long registrationType , Long department_id);
+
+
+
+@Query(value = "select * from ex_exam_barcodes where exam_announcement_id =?1 and academicyear_id =?2  and programmes_id = ?3 and registration_type_id =?4  group by courses_id", nativeQuery = true)
+List<ExamBarcodes> getCoursesDetails(Long examAnnouncement, Long academicYear, Long programmes, Long registrationType);
+
+List<ExamBarcodes> findByExamAnnouncementIdAndAcademicYearIdAndCoursesIdAndProgrammesIdAndExIsAttendanceAndRegistrationTypeIdAndDegreeId(
+		Long examAnnouncement, Long academicYear, Long course, Long programmes, boolean b, Long registrationType,
+		Long degree);
+
+List<ExamBarcodes> findByExamAnnouncementIdAndAcademicYearIdAndCoursesIdAndProgrammesIdAndExIsAttendanceAndDegreeIdAndExIsReevaluatedAndExRollNoIn(
+		Long examAnnouncement, Long academicYear, CoursesRepository courses, Long programmes, boolean b, Long degree,
+		boolean c, List<String> name);
+
+List<ExamBarcodes> findByProgrammeYearIdAndSemesterIdAndAcademicYearIdAndCoursesIdAndProgrammesIdAndExIsAttendanceAndDegreeIdAndExIsReevaluatedAndExRollNoIn(
+		Long programmeyear, Long semester, Long academicYear, CoursesRepository courses, Long programmes, boolean b,
+		Long degree, boolean c, List<String> name);
+
+List<ExamBarcodes> findByExpertIdAndExBarcode(Long staffid, String barcode);
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set   ex_end_term_marks = ?1 ,ex_time_limit=?2,ex_time_taken=?3 ,ex_evaluated_path=?4 ,ex_is_evaluated=?7 where ex_barcode=?5 and expert_id=?6", nativeQuery = true)
+int updeterecordonstaffidSave(Double externalMark, String evaluatedtime,String timetaken, String evaluatedpath, String barcode, Long staffid, int is_evaluated);
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set   ex_end_term_marks = ?1 where ex_barcode=?3 and expert_id=?2", nativeQuery = true)
+int updeteMarks(Double externalMark,  Long staffid, String barcode);
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set   ex_end_term_marks = ?1 where id=?2", nativeQuery = true)
+int updeterModeration(Double externalMark, long id);
+	
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_is_evaluated =?1 , ex_end_term_marks=?2 ,ex_time_limit=?3,ex_time_taken=?4 ,ex_evaluated_path=?5 where ex_barcode=?6 and expert_id=?7", nativeQuery = true)
+int updeterecordonstaffid(Boolean ExIsEvaluated, Double externalMark,String evaluatedtime, String timetaken, String evaluatedfile,String barcode, Long staffid);
+
+List<ExamBarcodes> findByExIsAttendanceAndAcademicYearIdAndProgrammesIdAndExamAnnouncementIdAndCoursesIdAndDegreeIdAndSemesterIdAndProgrammeYearIdAndExpertIdAndRegistrationTypeId(boolean b, Long academicYear, Long programmes, Long examAnnouncement, Long course, Long degree, Long semester,Long programmeYear, Long staffid, Long registrationType);
+
+List<ExamBarcodes> findByAcademicYearIdAndExamAnnouncementIdAndCoursesIdAndProgrammesIdAndExpertId(Long academicYear,
+		Long examAnnouncement, Long course, Long programmes, Long id);
+
+List<ExamBarcodes> findByAcademicYearIdAndExamAnnouncementIdAndCoursesIdAndProgrammesIdAndExpertIdAndCollegesIdAndProgrammeYearIdAndSemesterId(
+		Long academicYear, Long examAnnouncement, Long course, Long programmes, Long id, Long programmeYear,
+		Long colleges, Long semster);
+
+List<ExamBarcodes> findByExIsActiveAndExIsDeleteAndExRollNoAndExBarcode(boolean b, boolean c, String rollnumber ,String barcode);
+
+
+@Query(value = "SELECT * FROM ex_exam_barcodes o , ex_courses_registration r where   o.academicyear_id= ?1 And o.degree_id =?2 And o.programmes_id=?3  And o.exam_announcement_id = r.exam_announcement_id AND o.courses_id = r.courses_id AND o.student_admission_id = r.student_admission_id  And o.courses_id = ?4 and r.ex_is_paid  = 1 AND r.registration_type_id IN (4,6) AND r.programmeyear_id = ?5 AND r.semester_id =?6", nativeQuery = true)
+List<ExamBarcodes> getListForPhotoCopy(Long academicYear, Long degree, Long programmes, Long course,Long programyear , Long semester );
+
+
+List<ExamBarcodes> findByExIsActiveAndExIsDeleteAndStudentadmissionIdAndCoursesIdAndExamAnnouncementId(boolean b, boolean c, Long studentAdmissionId , Long curses , Long exam);
+
+List<ExamBarcodes> findByExIsActiveAndExIsDeleteAndStudentadmissionIdAndCoursesId(boolean b, boolean c, Long studentAdmissionId , Long curses);
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_viva = ?1 ,ex_update_date=?7 , ex_viva_remarks = 'NA'   where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?8 and exam_announcement_id=?9   ", nativeQuery = true)	
+int updatevaivaMarks(Double exEndTermMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+		Long studentAdmissionId, Date date, Long degree, Long examAnnouncement);
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_viva_remarks = ?1 ,ex_update_date=?7 , ex_viva = 0  where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?8 and exam_announcement_id=?9   ", nativeQuery = true)	
+int updatevaivaRemarksMarks(String  ex_viva_remarks, Long academicYear, Long colleges, Long programmes, Long courses,
+		Long studentAdmissionId, Date date, Long degree, Long examAnnouncement);
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_lab_experiment = ?1 ,ex_update_date=?7 , ex_lab_experiment_remarks = 'NA'  where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?8 and exam_announcement_id=?9  ", nativeQuery = true)	
+int updateLabExprimentMarks(Double exEndTermMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+		Long studentAdmissionId, Date date, Long degree, Long examAnnouncement);
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_lab_experiment_remarks = ?1 ,ex_update_date=?7 , ex_lab_experiment = 0  where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?8 and exam_announcement_id=?9  ", nativeQuery = true)	
+int updateLabExprimentReMarks(String exEndTermMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+		Long studentAdmissionId, Date date, Long degree, Long examAnnouncement);
+
+
+
+List<ExamBarcodes> findByStudentadmissionIdAndCoursesIdIn(Long student, List<Long> courses);
+
+
+
+@Modifying
+@Transactional
+@Query(value = "delete from ex_exam_barcodes where student_admission_id=?1 AND  courses_id IN ?2", nativeQuery = true)
+int deleteCourseFromExamTable(Long student, List<Long> courses);
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes   \r\n" + 
+		"set ex_lab_experiment =?1 ,ex_viva=?2 ,ex_update_date =?8 ,ex_lab_experiment_remarks=?9,ex_viva_remarks=?10,"
+		+ "ex_is_practical_attendance=?11,degree_id=?12 where academicyear_id=?3 and colleges_id=?4 and programmes_id = ?5 and courses_id=?6 and ex_roll_no=?7 ", nativeQuery = true)
+int updatePracticalrecords(Double exLabExperiment, Double exViva, Long academicYear, Long colleges, Long programmes,
+		Long courses, String exRollNo, Date date, String exLabExperiment_remarks, String exViva_remarks,
+		Boolean is_PracticalAttendance, Long degree);
+
+
+
+
+List<ExamBarcodes> findByCoursesIdAndAcademicYearIdAndExIsActiveAndExIsDeleteAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionId(
+		Long id, Long id2, boolean b, boolean c, Long colleges, Long degree, Long programmes, Long department,
+		Long programmeYear, Long semester, Long id3);
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes   \r\n" + 
+		"set ex_lab_experiment =?1 ,ex_viva=?2 ,ex_update_date =?8 ,ex_lab_experiment_remarks=?9,ex_viva_remarks=?10,"
+		+ "ex_is_practical_attendance=?11 where academicyear_id=?3 and colleges_id=?4 and programmes_id = ?5 and courses_id=?6 and ex_roll_no=?7 ", nativeQuery = true)
+int updatePracticalrecordsfaculty(Double exLabExperiment, Double exViva, Long academicYear, Long colleges, Long programmes,
+		Long courses, String exRollNo, Date date, String exLabExperiment_remarks, String exViva_remarks,
+		Boolean is_PracticalAttendance);
+
+
+List<ExamBarcodes> findByExIsActiveAndExIsDeleteAndExRollNoAndCoursesId(boolean b, boolean c, String trim,
+		Long courses);
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes   \r\n" + 
+		"set ex_lab_experiment =?1 ,ex_viva=?2 ,ex_update_date =?8 ,ex_lab_experiment_remarks=?9,ex_viva_remarks=?10,"
+		+ "ex_is_practical_attendance=?11,exam_announcement_id=?12,degree_id=?13 where academicyear_id=?3 and colleges_id=?4 and programmes_id = ?5 and courses_id=?6 and ex_roll_no=?7 ", nativeQuery = true)
+int updatePracticalrecordsfacultiesss(Double exLabExperiment, Double exViva, Long academicYear, Long colleges,
+		Long programmes, Long courses, String exRollNo, Date date, String exLabExperiment_remarks,
+		String exViva_remarks, Boolean is_PracticalAttendance, Long examAnnouncement, Long degree);
+
+
+
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_lab_experiment = ?1,ex_lab_experiment_remarks=?10 ,ex_update_date=?7   where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?8 and exam_announcement_id=?9   ", nativeQuery = true)	
+int refurbishlabexpmarks(Double exLabExperiment, Long academicYear, Long colleges,
+		Long programmes, Long courses, Long studentAdmissionId, Date date, Long degree, Long examAnnouncement, String exLabExperiment_remarks);
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_viva = ?1,ex_viva_remarks=?10 ,ex_update_date=?7   where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?8 and exam_announcement_id=?9   ", nativeQuery = true)	
+int refurbishvivamraks(Double exViva, Long academicYear, Long colleges, Long programmes, Long courses,
+		Long studentAdmissionId, Date date, Long degree, Long examAnnouncement, String exViva_remarks);
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes set ex_end_term_marks = ?1,ex_end_term_remark=?10 ,ex_update_date=?7   where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?8 and exam_announcement_id=?9   ", nativeQuery = true)	
+int refurbishEndtermMarks(Double exEndTermMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+		Long studentAdmissionId, Date date, Long degree, Long examAnnouncement, String exEndTermMarks_remarks);
+
+List<ExamBarcodes> findBySemesterIdAndStudentadmissionIdOrderByCoursesId(Long id, Long id2);
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes   \r\n" + 
+		"set ex_lab_experiment =?1,ex_update_date =?7 ,ex_lab_experiment_remarks=?8,"
+		+ "ex_is_practical_attendance=?9,exam_announcement_id=?10,degree_id=?11 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and ex_roll_no=?6 ", nativeQuery = true)
+int updatePracticalIsIndustrialVisit(Double exPresentationandVivaVoiceMM50, Long academicYear, Long colleges,
+		Long programmes, Long courses, String exRollNo, Date date, String exPresentationandVivaVoiceMM50Remark,
+		Boolean is_PracticalAttendance, Long examAnnouncement, Long degree);
+
+
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes   \r\n" + 
+		"set ex_lab_experiment =?1,ex_update_date =?7 ,ex_lab_experiment_remarks=?8,"
+		+ "ex_is_practical_attendance=?9,exam_announcement_id=?10,degree_id=?11, ex_viva = ?12 , ex_viva_remarks = ?13 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and ex_roll_no=?6 ", nativeQuery = true)
+int IndustrialTrainingOrInternship(Double exPresentationMM30, Long academicYear, Long colleges, Long programmes,
+		Long courses, String exRollNo, Date date, String exPresentationMM30Remark, Boolean is_PracticalAttendance,
+		Long examAnnouncement, Long degree, Double exVivaVoceMM30, String exVivaVoceMM30Remark);
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes   \r\n" + 
+		"set ex_lab_experiment =?1,ex_update_date =?7 ,ex_lab_experiment_remarks=?8,"
+		+ "ex_is_practical_attendance=?9,exam_announcement_id=?10,degree_id=?11, ex_viva = ?12 , ex_viva_remarks = ?13 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and ex_roll_no=?6 ", nativeQuery = true)
+int Project(Double exPresentationMM30, Long academicYear, Long colleges, Long programmes, Long courses, String exRollNo,
+		Date date, String exPresentationMM30Remark, Boolean is_PracticalAttendance, Long examAnnouncement, Long degree,
+		Double exVivaVoceMM30, String exVivaVoceMM30Remark);
+
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes   \r\n" + 
+		"set ex_lab_experiment =?1,ex_update_date =?7 ,ex_lab_experiment_remarks =?8,"
+		+ "ex_is_practical_attendance=?9,exam_announcement_id=?10,degree_id=?11  where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and ex_roll_no=?6 ", nativeQuery = true)
+int updatePracticalIVillageAdoption(Double exJuryMarksMM40, Long academicYear, Long colleges, Long programmes,
+		Long courses, String exRollNo, Date date, String exJuryMarksMM40Remark, Boolean is_PracticalAttendance,
+		Long examAnnouncement, Long degree);
+
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes   \r\n" + 
+		"set ex_lab_experiment =?1,ex_update_date =?7 , ex_lab_experiment_remarks =? 8,"
+		+ "ex_is_practical_attendance=?9,exam_announcement_id=?10,degree_id=?11  where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and ex_roll_no=?6 ", nativeQuery = true)
+int updatePracticalIResearchProject(Double exExternalAssessmentMM60, Long academicYear, Long colleges, Long programmes,
+		Long courses, String exRollNo, Date date, String exExternalAssessmentMM60Remark, Boolean is_PracticalAttendance,
+		Long examAnnouncement, Long degree);
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_exam_barcodes   \r\n" + 
+		"set ex_lab_experiment =?1,ex_update_date =?7 ,ex_lab_experiment_remarks=?8," 
+		+ "ex_is_practical_attendance=?9,exam_announcement_id=?10,degree_id=?11, ex_viva = ?12 , ex_viva_remarks = ?13 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and ex_roll_no=?6 ", nativeQuery = true)
+int Seminar(Double exPresentationandVivaVoiceMM50, Long academicYear, Long colleges, Long programmes, Long courses,
+		String exRollNo, Date date, String exPresentationandVivaVoiceMM50Remark, Boolean is_PracticalAttendance,
+		Long examAnnouncement, Long degree, Double exParticipationintheCourseMM20,
+		String exParticipationintheCourseMM20Remark);
+
+
+
+
+}

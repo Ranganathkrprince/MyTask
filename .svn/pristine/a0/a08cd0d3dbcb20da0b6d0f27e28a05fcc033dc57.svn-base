@@ -1,0 +1,35 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import org.springframework.transaction.annotation.Transactional;
+import com.niftem.app.entity.InvigilatorAllocation;
+
+
+public interface InvigilatorAllocationRepository extends CrudRepository<InvigilatorAllocation, Long> {
+
+	List<InvigilatorAllocation> findByExIsDeleteAndStaffIdAndExamAnnouncementId(boolean b, Long staff,
+			Long examAnnouncement);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_invigilator_allocation set ex_is_delete = ?1,ex_is_active =?2  where id =?3", nativeQuery = true)
+	int Invigilatorfordelete(Boolean exIsDelete, Boolean is_active, Long id);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_invigilator_allocation set ex_is_active=?1 , ex_update_date = ?2 where id =?3", nativeQuery = true)
+	int updateInvigilatorAllocationMethod(Boolean exIsActive, Date date, Long id);
+
+
+
+	List<InvigilatorAllocation> findByExIsDelete(boolean b);
+
+	
+}

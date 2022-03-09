@@ -1,0 +1,202 @@
+package com.niftem.app.model;
+
+import org.springframework.web.multipart.MultipartFile;
+
+public class OmrMarksRequest {
+	private MultipartFile exOmrFile;
+	private Long degree;
+	private Long programmes;
+	private Long courses;
+	private Long examAnnouncement;
+	private Long colleges;
+	private Long programmeYear;
+	private Long semster;
+	private Long registrationType;
+	private Long studentAdmission;
+	private String exrollno;
+	private Long academicYear;
+
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public String getExrollno() {
+		return exrollno;
+	}
+
+	public void setExrollno(String exrollno) {
+		this.exrollno = exrollno;
+	}
+
+	private String exLeftQuestion;
+	private String exWrongQuestion;
+	private String exEndTermMarks;
+	private String exCorrectQuestion;
+
+	private String exEndTermPracticalMarks;
+	private Boolean exIsEvaluated;
+	private Long user;
+	private Long department;
+	public Long getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+
+	public MultipartFile getExOmrFile() {
+		return exOmrFile;
+	}
+
+	public void setExOmrFile(MultipartFile exOmrFile) {
+		this.exOmrFile = exOmrFile;
+	}
+
+	public Long getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+	public Long getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+
+	public String getExEndTermMarks() {
+		return exEndTermMarks;
+	}
+
+	public void setExEndTermMarks(String exEndTermMarks) {
+		this.exEndTermMarks = exEndTermMarks;
+	}
+
+	public String getExEndTermPracticalMarks() {
+		return exEndTermPracticalMarks;
+	}
+
+	public void setExEndTermPracticalMarks(String exEndTermPracticalMarks) {
+		this.exEndTermPracticalMarks = exEndTermPracticalMarks;
+	}
+
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+	public Long getColleges() {
+		return colleges;
+	}
+
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public Long getSemster() {
+		return semster;
+	}
+
+	public void setSemster(Long semster) {
+		this.semster = semster;
+	}
+
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+
+
+
+	public String getExLeftQuestion() {
+		return exLeftQuestion;
+	}
+
+	public void setExLeftQuestion(String exLeftQuestion) {
+		this.exLeftQuestion = exLeftQuestion;
+	}
+
+	public String getExWrongQuestion() {
+		return exWrongQuestion;
+	}
+
+	public void setExWrongQuestion(String exWrongQuestion) {
+		this.exWrongQuestion = exWrongQuestion;
+	}
+
+	public String getExCorrectQuestion() {
+		return exCorrectQuestion;
+	}
+
+	public void setExCorrectQuestion(String exCorrectQuestion) {
+		this.exCorrectQuestion = exCorrectQuestion;
+	}
+
+	public Boolean getExIsEvaluated() {
+		return exIsEvaluated;
+	}
+
+	public void setExIsEvaluated(Boolean exIsEvaluated) {
+		this.exIsEvaluated = exIsEvaluated;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	public Long getStudentAdmission() {
+		return studentAdmission;
+	}
+
+	public void setStudentAdmission(Long studentAdmission) {
+		this.studentAdmission = studentAdmission;
+	}
+
+	@Override
+	public String toString() {
+		return "OmrMarksRequest [exOmrFile=" + exOmrFile + ", degree=" + degree + ", programmes=" + programmes
+				+ ", courses=" + courses + ", examAnnouncement=" + examAnnouncement + ", colleges=" + colleges
+				+ ", programmeYear=" + programmeYear + ", semster=" + semster + ", registrationType=" + registrationType
+				+ ", studentAdmission=" + studentAdmission + ", exrollno=" + exrollno + ", academicYear=" + academicYear
+				+ ", exLeftQuestion=" + exLeftQuestion + ", exWrongQuestion=" + exWrongQuestion + ", exEndTermMarks="
+				+ exEndTermMarks + ", exCorrectQuestion=" + exCorrectQuestion + ", exEndTermPracticalMarks="
+				+ exEndTermPracticalMarks + ", exIsEvaluated=" + exIsEvaluated + ", user=" + user + ", department="
+				+ department + "]";
+	}
+
+}

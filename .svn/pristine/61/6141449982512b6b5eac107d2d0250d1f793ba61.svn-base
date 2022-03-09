@@ -1,0 +1,57 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.InvigilatorDuty;
+
+public interface InvigilatorDutyRepository extends CrudRepository<InvigilatorDuty, Long> {
+	
+	
+	// check the invigilaor already presnt on selected date
+		@Query(value = "select * from ex_invigilator_duty e  where  e.ex_start_date = ?1 and e.academicyear_id = ?2  and e.ex_exam_type = ?3 and (e.invigilator1 = ?4 OR e.invigilator2 =?4 OR reserved =?4) and ex_semester_type = ?5", nativeQuery = true)
+		List<InvigilatorDuty> validateInvigilator(String startdate ,  Long academicYear, Long exExamType , Long stafftype, String ex_semester_type);
+		
+		
+		// get the staff details who not preset in duty table with same date 
+		
+		
+		@Query(value = "select * from ex_invigilator_duty e  where  e.ex_start_date = ?1 and e.academicyear_id = ?2  and e.ex_exam_type = ?3  and ex_semester_type = ?4", nativeQuery = true)
+		List<InvigilatorDuty> getInvigilator(String startdate ,  Long academicYear, Long exExamType ,  String ex_semester_type);
+		
+		
+		@Query(value = "select * from ex_invigilator_duty e  where  e.ex_start_date = ?1 and e.academicyear_id = ?2  and e.ex_exam_type = ?3  and ex_semester_type = ?4 and room_id =?5", nativeQuery = true)
+		List<InvigilatorDuty> getInvigilatorOnroom(String startdate ,  Long academicYear, Long exExamType ,  String ex_semester_type , Long room_id);
+		
+		
+		
+		@Modifying
+		@Transactional
+		@Query(value = "delete from  ex_invigilator_duty where id = ?1 ", nativeQuery = true)
+		int deleteInviDuty(Long id);
+		
+	
+		List<InvigilatorDuty> findByAcademicYearIdAndExSemesterTypeAndExExamType(Long academicYear, String semester , Long long1);
+		
+		
+		List<InvigilatorDuty> findByAcademicYearIdAndExSemesterTypeAndExExamTypeAndExStartDateAndRoomId(Long academicYear, String semester , Long long1, String sDate, Long room);
+		
+		
+		
+		
+		@Query(value = "select * from ex_invigilator_duty e  where   e.academicyear_id = ?1  and e.ex_exam_type = ?2  and ex_semester_type = ?3 HAVING COUNT(invigilator1) >= ?4", nativeQuery = true)
+		List<InvigilatorDuty> getInvigilator1duty( Long academicYear, Long exExamType ,  String ex_semester_type , int count);
+		
+		
+		@Query(value = "select * from ex_invigilator_duty e  where   e.academicyear_id = ?1  and e.ex_exam_type = ?2  and ex_semester_type = ?3 HAVING COUNT(invigilator2) >= ?4", nativeQuery = true)
+		List<InvigilatorDuty> getInvigilator2duty( Long academicYear, Long exExamType ,  String ex_semester_type , int count);
+
+
+		@Query(value = "select * from ex_invigilator_duty e  where   e.academicyear_id = ?1  and (invigilator1 =?2 OR invigilator2 =?2) ", nativeQuery = true)
+		List<InvigilatorDuty> gettheList( Long academicYear, long staff);
+
+}

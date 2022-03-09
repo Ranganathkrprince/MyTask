@@ -1,0 +1,166 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+public class GradeReportRequest {
+	
+	private Long degree;
+	private Long programmes;
+	private Long courses;
+	private Long examAnnouncement;
+	private Long colleges;
+	private Long programmeYear;
+	private Long semester;
+	private Long academicYear;
+	private String exRollNo;
+	private Long user;
+	private String exRemark;
+	private Boolean exReportCategory;
+	private String reportType;
+	private Long registrationType;
+	private Long scrutinize;
+	private String dateOfDeclaration;
+	private Long department;
+	private Long sectionId;
+	private Long batch;
+	private List<Long> section;
+	private Long stream;
+	public Long getDegree() {
+		return degree;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public Long getCourses() {
+		return courses;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public Long getSemester() {
+		return semester;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public String getExRemark() {
+		return exRemark;
+	}
+	public Boolean getExReportCategory() {
+		return exReportCategory;
+	}
+	public String getReportType() {
+		return reportType;
+	}
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+	public Long getScrutinize() {
+		return scrutinize;
+	}
+	public String getDateOfDeclaration() {
+		return dateOfDeclaration;
+	}
+	public Long getDepartment() {
+		return department;
+	}
+	public Long getSectionId() {
+		return sectionId;
+	}
+	public Long getBatch() {
+		return batch;
+	}
+	public List<Long> getSection() {
+		return section;
+	}
+	public Long getStream() {
+		return stream;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public void setExRemark(String exRemark) {
+		this.exRemark = exRemark;
+	}
+	public void setExReportCategory(Boolean exReportCategory) {
+		this.exReportCategory = exReportCategory;
+	}
+	public void setReportType(String reportType) {
+		this.reportType = reportType;
+	}
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+	public void setScrutinize(Long scrutinize) {
+		this.scrutinize = scrutinize;
+	}
+	public void setDateOfDeclaration(String dateOfDeclaration) {
+		this.dateOfDeclaration = dateOfDeclaration;
+	}
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+	public void setSectionId(Long sectionId) {
+		this.sectionId = sectionId;
+	}
+	public void setBatch(Long batch) {
+		this.batch = batch;
+	}
+	public void setSection(List<Long> section) {
+		this.section = section;
+	}
+	public void setStream(Long stream) {
+		this.stream = stream;
+	}
+	@Override
+	public String toString() {
+		return "GradeReportRequest [degree=" + degree + ", programmes=" + programmes + ", courses=" + courses
+				+ ", examAnnouncement=" + examAnnouncement + ", colleges=" + colleges + ", programmeYear="
+				+ programmeYear + ", semester=" + semester + ", academicYear=" + academicYear + ", exRollNo=" + exRollNo
+				+ ", user=" + user + ", exRemark=" + exRemark + ", exReportCategory=" + exReportCategory
+				+ ", reportType=" + reportType + ", registrationType=" + registrationType + ", scrutinize=" + scrutinize
+				+ ", dateOfDeclaration=" + dateOfDeclaration + ", department=" + department + ", sectionId=" + sectionId
+				+ ", batch=" + batch + ", section=" + section + ", stream=" + stream + "]";
+	}
+	
+
+}

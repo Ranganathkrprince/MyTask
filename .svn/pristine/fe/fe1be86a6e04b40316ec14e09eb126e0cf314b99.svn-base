@@ -1,0 +1,17 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.NoDuesConfiguration;
+
+public interface NoDuesConfigurationRepository extends CrudRepository<NoDuesConfiguration, Long> {
+
+	List<NoDuesConfiguration> findByExIsDelete(boolean b);
+	
+	//List<NoDuesConfiguration> findByStudentadmissionId(Long student);
+	
+	List<NoDuesConfiguration> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndBatchIdAndDepartmentIdAndProgrammeYearIdAndSemesterId
+		(boolean delete , boolean active , long academic , long batch , long dept , long programyear , long smester);
+}

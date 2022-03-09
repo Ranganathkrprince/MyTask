@@ -1,0 +1,334 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_evaluator_selection")
+public class EvaluatorSelection {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String exFirstName;
+	private String exMobile;
+	private String exEmployeeId;
+
+	@Temporal(TemporalType.TIME)
+	@Column(columnDefinition = "TIME")
+	private Date exEvaluationTime;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exEvaluationFrom;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exEvaluationTo;
+
+	@Column(columnDefinition = "TEXT")
+	private String exEvaluationVenue;
+
+	private String exQpUrl;
+	private String exAnswerKeyUrl;
+	private String exGuidelinesUrl;
+	private String exRemurationUrl;
+
+	private String exAccommodationUrl;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "courses_id", nullable = false)
+	private Courses courses;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "expert_id", nullable = true)
+	private EvaluatorList expert;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicYear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "exam_announcement_id", nullable = false)
+	private ExamAnnouncement examAnnouncement;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "evaluation_type_id", nullable = false)
+	private EvaluationType evaluation;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "registration_type_id", nullable = false)
+	private RegistrationType registrationType;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExFirstName() {
+		return exFirstName;
+	}
+
+	public String getExMobile() {
+		return exMobile;
+	}
+
+	public String getExEmployeeId() {
+		return exEmployeeId;
+	}
+
+	public Date getExEvaluationTime() {
+		return exEvaluationTime;
+	}
+
+	public Date getExEvaluationFrom() {
+		return exEvaluationFrom;
+	}
+
+	public Date getExEvaluationTo() {
+		return exEvaluationTo;
+	}
+
+	public String getExEvaluationVenue() {
+		return exEvaluationVenue;
+	}
+
+	public String getExQpUrl() {
+		return exQpUrl;
+	}
+
+	public String getExAnswerKeyUrl() {
+		return exAnswerKeyUrl;
+	}
+
+	public String getExGuidelinesUrl() {
+		return exGuidelinesUrl;
+	}
+
+	public String getExRemurationUrl() {
+		return exRemurationUrl;
+	}
+
+	public String getExAccommodationUrl() {
+		return exAccommodationUrl;
+	}
+
+	public Courses getCourses() {
+		return courses;
+	}
+
+	public EvaluatorList getExpert() {
+		return expert;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public EvaluationType getEvaluation() {
+		return evaluation;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public RegistrationType getRegistrationType() {
+		return registrationType;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExFirstName(String exFirstName) {
+		this.exFirstName = exFirstName;
+	}
+
+	public void setExMobile(String exMobile) {
+		this.exMobile = exMobile;
+	}
+
+	public void setExEmployeeId(String exEmployeeId) {
+		this.exEmployeeId = exEmployeeId;
+	}
+
+	public void setExEvaluationTime(Date exEvaluationTime) {
+		this.exEvaluationTime = exEvaluationTime;
+	}
+
+	public void setExEvaluationFrom(Date exEvaluationFrom) {
+		this.exEvaluationFrom = exEvaluationFrom;
+	}
+
+	public void setExEvaluationTo(Date exEvaluationTo) {
+		this.exEvaluationTo = exEvaluationTo;
+	}
+
+	public void setExEvaluationVenue(String exEvaluationVenue) {
+		this.exEvaluationVenue = exEvaluationVenue;
+	}
+
+	public void setExQpUrl(String exQpUrl) {
+		this.exQpUrl = exQpUrl;
+	}
+
+	public void setExAnswerKeyUrl(String exAnswerKeyUrl) {
+		this.exAnswerKeyUrl = exAnswerKeyUrl;
+	}
+
+	public void setExGuidelinesUrl(String exGuidelinesUrl) {
+		this.exGuidelinesUrl = exGuidelinesUrl;
+	}
+
+	public void setExRemurationUrl(String exRemurationUrl) {
+		this.exRemurationUrl = exRemurationUrl;
+	}
+
+	public void setExAccommodationUrl(String exAccommodationUrl) {
+		this.exAccommodationUrl = exAccommodationUrl;
+	}
+
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+
+	public void setExpert(EvaluatorList expert) {
+		this.expert = expert;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setEvaluation(EvaluationType evaluation) {
+		this.evaluation = evaluation;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setRegistrationType(RegistrationType registrationType) {
+		this.registrationType = registrationType;
+	}
+
+	@Override
+	public String toString() {
+		return "EvaluatorSelection [id=" + id + ", exFirstName=" + exFirstName + ", exMobile=" + exMobile
+				+ ", exEmployeeId=" + exEmployeeId + ", exEvaluationTime=" + exEvaluationTime + ", exEvaluationFrom="
+				+ exEvaluationFrom + ", exEvaluationTo=" + exEvaluationTo + ", exEvaluationVenue=" + exEvaluationVenue
+				+ ", exQpUrl=" + exQpUrl + ", exAnswerKeyUrl=" + exAnswerKeyUrl + ", exGuidelinesUrl=" + exGuidelinesUrl
+				+ ", exRemurationUrl=" + exRemurationUrl + ", exAccommodationUrl=" + exAccommodationUrl + ", courses="
+				+ courses + ", expert=" + expert + ", user=" + user + ", academicYear=" + academicYear
+				+ ", examAnnouncement=" + examAnnouncement + ", degree=" + degree + ", programmes=" + programmes
+				+ ", colleges=" + colleges + ", evaluation=" + evaluation + ", exIsActive=" + exIsActive
+				+ ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate
+				+ ", registrationType=" + registrationType + "]";
+	}	
+	
+}

@@ -1,0 +1,149 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "ex_AccessLogs")
+public class AccessLogs {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+	@NotEmpty@NotNull@NotBlank(message = "Please provide exUserName")
+	private String exUserName;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide exName")
+	private String exName;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide exIPAddress")
+	private String exIPAddress;
+	 
+	private String exStatus;
+	
+	private String loginType;
+	
+	
+	private String module;
+	
+	private String subModule;
+	 
+	private String role;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_login_time", columnDefinition = "DATETIME")
+	private Date exLoginTime;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_logOut_time", columnDefinition = "DATETIME")
+	private Date exLogOutTime;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExUserName() {
+		return exUserName;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public String getExIPAddress() {
+		return exIPAddress;
+	}
+
+	public String getExStatus() {
+		return exStatus;
+	}
+
+	public String getLoginType() {
+		return loginType;
+	}
+
+	public String getModule() {
+		return module;
+	}
+
+	public String getSubModule() {
+		return subModule;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public Date getExLoginTime() {
+		return exLoginTime;
+	}
+
+	public Date getExLogOutTime() {
+		return exLogOutTime;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExUserName(String exUserName) {
+		this.exUserName = exUserName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public void setExIPAddress(String exIPAddress) {
+		this.exIPAddress = exIPAddress;
+	}
+
+	public void setExStatus(String exStatus) {
+		this.exStatus = exStatus;
+	}
+
+	public void setLoginType(String loginType) {
+		this.loginType = loginType;
+	}
+
+	public void setModule(String module) {
+		this.module = module;
+	}
+
+	public void setSubModule(String subModule) {
+		this.subModule = subModule;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public void setExLoginTime(Date exLoginTime) {
+		this.exLoginTime = exLoginTime;
+	}
+
+	public void setExLogOutTime(Date exLogOutTime) {
+		this.exLogOutTime = exLogOutTime;
+	}
+
+	@Override
+	public String toString() {
+		return "AccessLogs [id=" + id + ", exUserName=" + exUserName + ", exName=" + exName + ", exIPAddress="
+				+ exIPAddress + ", exStatus=" + exStatus + ", loginType=" + loginType + ", module=" + module
+				+ ", subModule=" + subModule + ", role=" + role + ", exLoginTime=" + exLoginTime + ", exLogOutTime="
+				+ exLogOutTime + "]";
+	}
+
+
+}

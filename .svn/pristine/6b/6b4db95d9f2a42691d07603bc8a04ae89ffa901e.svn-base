@@ -1,0 +1,112 @@
+package com.niftem.app.model;
+
+import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class AcademicYearRequest {
+
+	@NotEmpty
+	@NotNull
+	@NotBlank(message = "Please provide exYear")
+	private String exYear;
+
+	private String exStartdate;
+
+	private String exEnddate;
+
+	private String exDescription;
+	@NotNull(message = "Please provide a identifier")
+	private String exIdentifier;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	private Long id;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	@NotNull(message = "Please provide a exIsActive 0/1")
+	private Boolean exIsActive;
+private Long user;
+	public Long getUser() {
+	return user;
+}
+
+public void setUser(Long user) {
+	this.user = user;
+}
+
+	public String getExYear() {
+		return exYear;
+	}
+
+	public void setExYear(String exYear) {
+		this.exYear = exYear;
+	}
+
+	public String getExStartdate() {
+		return exStartdate;
+	}
+
+	public void setExStartdate(String exStartdate) {
+		this.exStartdate = exStartdate;
+	}
+
+	public String getExEnddate() {
+		return exEnddate;
+	}
+
+	public void setExEnddate(String exEnddate) {
+		this.exEnddate = exEnddate;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	public String getExIdentifier() {
+		return exIdentifier;
+	}
+
+	public void setExIdentifier(String exIdentifier) {
+		this.exIdentifier = exIdentifier;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	@Override
+	public String toString() {
+		return "AcademicYearRequest [exYear=" + exYear + ", exStartdate=" + exStartdate + ", exEnddate=" + exEnddate
+				+ ", exDescription=" + exDescription + ", exIdentifier=" + exIdentifier + ", exIsDelete=" + exIsDelete
+				+ ", id=" + id + ", exIsActive=" + exIsActive + ", user=" + user + "]";
+	}
+
+	
+}

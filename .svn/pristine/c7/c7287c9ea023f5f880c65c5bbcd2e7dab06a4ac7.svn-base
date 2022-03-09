@@ -1,0 +1,88 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.Degree;
+import com.niftem.app.entity.ElectiveCoursesGroup;
+import com.niftem.app.entity.ElectiveGroup;
+import com.niftem.app.entity.ProgrammeYear;
+import com.niftem.app.entity.Semster;
+
+public interface ElectiveGroupRepository extends CrudRepository<ElectiveGroup, Long>{
+	
+
+	
+
+	
+
+	List<ElectiveGroup> findByExGroupNameAndAcademicYearIdAndProgrammesIdAndProgrammeYearIdAndDegreeIdAndExIsDeleteAndExIsActiveAndCollegesIdAndSemesterId(
+			String exGroupName, Long academicYear, Long programmes, Long programmeYear, Long degree, boolean b,
+			boolean c, Long colleges, Long semester);
+
+	List<ElectiveGroup> findByExIsDelete(boolean b);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_elective_group set ex_is_delete = ?1,ex_is_active=?2  where id =?3", nativeQuery = true)
+	int deleteelectiveGroup(Boolean exIsDelete, Boolean is_active, Long id);
+	
+
+	List<ElectiveGroup> findByExGroupNameAndAcademicYearIdAndProgrammesIdAndProgrammeYearIdAndDegreeIdAndExIsDeleteAndExIsActiveAndCollegesId(
+			String exGroupName, Long academicYear, Long programmes, Long programmeYear, Long degree, boolean b,
+			boolean c, Long colleges);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_elective_group set ex_group_name = ?1,programmes_id=?2 ,ex_update_date =?3 , ex_is_active = ?4 ,  programme_year_id = ?5 , semester_id = ?6, academic_year_id =?7 , colleges_id =?8 , degree_id =?9 , department_id=?10 , batch_id=?11 , user_id=?12 where id =?13", nativeQuery = true)	
+
+	int updateelectiveGroup(String exGroupName, Long programmes, Date date, Boolean exIsActive, Long programmeYear,
+			Long semester, Long academicYear, Long colleges, Long degree, Long department, Long batch, Long user, Long id);
+	
+	
+
+	List<ElectiveGroup> findByExGroupNameAndExIsDeleteAndAcademicYearIdAndProgrammesIdAndCollegesId(String exGroupName,
+			boolean b, Long academicYear, Long programmes, Long colleges);
+	
+	//id, ex_create_date, ex_group_name, ex_is_active, ex_is_delete, ex_update_date, academic_year_id, colleges_id, degree_id, programme_year_id, programmes_id, semester_id
+	
+	
+	@Query(value = "select * from ex_elective_group where academic_year_id=?1 and programme_year_id=?2 and programmes_id=?3 and colleges_id=?4 and semester_id=?5 and degree_id=?6 and ex_is_active=?7 and ex_is_delete=?8", nativeQuery = true)
+	List<ElectiveGroup> getElectiveGroupName(Long academicYear, Long programmeYear, Long programmes, Long colleges,
+			Long semester, Long degree, boolean b, boolean c);
+
+	List<ElectiveGroup> findByExGroupNameAndAcademicYearIdAndProgrammesIdAndProgrammeYearIdAndDegreeIdAndExIsDeleteAndExIsActiveAndCollegesIdAndSemesterIdAndDepartmentIdAndBatchIdAndUserId(
+			String exGroupName, Long academicYear, Long programmes, Long programmeYear, Long degree, boolean b,
+			boolean c, Long colleges, Long semester, Long department, Long batch, Long user);
+
+	Optional<ElectiveGroup> findByIdAndExIsDeleteAndExIsActive(Long electiveGroup, boolean b, boolean c);
+
+	
+	List<ElectiveGroup> findByExGroupNameAndAcademicYearIdAndProgrammesIdAndProgrammeYearIdAndDegreeIdAndExIsDeleteAndExIsActiveAndCollegesIdAndSemesterIdAndDepartmentIdAndBatchId(
+			String exGroupName, Long long1, Long programmes,
+			Long long2, Long long3, boolean b, boolean c, Long colleges,
+			Long long4, Long department, Long batch);
+
+	List<ElectiveGroup> findByExGroupNameAndAcademicYearIdAndProgrammesIdAndProgrammeYearIdAndDegreeIdAndExIsDeleteAndExIsActiveAndCollegesIdAndSemesterIdAndDepartmentIdAndBatchId(
+			String exGroupName, Long academicYear, Long programmes, Long programmeYear, Long degree, boolean b,
+			boolean c, Long colleges, Optional<Semster> semester, Long department, Long batch);
+
+	List<ElectiveGroup> findByExGroupNameAndExIsDeleteAndExIsActive(String exGroupName, boolean b, boolean c);
+
+
+	List<ElectiveGroup> findByCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndBatchIdAndExIsDeleteAndExIsActive(
+			Long colleges, Long degree, Long programmes, Long department, Long academicYear, Long programmeYear,
+			Long semester, Long batch, boolean b, boolean c);
+
+	
+
+	
+
+}

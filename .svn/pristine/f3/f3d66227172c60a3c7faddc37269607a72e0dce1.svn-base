@@ -1,0 +1,198 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class FeeMasterRequest {
+
+	private Long id;
+
+	private String exName;
+
+	@NotEmpty
+	@NotNull
+	@NotBlank(message = "Please provide FeeName")
+	private String exFeeName;
+
+	private Long exFeeCategory;
+
+	@NotEmpty
+	@NotNull
+	@NotBlank(message = "Please provide FeeAmount")
+	private String exFeeAmount;
+
+	@NotEmpty
+	@NotNull
+	@NotBlank(message = "Please provide FeeCode")
+	private String exFeeCode;
+
+	@NotNull(message = "please provide batch")
+	private Long batch;
+
+	@NotNull(message = "please provide degree")
+	private Long degree;
+
+	@NotNull(message = "please provide programmes")
+	private Long programmes;
+
+	@NotNull(message = "please provide programmeyear")
+	private Long programmeyear;
+
+	@NotNull(message = "please provide semster")
+
+	private Long semster;
+
+	@NotNull(message = "please provide feeheadmaster")
+
+	@NotNull(message = "please provide category")
+	private List<Long> category;
+
+	@NotNull(message = "please provide feetype")
+	private List<Long> feetype;
+
+	private Boolean exIsActive;
+
+	private Long user;
+
+	private Long academicYear;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public String getExFeeName() {
+		return exFeeName;
+	}
+
+	public Long getExFeeCategory() {
+		return exFeeCategory;
+	}
+
+	public String getExFeeAmount() {
+		return exFeeAmount;
+	}
+
+	public String getExFeeCode() {
+		return exFeeCode;
+	}
+
+	public Long getBatch() {
+		return batch;
+	}
+
+	public Long getDegree() {
+		return degree;
+	}
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+	public Long getProgrammeyear() {
+		return programmeyear;
+	}
+
+	public Long getSemster() {
+		return semster;
+	}
+
+	public List<Long> getCategory() {
+		return category;
+	}
+
+	public List<Long> getFeetype() {
+		return feetype;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public void setExFeeName(String exFeeName) {
+		this.exFeeName = exFeeName;
+	}
+
+	public void setExFeeCategory(Long exFeeCategory) {
+		this.exFeeCategory = exFeeCategory;
+	}
+
+	public void setExFeeAmount(String exFeeAmount) {
+		this.exFeeAmount = exFeeAmount;
+	}
+
+	public void setExFeeCode(String exFeeCode) {
+		this.exFeeCode = exFeeCode;
+	}
+
+	public void setBatch(Long batch) {
+		this.batch = batch;
+	}
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setProgrammeyear(Long programmeyear) {
+		this.programmeyear = programmeyear;
+	}
+
+	public void setSemster(Long semster) {
+		this.semster = semster;
+	}
+
+	public void setCategory(List<Long> category) {
+		this.category = category;
+	}
+
+	public void setFeetype(List<Long> feetype) {
+		this.feetype = feetype;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	@Override
+	public String toString() {
+		return "FeeMasterRequest [id=" + id + ", exName=" + exName + ", exFeeName=" + exFeeName + ", exFeeCategory="
+				+ exFeeCategory + ", exFeeAmount=" + exFeeAmount + ", exFeeCode=" + exFeeCode + ", batch=" + batch
+				+ ", degree=" + degree + ", programmes=" + programmes + ", programmeyear=" + programmeyear
+				+ ", semster=" + semster + ", category=" + category + ", feetype=" + feetype + ", exIsActive="
+				+ exIsActive + ", user=" + user + ", academicYear=" + academicYear + "]";
+	}	
+}

@@ -1,0 +1,133 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class PenaltyRequest {
+	private Long id;
+	@NotNull(message = "Degree is required")
+	private Long degree;
+	
+	@NotNull(message = "Programmeyear is required")
+	private Long programmeYear;
+	
+	@NotNull(message = "Semester is required")
+	private Long semester ;
+	
+	@NotNull(message = "Programme is required")
+	private Long programmes;
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a exDueDate")
+	private String exDueDate;
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a exStartDate")
+	private String exStartDate;
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a exEndDate")
+	private String exEndDate;
+	
+	private Double exIncAmount;
+	
+	private Long user;
+	
+	private Boolean exIsActive;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public Long getSemester() {
+		return semester;
+	}
+
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+	public String getExDueDate() {
+		return exDueDate;
+	}
+
+	public void setExDueDate(String exDueDate) {
+		this.exDueDate = exDueDate;
+	}
+
+	public String getExStartDate() {
+		return exStartDate;
+	}
+
+	public void setExStartDate(String exStartDate) {
+		this.exStartDate = exStartDate;
+	}
+
+	public String getExEndDate() {
+		return exEndDate;
+	}
+
+	public void setExEndDate(String exEndDate) {
+		this.exEndDate = exEndDate;
+	}
+
+	public Double getExIncAmount() {
+		return exIncAmount;
+	}
+
+	public void setExIncAmount(Double exIncAmount) {
+		this.exIncAmount = exIncAmount;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	@Override
+	public String toString() {
+		return "PenaltyRequest [id=" + id + ", degree=" + degree + ", programmeYear=" + programmeYear + ", semester="
+				+ semester + ", programmes=" + programmes + ", exDueDate=" + exDueDate + ", exStartDate=" + exStartDate
+				+ ", exEndDate=" + exEndDate + ", exIncAmount=" + exIncAmount + ", user=" + user + ", exIsActive="
+				+ exIsActive + "]";
+	}
+	
+	
+	
+	
+	
+}

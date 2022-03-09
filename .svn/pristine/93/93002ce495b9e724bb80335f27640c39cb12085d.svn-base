@@ -1,0 +1,74 @@
+package com.niftem.app.model;
+
+import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class RegistrationTypeRequest {
+	 private Long id;
+		@NotNull(message = "Please provide a exIsActive 0/1")
+		@Column(columnDefinition="BOOLEAN DEFAULT false")
+		 private Boolean exIsActive;
+		
+		@NotEmpty@NotNull@NotBlank(message = "Please provide a name")
+		private String exName;
+		private Boolean exIsDelete;
+		
+		private String exDescription;
+		public String getExDescription() {
+			return exDescription;
+		}
+
+		public void setExDescription(String exDescription) {
+			this.exDescription = exDescription;
+		}
+
+		public Boolean getExIsDelete() {
+			return exIsDelete;
+		}
+
+		public void setExIsDelete(Boolean exIsDelete) {
+			this.exIsDelete = exIsDelete;
+		}
+
+		public Long getUser() {
+			return user;
+		}
+
+		public void setUser(Long user) {
+			this.user = user;
+		}
+		private Long user;
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public Boolean getExIsActive() {
+			return exIsActive;
+		}
+
+		public void setExIsActive(Boolean exIsActive) {
+			this.exIsActive = exIsActive;
+		}
+
+		public String getExName() {
+			return exName;
+		}
+
+		public void setExName(String exName) {
+			this.exName = exName;
+		}
+		@Override
+		public String toString() {
+			return "RegistrationTypeRequest [id=" + id + ", exIsActive=" + exIsActive + ", exName=" + exName
+					+ ", exIsDelete=" + exIsDelete + ", exDescription=" + exDescription + ", user=" + user + "]";
+		}
+	}
+
+

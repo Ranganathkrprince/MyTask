@@ -1,0 +1,236 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_examattendance_log")
+public class ExamAttendanceLog {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semster;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "courses_id", nullable = false)
+	private Courses courses;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "stream_id", nullable = false)
+	private Stream stream;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "registration_type_id", nullable = false)
+	private RegistrationType registration;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "student_admission_id", nullable = false)
+	private Studentadmission studentadmission;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "exam_announcement_id", nullable = false)
+	private ExamAnnouncement examAnnouncement;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+	private Boolean exReportType;
+
+	private String exRemarks;
+
+	private String exBarcode;
+
+	public Long getId() {
+		return id;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public Semster getSemster() {
+		return semster;
+	}
+
+	public Courses getCourses() {
+		return courses;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public Stream getStream() {
+		return stream;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public RegistrationType getRegistration() {
+		return registration;
+	}
+
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Boolean getExReportType() {
+		return exReportType;
+	}
+
+	public String getExRemarks() {
+		return exRemarks;
+	}
+
+	public String getExBarcode() {
+		return exBarcode;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public void setSemster(Semster semster) {
+		this.semster = semster;
+	}
+
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setStream(Stream stream) {
+		this.stream = stream;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setRegistration(RegistrationType registration) {
+		this.registration = registration;
+	}
+
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExReportType(Boolean exReportType) {
+		this.exReportType = exReportType;
+	}
+
+	public void setExRemarks(String exRemarks) {
+		this.exRemarks = exRemarks;
+	}
+
+	public void setExBarcode(String exBarcode) {
+		this.exBarcode = exBarcode;
+	}
+
+	@Override
+	public String toString() {
+		return "ExamAttendanceLog [id=" + id + ", colleges=" + colleges + ", degree=" + degree + ", programmes="
+				+ programmes + ", academicYear=" + academicYear + ", department=" + department + ", semster=" + semster
+				+ ", courses=" + courses + ", programmeYear=" + programmeYear + ", stream=" + stream + ", user=" + user
+				+ ", registration=" + registration + ", studentadmission=" + studentadmission + ", examAnnouncement="
+				+ examAnnouncement + ", exCreateDate=" + exCreateDate + ", exReportType=" + exReportType
+				+ ", exRemarks=" + exRemarks + ", exBarcode=" + exBarcode + "]";
+	}
+}

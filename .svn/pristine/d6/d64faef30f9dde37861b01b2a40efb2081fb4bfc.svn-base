@@ -1,0 +1,245 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_notification_push_alert")
+public class PushAlertNotification {
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+ 	
+	private String title;
+
+	@Column(columnDefinition = "LONGTEXT")
+	private String message;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "notification_category_id", nullable = false)
+	private NotificationCategory category;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "notification_template_id", nullable = false)
+	private NotificationTemplate template;
+	
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_notification_alert_collage",joinColumns = { @JoinColumn(name = "alert_id", referencedColumnName = "id", nullable = false, updatable = true)},
+	inverseJoinColumns = {  @JoinColumn(name = "collage_id", referencedColumnName = "id", nullable = false, updatable = false)})
+	private List<Colleges> college = new LinkedList<>();
+	
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_notification_alert_programmeyear",joinColumns = { @JoinColumn(name = "alert_id", referencedColumnName = "id", nullable = false, updatable = true)},
+	inverseJoinColumns = {  @JoinColumn(name = "programmeyear_id", referencedColumnName = "id", nullable = false, updatable = false)})
+	private List<ProgrammeYear> programmeYear = new LinkedList<>();
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester; 
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "academicYear_id", nullable = false)
+	private AcademicYear academicYear;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_notification_alert_programme",joinColumns = { @JoinColumn(name = "alert_id", referencedColumnName = "id", nullable = false, updatable = true)},
+	inverseJoinColumns = {  @JoinColumn(name = "programme_id", referencedColumnName = "id", nullable = false, updatable = false)})
+	private List<Programmes> programmes = new LinkedList<>();
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_notification_alert_department",joinColumns = { @JoinColumn(name = "alert_id", referencedColumnName = "id", nullable = false, updatable = true)},
+	inverseJoinColumns = {  @JoinColumn(name = "department_id", referencedColumnName = "id", nullable = false, updatable = false)})
+	private List<Department> department = new LinkedList<>();
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "ex_notification_alert_degree",joinColumns = { @JoinColumn(name = "alert_id", referencedColumnName = "id", nullable = false, updatable = true)},
+	inverseJoinColumns = {  @JoinColumn(name = "degree_id", referencedColumnName = "id", nullable = false, updatable = false)})
+	private List<Degree> degree = new LinkedList<>();
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public NotificationCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(NotificationCategory category) {
+		this.category = category;
+	}
+
+	public NotificationTemplate getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(NotificationTemplate template) {
+		this.template = template;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public List<Colleges> getCollege() {
+		return college;
+	}
+
+	public void setCollege(List<Colleges> college) {
+		this.college = college;
+	}
+
+	public List<ProgrammeYear> getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public void setProgrammeYear(List<ProgrammeYear> programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<Programmes> getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(List<Programmes> programmes) {
+		this.programmes = programmes;
+	}
+
+	public List<Department> getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(List<Department> department) {
+		this.department = department;
+	}
+
+	public List<Degree> getDegree() {
+		return degree;
+	}
+
+	public void setDegree(List<Degree> degree) {
+		this.degree = degree;
+	}
+
+	@Override
+	public String toString() {
+		return "PushAlertNotification [id=" + id + ", title=" + title + ", message=" + message + ", category="
+				+ category + ", template=" + template + ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete
+				+ ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", college=" + college
+				+ ", programmeYear=" + programmeYear + ", semester=" + semester + ", academicYear=" + academicYear
+				+ ", user=" + user + ", programmes=" + programmes + ", department=" + department + ", degree=" + degree
+				+ "]";
+	}
+	
+	
+	
+	
+	
+}

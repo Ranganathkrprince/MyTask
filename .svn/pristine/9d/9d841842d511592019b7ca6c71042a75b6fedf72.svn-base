@@ -1,0 +1,86 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
+public class Regulation {
+	private Long id;
+	private Long colleges;
+	private Long programmes;
+	private List<Long> batch;	
+	private Long degree;
+	private Long user;
+	private Boolean exIsActive;
+	private String exDescription;	
+	private String exName;	
+	private MultipartFile exFilePath;
+	public Long getId() {
+		return id;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public List<Long> getBatch() {
+		return batch;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+	public String getExDescription() {
+		return exDescription;
+	}
+	public String getExName() {
+		return exName;
+	}
+	public MultipartFile getExFilePath() {
+		return exFilePath;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public void setBatch(List<Long> batch) {
+		this.batch = batch;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+	public void setExFilePath(MultipartFile exFilePath) {
+		this.exFilePath = exFilePath;
+	}
+	@Override
+	public String toString() {
+		return "Regulation [id=" + id + ", colleges=" + colleges + ", programmes=" + programmes + ", batch=" + batch
+				+ ", degree=" + degree + ", user=" + user + ", exIsActive=" + exIsActive + ", exDescription="
+				+ exDescription + ", exName=" + exName + ", exFilePath=" + exFilePath + "]";
+	}
+	
+	
+}

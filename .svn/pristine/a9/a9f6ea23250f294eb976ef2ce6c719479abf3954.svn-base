@@ -1,0 +1,13 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.EmailTemplates;
+
+public interface EmailTemplatesRepository extends CrudRepository< EmailTemplates, Long> {
+
+	List<EmailTemplates> findByEmailCategoryIdIdAndExIsActiveAndExIsDelete(long catId, boolean b, boolean c);
+
+}

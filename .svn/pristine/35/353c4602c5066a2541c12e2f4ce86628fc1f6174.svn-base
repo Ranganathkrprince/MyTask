@@ -1,0 +1,249 @@
+package com.niftem.app.model;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+public class ExportListRequest {
+private Long id;
+	
+	
+	private String exInitialName;
+	private String exName;
+	private String exFullName;
+	private String exContactDetails;
+	private String exBankName;
+	private String exIfscCode;
+	private String exBankAccountNo;
+	
+
+	private String exAddressLine1;
+
+	private String exAddressLin2;
+	
+	private String exAddressLine3;
+	private String exEmail;
+	
+	private String exState;
+	private String exPinCode;
+	
+	private String exCustomField1;
+	private String exCustomField2;
+	private String exCustomField3;
+	
+	private Date exCreateDate;
+
+
+	private Date exUpdateDate;
+
+	private boolean exIsActive;
+
+
+	private boolean exIsDelete;
+
+	private String exdesignation;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExInitialName() {
+		return exInitialName;
+	}
+
+	public void setExInitialName(String exInitialName) {
+		this.exInitialName = exInitialName;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public String getExFullName() {
+		return exFullName;
+	}
+
+	public void setExFullName(String exFullName) {
+		this.exFullName = exFullName;
+	}
+
+	public String getExContactDetails() {
+		return exContactDetails;
+	}
+
+	public void setExContactDetails(String exContactDetails) {
+		this.exContactDetails = exContactDetails;
+	}
+
+	public String getExBankName() {
+		return exBankName;
+	}
+
+	public void setExBankName(String exBankName) {
+		this.exBankName = exBankName;
+	}
+
+	public String getExIfscCode() {
+		return exIfscCode;
+	}
+
+	public void setExIfscCode(String exIfscCode) {
+		this.exIfscCode = exIfscCode;
+	}
+
+	public String getExBankAccountNo() {
+		return exBankAccountNo;
+	}
+
+	public void setExBankAccountNo(String exBankAccountNo) {
+		this.exBankAccountNo = exBankAccountNo;
+	}
+
+	public String getExAddressLine1() {
+		return exAddressLine1;
+	}
+
+	public void setExAddressLine1(String exAddressLine1) {
+		this.exAddressLine1 = exAddressLine1;
+	}
+
+	public String getExAddressLin2() {
+		return exAddressLin2;
+	}
+
+	public void setExAddressLin2(String exAddressLin2) {
+		this.exAddressLin2 = exAddressLin2;
+	}
+
+	public String getExAddressLine3() {
+		return exAddressLine3;
+	}
+
+	public void setExAddressLine3(String exAddressLine3) {
+		this.exAddressLine3 = exAddressLine3;
+	}
+
+	public String getExEmail() {
+		return exEmail;
+	}
+
+	public void setExEmail(String exEmail) {
+		this.exEmail = exEmail;
+	}
+
+	public String getExState() {
+		return exState;
+	}
+
+	public void setExState(String exState) {
+		this.exState = exState;
+	}
+
+	public String getExPinCode() {
+		return exPinCode;
+	}
+
+	public void setExPinCode(String exPinCode) {
+		this.exPinCode = exPinCode;
+	}
+
+	public String getExCustomField1() {
+		return exCustomField1;
+	}
+
+	public void setExCustomField1(String exCustomField1) {
+		this.exCustomField1 = exCustomField1;
+	}
+
+	public String getExCustomField2() {
+		return exCustomField2;
+	}
+
+	public void setExCustomField2(String exCustomField2) {
+		this.exCustomField2 = exCustomField2;
+	}
+
+	public String getExCustomField3() {
+		return exCustomField3;
+	}
+
+	public void setExCustomField3(String exCustomField3) {
+		this.exCustomField3 = exCustomField3;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public boolean isExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public boolean isExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public String getExdesignation() {
+		return exdesignation;
+	}
+
+	public void setExdesignation(String exdesignation) {
+		this.exdesignation = exdesignation;
+	}
+
+	@Override
+	public String toString() {
+		return "ExportListRequest [id=" + id + ", exInitialName=" + exInitialName + ", exName=" + exName
+				+ ", exFullName=" + exFullName + ", exContactDetails=" + exContactDetails + ", exBankName=" + exBankName
+				+ ", exIfscCode=" + exIfscCode + ", exBankAccountNo=" + exBankAccountNo + ", exAddressLine1="
+				+ exAddressLine1 + ", exAddressLin2=" + exAddressLin2 + ", exAddressLine3=" + exAddressLine3
+				+ ", exEmail=" + exEmail + ", exState=" + exState + ", exPinCode=" + exPinCode + ", exCustomField1="
+				+ exCustomField1 + ", exCustomField2=" + exCustomField2 + ", exCustomField3=" + exCustomField3
+				+ ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", exIsActive=" + exIsActive
+				+ ", exIsDelete=" + exIsDelete + ", exdesignation=" + exdesignation + "]";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

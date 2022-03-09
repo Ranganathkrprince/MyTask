@@ -1,0 +1,180 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+
+@Entity
+@Table(name = "ex_notification_alert_log")
+public class PushAlertLog {
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;	
+	
+	private String exRollNo;
+		
+    @ManyToOne( optional = true)
+    @JoinColumn(name = "alertId", nullable = true)
+    private PushAlertNotification alertId;
+	
+	@Column(columnDefinition="TEXT")
+	private String message;
+	
+	private String title;
+	 	 	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean isView;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "sent_date", columnDefinition = "DATETIME")
+	private Date exSentDate;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "academicyear_id", nullable = true)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "colleges_id", nullable = true)
+	private Colleges colleges;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "programmeyear_id", nullable = true)
+	private ProgrammeYear programmeYear;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "semester_id", nullable = true)
+	private Semster semester;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	public PushAlertNotification getAlertId() {
+		return alertId;
+	}
+
+	public void setAlertId(PushAlertNotification alertId) {
+		this.alertId = alertId;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Boolean getIsView() {
+		return isView;
+	}
+
+	public void setIsView(Boolean isView) {
+		this.isView = isView;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public Date getExSentDate() {
+		return exSentDate;
+	}
+
+	public void setExSentDate(Date exSentDate) {
+		this.exSentDate = exSentDate;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	@Override
+	public String toString() {
+		return "PushAlertLog [id=" + id + ", exRollNo=" + exRollNo + ", alertId=" + alertId + ", message=" + message
+				+ ", title=" + title + ", isView=" + isView + ", exCreateDate=" + exCreateDate + ", exUpdateDate="
+				+ exUpdateDate + ", exSentDate=" + exSentDate + ", academicYear=" + academicYear + ", colleges="
+				+ colleges + ", programmeYear=" + programmeYear + ", semester=" + semester + "]";
+	}
+
+}

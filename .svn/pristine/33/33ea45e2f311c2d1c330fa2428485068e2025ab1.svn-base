@@ -1,0 +1,971 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+ @Table(name = "ex_student_admission_log") 
+public class StudentadmissionLog {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	
+	@Column(columnDefinition="TEXT")
+	private String exDetailsQualification;
+	
+	private Double exPercentageOfMarks;
+	
+	private String exDocumentPath;
+	
+	
+	private String exName;
+	private String exNameInHindi;
+	
+	private String exDateOfBirth;
+
+	private String exContactDetails;
+	private String exGender;
+	private String exNationality;
+	private String exNativeState;;
+	private String exReligion;
+	private String exMotherTounge;
+	private Double exWeight;
+	private Double exHeight;
+	private String exBloodGroup;
+
+	private String exAdhaarNumber;
+	private String exEmailId;
+	private String exIdentificationMark;
+
+	private String exFatherName;
+	@Column(columnDefinition="TEXT")
+	private String exFatherNameInHindi;
+	
+	private String exParentContactDetails;
+	
+	private String exFatherOccupation;
+	
+	private Double exAnnualIncome;
+	
+	private String exMotherName;
+	@Column(columnDefinition="TEXT")
+	private String exMotherNameInHindi;
+	
+	private String exRollNo;
+	
+	@Column(columnDefinition="TEXT")
+	private String exPermanentAddress;
+	
+	@Column(columnDefinition="TEXT")
+	private String exPermanentcity;
+	
+	private String exPermanentstate;
+	
+	private String expostalcode;
+	
+	private String excounrty;
+	
+
+	
+	
+	@Column(columnDefinition="TEXT")
+	private String exPresentAddress;
+	
+	@Column(columnDefinition="TEXT")
+	private String exPresentcity;
+	
+	private String exPresentstate;
+	
+	private String exPresentpostalcode;
+	
+	private String exPresentcounrty;
+	
+	private String exTenthYearOfPass;
+	private String exTenthBoardOfPass;
+	private String exTenthSchollName;
+	private String exTenthMedium;
+	private String exTenthPercentageOfMarks;
+	
+	private String exTwelvethYearOfPass;
+	private String exTwelvethBoardOfPass;
+	private String exTwelvethCollageName;
+	private String exTwelvethMedium;
+	private String exTwelvethPercentageOfMarks;
+	
+	private String exUgYearOfPass;
+	private String exUgBoardOfPass;
+	private String exUgCollageName;
+	private String exUgMedium;
+	private String exUgPercentageOfMarks;
+	
+	private String exPgYearOfPass;
+	private String exPgBoardOfPass;
+	private String exPgCollageName;
+	private String exPgMedium;
+	private String exPgPercentageOfMarks;
+	
+	private String exOthersYearOfPass;
+	private String exOthersBoardOfPass;
+	private String exOthersCollageName;
+	private String exOthersMedium;
+	private String exOthersPercentageOfMarks;
+	
+	
+	private String exMinorityCategory;
+	private String exPersonwithDisability;
+	
+	
+	private String GuardianEmailId;
+	private String GuardianConatct;
+	private String GuardiaPincode;
+	private String GuardianAddress;
+	
+	
+	
+	private String FatherContact;
+	private String FatherOfficeAddress;
+	private String FatherEmailId;
+	
+	private String MotherContact;
+	private String MotherOfficeAddress;
+	private String MotherEmailId;
+	private String MotherAnnualIncome;
+	private String MotherOccupation;
+	
+	
+	private String exGateScore;
+	private String exStudiedIsbiology;
+	
+
+	private String exLocalGurdian;
+	
+	@Column(columnDefinition="TEXT")
+	private String exlocalGurdianInHindi;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "student_admission_id", nullable = false)
+	private Studentadmission studentadmission;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	private String exTenthMarksheet;
+	private String exTwelfthMarksheet;
+	private String exDegreeMarksheet;
+	private String exCasteCertificate;
+	private String exIncomeCertificate;
+	
+	@Column(columnDefinition = "Integer DEFAULT 0")
+	private Integer exIsApprove;
+
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+	private String exEnrollementNo;
+	
+
+	
+	
+	public String getExEnrollementNo() {
+		return exEnrollementNo;
+	}
+
+	public void setExEnrollementNo(String exEnrollementNo) {
+		this.exEnrollementNo = exEnrollementNo;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExDetailsQualification() {
+		return exDetailsQualification;
+	}
+
+	public Double getExPercentageOfMarks() {
+		return exPercentageOfMarks;
+	}
+
+	public String getExDocumentPath() {
+		return exDocumentPath;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public String getExNameInHindi() {
+		return exNameInHindi;
+	}
+
+	public String getExDateOfBirth() {
+		return exDateOfBirth;
+	}
+
+	public String getExContactDetails() {
+		return exContactDetails;
+	}
+
+	public String getExGender() {
+		return exGender;
+	}
+
+	public String getExNationality() {
+		return exNationality;
+	}
+
+	public String getExNativeState() {
+		return exNativeState;
+	}
+
+	public String getExReligion() {
+		return exReligion;
+	}
+
+	public String getExMotherTounge() {
+		return exMotherTounge;
+	}
+
+	public Double getExWeight() {
+		return exWeight;
+	}
+
+	public Double getExHeight() {
+		return exHeight;
+	}
+
+	public String getExBloodGroup() {
+		return exBloodGroup;
+	}
+
+	public String getExAdhaarNumber() {
+		return exAdhaarNumber;
+	}
+
+	public String getExEmailId() {
+		return exEmailId;
+	}
+
+	public String getExIdentificationMark() {
+		return exIdentificationMark;
+	}
+
+	public String getExFatherName() {
+		return exFatherName;
+	}
+
+	public String getExFatherNameInHindi() {
+		return exFatherNameInHindi;
+	}
+
+	public String getExParentContactDetails() {
+		return exParentContactDetails;
+	}
+
+	public String getExFatherOccupation() {
+		return exFatherOccupation;
+	}
+
+	public Double getExAnnualIncome() {
+		return exAnnualIncome;
+	}
+
+	public String getExMotherName() {
+		return exMotherName;
+	}
+
+	public String getExMotherNameInHindi() {
+		return exMotherNameInHindi;
+	}
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public String getExPermanentAddress() {
+		return exPermanentAddress;
+	}
+
+	public String getExPresentAddress() {
+		return exPresentAddress;
+	}
+
+	public String getExLocalGurdian() {
+		return exLocalGurdian;
+	}
+
+	public String getExlocalGurdianInHindi() {
+		return exlocalGurdianInHindi;
+	}
+
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public String getExTenthMarksheet() {
+		return exTenthMarksheet;
+	}
+
+	public String getExTwelfthMarksheet() {
+		return exTwelfthMarksheet;
+	}
+
+	public String getExDegreeMarksheet() {
+		return exDegreeMarksheet;
+	}
+
+	public String getExCasteCertificate() {
+		return exCasteCertificate;
+	}
+
+	public String getExIncomeCertificate() {
+		return exIncomeCertificate;
+	}
+
+	public Integer getExIsApprove() {
+		return exIsApprove;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExDetailsQualification(String exDetailsQualification) {
+		this.exDetailsQualification = exDetailsQualification;
+	}
+
+	public void setExPercentageOfMarks(Double exPercentageOfMarks) {
+		this.exPercentageOfMarks = exPercentageOfMarks;
+	}
+
+	public void setExDocumentPath(String exDocumentPath) {
+		this.exDocumentPath = exDocumentPath;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public void setExNameInHindi(String exNameInHindi) {
+		this.exNameInHindi = exNameInHindi;
+	}
+
+	public void setExDateOfBirth(String exDateOfBirth) {
+		this.exDateOfBirth = exDateOfBirth;
+	}
+
+	public void setExContactDetails(String exContactDetails) {
+		this.exContactDetails = exContactDetails;
+	}
+
+	public void setExGender(String exGender) {
+		this.exGender = exGender;
+	}
+
+	public void setExNationality(String exNationality) {
+		this.exNationality = exNationality;
+	}
+
+	public void setExNativeState(String exNativeState) {
+		this.exNativeState = exNativeState;
+	}
+
+	public void setExReligion(String exReligion) {
+		this.exReligion = exReligion;
+	}
+
+	public void setExMotherTounge(String exMotherTounge) {
+		this.exMotherTounge = exMotherTounge;
+	}
+
+	public void setExWeight(Double exWeight) {
+		this.exWeight = exWeight;
+	}
+
+	public void setExHeight(Double exHeight) {
+		this.exHeight = exHeight;
+	}
+
+	public void setExBloodGroup(String exBloodGroup) {
+		this.exBloodGroup = exBloodGroup;
+	}
+
+	public void setExAdhaarNumber(String exAdhaarNumber) {
+		this.exAdhaarNumber = exAdhaarNumber;
+	}
+
+	public void setExEmailId(String exEmailId) {
+		this.exEmailId = exEmailId;
+	}
+
+	public void setExIdentificationMark(String exIdentificationMark) {
+		this.exIdentificationMark = exIdentificationMark;
+	}
+
+	public void setExFatherName(String exFatherName) {
+		this.exFatherName = exFatherName;
+	}
+
+	public void setExFatherNameInHindi(String exFatherNameInHindi) {
+		this.exFatherNameInHindi = exFatherNameInHindi;
+	}
+
+	public void setExParentContactDetails(String exParentContactDetails) {
+		this.exParentContactDetails = exParentContactDetails;
+	}
+
+	public void setExFatherOccupation(String exFatherOccupation) {
+		this.exFatherOccupation = exFatherOccupation;
+	}
+
+	public void setExAnnualIncome(Double exAnnualIncome) {
+		this.exAnnualIncome = exAnnualIncome;
+	}
+
+	public void setExMotherName(String exMotherName) {
+		this.exMotherName = exMotherName;
+	}
+
+	public void setExMotherNameInHindi(String exMotherNameInHindi) {
+		this.exMotherNameInHindi = exMotherNameInHindi;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	public void setExPermanentAddress(String exPermanentAddress) {
+		this.exPermanentAddress = exPermanentAddress;
+	}
+
+	public void setExPresentAddress(String exPresentAddress) {
+		this.exPresentAddress = exPresentAddress;
+	}
+
+	public void setExLocalGurdian(String exLocalGurdian) {
+		this.exLocalGurdian = exLocalGurdian;
+	}
+
+	public void setExlocalGurdianInHindi(String exlocalGurdianInHindi) {
+		this.exlocalGurdianInHindi = exlocalGurdianInHindi;
+	}
+
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setExTenthMarksheet(String exTenthMarksheet) {
+		this.exTenthMarksheet = exTenthMarksheet;
+	}
+
+	public void setExTwelfthMarksheet(String exTwelfthMarksheet) {
+		this.exTwelfthMarksheet = exTwelfthMarksheet;
+	}
+
+	public void setExDegreeMarksheet(String exDegreeMarksheet) {
+		this.exDegreeMarksheet = exDegreeMarksheet;
+	}
+
+	public void setExCasteCertificate(String exCasteCertificate) {
+		this.exCasteCertificate = exCasteCertificate;
+	}
+
+	public void setExIncomeCertificate(String exIncomeCertificate) {
+		this.exIncomeCertificate = exIncomeCertificate;
+	}
+
+	public void setExIsApprove(Integer exIsApprove) {
+		this.exIsApprove = exIsApprove;
+	}
+
+
+	public String getExPermanentcity() {
+		return exPermanentcity;
+	}
+
+	public void setExPermanentcity(String exPermanentcity) {
+		this.exPermanentcity = exPermanentcity;
+	}
+
+	public String getExPermanentstate() {
+		return exPermanentstate;
+	}
+
+	public void setExPermanentstate(String exPermanentstate) {
+		this.exPermanentstate = exPermanentstate;
+	}
+
+	public String getExpostalcode() {
+		return expostalcode;
+	}
+
+	public void setExpostalcode(String expostalcode) {
+		this.expostalcode = expostalcode;
+	}
+
+	public String getExcounrty() {
+		return excounrty;
+	}
+
+	public void setExcounrty(String excounrty) {
+		this.excounrty = excounrty;
+	}
+
+	public String getExPresentcity() {
+		return exPresentcity;
+	}
+
+	public void setExPresentcity(String exPresentcity) {
+		this.exPresentcity = exPresentcity;
+	}
+
+	public String getExPresentstate() {
+		return exPresentstate;
+	}
+
+	public void setExPresentstate(String exPresentstate) {
+		this.exPresentstate = exPresentstate;
+	}
+
+	public String getExPresentpostalcode() {
+		return exPresentpostalcode;
+	}
+
+	public void setExPresentpostalcode(String exPresentpostalcode) {
+		this.exPresentpostalcode = exPresentpostalcode;
+	}
+
+	public String getExPresentcounrty() {
+		return exPresentcounrty;
+	}
+
+	public void setExPresentcounrty(String exPresentcounrty) {
+		this.exPresentcounrty = exPresentcounrty;
+	}
+	
+
+	public String getExTenthYearOfPass() {
+		return exTenthYearOfPass;
+	}
+
+	public void setExTenthYearOfPass(String exTenthYearOfPass) {
+		this.exTenthYearOfPass = exTenthYearOfPass;
+	}
+
+	public String getExTenthBoardOfPass() {
+		return exTenthBoardOfPass;
+	}
+
+	public void setExTenthBoardOfPass(String exTenthBoardOfPass) {
+		this.exTenthBoardOfPass = exTenthBoardOfPass;
+	}
+
+	public String getExTenthSchollName() {
+		return exTenthSchollName;
+	}
+
+	public void setExTenthSchollName(String exTenthSchollName) {
+		this.exTenthSchollName = exTenthSchollName;
+	}
+
+	public String getExTenthMedium() {
+		return exTenthMedium;
+	}
+
+	public void setExTenthMedium(String exTenthMedium) {
+		this.exTenthMedium = exTenthMedium;
+	}
+
+	public String getExTenthPercentageOfMarks() {
+		return exTenthPercentageOfMarks;
+	}
+
+	public void setExTenthPercentageOfMarks(String exTenthPercentageOfMarks) {
+		this.exTenthPercentageOfMarks = exTenthPercentageOfMarks;
+	}
+
+	public String getExTwelvethYearOfPass() {
+		return exTwelvethYearOfPass;
+	}
+
+	public void setExTwelvethYearOfPass(String exTwelvethYearOfPass) {
+		this.exTwelvethYearOfPass = exTwelvethYearOfPass;
+	}
+
+	public String getExTwelvethBoardOfPass() {
+		return exTwelvethBoardOfPass;
+	}
+
+	public void setExTwelvethBoardOfPass(String exTwelvethBoardOfPass) {
+		this.exTwelvethBoardOfPass = exTwelvethBoardOfPass;
+	}
+
+	public String getExTwelvethCollageName() {
+		return exTwelvethCollageName;
+	}
+
+	public void setExTwelvethCollageName(String exTwelvethCollageName) {
+		this.exTwelvethCollageName = exTwelvethCollageName;
+	}
+
+	public String getExTwelvethMedium() {
+		return exTwelvethMedium;
+	}
+
+	public void setExTwelvethMedium(String exTwelvethMedium) {
+		this.exTwelvethMedium = exTwelvethMedium;
+	}
+
+	public String getExTwelvethPercentageOfMarks() {
+		return exTwelvethPercentageOfMarks;
+	}
+
+	public void setExTwelvethPercentageOfMarks(String exTwelvethPercentageOfMarks) {
+		this.exTwelvethPercentageOfMarks = exTwelvethPercentageOfMarks;
+	}
+
+	public String getExUgYearOfPass() {
+		return exUgYearOfPass;
+	}
+
+	public void setExUgYearOfPass(String exUgYearOfPass) {
+		this.exUgYearOfPass = exUgYearOfPass;
+	}
+
+	public String getExUgBoardOfPass() {
+		return exUgBoardOfPass;
+	}
+
+	public void setExUgBoardOfPass(String exUgBoardOfPass) {
+		this.exUgBoardOfPass = exUgBoardOfPass;
+	}
+
+	public String getExUgCollageName() {
+		return exUgCollageName;
+	}
+
+	public void setExUgCollageName(String exUgCollageName) {
+		this.exUgCollageName = exUgCollageName;
+	}
+
+	public String getExUgMedium() {
+		return exUgMedium;
+	}
+
+	public void setExUgMedium(String exUgMedium) {
+		this.exUgMedium = exUgMedium;
+	}
+
+	public String getExUgPercentageOfMarks() {
+		return exUgPercentageOfMarks;
+	}
+
+	public void setExUgPercentageOfMarks(String exUgPercentageOfMarks) {
+		this.exUgPercentageOfMarks = exUgPercentageOfMarks;
+	}
+
+	public String getExPgYearOfPass() {
+		return exPgYearOfPass;
+	}
+
+	public void setExPgYearOfPass(String exPgYearOfPass) {
+		this.exPgYearOfPass = exPgYearOfPass;
+	}
+
+	public String getExPgBoardOfPass() {
+		return exPgBoardOfPass;
+	}
+
+	public void setExPgBoardOfPass(String exPgBoardOfPass) {
+		this.exPgBoardOfPass = exPgBoardOfPass;
+	}
+
+	public String getExPgCollageName() {
+		return exPgCollageName;
+	}
+
+	public void setExPgCollageName(String exPgCollageName) {
+		this.exPgCollageName = exPgCollageName;
+	}
+
+	public String getExPgMedium() {
+		return exPgMedium;
+	}
+
+	public void setExPgMedium(String exPgMedium) {
+		this.exPgMedium = exPgMedium;
+	}
+
+	public String getExPgPercentageOfMarks() {
+		return exPgPercentageOfMarks;
+	}
+
+	public void setExPgPercentageOfMarks(String exPgPercentageOfMarks) {
+		this.exPgPercentageOfMarks = exPgPercentageOfMarks;
+	}
+	
+	public String getExOthersYearOfPass() {
+		return exOthersYearOfPass;
+	}
+
+	public void setExOthersYearOfPass(String exOthersYearOfPass) {
+		this.exOthersYearOfPass = exOthersYearOfPass;
+	}
+
+	public String getExOthersBoardOfPass() {
+		return exOthersBoardOfPass;
+	}
+
+	public void setExOthersBoardOfPass(String exOthersBoardOfPass) {
+		this.exOthersBoardOfPass = exOthersBoardOfPass;
+	}
+
+	public String getExOthersCollageName() {
+		return exOthersCollageName;
+	}
+
+	public void setExOthersCollageName(String exOthersCollageName) {
+		this.exOthersCollageName = exOthersCollageName;
+	}
+
+	public String getExOthersMedium() {
+		return exOthersMedium;
+	}
+
+	public void setExOthersMedium(String exOthersMedium) {
+		this.exOthersMedium = exOthersMedium;
+	}
+
+	public String getExOthersPercentageOfMarks() {
+		return exOthersPercentageOfMarks;
+	}
+
+	public void setExOthersPercentageOfMarks(String exOthersPercentageOfMarks) {
+		this.exOthersPercentageOfMarks = exOthersPercentageOfMarks;
+	}
+
+	public String getExMinorityCategory() {
+		return exMinorityCategory;
+	}
+
+	public void setExMinorityCategory(String exMinorityCategory) {
+		this.exMinorityCategory = exMinorityCategory;
+	}
+
+	public String getExPersonwithDisability() {
+		return exPersonwithDisability;
+	}
+
+	public void setExPersonwithDisability(String exPersonwithDisability) {
+		this.exPersonwithDisability = exPersonwithDisability;
+	}
+
+	public String getGuardianEmailId() {
+		return GuardianEmailId;
+	}
+
+	public void setGuardianEmailId(String guardianEmailId) {
+		GuardianEmailId = guardianEmailId;
+	}
+
+	public String getGuardianConatct() {
+		return GuardianConatct;
+	}
+
+	public void setGuardianConatct(String guardianConatct) {
+		GuardianConatct = guardianConatct;
+	}
+
+	public String getGuardiaPincode() {
+		return GuardiaPincode;
+	}
+
+	public void setGuardiaPincode(String guardiaPincode) {
+		GuardiaPincode = guardiaPincode;
+	}
+
+	public String getGuardianAddress() {
+		return GuardianAddress;
+	}
+
+	public void setGuardianAddress(String guardianAddress) {
+		GuardianAddress = guardianAddress;
+	}
+
+	public String getFatherContact() {
+		return FatherContact;
+	}
+
+	public void setFatherContact(String fatherContact) {
+		FatherContact = fatherContact;
+	}
+
+	public String getFatherOfficeAddress() {
+		return FatherOfficeAddress;
+	}
+
+	public void setFatherOfficeAddress(String fatherOfficeAddress) {
+		FatherOfficeAddress = fatherOfficeAddress;
+	}
+
+	public String getFatherEmailId() {
+		return FatherEmailId;
+	}
+
+	public void setFatherEmailId(String fatherEmailId) {
+		FatherEmailId = fatherEmailId;
+	}
+
+	public String getMotherContact() {
+		return MotherContact;
+	}
+
+	public void setMotherContact(String motherContact) {
+		MotherContact = motherContact;
+	}
+
+	public String getMotherOfficeAddress() {
+		return MotherOfficeAddress;
+	}
+
+	public void setMotherOfficeAddress(String motherOfficeAddress) {
+		MotherOfficeAddress = motherOfficeAddress;
+	}
+
+	public String getMotherEmailId() {
+		return MotherEmailId;
+	}
+
+	public void setMotherEmailId(String motherEmailId) {
+		MotherEmailId = motherEmailId;
+	}
+
+	public String getMotherAnnualIncome() {
+		return MotherAnnualIncome;
+	}
+
+	public void setMotherAnnualIncome(String motherAnnualIncome) {
+		MotherAnnualIncome = motherAnnualIncome;
+	}
+
+	public String getMotherOccupation() {
+		return MotherOccupation;
+	}
+
+	public void setMotherOccupation(String motherOccupation) {
+		MotherOccupation = motherOccupation;
+	}
+
+	public String getExGateScore() {
+		return exGateScore;
+	}
+
+	public void setExGateScore(String exGateScore) {
+		this.exGateScore = exGateScore;
+	}
+
+	public String getExStudiedIsbiology() {
+		return exStudiedIsbiology;
+	}
+
+	public void setExStudiedIsbiology(String exStudiedIsbiology) {
+		this.exStudiedIsbiology = exStudiedIsbiology;
+	}
+
+	@Override
+	public String toString() {
+		return "StudentadmissionLog [id=" + id + ", exDetailsQualification=" + exDetailsQualification
+				+ ", exPercentageOfMarks=" + exPercentageOfMarks + ", exDocumentPath=" + exDocumentPath + ", exName="
+				+ exName + ", exNameInHindi=" + exNameInHindi + ", exDateOfBirth=" + exDateOfBirth
+				+ ", exContactDetails=" + exContactDetails + ", exGender=" + exGender + ", exNationality="
+				+ exNationality + ", exNativeState=" + exNativeState + ", exReligion=" + exReligion
+				+ ", exMotherTounge=" + exMotherTounge + ", exWeight=" + exWeight + ", exHeight=" + exHeight
+				+ ", exBloodGroup=" + exBloodGroup + ", exAdhaarNumber=" + exAdhaarNumber + ", exEmailId=" + exEmailId
+				+ ", exIdentificationMark=" + exIdentificationMark + ", exFatherName=" + exFatherName
+				+ ", exFatherNameInHindi=" + exFatherNameInHindi + ", exParentContactDetails=" + exParentContactDetails
+				+ ", exFatherOccupation=" + exFatherOccupation + ", exAnnualIncome=" + exAnnualIncome
+				+ ", exMotherName=" + exMotherName + ", exMotherNameInHindi=" + exMotherNameInHindi + ", exRollNo="
+				+ exRollNo + ", exPermanentAddress=" + exPermanentAddress + ", exPermanentcity=" + exPermanentcity
+				+ ", exPermanentstate=" + exPermanentstate + ", expostalcode=" + expostalcode + ", excounrty="
+				+ excounrty + ", exPresentAddress=" + exPresentAddress + ", exPresentcity=" + exPresentcity
+				+ ", exPresentstate=" + exPresentstate + ", exPresentpostalcode=" + exPresentpostalcode
+				+ ", exPresentcounrty=" + exPresentcounrty + ", exTenthYearOfPass=" + exTenthYearOfPass
+				+ ", exTenthBoardOfPass=" + exTenthBoardOfPass + ", exTenthSchollName=" + exTenthSchollName
+				+ ", exTenthMedium=" + exTenthMedium + ", exTenthPercentageOfMarks=" + exTenthPercentageOfMarks
+				+ ", exTwelvethYearOfPass=" + exTwelvethYearOfPass + ", exTwelvethBoardOfPass=" + exTwelvethBoardOfPass
+				+ ", exTwelvethCollageName=" + exTwelvethCollageName + ", exTwelvethMedium=" + exTwelvethMedium
+				+ ", exTwelvethPercentageOfMarks=" + exTwelvethPercentageOfMarks + ", exUgYearOfPass=" + exUgYearOfPass
+				+ ", exUgBoardOfPass=" + exUgBoardOfPass + ", exUgCollageName=" + exUgCollageName + ", exUgMedium="
+				+ exUgMedium + ", exUgPercentageOfMarks=" + exUgPercentageOfMarks + ", exPgYearOfPass=" + exPgYearOfPass
+				+ ", exPgBoardOfPass=" + exPgBoardOfPass + ", exPgCollageName=" + exPgCollageName + ", exPgMedium="
+				+ exPgMedium + ", exPgPercentageOfMarks=" + exPgPercentageOfMarks + ", exOthersYearOfPass="
+				+ exOthersYearOfPass + ", exOthersBoardOfPass=" + exOthersBoardOfPass + ", exOthersCollageName="
+				+ exOthersCollageName + ", exOthersMedium=" + exOthersMedium + ", exOthersPercentageOfMarks="
+				+ exOthersPercentageOfMarks + ", exMinorityCategory=" + exMinorityCategory + ", exPersonwithDisability="
+				+ exPersonwithDisability + ", GuardianEmailId=" + GuardianEmailId + ", GuardianConatct="
+				+ GuardianConatct + ", GuardiaPincode=" + GuardiaPincode + ", GuardianAddress=" + GuardianAddress
+				+ ", FatherContact=" + FatherContact + ", FatherOfficeAddress=" + FatherOfficeAddress
+				+ ", FatherEmailId=" + FatherEmailId + ", MotherContact=" + MotherContact + ", MotherOfficeAddress="
+				+ MotherOfficeAddress + ", MotherEmailId=" + MotherEmailId + ", MotherAnnualIncome="
+				+ MotherAnnualIncome + ", MotherOccupation=" + MotherOccupation + ", exGateScore=" + exGateScore
+				+ ", exStudiedIsbiology=" + exStudiedIsbiology + ", exLocalGurdian=" + exLocalGurdian
+				+ ", exlocalGurdianInHindi=" + exlocalGurdianInHindi + ", studentadmission=" + studentadmission
+				+ ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", exTenthMarksheet="
+				+ exTenthMarksheet + ", exTwelfthMarksheet=" + exTwelfthMarksheet + ", exDegreeMarksheet="
+				+ exDegreeMarksheet + ", exCasteCertificate=" + exCasteCertificate + ", exIncomeCertificate="
+				+ exIncomeCertificate + ", exIsApprove=" + exIsApprove + ", exIsActive=" + exIsActive + ", exIsDelete="
+				+ exIsDelete + ", exEnrollementNo=" + exEnrollementNo + "]";
+	}
+
+}

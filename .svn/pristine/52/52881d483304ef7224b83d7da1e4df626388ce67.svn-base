@@ -1,0 +1,354 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+@Entity
+@Table(name = "ex_exam_barcodes")
+public class ExamBarcodes {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "exam_announcement_id", nullable = true)
+	private ExamAnnouncement examAnnouncement;
+	
+	/*
+	 * @ManyToOne(optional = true)
+	 * 
+	 * @JoinColumn(name = "staff_id", nullable = true) private Staffpersonal staff;
+	 */
+		
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "expert_id", nullable = true)
+	private EvaluatorList expert;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "registration_type_id", nullable = false)
+	private RegistrationType registrationType;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "student_admission_id", nullable = false)
+	private Studentadmission studentadmission;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear;  
+	
+	@ManyToOne( optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user; 
+	
+	@ManyToOne( optional = true)
+	@JoinColumn(name = "booklet_user_id", nullable = true)
+	private User bookletuser; 
+	
+	
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "courses_id", nullable = false)
+	private Courses courses;
+	
+	
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	private Boolean exIsReevaluated;
+	
+	private String exBarcode;
+	private Boolean exIsAttendance;
+	private Boolean exIsPracticalAttendance;
+	private String exTimeLimit;
+	private String exTimeTaken;
+	private String exAnsBookletPath;
+	private String exEvaluatedPath;
+	private String exRollNo;
+	private String exLabExperimentRemarks;
+	private String exVivaRemarks;
+	
+	
+	@Column(columnDefinition = "Integer DEFAULT 0")
+	private Integer exIsEvaluated;
+	
+	private String exEndTermRemark;
+
+	private Double exEndTermMarks;
+	private Double exLabExperiment;
+	private Double exViva;
+	
+	
+	public String getExLabExperimentRemarks() {
+		return exLabExperimentRemarks;
+	}
+	public void setExLabExperimentRemarks(String exLabExperimentRemarks) {
+		this.exLabExperimentRemarks = exLabExperimentRemarks;
+	}
+	public String getExVivaRemarks() {
+		return exVivaRemarks;
+	}
+	public void setExVivaRemarks(String exVivaRemarks) {
+		this.exVivaRemarks = exVivaRemarks;
+	}
+	public Long getId() {
+		return id;
+	}
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public EvaluatorList getExpert() {
+		return expert;
+	}
+	public Colleges getColleges() {
+		return colleges;
+	}
+	public RegistrationType getRegistrationType() {
+		return registrationType;
+	}
+	public Department getDepartment() {
+		return department;
+	}
+	public Semster getSemester() {
+		return semester;
+	}
+	public Degree getDegree() {
+		return degree;
+	}
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+	public Studentadmission getStudentadmission() {
+		return studentadmission;
+	}
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+	public User getUser() {
+		return user;
+	}
+	public User getBookletuser() {
+		return bookletuser;
+	}
+	public Courses getCourses() {
+		return courses;
+	}
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+	public Boolean getExIsReevaluated() {
+		return exIsReevaluated;
+	}
+	public String getExBarcode() {
+		return exBarcode;
+	}
+	public Boolean getExIsAttendance() {
+		return exIsAttendance;
+	}
+	public Boolean getExIsPracticalAttendance() {
+		return exIsPracticalAttendance;
+	}
+	public String getExTimeLimit() {
+		return exTimeLimit;
+	}
+	public String getExTimeTaken() {
+		return exTimeTaken;
+	}
+	public String getExAnsBookletPath() {
+		return exAnsBookletPath;
+	}
+	public String getExEvaluatedPath() {
+		return exEvaluatedPath;
+	}
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public Integer getExIsEvaluated() {
+		return exIsEvaluated;
+	}
+	public String getExEndTermRemark() {
+		return exEndTermRemark;
+	}
+	public Double getExEndTermMarks() {
+		return exEndTermMarks;
+	}
+	public Double getExLabExperiment() {
+		return exLabExperiment;
+	}
+	public Double getExViva() {
+		return exViva;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public void setExpert(EvaluatorList expert) {
+		this.expert = expert;
+	}
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+	public void setRegistrationType(RegistrationType registrationType) {
+		this.registrationType = registrationType;
+	}
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+	public void setStudentadmission(Studentadmission studentadmission) {
+		this.studentadmission = studentadmission;
+	}
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public void setBookletuser(User bookletuser) {
+		this.bookletuser = bookletuser;
+	}
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+	public void setExIsReevaluated(Boolean exIsReevaluated) {
+		this.exIsReevaluated = exIsReevaluated;
+	}
+	public void setExBarcode(String exBarcode) {
+		this.exBarcode = exBarcode;
+	}
+	public void setExIsAttendance(Boolean exIsAttendance) {
+		this.exIsAttendance = exIsAttendance;
+	}
+	public void setExIsPracticalAttendance(Boolean exIsPracticalAttendance) {
+		this.exIsPracticalAttendance = exIsPracticalAttendance;
+	}
+	public void setExTimeLimit(String exTimeLimit) {
+		this.exTimeLimit = exTimeLimit;
+	}
+	public void setExTimeTaken(String exTimeTaken) {
+		this.exTimeTaken = exTimeTaken;
+	}
+	public void setExAnsBookletPath(String exAnsBookletPath) {
+		this.exAnsBookletPath = exAnsBookletPath;
+	}
+	public void setExEvaluatedPath(String exEvaluatedPath) {
+		this.exEvaluatedPath = exEvaluatedPath;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	public void setExIsEvaluated(Integer exIsEvaluated) {
+		this.exIsEvaluated = exIsEvaluated;
+	}
+	public void setExEndTermRemark(String exEndTermRemark) {
+		this.exEndTermRemark = exEndTermRemark;
+	}
+	public void setExEndTermMarks(Double exEndTermMarks) {
+		this.exEndTermMarks = exEndTermMarks;
+	}
+	public void setExLabExperiment(Double exLabExperiment) {
+		this.exLabExperiment = exLabExperiment;
+	}
+	public void setExViva(Double exViva) {
+		this.exViva = exViva;
+	}
+	@Override
+	public String toString() {
+		return "ExamBarcodes [id=" + id + ", academicYear=" + academicYear + ", examAnnouncement=" + examAnnouncement
+				+ ", expert=" + expert + ", colleges=" + colleges + ", registrationType=" + registrationType
+				+ ", department=" + department + ", semester=" + semester + ", degree=" + degree + ", programmes="
+				+ programmes + ", studentadmission=" + studentadmission + ", programmeYear=" + programmeYear + ", user="
+				+ user + ", bookletuser=" + bookletuser + ", courses=" + courses + ", exIsActive=" + exIsActive
+				+ ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate
+				+ ", exIsReevaluated=" + exIsReevaluated + ", exBarcode=" + exBarcode + ", exIsAttendance="
+				+ exIsAttendance + ", exIsPracticalAttendance=" + exIsPracticalAttendance + ", exTimeLimit="
+				+ exTimeLimit + ", exTimeTaken=" + exTimeTaken + ", exAnsBookletPath=" + exAnsBookletPath
+				+ ", exEvaluatedPath=" + exEvaluatedPath + ", exRollNo=" + exRollNo + ", exLabExperimentRemarks="
+				+ exLabExperimentRemarks + ", exVivaRemarks=" + exVivaRemarks + ", exIsEvaluated=" + exIsEvaluated
+				+ ", exEndTermRemark=" + exEndTermRemark + ", exEndTermMarks=" + exEndTermMarks + ", exLabExperiment="
+				+ exLabExperiment + ", exViva=" + exViva + "]";
+	}
+	
+	
+}

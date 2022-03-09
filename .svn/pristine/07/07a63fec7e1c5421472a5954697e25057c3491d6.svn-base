@@ -1,0 +1,68 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.FeeHeadMaster;
+
+public interface FeeHeadMasterRepository extends CrudRepository<FeeHeadMaster, Long> {
+
+	List<FeeHeadMaster> findByExNameAndExIsDelete(String exName, boolean b);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_fee_head_master set ex_name = ?1, ex_is_Active = ?2 , ex_description =?4 where id =?3", nativeQuery = true)
+	int Update(String exName, Long id, Boolean exIsActive , String desc);
+
+	List<FeeHeadMaster> findByExIsDelete(boolean b);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_fee_head_master set ex_is_delete = ?1 ,ex_is_Active =?2  where id =?3", nativeQuery = true)
+	int deleteFeeHeadMaster(Boolean exIsDelete, Boolean is_active, Long id);
+	
+	Optional<FeeHeadMaster> findByIdAndExIsDeleteAndExIsActive(Long feeheadmaster, boolean b, boolean c);
+
+	Optional<FeeHeadMaster> findByExNameAndExIsDeleteAndExIsActive(String trim, boolean b, boolean c);
+
+
+
+	/*@Modifying
+	@Transactional
+	@Query(value = "update ex_fee_head_master set ex_name = ?1, ex_Description =?2 , ex_is_Active = ?3 where id =?4", nativeQuery = true)
+	int updateFeeHeadMasterRecord(String exName, String exDescription, Boolean exIsActive, Long id);
+
+	
+	
+		@Modifying
+		@Transactional	
+		@Query(value = "insert into ex_fee_category_feeType(feeCategory_id,feeType_id)values(?1,?2)", nativeQuery = true)
+	    int savefeeCategoryfeeType(Long id, Long col);
+	
+	   @Modifying
+	   @Transactional	
+	   @Query(value = "insert into ex_fee_category_category(feeCategory_id,category_id)values(?1,?2)", nativeQuery = true)
+	   int savefeeCategorycategory(Long id, Long col);
+	   
+	   
+	   @Modifying
+		@Transactional
+		@Query(value = "delete from ex_fee_category_category  where category_id =?2", nativeQuery = true)
+		void deletefeeCategorycategory(Long id);
+		
+		@Modifying
+		@Transactional
+		@Query(value = "delete from ex_fee_category_feeType  where feeType_id =?2", nativeQuery = true)
+		void deletefeeCategoryfeeType(Long id);
+*/
+
+
+	//@Query(value = "update ex_feeHeadMaster set ex_name = ?1, ex_Description =?2 , ex_is_Active = ?3, batch=?4, degree=?5, programmes=?6,programmeyear=?7,semster=?8,feetype=?9,category=?10   where id =?11", nativeQuery = true)
+
+}

@@ -1,0 +1,31 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.HostelFeeType;
+
+public interface HostelFeeTypeRepository extends CrudRepository<HostelFeeType, Long>{
+
+	List<HostelFeeType> findByExIsDelete(Boolean Delete);
+
+	List<HostelFeeType> findByExNameAndExIsDelete(String exName, Boolean Delete);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_hostel_fee_type set ex_is_delete = ?1 ,ex_is_active=?2 where id =?3", nativeQuery = true)
+	int deleteHostelFeeType(Boolean exIsDelete, Boolean exIsactive,Long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_hostel_fee_type set ex_name = ?1 ,ex_description=?2 , ex_is_active =?3,ex_update_date =?4 where id =?5", nativeQuery = true)
+	int updateHostelFeeTypeRecord(String exName, String exDescription,Boolean exIsActive,Date updateDate ,Long id);
+
+	Optional<HostelFeeType> findByIdAndExIsActiveAndExIsDelete(Long hostelfeetype, boolean b, boolean c);
+}

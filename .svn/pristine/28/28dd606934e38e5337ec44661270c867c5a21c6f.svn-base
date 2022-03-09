@@ -1,0 +1,43 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.RegistrationType;
+
+public interface RegistrationTypeRepository extends CrudRepository<RegistrationType, Long>{
+	
+	List<RegistrationType> findByExNameAndExIsDelete(String exName, Boolean delete);
+	
+	List<RegistrationType> findByExIsDelete(Boolean delete);
+	
+	Optional<RegistrationType> findByExNameAndExIsDeleteAndExIsActive(String exName, Boolean delete , Boolean is_active);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_registration_type set ex_is_delete = ?1 ,ex_is_active=?2 where id =?3", nativeQuery = true)
+	int deleteRegistrationType(Boolean exIsDelete, Boolean exIsactive, Long id);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_registration_type set ex_name = ?1 , ex_is_active =?2  , ex_update_date =?3 , ex_description = ?5 where id =?4", nativeQuery = true)
+	int updateRegistrationTypeRecord(String exName, Boolean exIsActive, Date date, Long id, String exDescription);
+	List<RegistrationType> findByIdAndExIsDelete(Long evaluationType, Boolean is_delete);
+
+	List<RegistrationType> findByIdAndExIsDeleteAndExIsActive(Long registrationType, boolean b, boolean c);
+
+	Optional<RegistrationType> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, Long registrationType);
+
+	Optional<RegistrationType> findByExIsDeleteAndExIsActiveAndExName(boolean b, boolean c, String string);
+
+	Optional<RegistrationType> findByExIsDeleteAndIdAndExIsActive(boolean b, Long registrationType, boolean c);
+
+	List<RegistrationType> findByExIsDeleteAndExIsActive(boolean b, boolean c);
+
+}

@@ -1,0 +1,161 @@
+package com.niftem.app.repository;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.OrderTransaction;
+
+public interface TransactionRepository extends CrudRepository<OrderTransaction, Long>{
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_ordertransaction set paymentstatus = ?1 ,transaction_number =?2 ,bank_number =?3 where order_id =?4", nativeQuery = true)
+	int updateTrRecord(String paymentstatus, String transaction_number, String bank_number, String order_id);
+
+	List<OrderTransaction> findByFeemasterIdAndPaymentstatusAndStudentadmissionIdAndAcademicYearIdAndSemesterIdAndProgrammeYearId(Long femaster,
+			String status, Long student, Long academicYear, Long semester , Long programyear );
+	
+	List<OrderTransaction> findByPaymentstatusAndStudentadmissionIdAndAcademicYearIdAndSemesterIdAndProgrammeYearIdAndRegistrationId(
+			String status, Long student, Long academicYear, Long semester , Long programyear , Long regtype);
+
+	List<OrderTransaction> findByOrderIdAndPaymentstatusIn(String orderid, List<String> wordList);
+	
+	@Query(value ="SELECT o.id , f.ex_fee_name ,f.ex_fee_amount ,c.ex_name, o.name ,o.order_id , o.ex_Roll_no, o.txn_amount ,o.txn_date ,o.order_id as odid ,o.paymentstatus ,c.ex_courses_code   FROM ex_courses_registration s , ex_ordertransaction o , ex_fee_master f, ex_courses c where  c.id= s.courses_id and  o.order_id=s.order_id and f.id=o.feemaster_id and  o.order_id=?1 and o.paymentstatus in?2 ", nativeQuery = true)
+	List<Object[]> listcourse(String orderid, List<String> wordList);
+
+	List<OrderTransaction> findByExRollNo(String exRollNo);
+
+	
+	@Query(value ="SELECT DISTINCT order_id  as orderid FROM  ex_ordertransaction  WHERE ex_roll_no=?1 ", nativeQuery = true)
+	ArrayList<String> findorderid(String exRollNo);
+	
+	List<OrderTransaction> findByOrderId(String mer_txn);
+	
+	List<OrderTransaction> findByStudentadmissionIdAndSemesterIdAndRegistrationIdAndPaymentstatus(Long studnt , Long sem , Long registration , String paymentstatus);
+
+//Update Live Record
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_ordertransaction set bank_code = ?1 ,bank_ref_num =?2 ,discount =?3 , error =?4 , mihpay_id =?5 , mode =?6  , offer = ?7 , paymentstatus = ?8 , pg_type =?9, product_info =?10   , unmappedstatus =?11 where order_id =?12", nativeQuery = true)
+	int updatetLiverRecord(String bank_code, String bank_ref_num, String discount, String error , String mihpay_id , String mode , String offer , String paymentstatus , String pgtype , String productinfo , String unmappedstatus, String order_id );
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_ordertransaction set query_status = 'Y' ,  bank_code = ?1 ,bank_ref_num =?2 ,error_message =?3 , error =?4 , mihpay_id =?5 , mode =?6  , card_number = ?7 , paymentstatus = ?8 , pg_type =?9, product_info =?10   , unmappedstatus =?11 where order_id =?12", nativeQuery = true)
+	int updatetRequeryRecord(String bank_code, String bank_ref_num, String error_message, String error , String mihpay_id , String mode , String card_no , String paymentstatus , String pgtype , String productinfo , String unmappedstatus, String order_id );
+
+	
+	@Query(value = "select * from ex_ordertransaction where paymentstatus = ?1  and txn_date >= ?2 and  txn_date <= ?3 AND query_status = 'N' group by order_id" , nativeQuery = true)
+    ArrayList<OrderTransaction> findUserByPaymentStatus(String paymentstatus  , String currentTime , String endTime);
+	
+	
+	List<OrderTransaction> findByOrderIdAndPaymentstatus(String mer_txn , String status);
+
+	
+	@Query(value = "SELECT  o.order_id AS orderid ,o.mihpay_id AS payid ,o.bank_ref_num AS bankref,a.ex_identifier AS ay,p.ex_identifier AS pg ,dp.ex_identifier AS dp,btc.ex_identifier AS batch,py.ex_name AS pgmyear,sm.ex_name AS semester,\r\n" + 
+			"	 o.ex_roll_no AS Rollnum,o.name AS studentname ,o.mobile AS mobile,o.email AS email,ct2.ex_name AS allotedCat, ct.ex_name AS candidateCat,o.txn_date AS transdate,\r\n" + 
+			"	 o.paymentstatus AS paystatus,o.`mode` AS modeofpay,o.pg_type AS pgtype,\r\n" + 
+			"	 o.error AS errormsg,o.error_message AS message,SUM(o.txn_amount),GROUP_CONCAT(\" \",o.txn_amount ,\" \" ORDER BY o.feemaster_id) FROM ex_ordertransaction o, ex_student_admission s,ex_academic_year a ,ex_programmes p, ex_programme_year py,ex_semester sm,ex_department dp,ex_batch btc,ex_category ct,ex_category ct2 \r\n" + 
+			"WHERE s.allocated_category_id=ct2.id AND  s.category_id=ct.id AND s.batch_id=btc.id AND s.department_id=dp.id AND o.academicyear_id=a.id AND o.programmes_id=p.id AND o.programmeyear_id=py.id AND o.student_admission_id=s.id AND o.semester_id=sm.id AND o.paymentstatus=?1 AND o.academicyear_id in ?2 AND o.semester_id in ?3  AND  o.txn_date >= ?4 AND o.txn_date <= ?5 GROUP BY o.ex_roll_no order by o.ex_roll_no" , nativeQuery = true)
+	List<Object[]> getTransactionReports(String paymentStatus, List<Long> academicYear, List<Long> semester,String sDate, String eDate);
+
+	
+	
+	
+	
+	List<OrderTransaction> findByPaymentstatusAndExRollNoAndAcademicYearIdAndSemesterIdAndProgrammeYearIdAndRegistrationIdAndFeemasterId(
+			String trim, String exRollNo, Long id, Long id2, Long id3, Long id4, Long id5);
+
+	List<OrderTransaction> findByPaymentstatusAndExRollNoAndAcademicYearIdAndSemesterIdAndProgrammeYearIdAndRegistrationId(
+			String trim, String exRollNo, Long id, Long id2, Long id3, Long id4);
+
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_ordertransaction set query_status = 'Y' ,  txn_amount = ?1 ,bank_ref_num =?3  , mihpay_id =?4 , mode =?5 , txn_date =?6, order_id = ?7 where ex_roll_no =?2 and feemaster_id = ?8", nativeQuery = true)
+	int updaterecords(String trim, String exRollNo, String trim2, String trim3, String trim4, Date date, String trim5,
+			Long id);
+
+	
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "insert into ex_ordertransaction set serialnumber = ?2 , ex_roll_no = ?1", nativeQuery = true)
+	int setserialnumber(String exRollNo, String value);
+
+	
+	
+	
+	
+	
+	
+	
+	@Query(value = "SELECT k.ex_identifier as clg,l.ex_identifier as pgm ,m.ex_identifier as dept,n.ex_name as name , a.ex_roll_no as roll ,a.ex_name as sname ,a1.ex_contact_details as cdetails , a1.ex_email_id as email,\r\n" + 
+			" SUM(b.txn_amount) AS txnamount1 ,SUM(c.txn_amount) AS txnamount2 , SUM(d.txn_amount) AS txnamount3 ,\r\n" + 
+			"SUM(e.txn_amount) AS txnamount4  , SUM(f.txn_amount) AS txnamount5  , SUM(g.txn_amount) AS txnamount6  , \r\n" + 
+			"SUM(h.txn_amount) AS txnamount7 ,\r\n" + 
+			"SUM(i.txn_amount) AS txnamount8 \r\n" + 
+			"\r\n" + 
+			"FROM ex_student_admission a \r\n" + 
+			"LEFT JOIN ex_student_personal a1 ON a.id=a1.student_admission_id\r\n" + 
+			"LEFT JOIN ex_ordertransaction b ON a.ex_roll_no=b.ex_roll_no AND b.semester_id=1 AND b.paymentstatus=?1 \r\n" + 
+			"LEFT JOIN ex_ordertransaction c ON a.ex_roll_no=c.ex_roll_no AND c.semester_id=2 AND c.paymentstatus=?1  \r\n" + 
+			"LEFT JOIN ex_ordertransaction d ON a.ex_roll_no=d.ex_roll_no AND d.semester_id=3 AND d.paymentstatus=?1  \r\n" + 
+			"LEFT JOIN ex_ordertransaction e ON a.ex_roll_no=e.ex_roll_no AND e.semester_id=4 AND e.paymentstatus=?1 \r\n" + 
+			"LEFT JOIN ex_ordertransaction f ON a.ex_roll_no=f.ex_roll_no AND f.semester_id=5 AND f.paymentstatus=?1  \r\n" + 
+			"LEFT JOIN ex_ordertransaction g ON a.ex_roll_no=g.ex_roll_no AND g.semester_id=6 AND g.paymentstatus=?1  \r\n" + 
+			"LEFT JOIN ex_ordertransaction h ON a.ex_roll_no=h.ex_roll_no AND h.semester_id=7 AND h.paymentstatus=?1  \r\n" + 
+			"LEFT JOIN ex_ordertransaction i ON a.ex_roll_no=i.ex_roll_no AND i.semester_id=8 AND i.paymentstatus=?1 \r\n" + 
+			"\r\n" + 
+			"\r\n" + 
+			"LEFT JOIN ex_colleges k ON a.colleges_id=k.id \r\n" + 
+			"LEFT JOIN ex_programmes l ON a.programmes_id=l.id\r\n" + 
+			"LEFT JOIN ex_department m ON a.department_id=m.id\r\n" + 
+			"LEFT JOIN ex_batch n ON a.batch_id=n.id\r\n" + 
+			"\r\n" + 
+			"WHERE a.academic_year_id IN ?2 \r\n" + 
+			"GROUP BY a.ex_roll_no", nativeQuery = true)
+	List<Object[]> getTransactionReportsPDF(String paymentStatus, List<Long> academicYear);
+
+
+	List<OrderTransaction> findByProgrammesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndRegistrationIdAndStudentadmissionId(
+			Long programmes, Long degree, Long academicYear, Long programmeYear, Long semester, Long registrationType,
+			Long studentadmission);
+
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE ex_ordertransaction a SET a.txn_amount=?8 WHERE a.programmes_id=?1 AND a.degree_id=?2 AND a.academicyear_id=?3 AND a.programmeyear_id=?4 AND a.semester_id=?5 AND a.registration_type_id=?6 AND a.student_admission_id=?7", nativeQuery = true)
+	int updatesss(Long programmes, Long degree, Long academicYear, Long programmeYear, Long semester,
+	Long registrationType, Long studentadmission, String exAmount);
+
+	
+	List<OrderTransaction> findByProgrammesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndRegistrationIdAndStudentadmissionIdAndPaymentstatus(
+			Long programmes, Long degree, Long academicYear, Long programmeYear, Long semester, long l, Long id,
+			String string);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE ex_ordertransaction a SET a.ex_receiptpath = ?1 WHERE a.programmes_id = ?2 AND a.degree_id = ?3 AND a.academicyear_id = ?4 AND a.programmeyear_id = ?5 AND a.semester_id = ?6 AND a.registration_type_id = ?7 AND a.ex_roll_no = ?8 AND a.paymentstatus = ?9", nativeQuery = true)
+	void updateDocuments(String photopath, Long programmes, Long degree, Long academicYear, Long programmeYear,
+			Long semester, long l,  String strings, String string);
+
+	List<OrderTransaction> findByProgrammesIdAndDegreeIdAndAcademicYearIdAndProgrammeYearIdAndSemesterIdAndRegistrationIdAndExRollNoAndPaymentstatus(
+			Long programmes, Long degree, Long academicYear, Long programmeYear, Long semester, long l, String exRollNo,
+			String string);
+
+
+
+		
+}

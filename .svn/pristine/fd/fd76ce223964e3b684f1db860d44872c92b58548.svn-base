@@ -1,0 +1,22 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.Degree;
+import com.niftem.app.entity.ExamAnnouncement;
+import com.niftem.app.entity.ExamTimeTableLogs;
+import com.niftem.app.entity.Programmes;
+import com.niftem.app.entity.User;
+public interface ExamTimeTableLogsRepository extends CrudRepository<ExamTimeTableLogs, Long>{
+
+	List<ExamTimeTableLogs> findByProgrammesIdAndDegreeId(Programmes programmes, Degree degree);
+
+//	
+//		List<Object[]> findByUserIdAndAcademicYearIdAndDegreeIdAndProgrammesIdAndExamAnnouncementId(User user,
+//				AcademicYear academicYear, Degree degree, Programmes programmes, ExamAnnouncement examAnnouncement);
+//
+
+}

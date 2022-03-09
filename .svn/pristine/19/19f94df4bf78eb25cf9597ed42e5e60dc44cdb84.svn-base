@@ -1,0 +1,32 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.CourseGroup;
+
+public 	interface CourseGroupRepository  extends CrudRepository<CourseGroup, Long>{
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_course_group set ex_is_delete = ?1 , ex_is_active = ?2 where id =?3", nativeQuery = true)
+	int deleteCourseGroup(Boolean exIsDelete, Boolean is_active, Long id);
+
+	List<CourseGroup> findByIdAndExIsDelete(Long id, boolean b);
+
+	List<CourseGroup> findByExNameAndExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeId(String exName, boolean delete, boolean active, Long programmes, Long degree);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_course_group set degree_id = ?1 ,programme_id=?2,  ex_update_date=?3, ex_name=?4 ,ex_is_active = ?5 where id =?6", nativeQuery = true)
+	int UpdateCourseGroup(Long degree, Long programmes, Date date,String exName, Boolean exIsActive, Long id);
+
+	List<CourseGroup> findByExIsDelete(boolean delete);
+
+}

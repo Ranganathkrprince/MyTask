@@ -1,0 +1,405 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_courses")
+public class Courses {	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+		
+	@Column(columnDefinition="TEXT")
+	private String exDescription;
+	
+	private String exName;
+	
+	
+	private String exCoursesCode;
+	
+	private String exSubjectCode;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes; 
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear; 
+	
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester; 
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "academicYear_id", nullable = false)
+	private AcademicYear academicYear;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+    private Boolean exIsActive;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsSatisfactory;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIscompulsory;
+	
+	//==================================================
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsProject;
+
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsIndustrialVisit;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsVillageAdoption;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsIndustrialTrainingInternship;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsResearchProject;
+	
+	
+	//====================================================
+	
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsSeminar;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsElective;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	@ManyToOne( optional = true)
+	@JoinColumn(name = "department_id", nullable = true)
+	private Department department;
+	
+	@ManyToOne( optional = true)
+	@JoinColumn(name = "creditHours_id", nullable = true)
+	private CreditHours  creditHours;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "batch_id", nullable = false)
+	private Batch batch;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+	
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "stream_id", nullable = false)
+	private Stream stream;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "collage_id", nullable = false)
+	private Colleges colleges;
+	
+	 @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	 @JoinTable(name = "ex_courses_coursestype",joinColumns = { @JoinColumn(name = "courses_id", referencedColumnName = "id", nullable = false, updatable = true)},
+	 inverseJoinColumns = {  @JoinColumn(name = "courses_type", referencedColumnName = "id", nullable = false, updatable = true)})
+	 private List<CoursesType> coursesType = new LinkedList<>();
+
+	private String exSyllabusUrl;
+	
+	private String exQpUrl;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public String getExCoursesCode() {
+		return exCoursesCode;
+	}
+
+	public String getExSubjectCode() {
+		return exSubjectCode;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Boolean getExIsSatisfactory() {
+		return exIsSatisfactory;
+	}
+
+	public Boolean getExIscompulsory() {
+		return exIscompulsory;
+	}
+
+	public Boolean getExIsProject() {
+		return exIsProject;
+	}
+
+	public Boolean getExIsSeminar() {
+		return exIsSeminar;
+	}
+
+	public Boolean getExIsElective() {
+		return exIsElective;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public CreditHours getCreditHours() {
+		return creditHours;
+	}
+
+	public Batch getBatch() {
+		return batch;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Stream getStream() {
+		return stream;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public List<CoursesType> getCoursesType() {
+		return coursesType;
+	}
+
+	public String getExSyllabusUrl() {
+		return exSyllabusUrl;
+	}
+
+	public String getExQpUrl() {
+		return exQpUrl;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public void setExCoursesCode(String exCoursesCode) {
+		this.exCoursesCode = exCoursesCode;
+	}
+
+	public void setExSubjectCode(String exSubjectCode) {
+		this.exSubjectCode = exSubjectCode;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setExIsSatisfactory(Boolean exIsSatisfactory) {
+		this.exIsSatisfactory = exIsSatisfactory;
+	}
+
+	public void setExIscompulsory(Boolean exIscompulsory) {
+		this.exIscompulsory = exIscompulsory;
+	}
+
+	public void setExIsProject(Boolean exIsProject) {
+		this.exIsProject = exIsProject;
+	}
+
+	public void setExIsSeminar(Boolean exIsSeminar) {
+		this.exIsSeminar = exIsSeminar;
+	}
+
+	public void setExIsElective(Boolean exIsElective) {
+		this.exIsElective = exIsElective;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public void setCreditHours(CreditHours creditHours) {
+		this.creditHours = creditHours;
+	}
+
+	public void setBatch(Batch batch) {
+		this.batch = batch;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setStream(Stream stream) {
+		this.stream = stream;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setCoursesType(List<CoursesType> coursesType) {
+		this.coursesType = coursesType;
+	}
+
+	public void setExSyllabusUrl(String exSyllabusUrl) {
+		this.exSyllabusUrl = exSyllabusUrl;
+	}
+
+	public void setExQpUrl(String exQpUrl) {
+		this.exQpUrl = exQpUrl;
+	}
+
+	public Boolean getExIsIndustrialVisit() {
+		return exIsIndustrialVisit;
+	}
+
+	public void setExIsIndustrialVisit(Boolean exIsIndustrialVisit) {
+		this.exIsIndustrialVisit = exIsIndustrialVisit;
+	}
+
+	public Boolean getExIsVillageAdoption() {
+		return exIsVillageAdoption;
+	}
+
+	public void setExIsVillageAdoption(Boolean exIsVillageAdoption) {
+		this.exIsVillageAdoption = exIsVillageAdoption;
+	}
+
+	
+
+	public Boolean getExIsIndustrialTrainingInternship() {
+		return exIsIndustrialTrainingInternship;
+	}
+
+	public void setExIsIndustrialTrainingInternship(Boolean exIsIndustrialTrainingInternship) {
+		this.exIsIndustrialTrainingInternship = exIsIndustrialTrainingInternship;
+	}
+
+	public Boolean getExIsResearchProject() {
+		return exIsResearchProject;
+	}
+
+	public void setExIsResearchProject(Boolean exIsResearchProject) {
+		this.exIsResearchProject = exIsResearchProject;
+	}
+
+	@Override
+	public String toString() {
+		return "Courses [id=" + id + ", exDescription=" + exDescription + ", exName=" + exName + ", exCoursesCode="
+				+ exCoursesCode + ", exSubjectCode=" + exSubjectCode + ", programmes=" + programmes + ", programmeYear="
+				+ programmeYear + ", semester=" + semester + ", academicYear=" + academicYear + ", exIsActive="
+				+ exIsActive + ", exIsDelete=" + exIsDelete + ", exIsSatisfactory=" + exIsSatisfactory
+				+ ", exIscompulsory=" + exIscompulsory + ", exIsProject=" + exIsProject + ", exIsIndustrialVisit="
+				+ exIsIndustrialVisit + ", exIsVillageAdoption=" + exIsVillageAdoption
+				+ ", exIsIndustrialTrainingInternship=" + exIsIndustrialTrainingInternship + ", exIsResearchProject="
+				+ exIsResearchProject + ", exIsSeminar=" + exIsSeminar + ", exIsElective=" + exIsElective
+				+ ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", department=" + department
+				+ ", creditHours=" + creditHours + ", batch=" + batch + ", degree=" + degree + ", stream=" + stream
+				+ ", colleges=" + colleges + ", coursesType=" + coursesType + ", exSyllabusUrl=" + exSyllabusUrl
+				+ ", exQpUrl=" + exQpUrl + "]";
+	}
+
+	
+}

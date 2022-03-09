@@ -1,0 +1,555 @@
+package com.niftem.app.implementation;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.niftem.app.entity.Authentication;
+import com.niftem.app.entity.EvaluatorList;
+import com.niftem.app.entity.ExamAnnouncement;
+import com.niftem.app.entity.ProgrammeYear;
+import com.niftem.app.entity.SemesterRegistration;
+import com.niftem.app.entity.Semster;
+import com.niftem.app.entity.StaffEmpDetails;
+import com.niftem.app.entity.Staffpersonal;
+import com.niftem.app.entity.Studentadmission;
+import com.niftem.app.entity.Studentpersonal;
+import com.niftem.app.entity.User;
+import com.niftem.app.model.Login;
+import com.niftem.app.repository.AuthenticationRepository;
+import com.niftem.app.repository.UserRepository;
+import com.niftem.app.security.JwtTokenUtil;
+import com.niftem.app.service.LoginService;
+import com.niftem.app.util.AutoManager;
+
+
+@Service
+@Transactional
+public class LoginImpl  extends AutoManager implements UserDetailsService , LoginService{
+		
+	private static Logger logger = LoggerFactory.getLogger("master-log");
+	
+	@Autowired
+	private  UserRepository UserRepository;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+	
+	@Autowired
+	private AuthenticationRepository authenticationRepository;
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		UserDetails user = UserRepository.findByUser(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                new ArrayList<>());
+	}
+	
+	
+	private boolean getStatus(String status) {
+		if(status == null) {
+			return false;
+		}
+		
+		if(status.equalsIgnoreCase("STUDYING") || status.equalsIgnoreCase("Studing") ) {
+			return true;
+		}
+		
+		if(status.equalsIgnoreCase("PASS OUT")) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+		@Override
+		public Map<String, Object> login(Login login,  HttpServletRequest request) {
+			Map<String, Object> info = new LinkedHashMap<>();
+			Map<String, Object> info1 = new LinkedHashMap<>();
+			try {
+				LinkedList dataList = new LinkedList();     				
+				String serverurl = commonHelper.getSettingValue("SERVER_IP");
+				Boolean is_delete = false;
+				if(login.getLoginType().equalsIgnoreCase("student")) {
+					String dcrypt =	super.EncryptionAndDecryption.getDecryptedStringaddhexkey(login.getPassword().trim());											
+					List<Studentadmission> task = super.studentadmission.findByExIsDeleteAndExUserNameAndExPassword( is_delete, login.getUserName(),dcrypt);
+					if(task.size() >0) {
+						if(task.get(0).getExIsActive() == true) {
+							String studaystatus  = task.get(0).getExStudyStatus();
+							System.out.println("ddddddddddddddddd"+studaystatus);
+							if(!getStatus(studaystatus)) {
+								info.put("status", "2");
+								info.put("message", "Please contact administrator");
+								return info;	
+								
+							}
+							
+							List coursestype = new LinkedList();
+							List coursesTypeId = new LinkedList();
+							List<Studentpersonal> details = super.studentpersonal.findByStudentadmissionId(task.get(0).getId());
+							List <SemesterRegistration> semester = super.semesterRegistration.validateStudent(task.get(0).getId() , true , false);																
+							info.put("colleges",task.get(0).getColleges().getExName());
+							info.put("collegesId",task.get(0).getColleges().getId());
+							info.put("degree", task.get(0).getDegree().getExName());
+							info.put("degreeId", task.get(0).getDegree().getId());
+							info.put("programmes", task.get(0).getProgrammes().getExName());	
+							info.put("programmesId", task.get(0).getProgrammes().getId());	
+							info.put("department", task.get(0).getDepartment().getExIdentifier());	
+							info.put("departmentId", task.get(0).getDepartment().getId());	
+							info.put("batch", task.get(0).getBatch().getExName());	
+							info.put("batchId", task.get(0).getBatch().getId());	
+							info.put("programtype", task.get(0).getProgramtype().getExName());	
+							info.put("programtypeId", task.get(0).getProgramtype().getId());	
+							info.put("mentor", task.get(0).getMentor() == null ?"NA" :task.get(0).getMentor().getExName());	
+							info.put("mentorId",task.get(0).getMentor() == null ?"NA" : task.get(0).getMentor().getId());	
+							info.put("section", task.get(0).getSection() == null ? null
+									: task.get(0).getSection().getExName());
+							info.put("sectionId", task.get(0).getSection() == null ? null
+									: task.get(0).getSection().getId());
+
+							info.put("token", getToken(login.getUserName() , login.getUserName() , login.getLoginType()));
+							info.put("exRollNo", task.get(0).getExRollNo());	
+							info.put("exEnrollementNo", task.get(0).getExEnrollementNo());	
+							
+							info.put("studyStatus", task.get(0).getExStudyStatus());	
+							info.put("id", task.get(0).getId());		
+							
+							info.put("name", task.get(0).getExName());	
+							info.put("email",  details.get(0).getExEmailId());		
+							info.put("mobile", details.get(0).getExContactDetails());	
+							info.put("state", details.get(0).getExNativeState());	
+							info.put("dateOfBirth", details.get(0).getExDateOfBirth() == null ?"NA" : details.get(0).getExDateOfBirth().toString());	
+							info.put("image_url", ( task.get(0).getExPhoto() == null || task.get(0).getExPhoto()== "NA")?"NA" :serverurl+task.get(0).getExPhoto());															
+
+							for (int i = 0; i < task.get(0).getStream().size(); i++) {
+								coursestype.add(task.get(0).getStream().get(i).getExName());
+								coursesTypeId.add(task.get(0).getStream().get(i).getId());
+							}
+
+							info.put("stream", coursestype);
+							info.put("streamId", coursesTypeId);
+							
+							//Table column names are changed							
+														
+							if(semester.size()>0) {															
+								info.put("semester",semester.get(0).getSemester().getExName());	
+								info.put("semesterId", semester.get(0).getSemester().getId());
+								
+								info.put("academicYear", semester.get(0).getAcademicYear().getExYear());		
+								info.put("academicYearId",semester.get(0).getAcademicYear().getId());	
+								
+								info.put("programmeYearId",semester.get(0).getProgrammeYear().getId());	
+								info.put("programmeYear",semester.get(0).getProgrammeYear().getExName());	
+								
+								List<ExamAnnouncement> exam = super.examAnnouncement
+										.findByAcademicYearIdAndExIsActiveAndExIsDeleteAndProgrammesIdAndSemesterId(
+												semester.get(0).getAcademicYear().getId(), true, false, task.get(0).getProgrammes().getId(), semester.get(0).getSemester().getId());
+								if(exam.size() <=0) {
+									info.put("exEndTermExamEndDate", "NA");
+									info.put("exEndTermExamStartDate","NA");
+									info.put("exMidTermExamEndDate", "NA");
+									info.put("exMidTermExamStartDate", "NA");
+									info.put("examId", "NA");
+								}else {
+									info.put("exEndTermExamEndDate", exam.get(0).getExEndTermExamEndDate() == null ? "NA"
+											: exam.get(0).getExEndTermExamEndDate().toString().substring(0, 10));
+									info.put("exEndTermExamStartDate", exam.get(0).getExEndTermExamStartDate() == null ? "NA"
+											: exam.get(0).getExEndTermExamStartDate().toString().substring(0, 10));
+									info.put("exMidTermExamEndDate", exam.get(0).getExMidTermExamEndDate() == null ? "NA"
+											: exam.get(0).getExMidTermExamEndDate().toString().substring(0, 10));
+									info.put("exMidTermExamStartDate", exam.get(0).getExMidTermExamStartDate() == null ? "NA"
+											: exam.get(0).getExMidTermExamStartDate().toString().substring(0, 10));
+									info.put("examId", exam.get(0).getId());
+								}
+							
+								
+							}else {
+								List<Semster> semester1 = super.semester.findByExIdentifierAndExIsDeleteAndExIsActive(1, false , true);
+								if(semester1.size() <=0) {
+									info.put("status", "2");
+									info.put("message", "semester not present with identifire 1");
+									return info;									}
+								
+								List<ProgrammeYear> programyear = super.programmeYear.findByExIdentifierAndExIsDeleteAndExIsActive(1, false , true);
+								if(programyear.size() <=0) {
+									info.put("status", "2");
+									info.put("message", "programyear not present with identifire 1");
+									return info;	
+								}							
+								info.put("academicYear", task.get(0).getAcademicYear().getExYear());								
+								info.put("programmeYear", programyear.get(0).getExName());	
+								info.put("semester" ,semester1.get(0).getExName());	
+								info.put("academicYearId", task.get(0).getAcademicYear().getId());								
+								info.put("programmeYearId", programyear.get(0).getId());	
+								info.put("semesterId", semester1.get(0).getId());
+								
+								info.put("exEndTermExamEndDate", "NA");
+								info.put("exEndTermExamStartDate","NA");
+								info.put("exMidTermExamEndDate", "NA");
+								info.put("exMidTermExamStartDate", "NA");
+								
+							}	
+							// chek student document uploaded ot not 
+							if(super.studentDocument.findByStudentadmissionId(task.get(0).getId()).size() <=0) {
+								info.put("is_upload", false);
+							}else {
+								info.put("is_upload", true);
+							}
+							
+							
+							info.put("loginType", "student");						
+							dataList.add(info);		
+							info1.put("status", "1");
+							info1.put("message","Student login successfully");	
+							info1.put("details", dataList);
+
+							return info1;
+						}else {
+							info.put("status", "2");
+							info.put("message", "Student is inactive");
+							return info;
+						}
+					}
+					info.put("status", "2");
+					info.put("message", "Invalid username or password");
+					return info;	
+				}				
+				if(login.getLoginType().equalsIgnoreCase("staff")) {
+					String dcrypt =EncryptionAndDecryption.getDecryptedStringaddhexkey(login.getPassword().trim());
+					List<Staffpersonal> task = super.staffpersonal.findByExLoginNameAndExPasswordAndExIsDelete(login.getUserName(), dcrypt,is_delete);
+					if(task.size() >0) {
+						if(task.get(0).isExIsActive() == true) {
+							info.put("colleges", task.get(0).getColleges().getExName());
+							info.put("degree", task.get(0).getDegree().getExName());			
+							info.put("collegesId", task.get(0).getColleges().getId());
+							info.put("degreeId", task.get(0).getDegree().getId());												
+							info.put("exEmployeeId", task.get(0).getExEmployeeId());
+							info.put("id", task.get(0).getId());		
+							info.put("name",  task.get(0).getExName());	
+							info.put("email", task.get(0).getExEmail());		
+							info.put("mobile", task.get(0).getExContactDetails());
+							info.put("ipAddress", getClientIp(request));
+							info.put("exState", task.get(0).getExState());	
+							info.put("exDateOfBirth", task.get(0).getExDateOfBirth() == null ?"NA" : task.get(0).getExDateOfBirth().toString().substring(0, 10));	
+							info.put("image_url", (task.get(0).getExPhoto() == null || task.get(0).getExPhoto()== "NA")?"NA" :serverurl+task.get(0).getExPhoto());
+							List<StaffEmpDetails> staffdet =   super.staffEmpDetails.findByStaffpersonalId(task.get(0).getId());						
+							info.put("loginType", "staff");
+							info.put("staffType", task.get(0).getStafftype().getExName());
+							info.put("staffTypeId", task.get(0).getStafftype().getId());
+							info.put("token", getToken(login.getUserName() , login.getUserName() , login.getLoginType()));
+						//	info.put("token", login.getToken());
+							dataList.add(info);
+							info1.put("status", "1");
+							info1.put("message","Staff login successfully");
+							info1.put("details", dataList);									
+							return info1;
+						}else {
+							info.put("status", "2");
+							info.put("message", "Staff is inactive");
+							return info;
+						}
+					}						
+					info.put("status", "2");
+					info.put("message", "Invalid username or password");
+					return info;
+				}
+				if(login.getLoginType().equalsIgnoreCase("evaluator")) {
+					String dcrypt =EncryptionAndDecryption.getDecryptedStringaddhexkey(login.getPassword().trim());
+					List<EvaluatorList> task = super.expertlist.findByExUserNameAndExPasswordAndExIsDelete(login.getUserName(), dcrypt,is_delete);
+				System.out.println("?check is_delete"+is_delete);
+				System.out.println("?login.getUserName()"+login.getUserName());
+				System.out.println("?checkdcrypt user"+dcrypt);
+					if(task.size() >0) {
+						if(task.get(0).isExIsActive() == true) {
+							// check evaluator is active
+							Date date = new Date();
+							if(EvaluatorSelection.getActivetails(task.get(0).getId(), date).size() <=0) {
+								info.put("status", "2");
+								info.put("message", "Unauthorized login please contact admin");
+								return info;
+							}													
+							info.put("id", task.get(0).getId());		
+							info.put("name",  task.get(0).getExName());	
+							info.put("email", task.get(0).getExEmail());		
+							//info.put("mobile", task.get(0).getExContactDetails());
+							info.put("ipAddress", getClientIp(request));
+							info.put("exState", task.get(0).getExState());	
+							info.put("mobile", task.get(0).getExContactDetails());
+							info.put("exAddressLine1", task.get(0).getExAddressLine1());
+							info.put("exAddressLine2", task.get(0).getExAddressLin2());
+							info.put("exAddressLine3", task.get(0).getExAddressLine3());
+							info.put("exDesignation", task.get(0).getExdesignation());
+							info.put("exFullName", task.get(0).getExFullName());
+							info.put("exInitialName", task.get(0).getExInitialName());
+							info.put("exPincode", task.get(0).getExPinCode());
+					//		info.put("exUserName", task.get(0).getExUserName());
+							
+							
+					//		info.put("exDateOfBirth", task.get(0).getExDateOfBirth() == null ?"NA" : task.get(0).getExDateOfBirth().toString().substring(0, 10));	
+							//info.put("exPhoto", (task.get(0).getExPhoto() == null || task.get(0).getExPhoto()== "NA")?"NA" :serverurl+task.get(0).getExPhoto());
+						//	List<StaffEmpDetails> staffdet =   super.staffEmpDetails.findByStaffpersonalId(task.get(0).getId());						
+							info.put("loginType", "evaluator");
+						//	info.put("staffType", task.get(0).getStafftype().getExName());
+					//		info.put("staffTypeId", task.get(0).getStafftype().getId());
+							info.put("token", getToken(login.getUserName() , login.getUserName() , login.getLoginType()));
+						//	info.put("token", login.getToken());
+							dataList.add(info);
+							info1.put("status", "1");
+							info1.put("message","evaluator login successfully");
+							info1.put("details", dataList);									
+							return info1;
+						}else {
+							info.put("status", "2");
+							info.put("message", "evaluator is inactive");
+							return info;
+						}
+					}						
+					info.put("status", "2");
+					info.put("message", "Invalid username or password");
+					return info;
+				}
+				if(login.getLoginType().equalsIgnoreCase("regular")) {
+					
+					
+							System.out.println("eeeeeeeeeeeeeeeeeee"+EncryptionAndDecryption.getDecryptedString("Z3R0YzIwMTQgMjMkJWRmJSRedHRyciFAIzc4Ng=="));
+					String dcrypt =EncryptionAndDecryption.getDecryptedStringaddhexkey(login.getPassword().trim());
+					//String dcrypt =login.getPassword().trim();
+					
+					//System.out.println("Niftee" + dcrypt.toString());
+					List<User> task = super.user.findByExIsDeleteAndExUserNameAndExPassword(is_delete, login.getUserName(), dcrypt);
+					if(task.size() >0) {
+						if(task.get(0).getExIsActive() == true) {
+							List dataList1 = new LinkedList();
+							
+							 System.out.println("ssssssssssssssssssss"+EncryptionAndDecryption.getDecryptedString("bWFzdGVyMTIzIDIzJCVkZiUkXnR0cnIhQCM3ODY=")); 
+							if(task.get(0).getRole().getExName().equalsIgnoreCase("QPSetter")) {
+								// check start and end time present or not													
+								  Date date = new Date();  								   								    
+								    Date startdate = task.get(0).getExStartDate();
+								    Date enddate = task.get(0).getExEndDate();
+								    Date starttime = task.get(0).getExStartTime();
+								    Date endtime = task.get(0).getExEndTime();
+								    
+								    Date sdtae = dateTime(startdate , starttime);
+								    Date edtae = dateTime(enddate , endtime);
+								    if(sdtae.before(date) && edtae.after(date)) {
+								    	 
+								    }else {
+								    	info.put("status", "2");
+										info.put("message", "Unauthorized login please contact admin");
+										return info;
+								    }
+								    
+							}
+							
+							for (User e : task) {
+								List college = new LinkedList();
+								List collegeId = new LinkedList();
+								Map<Object, Object>data = new HashMap<Object, Object>(); //
+
+								for (int i = 0; i < e.getCollege().size(); i++) {
+									college.add(e.getCollege().get(i).getExName());
+									collegeId.add(e.getCollege().get(i).getId());
+								}
+								
+								
+								
+								
+								List degree = new LinkedList();
+								List degreeId = new LinkedList();
+								
+								List programmes = new LinkedList();
+								List programmesId = new LinkedList();
+								
+								List department = new LinkedList();
+								List departmentId = new LinkedList();
+								
+								
+								
+
+								for (int i = 0; i < e.getCollege().size(); i++) {
+									college.add(e.getCollege().get(i).getExName());
+									collegeId.add(e.getCollege().get(i).getId());
+								}
+								
+								
+								for (int i = 0; i < e.getDegree().size(); i++) {
+									degree.add(e.getDegree().get(i).getExName());
+									degreeId.add(e.getDegree().get(i).getId());
+								}
+								
+								for (int i = 0; i < e.getProgrammes().size(); i++) {
+									programmes.add(e.getProgrammes().get(i).getExName());
+									programmesId.add(e.getProgrammes().get(i).getId());
+								}
+								
+								for (int i = 0; i < e.getDepartment().size(); i++) {
+									department.add(e.getDepartment().get(i).getExName());
+									departmentId.add(e.getDepartment().get(i).getId());
+								}
+								
+								
+								info.put("collegesId", collegeId);
+								info.put("colleges", college);
+								
+								info.put("degreeId", degreeId);
+								info.put("degree", degree);
+								info.put("programmesId", programmesId);
+								info.put("programmes", programmes);
+								info.put("departmentId", departmentId);
+								info.put("department", department);
+								
+								
+								info.put("ipAddress", getClientIp(request));
+								
+							info.put("role", task.get(0).getRole().getExName());
+							info.put("roleId", task.get(0).getRole().getId());
+							info.put("name", task.get(0).getExName());	
+							info.put("exUserName", task.get(0).getExUserName());						
+							info.put("email", task.get(0).getExEmail());
+							info.put("mobile", task.get(0).getExMobile());
+							info.put("image_url",(task.get(0).getExPhoto() == null || task.get(0).getExPhoto()== "NA")?"NA" :serverurl+task.get(0).getExPhoto() );	
+							info.put("loginType", "regular");
+							info.put("id", task.get(0).getId());							
+							info.put("token", getToken(login.getUserName() , login.getUserName() , login.getLoginType()));
+							dataList1.add(info);
+							info1.put("status", "1");
+							info1.put("message","User login successfully");	
+							info1.put("details", dataList1);	
+
+							return info1;
+							}
+						}else {
+							info.put("status", "2");
+							info.put("message", "user is inactive");
+							return info;
+						}
+					}
+					
+					info.put("status", "2");
+					info.put("message", "Invalid username or password");
+					return info;
+				}	
+				info.put("status", "2");
+				info.put("message", "Invalid login type");
+				return info;								
+			}catch(Exception e) {
+				e.printStackTrace();
+				logger.error("Exception occured" + e);
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				logger.error(errors.toString());
+				info.put("status", "0");
+				info.put("message", "Something went wrong");
+				return info;
+			}
+		}
+	
+
+		private void authenticate(String username, String password) throws Exception {
+			try {
+				Objects.requireNonNull(username);
+				Objects.requireNonNull(password);
+				authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+			} catch (DisabledException e) {
+				throw new Exception("USER_DISABLED", e);
+			} catch (BadCredentialsException e) {
+				throw new Exception("INVALID_CREDENTIALS", e);
+			}
+		}
+		
+		@SuppressWarnings("unused")
+		private String getToken(String username , String password , String logintype) throws Exception {
+			// check username present 
+			List<Authentication> task  = authenticationRepository.findByUsernameAndLoginType(username, logintype);
+			if(task.size() <=0) {
+				String encodedPassword = new BCryptPasswordEncoder().encode(password);
+				Date date = new Date();
+				// Insert new record into table
+				Authentication aouth  = new Authentication();
+				aouth.setLoginType(logintype);
+				aouth.setUsername(username);
+				aouth.setPassword(encodedPassword);
+				aouth.setExCreateDate(date);
+				authenticationRepository.save(aouth);			
+			}
+			
+			authenticate(username,password);		
+			final UserDetails userDetails = loadUserByUsername(username);		
+			final String token = jwtTokenUtil.generateToken(userDetails ,logintype);		
+			return token;
+		}
+
+		
+		@Override
+		public UserDetails loadUserByUsernameAndType(String username, String userType) {
+			UserDetails user = authenticationRepository.findByUser(username, userType);		
+			if (user == null) {
+				throw new UsernameNotFoundException("User not found with username: " + username);
+			}
+			return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+					new ArrayList<>());
+		}
+
+		private static String getClientIp(HttpServletRequest request) {
+	        String remoteAddr = "";
+	        if (request != null) {
+	            remoteAddr = request.getHeader("X-FORWARDED-FOR");
+	            if (remoteAddr == null || "".equals(remoteAddr)) {
+	                remoteAddr = request.getRemoteAddr();
+	            }
+	        }
+
+	        return remoteAddr;
+	    }	
+
+		public Date dateTime(Date date, Date time) {
+			Calendar aDate = Calendar.getInstance();
+		    aDate.setTime(date);
+
+		    Calendar aTime = Calendar.getInstance();
+		    aTime.setTime(time);
+
+		    Calendar aDateTime = Calendar.getInstance();
+		    aDateTime.set(Calendar.DAY_OF_MONTH, aDate.get(Calendar.DAY_OF_MONTH));
+		    aDateTime.set(Calendar.MONTH, aDate.get(Calendar.MONTH));
+		    aDateTime.set(Calendar.YEAR, aDate.get(Calendar.YEAR));
+		    aDateTime.set(Calendar.HOUR, aTime.get(Calendar.HOUR));
+		    aDateTime.set(Calendar.MINUTE, aTime.get(Calendar.MINUTE));
+		    aDateTime.set(Calendar.SECOND, aTime.get(Calendar.SECOND));
+
+		    return aDateTime.getTime();
+		}
+}
+

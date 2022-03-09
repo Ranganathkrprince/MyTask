@@ -1,0 +1,171 @@
+package com.niftem.app.service;
+
+import java.util.Map;
+
+import com.niftem.app.model.ApplicationVersionRequest;
+import com.niftem.app.model.CommonRequest;
+import com.niftem.app.model.ReportRequest;
+import com.niftem.app.model.SemesterRegistrationRequest;
+
+public interface CommonService {
+
+	Map<String, Object> getsteamOnProgrammesAndCollegeAndDepartmentAndDegree(CommonRequest request);
+
+	Map<String, Object> getprogrammesOnCollegeAndDegree(CommonRequest request);
+
+	Map<String, Object> getdepartmentOnProgrammesAndCollegeAndDegree(CommonRequest request);
+
+	Map<String, Object> getprogrammesOnDegree(CommonRequest request);
+
+	Map<String, Object> getexamTimeTableOnDateAndDegreeAndAcademicYearAndProgrammesAndExamAnnouncementAndRegistrationType(CommonRequest request);
+
+	Map<String, Object> getexamAnnouncementDetailsOnAcademicYear(CommonRequest request);
+
+	Map<String, Object> getprogrammesOnCollege(CommonRequest request);
+
+	Map<String, Object> getcoursesOnDepartmentAndProgrammesAndCollegeAndDegree(CommonRequest request);
+
+	Map<String, Object> getcoursesOnDepartmentAndProgrammesAndCollegeAndDegreeAndStream(CommonRequest request);
+
+	Map<String, Object> getcoursesOnAcademicYear(CommonRequest request);
+
+	Map<String, Object> getroomMasterOnCollege(CommonRequest request);
+
+	Map<String, Object> getstudentOnCollegeAndDegreeAndProgrammesAndAcademicYear(CommonRequest request);
+
+	Map<String, Object> getstaffpersonalOnCollegeAndDegree(CommonRequest request);
+
+	Map<String, Object> getstaffpersonalOnStaffType(CommonRequest request);
+
+	Map<String, Object> getstaffpersonalOnCollegeAndDegreeAndStaffType(CommonRequest request);
+
+	Map<String, Object> getmentorOnBatchAndCollegeAndDegreeAndProgrammes(CommonRequest request);
+
+	Map<String, Object> departmentOnProgram(CommonRequest request);
+
+	Map<String, Object> departmentOnProgramDegree(CommonRequest request);
+
+	Map<String, Object> streamOnProgramDepartment(CommonRequest request);
+
+	Map<String, Object> getcoursesList(CommonRequest request);
+
+	Map<String, Object> getCurrentCoursesList(CommonRequest request);
+
+	Map<String, Object> getexamAnnouncementonAcademicYear(CommonRequest request);
+
+	Map<String, Object> getrestrationTypeOnExam(CommonRequest request);
+
+	Map<String, Object> getStudentById(CommonRequest request);
+
+	Map<String, Object> studentOnCDPAD(CommonRequest request);
+
+	Map<String, Object> examOnDAP(CommonRequest request);
+
+	Map<String, Object> hostelBasedOnCollege(CommonRequest request);
+
+	Map<String, Object> courseOnProgrammeAndProgrammeYearAndSemester(CommonRequest request);
+
+	Map<String, Object> getCoursesOnStaffId(CommonRequest request);
+
+	Map<String, Object> mentorOnBDPDS(CommonRequest request);
+
+	Map<String, Object> getmentordetails(CommonRequest request);
+
+	Map<String, Object> BatchOnDegreeAndprogrammes(CommonRequest request);
+
+	Map<String, Object> getAttendanceDetails(CommonRequest request);
+
+	Map<String, Object> getGpaCgpa(CommonRequest request);
+
+	Map<String, Object> getApproveType();
+
+	Map<String, Object> validateLateRegistration(CommonRequest request);
+
+	Map<String, Object> getStudentInternal(CommonRequest request);
+
+	Map<String, Object> getApprovalDetails(CommonRequest request);
+
+	Map<String, Object> courseWiseResult(CommonRequest request);
+
+	Map<String, Object> courseForSyllabus(CommonRequest request);
+
+	Map<String, Object> getSyllabusOnStaffId(CommonRequest request);
+
+	Map<String, Object> getStaffById(CommonRequest request);
+
+	Map<String, Object> getCreditHour(CommonRequest request);
+
+	Map<String, Object> getAcademicForStudent(CommonRequest request);
+
+	Map<String, Object> getUplodedDocument(CommonRequest request);
+
+	Map<String, Object> getDocumetType();
+	
+	
+
+	Map<String, Object> getCourseRegistrationAndUnregisteredDetails(SemesterRegistrationRequest request);
+
+	Map<String, Object> getcoursesBasedOnCourseType(CommonRequest request);
+
+	Map<String, Object> courseOnBatch(CommonRequest request);
+
+	Map<String, Object> registerCourses(CommonRequest request);
+
+	Map<String, Object> getCertificateType();
+
+	Map<String, Object> getUplodedCertificate(CommonRequest request);
+
+	Map<String, Object> getUplodedSyllabus(CommonRequest request);
+
+	Map<String, Object> getStudentRegulation(CommonRequest request);
+
+	Map<String, Object> courseOnBatchMultiple(ReportRequest request);
+
+	Map<String, Object> getHostelDetail(CommonRequest request);
+
+	Map<String, Object> getcourseBasedOnAcademicYear(CommonRequest request);
+
+	Map<String, Object> getAcademicYearForStaff(CommonRequest request);
+
+	Map<String, Object> getExamForStaff(CommonRequest request);
+
+	Map<String, Object> getSectionForStaff(CommonRequest request);
+
+	Map<String, Object> Studentform(CommonRequest request);
+
+	Map<String, Object> getStaffDashboard(CommonRequest request);
+
+	Map<String, Object> getCourseForQP(CommonRequest request);
+
+	Map<String, Object> getStaffRegulation(CommonRequest request);
+
+	Map<String, Object> getStaffReport(CommonRequest request);
+
+	Map<String, Object> getBatch(CommonRequest request);
+
+	Map<String, Object> getboards(CommonRequest request);
+
+	Map<String, Object> getstates(CommonRequest request);
+
+	Map<String, Object> getmotherTongue(CommonRequest request);
+
+	Map<String, Object> getNationality(CommonRequest request);
+
+	Map<String, Object> getreligion(CommonRequest request);
+
+	Map<String, Object> getbloodgroup(CommonRequest request);
+
+	Map<String, Object> getminaritycategory(CommonRequest request);
+
+	Map<String, Object> getStudentboards(CommonRequest request);
+
+	Map<String, Object> getStudentStates(CommonRequest request);
+
+	Map<String, Object> getFilter(CommonRequest request);
+	
+	Map<String, Object> getsupplycoursesforapproval(CommonRequest request);
+	Map<String, Object> supplyofflineapproval(CommonRequest request);
+
+	Map<String, Object> invigilatorconfig(CommonRequest request);
+
+}

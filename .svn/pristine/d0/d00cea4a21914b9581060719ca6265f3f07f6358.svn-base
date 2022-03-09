@@ -1,0 +1,179 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+public class OrderTransactionReport {
+	private List<Long> colleges;
+	private List<Long> programmes;
+	private List<Long> academicyear;
+	private List<Long> programmeyear;
+	private List<Long> semester;
+    private List<Long> category;
+    private List<Long> courses;
+    private List<Long> examAnnouncement;
+    private List<Long> feeType;
+	private List<Long>  feeId;
+    
+    private Long degree;
+    private String exReportType;
+    private String txnReferenceNo;
+	private String bankReferenceNo;
+	 private String exRollNo;
+	 
+	 private Long user;
+	 private List<Long>  degreeId;
+	 
+	private List<Long> staffId;
+    private String orderId; 
+	private String paymentStatus;
+	private String startDate;
+	private String endDate;
+	
+	public List<Long> getDegreeId() {
+		return degreeId;
+	}
+	public void setDegreeId(List<Long> degreeId) {
+		this.degreeId = degreeId;
+	}
+	public List<Long> getColleges() {
+		return colleges;
+	}
+	public void setColleges(List<Long> colleges) {
+		this.colleges = colleges;
+	}
+	public List<Long> getProgrammes() {
+		return programmes;
+	}
+	public void setProgrammes(List<Long> programmes) {
+		this.programmes = programmes;
+	}
+	public List<Long> getAcademicyear() {
+		return academicyear;
+	}
+	public void setAcademicyear(List<Long> academicyear) {
+		this.academicyear = academicyear;
+	}
+	public List<Long> getProgrammeyear() {
+		return programmeyear;
+	}
+	public void setProgrammeyear(List<Long> programmeyear) {
+		this.programmeyear = programmeyear;
+	}
+	public List<Long> getSemester() {
+		return semester;
+	}
+	public void setSemester(List<Long> semester) {
+		this.semester = semester;
+	}
+	public List<Long> getCategory() {
+		return category;
+	}
+	public void setCategory(List<Long> category) {
+		this.category = category;
+	}
+	public List<Long> getCourses() {
+		return courses;
+	}
+	public void setCourses(List<Long> courses) {
+		this.courses = courses;
+	}
+	public List<Long> getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public void setExamAnnouncement(List<Long> examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public List<Long> getFeeType() {
+		return feeType;
+	}
+	public void setFeeType(List<Long> feeType) {
+		this.feeType = feeType;
+	}
+	public List<Long> getFeeId() {
+		return feeId;
+	}
+	public void setFeeId(List<Long> feeId) {
+		this.feeId = feeId;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public String getExReportType() {
+		return exReportType;
+	}
+	public void setExReportType(String exReportType) {
+		this.exReportType = exReportType;
+	}
+	public String getTxnReferenceNo() {
+		return txnReferenceNo;
+	}
+	public void setTxnReferenceNo(String txnReferenceNo) {
+		this.txnReferenceNo = txnReferenceNo;
+	}
+	public String getBankReferenceNo() {
+		return bankReferenceNo;
+	}
+	public void setBankReferenceNo(String bankReferenceNo) {
+		this.bankReferenceNo = bankReferenceNo;
+	}
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public List<Long> getStaffId() {
+		return staffId;
+	}
+	public void setStaffId(List<Long> staffId) {
+		this.staffId = staffId;
+	}
+	public String getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+	public String getPaymentStatus() {
+		return paymentStatus;
+	}
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	@Override
+	public String toString() {
+		return "OrderTransactionReport [colleges=" + colleges + ", programmes=" + programmes + ", academicyear="
+				+ academicyear + ", programmeyear=" + programmeyear + ", semester=" + semester + ", category="
+				+ category + ", courses=" + courses + ", examAnnouncement=" + examAnnouncement + ", feeType=" + feeType
+				+ ", feeId=" + feeId + ", degree=" + degree + ", exReportType=" + exReportType + ", txnReferenceNo="
+				+ txnReferenceNo + ", bankReferenceNo=" + bankReferenceNo + ", exRollNo=" + exRollNo + ", user=" + user
+				+ ", degreeId=" + degreeId + ", staffId=" + staffId + ", orderId=" + orderId + ", paymentStatus="
+				+ paymentStatus + ", startDate=" + startDate + ", endDate=" + endDate + "]";
+	}
+	
+	
+	
+	
+	
+}

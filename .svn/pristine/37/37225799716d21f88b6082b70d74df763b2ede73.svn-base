@@ -1,0 +1,297 @@
+package com.niftem.app.controller;
+
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.niftem.app.model.BookletStaffRequest;
+import com.niftem.app.model.BookletUploadRequest;
+import com.niftem.app.model.CoursesRegistrationRequest;
+import com.niftem.app.model.EvaluationDetailsRequest;
+import com.niftem.app.model.EvaluatorSelectionRequest;
+import com.niftem.app.model.GradeReportRequest;
+import com.niftem.app.model.LoadAlertRequest;
+import com.niftem.app.model.PhotoCopyRequest;
+import com.niftem.app.model.PublishResultRequest;
+import com.niftem.app.service.PostExamService;
+
+@RequestMapping("/api/postexam/")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RestController
+@Validated
+public class PostExamController {
+	private static Logger logger = LoggerFactory.getLogger("master-log");
+	private static Logger excellog = LoggerFactory.getLogger("excel-log");
+	
+	@Autowired
+	private PostExamService PostExamService;
+		
+	@PostMapping(value = "/generateGradeReport")
+	public Map<String, Object> generateGradeReport(@RequestBody GradeReportRequest request) {
+		logger.info("generateGradeReport Request : " + request.toString());
+		return PostExamService.generateGradeReport(request);
+	}
+	
+	@GetMapping(value = "/getLog")
+	public Map<String, Object> getLog(String log) {
+		return PostExamService.getLog(log);
+	}
+	
+	@PostMapping(value = "/getGradeReport")
+	public Map<String, Object> getGradeReport(@RequestBody GradeReportRequest request) {
+		logger.info("getGradeReport Request : " + request.toString());
+		return PostExamService.getGradeReport(request);
+	}
+	
+	@PostMapping(value = "/checkReportStatus")
+	public Map<String, Object> checkGradeReportStatus(@RequestBody GradeReportRequest request) {
+		logger.info("getGradeReport Request : " + request.toString());
+		return PostExamService.checkGradeReportStatus(request);
+	}
+	
+	
+	@PostMapping(value = "/generateSemesterReport")
+	public Map<String, Object> generateSemesterReport(@RequestBody GradeReportRequest request) {
+		logger.info("generateSemesterReport : " + request.toString());
+		return PostExamService.generateSemesterProgressReport(request);
+	}
+	
+	
+	@PostMapping(value = "/getSemesterReport")
+	public Map<String, Object> getSemesterReport(@RequestBody GradeReportRequest request) {
+		logger.info("getSemesterReport : " + request.toString());
+		return PostExamService.getSemesterReport(request);
+	}
+	
+	
+	@PostMapping(value = "/getEvaluatedCoursestList")
+	public Map<String, Object> getEvaluatedCoursestList(@RequestBody CoursesRegistrationRequest request) {
+		return PostExamService.getEvaluatedCoursestList(request);
+	}
+	
+	
+	@PostMapping(value = "/reEvaluation")
+	public Map<String, Object> reEvaluation(@RequestBody CoursesRegistrationRequest request) {
+		return PostExamService.reEvaluation(request);
+	}
+	
+	
+	@PostMapping(value = "/getSupplementaryCourses")
+	public Map<String, Object> getSupplementaryCourses(@RequestBody CoursesRegistrationRequest request) {
+		return PostExamService.getSupplementaryCourses(request);
+	}
+	
+	@PostMapping(value = "/getSupplementaryCoursesForStudent")
+	public Map<String, Object> getSupplementaryCoursesForStudent(@RequestBody CoursesRegistrationRequest request) {
+		return PostExamService.getSupplementaryCoursesForStudent(request);
+	}
+	
+	
+	@PostMapping(value = "/supplementaryRegistration")
+	public Map<String, Object> supplementaryRegistration(@RequestBody CoursesRegistrationRequest request) {
+		return PostExamService.supplementaryRegistration(request);
+	}
+	
+	
+	@PostMapping(value = "/coursesListForPhotocopy")
+	public Map<String, Object> coursesListForPhotocopy(@RequestBody CoursesRegistrationRequest request) {
+		return PostExamService.coursesListForPhotocopy(request);
+	}
+	
+	
+	@PostMapping(value = "/photocopy")
+	public Map<String, Object> photocopy(@RequestBody CoursesRegistrationRequest request) {
+		return PostExamService.photocopy(request);
+	}
+	
+	
+	@PostMapping(value = "/getReRegistrationCourses")
+	public Map<String, Object> getReRegistrationCourses(@RequestBody CoursesRegistrationRequest request) {
+		return PostExamService.getReRegistrationCourses(request);
+	}
+	
+	
+	@PostMapping(value = "/reRegistration")
+	public Map<String, Object> reRegistration(@RequestBody CoursesRegistrationRequest request) {
+		return PostExamService.reRegistration(request);
+	}
+	@PostMapping(value = "/getTransacationDetails")
+	public Map<String, Object> getTransacationDetails(@RequestBody LoadAlertRequest request) {
+		return PostExamService.getTransacationDetails(request);
+	}
+	
+	@PostMapping(value = "/getOrderIdDetails")
+	public Map<String, Object> getTransacationDetails(String studentRollNo) {
+		return PostExamService.getTransacationDetails(studentRollNo);
+	}
+	
+	@PostMapping(value = "/generateMigSemesterReport")
+	public Map<String, Object> generateMigSemesterReport( @RequestBody GradeReportRequest request) {
+		return PostExamService.generateMigSemesterReport(request);
+	}
+	
+	@PostMapping(value = "/checkMigReportStatus")
+	public Map<String, Object> checkMigReportStatus(@RequestBody GradeReportRequest request) {
+		logger.info("getGradeReport Request : " + request.toString());
+		return PostExamService.checkMigReportStatus(request);
+	}
+	
+	@PostMapping(value = "/bookletUpload")
+	public Map<String, Object> bookletUpload( BookletUploadRequest request) {
+		logger.info("getGradeReport Request : " + request.toString());
+		return PostExamService.bookletUpload(request);
+	}
+	
+	@PostMapping(value = "/getPendingBarcodeOnstaff")
+	public Map<String, Object> getPendingBarcodeOnstaff(@RequestBody EvaluationDetailsRequest request) {
+		logger.info("PendingBarcodeOnstaff Request : " + request.toString());
+		return PostExamService.getPendingBarcodeOnstaff(request);
+	}
+	
+	@PostMapping(value = "/evaluatorSelection/create")
+	public Map<String, Object> saveEvaluatorSelection(@RequestBody EvaluatorSelectionRequest request) {
+		logger.info("saveEvaluatorSelection Request : " + request.toString());
+		return PostExamService.saveEvaluatorSelection(request);
+	}
+	
+	@PostMapping(value = "/evaluatorSelection/update")
+	public Map<String, Object> updateEvaluatorSelection(@RequestBody EvaluatorSelectionRequest request) {
+		return PostExamService.updateEvaluatorSelection(request);
+	}
+	
+	@PostMapping(value = "/evaluatorSelection/get")
+	public Map<String, Object> getEvaluator(EvaluatorSelectionRequest request) {
+		return PostExamService.getEvaluator(request);
+	}
+	
+	@PostMapping(value = "/evaluatorSelection/delete")
+	public Map<String, Object> deleteEvaluatorSelection(@RequestBody EvaluatorSelectionRequest request) {
+		return PostExamService.deleteEvaluatorSelection(request);
+	}
+	
+	
+	@PostMapping(value = "/getEvaluatorSelection")
+	public Map<String, Object> getEvaluatorSelection(@RequestBody EvaluatorSelectionRequest request) {
+		logger.info("getEvaluatorSelection Request : " + request);
+		return PostExamService.getEvaluatorSelection(request);
+	}
+	
+	@PostMapping(value = "/getactivedetailsonStaff")
+	public Map<String, Object> getactivedetailsonStaff(Long staffId) {
+	return PostExamService.getactivedetailsonStaff(staffId);
+	}
+	
+	@PostMapping(value = "/bookletAllocation")
+	public Map<String, Object> bookletAllocation(@RequestBody BookletStaffRequest request) {
+		logger.info("booklet Allocation Request : " + request.toString());
+		return PostExamService.bookletAllocation(request);
+	}
+	
+	
+	@PostMapping(value = "/getBarcodeStatusOnstaff")
+	public Map<String, Object> getBarcodeStatusOnstaff(@RequestBody BookletStaffRequest request) {
+		logger.info("getBarcodeStatusOnstaff Request : " + request.toString());
+		return PostExamService.getBarcodeStatusOnstaff(request);
+	}
+	
+	@PostMapping(value = "/reAllocateBooklet")
+	public Map<String, Object> reAllocateBooklet(@RequestBody EvaluationDetailsRequest request) {
+		logger.info("reAllocateBooklet Request : " + request.toString());
+		return PostExamService.reAllocateBooklet(request);
+	}
+
+	@PostMapping(value = "/getCoursesOnExam")
+	public Map<String, Object> getCoursesOnExam(@RequestBody EvaluationDetailsRequest request) {
+		logger.info("getCoursesOnExam Request : " + request.toString());
+		return PostExamService.getCoursesOnExam(request);
+	}
+	
+	@PostMapping(value = "/getCoursesOnExamAndDept")
+	public Map<String, Object> getCoursesOnExamAndDept(@RequestBody EvaluationDetailsRequest request) {
+		logger.info("getCoursesOnExam Request : " + request.toString());
+		return PostExamService.getCoursesOnExamAndDept(request);
+	}
+	
+	@PostMapping(value = "/getStudentCount")
+	public Map<String, Object> getStudentCount(@RequestBody EvaluationDetailsRequest request) {
+		logger.info("getStudentCount Request : " + request.toString());
+		return PostExamService.getStudentCount(request);
+	}
+
+	@PostMapping(value = "/getTeacherList")
+	public Map<String, Object> getTeacherList(@RequestBody EvaluationDetailsRequest request) {
+		logger.info("getTeacherList Request : " + request.toString());
+		return PostExamService.getTeacherList(request);
+	}
+	
+	@PostMapping(value = "/saveEvaluatedMark")
+	public Map<String, Object> saveEvaluatedMark(@RequestBody EvaluationDetailsRequest request) {
+		logger.info("saveEvaluatedMark Request : ");
+		return PostExamService.saveEvaluatedMark(request);
+	}
+	
+	@PostMapping(value = "/getsavedEvaluatedMark")
+	public Map<String, Object> getsavedEvaluatedMark(@RequestBody  EvaluationDetailsRequest request) {
+		logger.info("getsavedEvaluatedMark Request : " + request.toString());
+		return PostExamService.getsavedEvaluatedMark(request);
+	}
+	
+	@PostMapping(value = "/getBarcodeDetailsOnEvaluator")
+	public Map<String, Object> getBarcodeDetailsOnEvaluator(@RequestBody EvaluationDetailsRequest BarcodeRequest) {
+		logger.info("getBarcodeDetailsOnEvaluator : " + BarcodeRequest.toString());
+		return PostExamService.getBarcodeDetailsOnEvaluator(BarcodeRequest);
+
+	}
+	
+	
+	@PostMapping(value = "/getStaffOnAllocatedBooklet")
+	public Map<String, Object> getStaffOnAllocatedBooklet(@RequestBody EvaluationDetailsRequest request) {
+		logger.info("getStaffOnAllocatedBooklet Request : " + request.toString());
+		return PostExamService.getStaffOnAllocatedBooklet(request);
+
+	}
+	
+	
+	@PostMapping(value = "/getPhotocopyDetails")
+	public Map<String, Object> getPhotocopyDetails(@RequestBody PhotoCopyRequest request) {
+		logger.info("getPhotocopyDetails Request : " + request.toString());
+		return PostExamService.getPhotocopyDetails(request);
+
+	}
+	
+	@PostMapping(value = "/sendPhotocopy")
+	public Map<String, Object> sendPhotocopy(@RequestBody PhotoCopyRequest request) {
+		return PostExamService.sendPhotocopy(request);
+	}
+	
+	
+	@PostMapping(value = "/resultpublish/create")
+	public Map<String, Object> resultPublishCreate(@RequestBody PublishResultRequest request) {
+		return PostExamService.resultPublishCreate(request);
+	}
+	
+	@PostMapping(value = "/resultpublish/update")
+	public Map<String, Object> resultPublishUpdate(@RequestBody PublishResultRequest request) {
+		return PostExamService.resultPublishUpdate(request);
+	}
+	
+	@PostMapping(value = "/resultpublish/get")
+	public Map<String, Object> resultPublishGet(@RequestBody PublishResultRequest request) {
+		return PostExamService.resultPublishGet(request);
+	}
+	
+	@PostMapping(value = "/resultpublish/delete")
+	public Map<String, Object> resultPublishDelete(@RequestBody PublishResultRequest request) {
+		return PostExamService.resultPublishDelete(request);
+	}
+	
+}

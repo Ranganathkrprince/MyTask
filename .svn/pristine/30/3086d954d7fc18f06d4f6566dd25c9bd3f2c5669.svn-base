@@ -1,0 +1,613 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.AcademicYear;
+import com.niftem.app.entity.Colleges;
+import com.niftem.app.entity.Courses;
+import com.niftem.app.entity.CoursesType;
+import com.niftem.app.entity.Degree;
+import com.niftem.app.entity.Department;
+import com.niftem.app.entity.MidTermMarks;
+import com.niftem.app.entity.ProgrammeYear;
+import com.niftem.app.entity.Programmes;
+import com.niftem.app.entity.Section;
+import com.niftem.app.entity.Semster;
+import com.niftem.app.entity.Staffpersonal;
+import com.niftem.app.entity.Stream;
+
+@Repository
+@Service
+@Transactional
+public interface MidTermMarkRepository extends CrudRepository<MidTermMarks, Long>{
+
+	List<MidTermMarks> findByStudentadmissionIdAndCoursesIdAndAcademicYearIdAndExIsActiveAndExIsDelete(Long id,
+			Long id2, Long id3, boolean b, boolean c);
+	
+	
+	List<MidTermMarks> findByCoursesIdAndStaffId( Long courses , Long staff);
+	
+	
+	List<MidTermMarks> findByStudentadmissionIdAndSemesterIdAndExIsActiveAndExIsDelete(Long student,
+			Long semester, boolean b, boolean c);
+	
+	List<MidTermMarks> findByStudentadmissionIdAndCoursesIdAndExIsActiveAndExIsDelete(Long id,Long id2, boolean b, boolean c);
+
+	List<MidTermMarks> findByExIsActiveAndExIsDelete(boolean b, boolean c);
+
+	List<MidTermMarks> findByExPracticalRecordMarksAndExRollNo(Double exPracticalRecordMarks, String exRollNo);
+
+
+	List<MidTermMarks> findByCollegesIdAndDegreeIdAndProgrammesIdAndCoursesIdAndSemesterIdAndExIsActiveAndExIsDeleteAndProgrammeYearIdAndDepartmentId(
+			Long colleges, Long degree, Long programmes, Long courses, Long semester, boolean b, boolean c,
+			Long programmeYear,Long dept);
+
+	List<MidTermMarks> findByExRollNoAndCoursesIdAndSemesterIdAndDegreeIdAndProgrammesIdAndExIsActiveAndExIsDeleteAndDepartmentId(
+			String string, Long courses, Long semester, Long degree, Long programmes, boolean b, boolean c,
+			Long department);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_attendence_marks =?1 ,ex_update_date =?7 , section_id = ?8 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6  and exam_announcement_id=?9 and degree_id=?10 ", nativeQuery = true)
+	int updateAttendencetDetails(double exattendenceMarks, Long academicYear, Long colleges, Long programmes,
+			Long courses, Long exRollNo, Date date, Section section,Long examannounce, Long degree);
+
+
+	List<MidTermMarks> findByCoursesIdAndAcademicYearIdAndExIsActiveAndExIsDeleteAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndProgrammeYearIdAndSemesterId(
+			Long id, Long id2, boolean b, boolean c, Long colleges, Long degree, Long programmes, Long department,
+			Long programmeYear, Long semester);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_assignment_marks =?1 ,ex_update_date =?7 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?8 and exam_announcement_id=?9  ", nativeQuery = true)
+	int updateAssignmentMarks(Double exAssignmentMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+			Long studentAdmissionId, Date date, Long degree, Long examAnnouncement);
+
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_attendence_marks =?1 ,ex_update_date =?7 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?8 and exam_announcement_id=?9  ", nativeQuery = true)
+	int updateAttendenceMarks(Double exAssignmentMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+			Long studentAdmissionId, Date date, Long degree, Long examAnnouncement);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_quiz_marks=?1 ,ex_update_date =?7 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?8 and exam_announcement_id=?9 ", nativeQuery = true)
+	int updateQuizMarks(Double exQuizMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+			Long studentAdmissionId, Date date, Long degree, Long examAnnouncement);
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_mid_term_marks=?1 ,ex_update_date =?7 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?8 and exam_announcement_id=?9 ", nativeQuery = true)
+	int updateMidtermMarks(Double exMidTermMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+			Long studentAdmissionId, Date date, Long degree, Long examAnnouncement);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_assignment_marks=?1,ex_attendence_marks=?2 ,ex_quiz_marks=?3 ,ex_mid_term_marks=?4 ,ex_update_date =?10 where academicyear_id=?5 and colleges_id=?6 and programmes_id = ?7 and courses_id=?8 and student_admission_id=?9 and degree_id=?11 and exam_announcement_id=?12  ", nativeQuery = true)
+	int updateInternalComponentMarks(Double exAssignmentMarks, Double exAttendenceMarks, Double exQuizMarks,
+			Double exMidTermMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+			Long studentAdmissionId, Date date, Long degree, Long examAnnouncement);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_practical_record_marks=?1 ,ex_update_date =?7 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?8 and exam_announcement_id=?9 ", nativeQuery = true)	
+	int updatePracticalMarks(Double exPracticalRecordMarks, Long academicYear, Long colleges, Long programmes,
+			Long courses, Long studentAdmissionId, Date date, Long degree, Long examAnnouncement);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_practical_learning=?1 ,ex_update_date =?7 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and ex_roll_no=?6  ", nativeQuery = true)	
+	int updatePracticalLearningDetails(double exPracticalLearning, Long academicYear, Long colleges, Long programmes,
+			Long courses, String exRollNo, Date date);
+
+
+	List<MidTermMarks> findByExIsActiveAndExIsDeleteAndExRollNoAndCoursesId(boolean b, boolean c, String trim,
+			Long courses);
+
+	
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_quiz_marks=?1 ,ex_update_date =?7,staff_id =?8 , section_id = ?9 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and ex_roll_no=?6 and exam_announcement_id=?10 and degree_id=?11  ", nativeQuery = true)
+	int updatequizDetails(double exQuizMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+			String exRollNo, Date date, Staffpersonal staff, Section section, Long long1, Long long2  );
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_practical_record_marks =?1 ,ex_practical_learning=?2 ,ex_update_date =?8,staff_id =?9 , section_id = ?10 where academicyear_id=?3 and colleges_id=?4 and programmes_id = ?5 and courses_id=?6 and ex_roll_no=?7 ", nativeQuery = true)
+	int updatePracticalDetails(double exPracticalRecordMarks, double exPracticallearningMarks, Long academicYear,
+			Long colleges, Long programmes, Long courses, String exRollNo, Date date, Staffpersonal staff, Section section);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks a  \r\n" + 
+			"set a.ex_practical_record_marks =?1 ,a.ex_practical_learning=?2 ,a.ex_update_date =?8,a.staff_id =?9 ,a.section_id = ?10,a.expractical_record_remarks=?11,a.expractical_learning_remarks=?12,"
+			+ "a.ex_is_submit=?13 where a.academicyear_id=?3 and a.colleges_id=?4 and a.programmes_id = ?5 and a.courses_id=?6 and a.ex_roll_no=?7 ", nativeQuery = true)
+	int updatePracticalDetailsssss(double exPracticalRecordMarks, double exPracticallearningMarks, Long academicYear,
+			Long colleges, Long programmes, Long courses, String exRollNo, Date date, Staffpersonal staff, Section section,
+			String exPracticalRecordMarks_remarks, String exPracticallearningMarks_remarks,Boolean is_submit);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_assignment_marks =?1 ,ex_update_date =?7,staff_id =?8 , section_id = ?10 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?8 and exam_announcement_id=?9 ", nativeQuery = true)
+
+	int updateAssignmentDetails(double exAssignmentMarks, Long academicYear, Long colleges, Long programmes,
+			Long courses, long exRollNo, Date date, Staffpersonal staff , Long exam, Section section);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_mid_term_marks=?1 ,ex_update_date =?7, ex_mid_term_remarks=?8,staff_id =?9 , section_id =?10, ex_assignment_marks=?13 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and ex_roll_no=?6 and exam_announcement_id=?11 and degree_id=?12   ", nativeQuery = true)
+	int updateMidtermDetails(double exMidTermMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+			String exRollNo, Date date, String remark, Staffpersonal staff, Section section, Long examann, Long degerr, double exAssignmentMarks);
+
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_practical_record_marks =?1 ,ex_practical_learning=?2 ,ex_update_date =?8,staff_id =?10 where academicyear_id=?3 and colleges_id=?4 and programmes_id = ?5 and courses_id=?6 and ex_roll_no=?7 and coursestype_id=?9 ", nativeQuery = true)
+
+	int updatePracticalLearning(Double exPracticalLearning, Long academicYear, Long colleges, Long programmes,
+			Long courses, Long studentAdmissionId, Date date, Long degree, Long examAnnouncement);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_practical_learning=?1,ex_practical_record_marks=?2 ,ex_update_date =?8 where academicyear_id=?3 and colleges_id=?4 and programmes_id = ?5 and courses_id=?6 and student_admission_id=?7 and degree_id=?9 and exam_announcement_id=?10", nativeQuery = true)
+
+	int updatePracticalInternalComponentMarks(Double exPracticalLearning, Double exPracticalRecordMarks,
+			Long academicYear, Long colleges, Long programmes, Long courses, Long studentAdmissionId, Date date,
+			Long degree, Long examAnnouncement);
+
+	
+
+	List<MidTermMarks> findByCoursesIdAndAcademicYearIdAndExIsActiveAndExIsDeleteAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionId(
+			Long id, Long id2, boolean b, boolean c, Long colleges, Long degree, Long programmes, Long department,
+			Long programmeYear, Long semester, Long studentAdmissionId);
+
+	
+	
+	List<MidTermMarks> findByCollegesIdAndDegreeIdAndProgrammesIdAndCoursesIdAndSemesterIdAndExRollNoAndExIsActiveAndExIsDelete(
+			Long colleges, Long degree, Long programmes, Long courses, Long id, String exRollNo, boolean b, boolean c);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_assignment_marks=?1 ,ex_update_date=?2, staff_id = ?10 , section_id =?11 , ex_assignment_mark_remark =?12 where academicyear_id=?3 and colleges_id=?4 and programmes_id=?5 and courses_id=?6 and student_admission_id=?7 and degree_id=?8 and programmeyear_id=?9", nativeQuery = true)	
+	int updateAssignmetMarksByStaff(Double exAssignmentMarks, Date date, Long academicYear, Long colleges,
+			Long programmes, Long courses, Long studentAdmissionId, Long degree, Long programmeyear, Long staff, Section section , String remark);
+
+	
+	
+	List<MidTermMarks> findByCollegesIdAndDegreeIdAndProgrammesIdAndCoursesIdAndSemesterIdAndExRollNoAndExIsActiveAndExIsDeleteAndStudentadmissionId(
+			Long colleges, Long degree, Long programmes, Long courses, Long id, String exRollNo, boolean b, boolean c,
+			Long studentAdmissionId);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_case_study=?1 ,ex_update_date=?2, staff_id = ?10 , section_id =?11 , ex_case_study_remark =?12 where academicyear_id=?3 and colleges_id=?4 and programmes_id=?5 and courses_id=?6 and student_admission_id=?7 and degree_id=?8 and programmeyear_id=?9", nativeQuery = true)	
+	int updateCaseStudyMarksByStaff(Double ex_case_study, Date date, Long academicYear, Long colleges,
+			Long programmes, Long courses, Long studentAdmissionId, Long degree, Long programmeyear, Long staff, Section section , String remark);
+
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_is_active =?1 , ex_is_delete =?2  where colleges_id=?3 and programmes_id=?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?7 ", nativeQuery = true)
+
+	int  updateStatus(boolean b, boolean c, Long colleges, Long programmes, Long courses, Long studentAdmissionId,
+			Long degree);
+
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_quiz_marks=?1 ,ex_update_date=?2, staff_id = ?10 , section_id = ?11 , ex_quiz_remark = ?12 where academicyear_id=?3 and colleges_id=?4 and programmes_id=?5 and courses_id=?6 and student_admission_id=?7 and degree_id=?8 and programmeyear_id=?9 ", nativeQuery = true)
+	
+	int updateQuizMarksByStaff(Double exQuizMarks, Date date, Long academicYear, Long colleges, Long programmes,
+			Long courses, Long studentAdmissionId, Long degree, Long id, Long id2, Section section, String remark);
+
+	List<MidTermMarks> findByCollegesIdAndDegreeIdAndProgrammesIdAndCoursesIdAndSemesterIdAndExIsActiveAndExIsDeleteAndStudentadmissionId(
+			Long colleges, Long degree, Long programmes, Long courses, Long id, boolean b, boolean c,
+			Long studentAdmissionId);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_mid_term_marks=?1 ,ex_mid_term_remarks =?2,ex_update_date=?3, staff_id = ?11 , section_id = ?12 where academicyear_id=?4 and colleges_id=?5 and programmes_id=?6 and courses_id=?7 and student_admission_id=?8 and degree_id=?9 and programmeyear_id=?10  ", nativeQuery = true)
+	
+
+	int updateMidTermMarksByStaff(Double exMidTermMarks, String exMidTermRemarks, Date date, Long academicYear,
+			Long colleges, Long programmes, Long courses, Long studentAdmissionId, Long degree, Long programmyear, Long staff, Section section );
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_practical_learning=?1 ,ex_update_date=?2, staff_id = ?10 ,section_id =?11 where academicyear_id=?3 and colleges_id=?4 and programmes_id=?5 and courses_id=?6 and student_admission_id=?7 and degree_id=?8 and programmeyear_id=?9 ", nativeQuery = true)
+	
+
+	int updatePracticalMarksByStaff(Double exPracticalLearning,Date date,
+			Long academicYear, Long colleges, Long programmes, Long courses, Long studentAdmissionId, Long degree,
+			Long id, Long id2, Section section);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_attendence_marks=?1 ,ex_update_date=?2, staff_id = ?10 ,staff_id = ?11 , ex_attendence_remark = ?12 where academicyear_id=?3 and colleges_id=?4 and programmes_id=?5 and courses_id=?6 and student_admission_id=?7 and degree_id=?8 and programmeyear_id=?9 ", nativeQuery = true)
+	int updateAttendanceMarksByStaff(Double exAttendenceMarks, Date date, Long academicYear, Long colleges,
+			Long programmes, Long courses, Long studentAdmissionId, Long degree, Long id, Long id2, Section section, String remark);
+
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_assignment_marks =?1 ,ex_update_date =?7,staff_id =?8 , section_id = ?9 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6 and degree_id=?10 ", nativeQuery = true)
+	int updateMIGAssignmentDetails(double exAssignmentMarks, Long academicYear, Long colleges, Long programmes,
+			Long courses, Long id, Date date, Staffpersonal staff, Section section, Long degree);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_attendence_marks =?1 ,ex_update_date =?7 , section_id = ?8 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and student_admission_id=?6  and degree_id=?9 ", nativeQuery = true)
+	int updateMigAttendencetDetails(double exattendenceMarks, Long academicYear, Long colleges, Long programmes,
+			Long courses, Long id, Date date, Section section, Long degree);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_quiz_marks=?1 ,ex_update_date =?7,staff_id =?8 , section_id = ?9 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and ex_roll_no=?6  and degree_id=?10  ", nativeQuery = true)
+	int updateMigquizDetails(double exQuizMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+			String exRollNo, Date date, Staffpersonal staff, Section section, Long degree);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_mid_term_marks=?1 ,ex_update_date =?7, ex_mid_term_remarks=?8,staff_id =?9 , section_id =?10 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and ex_roll_no=?6 and degree_id=?11 ", nativeQuery = true)
+	int updateMigMidtermDetails(double exMidTermMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+			String exRollNo, Date date, String trim, Staffpersonal staff, Section section, Long degree);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_practical_record_marks =?1 ,ex_practical_learning=?2 ,ex_update_date =?8,staff_id =?9 , section_id = ?10 where academicyear_id=?3 and colleges_id=?4 and programmes_id = ?5 and courses_id=?6 and ex_roll_no=?7 and department_id=?11 and degree_id=?12", nativeQuery = true)
+	int updateMigPracticalDetails(double exPracticalRecordMarks, double exPracticallearningMarks, Long academicYear,
+			Long colleges, Long programmes, Long courses, String exRollNo, Date date, Staffpersonal staff,
+			Section section, Long department, Long degree);
+
+	List<MidTermMarks> findByCoursesIdAndAcademicYearIdAndExIsActiveAndExIsDeleteAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndProgrammeYearIdAndSemesterIdAndStudentadmissionIdAndExIsSubmit(
+			Long id, Long id2, boolean b, boolean c, Long colleges, Long degree, Long programmes, Long department,
+			Long programmeYear, Long semester, Long id3, boolean d);
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_is_submit = ?1 where academicyear_id=?2 and colleges_id=?3 and programmes_id=?4 and courses_id = ?5 and ex_roll_no IN ?6 and degree_id=?7 and programmeyear_id=?8  and department_id=?9  and semester_id=?10", nativeQuery = true)
+	int submitIADetails(boolean b, Long academicYear, Long colleges, Long programmes, Long courses, List studentList,
+			Long degree, Long programme, Long department ,Long semester);
+
+	List<MidTermMarks> findByExRollNoAndCoursesIdAndAcademicYearIdAndExIsActiveAndExIsDelete(String exRollNo, Long id,
+			Long academicYear, boolean b, boolean c);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_is_active =?1 , ex_is_delete =?2  where colleges_id=?3 and programmes_id=?4 and courses_id=?5 and ex_roll_no=?6 and degree_id=?7 and department_id=?8 ", nativeQuery = true)
+	void updateStatusforMid(boolean b, boolean c, Long colleges, Long programmes, Long courses, String exRollNo,
+			Long degree, Long department);
+
+
+
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_mid_term_marks set ex_is_save = 1 , ex_assignment_marks=?1 ,ex_attendence_marks=?2,ex_quiz_marks=?3, ex_mid_term_marks=?4 ,ex_mid_term_remarks=?5 ,ex_practical_learning=?6,ex_practical_record_marks=?7, ex_update_date=?8, staff_id = ?16 where academicyear_id=?9 and colleges_id=?10 and programmes_id=?11 and courses_id=?12 and ex_roll_no=?13 and degree_id=?14 and programmeyear_id=?15 and department_id=?17", nativeQuery = true)
+	int updateIADetailsByStaff(Double exAssignmentMarks, Double exAttendenceMarks, Double exQuizMarks,
+			Double exMidTermMarks, String exMidTermRemarks, Double exPracticalLearning, Double exPracticalRecordMarks,
+			Date updatedate, Long academicYear, Long colleges, Long programmes, Long courses, String exRollNo,
+			Long degree, Long programmyear, Long staff, Long department);
+
+
+
+List<MidTermMarks> findByDegreeIdAndCoursesIdAndExRollNoAndAcademicYearIdAndProgrammesIdAndExIsActiveAndExIsDeleteAndSemesterIdAndProgrammeYearIdAndDepartmentId(
+		Long degree, Long courses, String string, Long academicYear, Long programmes, boolean b, boolean c,
+		Long semester, Long programmeYear, Long department);
+
+
+
+List<MidTermMarks> findByDegreeIdAndCoursesIdAndExRollNoAndAcademicYearIdAndProgrammesIdAndSemesterIdAndProgrammeYearIdAndCollegesIdAndExIsActiveAndExIsDelete(
+		Long degree, Long courses, String string, Long academicYear, Long programmes, Long semester, Long programmeYear,
+		Long colleges, boolean b, boolean c);
+
+@Modifying
+@Transactional
+@Query(value = "update ex_mid_term_marks set ex_practical_record_marks=?1 ,ex_update_date=?2, staff_id = ?10 ,section_id =?11 where academicyear_id=?3 and colleges_id=?4 and programmes_id=?5 and courses_id=?6 and student_admission_id=?7 and degree_id=?8 and programmeyear_id=?9 ", nativeQuery = true)
+int updatePracticalRecordMarksByStaff( Double exPracticalRecordMarks, Date date,
+		Long academicYear, Long colleges, Long programmes, Long courses, Long studentAdmissionId, Long degree, Long id,
+		Long id2, Section section);
+
+
+List<MidTermMarks> findByCoursesIdAndExIsActiveAndExIsDeleteAndStaffId( Long courses , boolean active , boolean delete , Long staff);
+
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_mid_term_marks set ex_assignment_marks =?1 ,ex_assignment_mark_remark =?2,ex_mid_term_marks =?3 , ex_mid_term_remarks = ?4  , ex_mid_term_remarks = ?4 , ex_attendence_marks = ?5 , ex_attendence_remark = ?6 , ex_practical_record_marks = ?7 , expractical_record_remarks = ?8 , ex_practical_learning = ?9 , expractical_learning_remarks = ?10 , ex_case_study = ?11 , ex_case_study_remark = ?12 , ex_quiz_marks = ?13 , ex_quiz_remark = ?14  , section_id = ?18 , ex_update_date = ?19 , staff_id =?20 where  courses_id=?15 and student_admission_id=?16 and exam_announcement_id=?17 ", nativeQuery = true)
+int updateStudentMarksDetails(Double  asiment_marks , String asiment_remarks , Double  mid_marks , String mid_remarks ,Double  attendance_marks , String attendance_remarks ,Double  practical_record , String practical_record_remarks ,Double  practical_learning , String practical_learning_remarks ,Double  case_study , String case_study_remarks ,Double  quiz_marks , String quiz_marks_remarks , Long courses , Long student , Long examiation , Long section, Date date, Staffpersonal staff);
+
+///////////////
+
+
+
+
+@Query(value ="SELECT o.ex_identifier AS clg,k.ex_identifier AS AcademicYear,d.ex_identifier AS ProgramNAme,e.ex_identifier AS StreamName,m.ex_credit_hour_title,f.ex_name AS CoursesName,f.ex_courses_code AS CCODE ," +
+" (case when a.staff_id IS NULL then 'Teacher is not  mapped' ELSE c.ex_name END ),\r\n" +  
+"(case when a.ex_quiz_marks IS NULL OR  a.ex_quiz_marks=0 OR a.ex_is_submit=0 then 'Pending' ELSE 'Submitted' END) AS quiz,\r\n" +
+"(case when a.ex_assignment_marks IS NULL OR a.ex_assignment_marks=0 OR a.ex_is_submit=0 then 'Pending' ELSE 'Submitted' END) AS assign,\r\n" +
+"(case when a.ex_case_study IS NULL OR  a.ex_case_study=0 OR a.ex_is_submit=0 then 'Pending' ELSE 'Submitted' END) AS casestudy,\r\n" +
+"(case when a.ex_attendence_marks IS NULL OR  a.ex_attendence_marks=0 OR a.ex_is_submit=0 then 'Pending' ELSE 'Submitted' END) AS attendance,\r\n" +
+"(case when b.ex_end_term_marks IS NULL OR b.ex_end_term_marks=0 OR a.ex_is_submit=0 then 'Pending' ELSE 'Submitted' END) AS endtermmarks,\r\n" +
+"(case when a.ex_practical_record_marks IS NULL OR a.ex_practical_record_marks=0 OR a.ex_is_submit=0 then 'Pending' ELSE 'Submitted' END) AS PR,\r\n" +
+"(case when  a.ex_practical_learning IS NULL OR 0 OR a.ex_is_submit=0 then 'Pending' ELSE 'Submitted' END) AS PL,\r\n" +
+"(case when b.ex_lab_experiment IS NULL OR 0 OR a.ex_is_submit=0 then 'Pending' ELSE 'Submitted' END) AS PLE,\r\n" +
+"(case when b.ex_viva IS NULL OR 0 OR a.ex_is_submit=0 then 'Pending' ELSE 'Submitted' END) AS VIVA,\r\n" +
+"COUNT(case when a.ex_is_submit=1 then 1  END ) AS total_submitted,\r\n" +
+"COUNT(a.ex_roll_no) AS TOTAL_STUDENTS,c.ex_contact_details,c.ex_email FROM ex_mid_term_marks a LEFT JOIN ex_exam_barcodes b ON a.courses_id=b.courses_id AND a.ex_roll_no=b.ex_roll_no \r\n" +
+"  LEFT JOIN ex_staff_personal c ON c.id=a.staff_id\r\n"+
+" LEFT JOIN ex_programmes d ON d.id=a.programmes_id\r\n" +
+"  LEFT JOIN ex_stream e ON  e.id=a.stream_id \r\n " +
+"  LEFT JOIN ex_courses f ON f.id=a.courses_id \r\n"+
+" LEFT JOIN  ex_colleges  o ON o.id=a.colleges_id \r\n" + 
+" LEFT JOIN ex_academic_year k ON k.id=a.academicyear_id \r\n" +
+"  LEFT JOIN ex_credit_hours m ON m.id=f.credit_hours_id\r\n"+
+"  WHERE a.colleges_id=?1 AND a.academicyear_id = ?2 AND a.semester_id = ?3 GROUP BY a.courses_id  ", nativeQuery = true)
+List<Object[]> getsubmissionrecords(Long colleges, Long academicYear, Long semester);
+
+
+
+
+
+		
+@Query(value =" SELECT h.ex_identifier AS clg,i.ex_name AS degree,j.ex_identifier AS pgm,\r\n" + 
+		"k.ex_identifier AS dept,l.ex_identifier as stream,r.ex_identifier AS academiy,q.ex_identifier AS batch,\r\n" + 
+		"m.ex_name AS proy,n.ex_name AS semester,o.ex_credit_hour_title AS ct,a.ex_courses_code AS cc,a.ex_name AS cname,\r\n" + 
+		"e.ex_name,e.ex_roll_no,s.ex_email_id,s.ex_contact_details,\r\n" + 
+		"(case when f.ex_assignment_mark_remark != NULL AND f.ex_assignment_mark_remark!='NA' AND f.ex_assignment_mark_remark='' then f.ex_assignment_mark_remark ELSE f.ex_assignment_marks END ),\r\n" + 
+		"(case when f.ex_quiz_remark!= NULL AND f.ex_quiz_remark!='NA' AND f.ex_quiz_remark!='' then f.ex_quiz_remark ELSE f.ex_quiz_marks END ),\r\n" + 
+		"(case when f.ex_attendence_remark!=NULL AND f.ex_attendence_remark!='NA' AND f.ex_attendence_remark='' then f.ex_attendence_remark ELSE f.ex_attendence_marks END ),\r\n" + 
+		"(case when f.ex_case_study_remark!=NULL AND f.ex_case_study_remark!='NA' AND f.ex_case_study_remark!='' then f.ex_case_study_remark ELSE f.ex_case_study END ),\r\n" + 
+		"(case when f.ex_mid_term_remarks!=NULL AND f.ex_mid_term_remarks!='NA' AND f.ex_mid_term_remarks!='' then f.ex_mid_term_remarks ELSE f.ex_mid_term_marks END )AS mid,\r\n" + 
+		"(case when f.ex_practical_learning IS NULL then 'NA' ELSE f.ex_practical_learning END ),\r\n" + 
+		"(case when f.ex_practical_record_marks IS NULL then 'NA' ELSE f.ex_practical_record_marks END),\r\n" + 
+		"(case when g.ex_lab_experiment IS NULL then 'NA' ELSE g.ex_lab_experiment END ),\r\n" + 
+		"(case when g.ex_viva IS NULL then 'NA' ELSE g.ex_viva END ),\r\n" + 
+		"p.ex_name AS staffname,p.ex_email AS semail,p.ex_contact_details AS scontactdetails,case when f.ex_is_submit=1 then 'submitted' ELSE 'pending' END ,f.ex_update_date\r\n" + 
+		"\r\n" + 
+		"\r\n" + 
+		" FROM ex_courses a \r\n" + 
+		"INNER JOIN ex_courses_registration d ON d.courses_id=a.id\r\n" +
+		"LEFT JOIN ex_teacher_course_mapping_courses b ON  a.id=b.courses_id\r\n" + 
+		"LEFT JOIN ex_teacher_course_mapping c ON b.ex_teache_course_mapping_id=c.id\r\n" + 
+		"LEFT JOIN ex_student_admission e ON d.student_admission_id=e.id\r\n" + 
+		"LEFT JOIN ex_mid_term_marks f ON d.student_admission_id=f.student_admission_id AND d.courses_id=f.courses_id\r\n" + 
+		"LEFT JOIN ex_exam_barcodes g ON f.ex_roll_no=g.ex_roll_no AND f.courses_id=g.courses_id\r\n" + 
+		"\r\n" + 
+		"LEFT JOIN ex_colleges h ON h.id=a.collage_id\r\n" + 
+		"LEFT JOIN ex_degree i ON i.id=a.degree_id\r\n" + 
+		"LEFT JOIN ex_programmes j ON j.id=a.programmes_id\r\n" + 
+		"LEFT JOIN ex_department k ON k.id=a.department_id\r\n" + 
+		"LEFT JOIN ex_stream l ON l.id=a.stream_id\r\n" + 
+		"LEFT JOIN ex_programme_year m ON m.id=a.programmeyear_id\r\n" + 
+		"LEFT JOIN ex_semester n ON n.id=a.semester_id\r\n" + 
+		"LEFT JOIN ex_credit_hours o ON o.id=a.credit_hours_id\r\n" + 
+		"LEFT JOIN ex_staff_personal p ON p.id=c.staffpersonal_id\r\n" + 
+		"LEFT JOIN ex_batch q ON q.id=a.batch_id\r\n" + 
+		"LEFT JOIN ex_academic_year r ON r.id=a.academic_year_id\r\n" + 
+		"LEFT JOIN ex_student_personal s ON s.student_admission_id=e.id\r\n"+
+		
+		"WHERE d.colleges_id IN ?1 AND d.programmes_id IN ?2 AND d.department_id IN ?3 AND d.programmeyear_id IN ?4 AND d.academicyear_id IN ?5 AND d.degree_id IN ?6 AND  d.semester_id IN ?7\r\n" + 
+		"ORDER BY a.id,d.student_admission_id", nativeQuery = true)
+List<Object[]> Iamarksdetails1234(List<Long> colleges, List<Long> programmes, List<Long> department,
+		List<Long> programmeYear, List<Long> academicYear, List<Long> degree, List<Long> semester);
+
+//===
+@Query(value ="SELECT c1.ex_identifier as a1,c2.ex_name as b1,c3.ex_identifier as c1,c4.ex_identifier as d1,c5.ex_identifier as e1,c6.ex_identifier as e2,\r\n" + 
+		"c7.ex_name as f1,c8.ex_name as g1,c12.ex_credit_hour_title as credit,c9.ex_name as h1,c9.ex_courses_code as j1,c10.ex_name as k1,a.ex_roll_no as l1,\r\n" + 
+		"(case when a.ex_assignment_mark_remark != NULL AND a.ex_assignment_mark_remark!='NA' AND a.ex_assignment_mark_remark='' then a.ex_assignment_mark_remark ELSE a.ex_assignment_marks END ),\r\n" + 
+		"(case when a.ex_quiz_remark!= NULL AND a.ex_quiz_remark!='NA' AND a.ex_quiz_remark!='' then a.ex_quiz_remark ELSE a.ex_quiz_marks END ),\r\n" + 
+		"(case when a.ex_attendence_remark!=NULL AND a.ex_attendence_remark!='NA' AND a.ex_attendence_remark='' then a.ex_attendence_remark ELSE a.ex_attendence_marks END ),\r\n" + 
+		"(case when a.ex_case_study_remark!=NULL AND a.ex_case_study_remark!='NA' AND a.ex_case_study_remark!='' then a.ex_case_study_remark ELSE a.ex_case_study END ),\r\n" + 
+		"(case when a.ex_mid_term_remarks!=NULL AND a.ex_mid_term_remarks!='NA' AND a.ex_mid_term_remarks!='' then a.ex_mid_term_remarks ELSE a.ex_mid_term_marks END ),\r\n" + 
+		"(case when a.ex_practical_learning IS NULL then 'NA' ELSE a.ex_practical_learning END ),\r\n" + 
+		"(case when a.ex_practical_record_marks IS NULL then 'NA' ELSE a.ex_practical_record_marks END),\r\n" + 
+		"(case when b.ex_lab_experiment IS NULL then 'NA' ELSE b.ex_lab_experiment END ),\r\n" + 
+		"(case when b.ex_viva IS NULL then 'NA' ELSE b.ex_viva END ),\r\n" + 
+		"case when a.staff_id IS NULL then 'Teacher is not Mapped' ELSE c.ex_name END ,\r\n" + 
+		"c.ex_email AS staffemail,c.ex_contact_details AS staffcontact,c.ex_employee_id,a.ex_update_date,\r\n" + 
+		"case when a.ex_is_submit=1 then 'submitted' ELSE 'pending' END, \r\n" + 
+		" c11.ex_contact_details,c11.ex_email_id\r\n"+
+		"\r\n" + 
+		" FROM ex_mid_term_marks a LEFT JOIN ex_exam_barcodes b ON a.courses_id=b.courses_id AND a.ex_roll_no=b.ex_roll_no\r\n" + 
+		"LEFT JOIN ex_staff_personal c ON a.staff_id=c.id\r\n" + 
+		"LEFT JOIN ex_colleges c1 ON a.colleges_id=c1.id\r\n" + 
+		"LEFT JOIN ex_degree c2 ON a.degree_id=c2.id\r\n" + 
+		"LEFT JOIN ex_programmes c3 ON a.programmes_id=c3.id\r\n" + 
+		"LEFT JOIN ex_department c4 ON a.department_id=c4.id\r\n" + 
+		"LEFT JOIN ex_stream c5 ON a.stream_id=c5.id\r\n" + 
+		"LEFT JOIN ex_academic_year c6 ON a.academicyear_id=c6.id\r\n" + 
+		"LEFT JOIN ex_programme_year c7 ON a.programmeyear_id=c7.id\r\n" + 
+		"LEFT JOIN ex_semester c8 ON a.semester_id=c8.id\r\n" + 
+		"LEFT JOIN ex_courses c9 ON a.courses_id=c9.id\r\n" + 
+		"LEFT JOIN ex_student_admission c10 ON a.student_admission_id=c10.id\r\n" + 
+		"LEFT JOIN ex_student_personal c11 ON a.student_admission_id=c11.student_admission_id\r\n"+
+		"LEFT JOIN ex_credit_hours c12 ON c9.credit_hours_id=c12.id\r\n"+
+		
+		
+		
+		"WHERE a.colleges_id IN ?1 AND a.programmes_id IN ?2 AND a.department_id IN ?3 AND a.programmeyear_id IN ?4 AND a.academicyear_id IN ?5 AND a.degree_id IN ?6 AND  a.semester_id IN ?7\r\n" + 
+		"ORDER BY a.courses_id DESC ,a.ex_roll_no", nativeQuery = true)
+List<Object[]> Iamarksdetails(List<Long> colleges, List<Long> programmes, List<Long> department,
+		List<Long> programmeYear, List<Long> academicYear, List<Long> degree, List<Long> semester);
+//====
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_mid_term_marks set ex_quiz_marks=?1 ,ex_update_date =?7 ,staff_id =?8 , section_id =?9, ex_assignment_marks=?12,  ex_case_study =?13 ,ex_attendence_marks=?14 ,ex_assignment_mark_remark=?15,ex_quiz_remark = ?16,ex_attendence_remark = ?17, "
+		+ "ex_case_study_remark = ?18,ex_is_submit=?19 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and ex_roll_no=?6 and exam_announcement_id=?10 and degree_id=?11   ", nativeQuery = true)
+int updateIATheoryMarksDetails(double exQuizMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+		String exRollNo, Date date,Staffpersonal staff, Section section, Long examAnnouncement,
+		Long degree, double exAssignmentMarks,double exCaseStudy, double exAttendanceMarks,String AssRemark,String exQuizRemarks,String AttRemark,String CaseStudyRemark,Boolean is_submit);
+
+@Modifying
+@Transactional
+@Query(value = "update ex_mid_term_marks set ex_quiz_marks=?1 ,ex_update_date =?7 ,staff_id =?8 , section_id =?9, ex_assignment_marks=?12,  ex_case_study =?13 ,ex_attendence_marks=?14 ,ex_assignment_mark_remark=?15,ex_quiz_remark = ?16,ex_attendence_remark = ?17,"
+		+ "ex_case_study_remark = ?18 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and ex_roll_no=?6 and exam_announcement_id=?10 and degree_id=?11   ", nativeQuery = true)
+int updateIATheoryMarksDetailsSubmittedbyFaculty(double exQuizMarks, Long academicYear, Long colleges, Long programmes,
+		Long courses, String exRollNo, Date date, Staffpersonal staff, Section section, Long examAnnouncement,
+		Long degree, double exAssignmentMarks, double exCaseStudy, double exAttendanceMarks,String AssRemark,String exQuizRemarks,String AttRemark,String CaseStudyRemark);
+
+
+/* @Modifying
+@Transactional
+@Query(value = "update ex_mid_term_marks a LEFT JOIN ex_exam_barcodes b \r\n" + 
+		"ON a.ex_roll_no=b.ex_roll_no AND a.courses_id=b.courses_id set a.ex_practical_record_marks =?1 ,a.ex_practical_learning=?2 ,a.ex_update_date =?8,a.staff_id =?9 ,a.section_id = ?10,b.ex_lab_experiment = ?11, b.ex_viva = ?12,a.expractical_record_remarks=?13,a.expractical_learning_remarks=?14,"
+		+ "b.ex_lab_experiment_remarks=?15,b.ex_viva_remarks=?16,b.ex_is_practical_attendance=?18,a.ex_is_submit=?17  where a.academicyear_id=?3 and a.colleges_id=?4 and a.programmes_id = ?5 and a.courses_id=?6 and a.ex_roll_no=?7 ", nativeQuery = true)
+int updateIAPracticalDetails(double exPracticalRecordMarks, double exPracticallearningMarks, Long academicYear,
+		Long colleges, Long programmes, Long courses, String exRollNo, Date date, Staffpersonal staff, Section section,
+		double exLabExperiment, double exViva, String trim, String trim2, String trim3, String trim4,Boolean is_submit,Boolean is_PracticalAttendance);
+
+*/
+
+@Modifying
+@Transactional
+@Query(value = "update ex_mid_term_marks a LEFT JOIN ex_exam_barcodes b \r\n" + 
+		"ON a.ex_roll_no=b.ex_roll_no AND a.courses_id=b.courses_id set a.ex_practical_record_marks =?1 ,a.ex_practical_learning=?2 ,a.ex_update_date =?8,a.staff_id =?9 ,a.section_id = ?10,b.ex_lab_experiment = ?11, b.ex_viva = ?12  where a.academicyear_id=?3 and a.colleges_id=?4 and a.programmes_id = ?5 and a.courses_id=?6 and a.ex_roll_no=?7 ", nativeQuery = true)
+int updateMigIAPracticalDetailsSubmittedbyFaculty(double exPracticalRecordMarks, double exPracticallearningMarks,
+		Long academicYear, Long colleges, Long programmes, Long courses, String exRollNo, Date date,
+		Staffpersonal staff, Section section, double exLabExperiment, double exViva);
+
+
+
+
+
+@Modifying
+@Transactional
+@Query(value = "delete from ex_mid_term_marks where student_admission_id=?1 AND  courses_id IN ?2", nativeQuery = true)
+int deleteCourseFromMidtermTable(Long student,List<Long> courses);
+
+
+List<MidTermMarks> findByStudentadmissionIdAndCoursesIdIn(Long student, List<Long> courses);
+
+
+List<MidTermMarks> findByStudentadmissionIdAndCoursesIdIn(String exRollNo, List<Long> courses);
+
+@Modifying
+@Transactional
+@Query(value = "delete from ex_mid_term_marks where student_admission_id=?1 AND  courses_id IN ?2", nativeQuery = true)
+int deleteCourseFromMidtermTable(String exRollNo, List<Long> courses);
+
+@Modifying
+@Transactional
+@Query(value = "update ex_mid_term_marks set ex_quiz_marks=?1 ,ex_update_date =?7 ,staff_id =?8 , section_id =?9, ex_assignment_marks=?11,  ex_case_study =?12 ,ex_attendence_marks=?13 ,ex_assignment_mark_remark=?14,ex_quiz_remark = ?15,ex_attendence_remark = ?16, "
+		+ "ex_case_study_remark = ?17,ex_is_submit=?18 where academicyear_id=?2 and colleges_id=?3 and programmes_id = ?4 and courses_id=?5 and ex_roll_no=?6  and degree_id=?10   ", nativeQuery = true)
+int updatemigIATheoryMarksDetails(Double exQuizMarks, Long academicYear, Long colleges, Long programmes, Long courses,
+		String exRollNo, Date date, Staffpersonal staff, Section section, Long degree,
+		Double exAssignmentMarks, Double exCaseStudy, Double exAttendanceMarks, String exAssignmentMarks_remarks,
+		String exQuizMarks_remarks, String exAttendanceMarks_remarks, String exCaseStudy_remarks, Boolean is_submit);
+
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_mid_term_marks a  \r\n" + 
+		"set a.ex_practical_record_marks =?1 ,a.ex_practical_learning=?2 ,a.ex_update_date =?8,a.staff_id =?9 ,a.section_id = ?10,a.expractical_record_remarks=?11,a.expractical_learning_remarks=?12,"
+		+ "a.ex_is_submit=?13,a.exam_announcement_id=?14,a.degree_id=?15 where a.academicyear_id=?3 and a.colleges_id=?4 and a.programmes_id = ?5 and a.courses_id=?6 and a.ex_roll_no=?7 ", nativeQuery = true)
+int updatePracticalDetailfaculty(Double exPracticalRecordMarks, Double exPracticallearningMarks, Long academicYear,
+		Long colleges, Long programmes, Long courses, String exRollNo, Date date, Staffpersonal staff, Section section,
+		String exPracticalRecordMarks_remarks, String exPracticallearningMarks_remarks, Boolean is_submit,
+		Long examAnnouncement, Long degree);
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_mid_term_marks a  \r\n" + 
+		"set a.ex_practical_record_marks =?1 ,a.ex_update_date =?7,a.staff_id =?8 ,a.section_id = ?9,a.expractical_record_remarks=?10,"
+		+ "a.ex_is_submit=?11,a.exam_announcement_id=?12,a.degree_id=?13 where a.academicyear_id=?2 and a.colleges_id=?3 and a.programmes_id = ?4 and a.courses_id=?5 and a.ex_roll_no=?6 ", nativeQuery = true)
+int updatePracticalIsIndustrialVisit(Double exWriteupReportMM50, Long academicYear, Long colleges, Long programmes,
+		Long courses, String exRollNo, Date date, Staffpersonal staff, Section section,
+		String exWriteupReportMM50Remark, Boolean is_submit, Long examAnnouncement, Long degree);
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_mid_term_marks a  \r\n" + 
+		"set a.ex_practical_record_marks =?1 ,a.ex_update_date =?7,a.staff_id =?8 ,a.section_id = ?9,a.expractical_record_remarks=?10,"
+		+ "a.ex_is_submit=?11,a.exam_announcement_id=?12,a.degree_id=?13 where a.academicyear_id=?2 and a.colleges_id=?3 and a.programmes_id = ?4 and a.courses_id=?5 and a.ex_roll_no=?6 ", nativeQuery = true)
+int IndustrialTrainingOrInternship(Double exWriteupReportMM40, Long academicYear, Long colleges, Long programmes,
+		Long courses, String exRollNo, Date date, Staffpersonal staff, Section section,
+		String exWriteupReportMM40Remark, Boolean is_submit, Long examAnnouncement, Long degree);
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_mid_term_marks a  \r\n" + 
+		"set a.ex_practical_record_marks =?1 ,a.ex_update_date =?7,a.staff_id =?8 ,a.section_id = ?9,a.expractical_record_remarks=?10,"
+		+ "a.ex_is_submit=?11,a.exam_announcement_id=?12,a.degree_id=?13 where a.academicyear_id=?2 and a.colleges_id=?3 and a.programmes_id = ?4 and a.courses_id=?5 and a.ex_roll_no=?6 ", nativeQuery = true)
+int Project(Double exWriteupReportMM40, Long academicYear, Long colleges, Long programmes, Long courses,
+		String exRollNo, Date date, Staffpersonal staff, Section section, String exWriteupReportMM40Remark,
+		Boolean is_submit, Long examAnnouncement, Long degree);
+
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_mid_term_marks a  \r\n" + 
+		"set a.ex_practical_record_marks =?1 ,a.ex_update_date =?7,a.staff_id =?8 ,a.section_id = ?9,a.expractical_record_remarks=?10,"
+		+ "a.ex_is_submit=?11,a.exam_announcement_id=?12,a.degree_id=?13 where a.academicyear_id=?2 and a.colleges_id=?3 and a.programmes_id = ?4 and a.courses_id=?5 and a.ex_roll_no=?6 ", nativeQuery = true)
+int updatePracticalIVillageAdoption(Double exMentorMarksMM60, Long academicYear, Long colleges, Long programmes,
+		Long courses, String exRollNo, Date date, Staffpersonal staff, Section section, String exMentorMarksMM60Remark,
+		Boolean is_submit, Long examAnnouncement, Long degree);
+
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_mid_term_marks a  \r\n" + 
+		"set a.ex_practical_record_marks =?1 ,a.ex_update_date =?7,a.staff_id =?8 ,a.section_id = ?9,a.expractical_record_remarks=?10,"
+		+ "a.ex_is_submit=?11,a.exam_announcement_id=?12,a.degree_id=?13 where a.academicyear_id=?2 and a.colleges_id=?3 and a.programmes_id = ?4 and a.courses_id=?5 and a.ex_roll_no=?6 ", nativeQuery = true)
+int updatePracticalIResearchProject(Double exInternalAssessmentMM40, Long academicYear, Long colleges, Long programmes,
+		Long courses, String exRollNo, Date date, Staffpersonal staff, Section section,
+		String exInternalAssessmentMM40Remark, Boolean is_submit, Long examAnnouncement, Long degree);
+
+
+
+
+
+@Modifying
+@Transactional
+@Query(value = "update ex_mid_term_marks a  \r\n" + 
+		"set a.ex_practical_record_marks =?1 ,a.ex_update_date =?7,a.staff_id =?8 ,a.section_id = ?9,a.expractical_record_remarks=?10,"
+		+ "a.ex_is_submit=?11,a.exam_announcement_id=?12,a.degree_id=?13 where a.academicyear_id=?2 and a.colleges_id=?3 and a.programmes_id = ?4 and a.courses_id=?5 and a.ex_roll_no=?6 ", nativeQuery = true)
+int Seminar(Double exWriteupReportMM30, Long academicYear, Long colleges, Long programmes, Long courses,
+		String exRollNo, Date date, Staffpersonal staff, Section section, String exWriteupReportMM30Remark,
+		Boolean is_submit, Long examAnnouncement, Long degree);
+
+}
+
+

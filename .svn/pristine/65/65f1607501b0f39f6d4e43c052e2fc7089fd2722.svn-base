@@ -1,0 +1,15 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.FeeMasterCategoryMapping;
+
+public interface FeeMasterCategoryMappingRepository  extends CrudRepository<FeeMasterCategoryMapping, Long>{
+
+	List<FeeMasterCategoryMapping> findByFeemasterId(Long id);
+
+	void deleteByFeemasterId(Long id);
+
+}

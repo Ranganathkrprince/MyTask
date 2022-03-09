@@ -1,0 +1,290 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+@Entity
+@Table(name = "ex_grade_report_log")
+public class GradeReportLog {
+	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String exUrl;
+	
+	private String exReportType;
+	private String exRemark;
+	
+	
+	private String exReportCategory;  // 1(true) means generate 0(false) generatePdf .
+	
+    private String exIsReGenerated;   // first time value will be 0(false) next time will be 1(true). 
+	
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "academicyear_id", nullable = false)
+	private AcademicYear academicYear;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "exam_announcement_id", nullable = true)
+	private ExamAnnouncement examAnnouncement;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "section_id", nullable = true)
+	private Section section;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "batch_id", nullable = true)
+	private Batch batch;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "registration_type_id", nullable = true)
+	private RegistrationType registrationType;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear;  
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "courses_id", nullable = true)
+	private Courses courses;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT true")
+	 private Boolean exIsActive;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	 private Boolean exIsDelete;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExUrl() {
+		return exUrl;
+	}
+
+	public String getExReportType() {
+		return exReportType;
+	}
+
+	public String getExRemark() {
+		return exRemark;
+	}
+
+	public String getExReportCategory() {
+		return exReportCategory;
+	}
+
+	public String getExIsReGenerated() {
+		return exIsReGenerated;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+	public Section getSection() {
+		return section;
+	}
+
+	public Batch getBatch() {
+		return batch;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public RegistrationType getRegistrationType() {
+		return registrationType;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public Courses getCourses() {
+		return courses;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExUrl(String exUrl) {
+		this.exUrl = exUrl;
+	}
+
+	public void setExReportType(String exReportType) {
+		this.exReportType = exReportType;
+	}
+
+	public void setExRemark(String exRemark) {
+		this.exRemark = exRemark;
+	}
+
+	public void setExReportCategory(String exReportCategory) {
+		this.exReportCategory = exReportCategory;
+	}
+
+	public void setExIsReGenerated(String exIsReGenerated) {
+		this.exIsReGenerated = exIsReGenerated;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+	public void setSection(Section section) {
+		this.section = section;
+	}
+
+	public void setBatch(Batch batch) {
+		this.batch = batch;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setRegistrationType(RegistrationType registrationType) {
+		this.registrationType = registrationType;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	@Override
+	public String toString() {
+		return "GradeReportLog [id=" + id + ", exUrl=" + exUrl + ", exReportType=" + exReportType + ", exRemark="
+				+ exRemark + ", exReportCategory=" + exReportCategory + ", exIsReGenerated=" + exIsReGenerated
+				+ ", user=" + user + ", academicYear=" + academicYear + ", examAnnouncement=" + examAnnouncement
+				+ ", section=" + section + ", batch=" + batch + ", colleges=" + colleges + ", registrationType="
+				+ registrationType + ", department=" + department + ", semester=" + semester + ", degree=" + degree
+				+ ", programmes=" + programmes + ", programmeYear=" + programmeYear + ", courses=" + courses
+				+ ", exCreateDate=" + exCreateDate + ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete + "]";
+	}
+
+	
+
+}

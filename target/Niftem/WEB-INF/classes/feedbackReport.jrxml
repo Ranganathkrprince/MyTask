@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="feedbackReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="91bba46a-de9f-4b7b-8de6-710987c2df1c">
+	<parameter name="programmes" class="java.lang.String"/>
+	<parameter name="university" class="java.lang.String"/>
+	<parameter name="colleges" class="java.lang.String"/>
+	<parameter name="programmeYear" class="java.lang.String"/>
+	<parameter name="semester" class="java.lang.String"/>
+	<parameter name="academicYear" class="java.lang.String"/>
+	<parameter name="staff" class="java.lang.String"/>
+	<parameter name="designation" class="java.lang.String"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<parameter name="temptotalscale" class="java.lang.Integer"/>
+	<parameter name="totalmaxval" class="java.lang.Long"/>
+	<parameter name="course" class="java.lang.String"/>
+	<parameter name="coursecode" class="java.lang.String"/>
+	<parameter name="courcrdthr" class="java.lang.String"/>
+	<parameter name="department" class="java.lang.String"/>
+	<parameter name="noofstudent" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="maxscore" class="java.lang.Long"/>
+	<field name="feedbackname" class="java.lang.String"/>
+	<field name="scale" class="java.lang.Integer"/>
+	<field name="tmaxscore" class="java.lang.Long"/>
+	<field name="tfeedbackname" class="java.lang.String"/>
+	<field name="tscale" class="java.lang.Integer"/>
+	<field name="coursetotal" class="java.lang.String"/>
+	<field name="coursescale" class="java.lang.Integer"/>
+	<field name="maxscorecourse" class="java.lang.Long"/>
+	<field name="teachertotal" class="java.lang.String"/>
+	<field name="teacherscale" class="java.lang.Integer"/>
+	<field name="maxteacherscore" class="java.lang.Long"/>
+	<group name="DescriptionGroup" keepTogether="true">
+		<groupExpression><![CDATA[$F{tfeedbackname}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<printWhenExpression><![CDATA[$F{tfeedbackname}!=null]]></printWhenExpression>
+				<staticText>
+					<reportElement isPrintRepeatedValues="false" x="12" y="0" width="538" height="30" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="df9d4445-bc0e-4ea1-9822-0ebe539684a6">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+						<paragraph lineSpacingSize="3.0" leftIndent="2"/>
+					</textElement>
+					<text><![CDATA[II. About the Teacher]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="220" splitType="Stretch">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="63" y="0" width="488" height="30" forecolor="#006400" uuid="85c9e9ad-177c-4f11-8484-294e1ed96456"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{university}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="66" y="40" width="450" height="20" uuid="eae6ce83-67d9-4abd-b028-606c72f50be2">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[FEED BACK REPORT]]></text>
+			</staticText>
+			<image onErrorType="Blank">
+				<reportElement positionType="Float" x="13" y="0" width="50" height="50" uuid="08438a99-962c-4cb8-a2be-d2321eded7cc"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="11" y="116" width="119" height="20" uuid="34c30070-0f74-4ba7-a6b3-225411b84c14">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[Course Code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="116" width="90" height="20" uuid="0f907611-0778-45a0-b008-c5fe740296a0">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Programme Year]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="142" width="119" height="20" uuid="6c2a0ebc-6dda-4877-a51c-ea43676592f2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[Course Title]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="62" width="119" height="20" uuid="c93f08ab-109c-47ad-9431-356046fbf3bb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[Programme]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="89" width="119" height="20" uuid="08afa711-78f7-4077-9155-e38080f67e20">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[Department]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="89" width="90" height="20" uuid="8d1c3083-72a2-4a48-8e7a-9f4f223d35d7">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Academic Year]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="130" y="62" width="230" height="19" uuid="819bf764-cb74-4dce-8651-022fb837ec49"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"+$P{programmes}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="130" y="89" width="230" height="19" uuid="7fba0ba1-45a1-4f4a-ad9e-0feff0c533bc"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[": "+$P{department}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="130" y="116" width="221" height="17" uuid="24a877b1-3dc0-45b7-9234-a61bf0dcb64e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"+$P{coursecode}+" "+"("+$P{courcrdthr}+")"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="130" y="143" width="230" height="19" uuid="12d03032-ba9d-401a-aa57-02787d5eee44"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"+$P{course}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="450" y="89" width="94" height="17" uuid="52d0ac6a-5758-4e71-afb5-8c5636bed134"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"+$P{academicYear}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="450" y="117" width="94" height="19" uuid="a9fda97b-44ff-4aae-bfe4-54829fce9708"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"+$P{programmeYear}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="11" y="60" width="539" height="1" uuid="8861e30c-faff-43b3-878a-813df9cad225">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="11" y="190" width="540" height="1" uuid="e666666c-48b2-42cc-8761-59e26a58d86f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="549" y="60" width="2" height="130" uuid="f3ef0af8-ab53-49ad-a60c-beb832fc2f74">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="12" y="61" width="1" height="129" uuid="6e2e7c7c-c481-42d3-be4c-c3184b8c06f8">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="12" y="171" width="118" height="19" uuid="08f17976-a50f-4da2-bf51-e5f3d590a774">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[Name of the Teacher]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="142" width="90" height="20" uuid="c050616d-dce7-492a-b4d3-9471cdfb08a9">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Semester]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="170" width="90" height="20" uuid="611616b5-aef6-4bca-98dd-c3f88d4cb9af">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="200" width="498" height="20" uuid="fc22b4f0-ab73-4bc7-a58b-1e77f85ac2ed"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[I. About the Course / Subject]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="450" y="60" width="99" height="19" uuid="7bd3875d-c1bd-499a-94e7-bc3f3981123d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"+$P{noofstudent}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="450" y="143" width="94" height="19" uuid="af315698-684c-454b-bceb-fb1c5d55c7f5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"+$P{semester}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="450" y="171" width="99" height="19" uuid="8ef92273-981c-4279-aee4-dc51a09b1390"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"+$P{designation}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="360" y="61" width="90" height="20" uuid="e0872dd9-eaed-44b5-9ba4-eabff7223868">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[No of Student]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="129" y="171" width="231" height="19" uuid="f6b28c32-ca76-4b8b-a0dd-499ba555193d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"+$P{staff}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="50" y="-1" width="290" height="21" uuid="7f0eae6b-b9cb-4005-be28-b1bb224362cc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="-1" width="90" height="21" uuid="1661c1b2-4018-4e65-bf43-e94002e1c173"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Score Obtained]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="-1" width="80" height="21" uuid="a7b3ceed-ec56-43cc-ad57-5535244c3f25"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Max Score]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="50" y="0" width="290" height="20" isRemoveLineWhenBlank="true" uuid="7ccc41d6-e3bd-49ed-a5a3-3a8b89e14392">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{feedbackname}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="340" y="0" width="90" height="20" isRemoveLineWhenBlank="true" uuid="14c7b50e-1d2c-4409-a720-779985077205"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{scale}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="430" y="0" width="80" height="20" isRemoveLineWhenBlank="true" uuid="3e5bf288-0fc9-4d7c-8ff1-728a2b60de8b"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{maxscore}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="430" y="0" width="80" height="20" isRemoveLineWhenBlank="true" uuid="9f1257c5-cd10-4011-9204-761b833d5d7f">
+					<printWhenExpression><![CDATA[$F{maxscorecourse}!=null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{maxscorecourse}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="340" y="0" width="90" height="20" uuid="346210bd-e797-47e9-b9f2-bf0d2e5a04c0">
+					<printWhenExpression><![CDATA[$F{coursetotal}!=null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{coursescale}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="50" y="0" width="290" height="20" isRemoveLineWhenBlank="true" uuid="e3285e21-a92b-484e-bdc7-a460d94f2168">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<printWhenExpression><![CDATA[$F{coursetotal}!=null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{coursetotal}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="20">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="50" y="0" width="290" height="20" isRemoveLineWhenBlank="true" uuid="a7695a1b-2e7b-4404-88c9-ba6cd689094a">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tfeedbackname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="340" y="0" width="90" height="20" isRemoveLineWhenBlank="true" uuid="bb48f891-1546-4954-b65e-efcf4005ce96"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tscale}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="430" y="0" width="80" height="20" isRemoveLineWhenBlank="true" uuid="e7ed74af-e4bd-4b6d-bcfb-964770312214"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tmaxscore}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="50" y="0" width="290" height="20" isRemoveLineWhenBlank="true" uuid="6e563009-7277-4f34-af2a-10b6d3ac42fb">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<printWhenExpression><![CDATA[$F{teachertotal}!=null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{teachertotal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="340" y="0" width="90" height="20" isRemoveLineWhenBlank="true" uuid="551076ac-0f5f-4c82-9e78-b03974fe0aea">
+					<printWhenExpression><![CDATA[$F{teacherscale}!=null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{teacherscale}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="430" y="0" width="80" height="20" isRemoveLineWhenBlank="true" printWhenGroupChanges="DescriptionGroup" uuid="9ba619e4-8c96-4fd7-89b3-c80f24f61e06">
+					<printWhenExpression><![CDATA[$F{maxteacherscore}!=null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#C7C1C1"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{maxteacherscore}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="22" splitType="Immediate">
+			<staticText>
+				<reportElement x="270" y="0" width="70" height="22" uuid="55c9ef56-8d02-47d3-8c7c-4b5bbb1d0866"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement x="340" y="0" width="90" height="22" uuid="37ba2e2c-71c9-4327-b872-d1093a8f1135"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{temptotalscale}.intValue()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="430" y="0" width="75" height="22" uuid="560d8b51-cbc7-44de-84e0-0018f010ff49"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalmaxval}.intValue()]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

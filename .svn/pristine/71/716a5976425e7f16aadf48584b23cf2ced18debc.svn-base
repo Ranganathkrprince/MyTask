@@ -1,0 +1,108 @@
+package com.niftem.app.service;
+
+import java.util.Map;
+
+import com.niftem.app.model.BookletStaffRequest;
+import com.niftem.app.model.BookletUploadRequest;
+import com.niftem.app.model.CoursesRegistrationRequest;
+import com.niftem.app.model.EvaluationDetailsRequest;
+import com.niftem.app.model.EvaluatorSelectionRequest;
+import com.niftem.app.model.GradeReportRequest;
+import com.niftem.app.model.LoadAlertRequest;
+import com.niftem.app.model.PhotoCopyRequest;
+import com.niftem.app.model.PublishResultRequest;
+
+public interface  PostExamService  {
+
+	Map<String, Object> generateGradeReport(GradeReportRequest request);
+
+	Map<String, Object> getGradeReport(GradeReportRequest request);
+
+	Map<String, Object> checkGradeReportStatus(GradeReportRequest request);
+
+	Map<String, Object> generateSemesterProgressReport(GradeReportRequest request);
+
+	Map<String, Object> getEvaluatedCoursestList(CoursesRegistrationRequest request);
+
+	Map<String, Object> reEvaluation(CoursesRegistrationRequest request);
+
+	Map<String, Object> getSupplementaryCourses(CoursesRegistrationRequest request);
+
+	Map<String, Object> supplementaryRegistration(CoursesRegistrationRequest request);
+
+	Map<String, Object> coursesListForPhotocopy(CoursesRegistrationRequest request);
+
+	Map<String, Object> photocopy(CoursesRegistrationRequest request);
+
+	Map<String, Object> getReRegistrationCourses(CoursesRegistrationRequest request);
+
+	Map<String, Object> reRegistration(CoursesRegistrationRequest request);
+
+	Map<String, Object> getTransacationDetails(LoadAlertRequest request);
+
+	Map<String, Object> getTransacationDetails(String studentRollNo);
+
+	Map<String, Object> generateMigSemesterReport(GradeReportRequest request);
+
+	Map<String, Object> checkMigReportStatus(GradeReportRequest request);
+
+	Map<String, Object> bookletUpload(BookletUploadRequest request);
+
+	Map<String, Object> getPendingBarcodeOnstaff(EvaluationDetailsRequest request);
+
+	Map<String, Object> saveEvaluatorSelection(EvaluatorSelectionRequest request);
+
+	Map<String, Object> getEvaluatorSelection(EvaluatorSelectionRequest request);
+
+	Map<String, Object> getactivedetailsonStaff(Long staffId);
+
+	Map<String, Object> bookletAllocation(BookletStaffRequest request);
+
+	Map<String, Object> reAllocateBooklet(EvaluationDetailsRequest request);
+
+	Map<String, Object> getCoursesOnExam(EvaluationDetailsRequest request);
+
+	Map<String, Object> getStudentCount(EvaluationDetailsRequest request);
+
+	Map<String, Object> getTeacherList(EvaluationDetailsRequest request);
+
+	Map<String, Object> getBarcodeStatusOnstaff(BookletStaffRequest request);
+
+	Map<String, Object> saveEvaluatedMark(EvaluationDetailsRequest request);
+
+	Map<String, Object> getsavedEvaluatedMark(EvaluationDetailsRequest request);
+
+	Map<String, Object> getBarcodeDetailsOnEvaluator(EvaluationDetailsRequest barcodeRequest);
+
+	Map<String, Object> getStaffOnAllocatedBooklet(EvaluationDetailsRequest request);
+
+	Map<String, Object> getPhotocopyDetails(PhotoCopyRequest request);
+
+	Map<String, Object> sendPhotocopy(PhotoCopyRequest request);
+
+	Map<String, Object> updateEvaluatorSelection(EvaluatorSelectionRequest request);
+
+	Map<String, Object> getEvaluator(EvaluatorSelectionRequest request);
+
+	Map<String, Object> deleteEvaluatorSelection(EvaluatorSelectionRequest request);
+
+	Map<String, Object> getLog(String log);
+
+	Map<String, Object> resultPublishCreate(PublishResultRequest request);
+
+	Map<String, Object> resultPublishUpdate(PublishResultRequest request);
+
+	Map<String, Object> resultPublishGet(PublishResultRequest request);
+
+	Map<String, Object> resultPublishDelete(PublishResultRequest request);
+
+	Map<String, Object> getCoursesOnExamAndDept(EvaluationDetailsRequest request);
+
+	Map<String, Object> getSemesterReport(GradeReportRequest request);
+
+	Map<String, Object> getSupplementaryCoursesForStudent(CoursesRegistrationRequest request);
+
+	
+	
+	
+}

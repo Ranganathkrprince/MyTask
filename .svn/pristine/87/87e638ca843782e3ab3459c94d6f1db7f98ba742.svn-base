@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="semesterReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="83486a80-0393-4b47-aa42-4b413d2008e2">
+	<parameter name="university" class="java.lang.String"/>
+	<parameter name="universityhindi" class="java.lang.String"/>
+	<parameter name="dateinKannada" class="java.lang.String"/>
+	<parameter name="dateinEnglish" class="java.lang.String"/>
+	<parameter name="studentId" class="java.lang.String"/>
+	<parameter name="logo" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="studentphoto" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="icon" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="programe" class="java.lang.String"/>
+	<field name="facluty" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="cgpa" class="java.lang.Double"/>
+	<field name="fatherhindi" class="java.lang.String"/>
+	<field name="programedisc" class="java.lang.String"/>
+	<field name="college" class="java.lang.String"/>
+	<field name="programeEng" class="java.lang.String"/>
+	<field name="collegeEng" class="java.lang.String"/>
+	<field name="department" class="java.lang.String"/>
+	<field name="exStudentName" class="java.lang.String"/>
+	<field name="academicyear" class="java.lang.String"/>
+	<field name="exStudentNameEng" class="java.lang.String"/>
+	<field name="namehindi" class="java.lang.String"/>
+	<field name="programehindi" class="java.lang.String"/>
+	<field name="father" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="110">
+			<image onErrorType="Blank">
+				<reportElement x="220" y="10" width="163" height="69" isRemoveLineWhenBlank="true" uuid="3455e193-f46d-4b54-90da-341826fba2b4"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="18" y="60" width="552" height="50" forecolor="#336633" uuid="abdd94c4-c4bd-42e2-9877-eee6b341cc9d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Lohit Devanagari" size="24" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{universityhindi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="450" y="0" width="42" height="14" uuid="42c4a3fb-2978-4cdb-a32c-b9043a2f257a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sr. No.:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="683" splitType="Stretch">
+			<staticText>
+				<reportElement x="390" y="660" width="148" height="20" uuid="c7da34a4-b779-48e8-8eec-0a9ea1edd52e"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial Black" size="11" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[(Dr.c.Vasudevappa)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="18" y="335" width="513" height="275" uuid="2ab18b7b-ce5b-4949-abff-dae36d28c23d"/>
+				<textElement textAlignment="Justified" markup="styled">
+					<font fontName="Times New Roman" size="15"/>
+					<paragraph lineSpacing="Proportional" lineSpacingSize="2.1"/>
+				</textElement>
+				<textFieldExpression><![CDATA["On the recommendation of the Academic Council and approval of Board of Management , the Institute hereby confers the degree of " +"<style isBold='true' pdfFontName='Times-Bold'>"+$F{programe}+"</style>"+" ("+" "+"of "+"<style isBold='true' pdfFontName='Times-Bold'>"+$F{department}+"</style>"+")"+" "+"of "+"<style isBold='true' pdfFontName='Times-Bold'>"+$F{name}+"</style>"+" "+"Son/Daughter"+" "+"of " +"<style isBold='true' pdfFontName='Times-Bold'>"+$F{father}+"</style>"+",has qualified for the award of the degree of "+" "+"<style isBold='true' pdfFontName='Times-Bold'>"+$F{programe}+"</style>"+" "+ "who has successfully completed the requirement prescribed by the Institute for the award of the Degree as regular student in the year " +"with Cumulative Grade Point Average (CGPA) of "+"<style isBold='true' pdfFontName='Times-Bold'>"+$F{cgpa}+"</style>"+" (On a Ten Point Scale)."+"<style isBold='true' pdfFontName='Times-Bold'>" +"</style>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="140" width="511" height="160" forecolor="#000000" uuid="0f2d0757-8caa-4b9f-b83f-b605b262f660"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Lohit Devanagari" size="17" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["शैक्षणिक  परिषद् की अनुशंसा तथा प्रभन्दक मंडल  की स्वीकृति पर यह संस्थान ,"+$F{namehindi}+" सुपुत्र /सुपुत्री श्री" +$F{fatherhindi}+"को  "+$F{programehindi}+"की उपाधि  वर्ष  " +$F{academicyear}+" के एक नियमियत  छात्र / छात्रा  के रूप में संस्थान द्वारा  इस उपाधि  को धारण करने की निर्धारित अपेछाओ  को सफलतापूर्वक पूरा करने पर , संचयी औसत  ग्रेड अंक "+$F{cgpa}+" (दस अंको के माप पर  ) के साथ प्रदान करता है |"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="100" width="410" height="52" uuid="78aaaa91-5a45-4a2f-92d9-6144b84a0f10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Lohit Devanagari" size="22" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{programehindi}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="21" y="295" width="505" height="40" uuid="ef6edd0c-0ef2-4fd0-a830-0d905e83c889"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="26" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{programe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="21" y="-10" width="479" height="60" forecolor="#006633" uuid="2c6d823b-89ae-46fc-a8b7-ae18849bf65d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Old English Text MT" size="24" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{university}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="44" width="515" height="20" uuid="b9a860e0-51f8-4f68-a65f-59d7ef8d87bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="10" isBold="false" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[(Deemed to be University (De-Novo Category) under Section-3 of the UGC Act, 1956)
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="70" width="539" height="23" uuid="f05050a5-e16f-4afd-970d-05946b0ca219"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="10" isBold="false" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Kundli,Dist.Sonepat,Haryana (India) -131028
+]]></text>
+			</staticText>
+			<image onErrorType="Blank">
+				<reportElement x="480" y="0" width="80" height="83" uuid="ffb7dbd4-a73a-4b95-8537-751f66fb916a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{studentphoto}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

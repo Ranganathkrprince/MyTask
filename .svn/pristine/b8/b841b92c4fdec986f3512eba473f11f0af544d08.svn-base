@@ -1,0 +1,915 @@
+package com.niftem.app.util;
+
+import java.util.List;
+
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+
+import com.niftem.app.dao.EligiBilityResponse;
+import com.niftem.app.entity.AccessLogs;
+import com.niftem.app.entity.Batch;
+import com.niftem.app.entity.ClassAttendance;
+import com.niftem.app.entity.Courses;
+import com.niftem.app.entity.CoursesRegistration;
+import com.niftem.app.entity.CreditHours;
+import com.niftem.app.entity.EvaluatorList;
+import com.niftem.app.entity.InvigilatorDuty;
+import com.niftem.app.entity.SemesterRegistration;
+import com.niftem.app.entity.Studentpersonal;
+
+
+public abstract class ExcelExportUtility< E extends Object > {
+    protected SXSSFWorkbook wb;
+    protected Sheet sh;
+    protected XSSFSheet sheet;
+
+    protected static final String EMPTY_VALUE = " ";
+   
+    private void autoResizeColumns(int listSize) {
+        for (int colIndex = 0; colIndex < listSize; colIndex++) {
+            sh.autoSizeColumn(colIndex);
+        }
+    }
+    
+    
+    private void autoResizeColumnss(int listSizes) {
+        for (int colIndex = 0; colIndex < listSizes; colIndex++) {
+            sh.setColumnWidth(colIndex, 8000);
+        }
+    }
+    /**
+     * 
+     * This method will return Style of Header Cell
+     * 
+     * @return
+     */
+    protected CellStyle getHeaderStyle() {
+    	
+    	Font font = wb.createFont();
+		XSSFFont font1 = (XSSFFont) font;
+		font1.setFontName(font1.DEFAULT_FONT_NAME.toString());
+		font1.setFontHeightInPoints((short) 12);
+		font1.setBold(true);
+    	
+        CellStyle style = wb.createCellStyle();
+       // style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
+        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setFont(font);
+        return style;
+    }
+    
+ protected CellStyle getHeaderStyles() {
+    	
+    	Font font = wb.createFont();
+		XSSFFont font1 = (XSSFFont) font;
+		font1.setFontName(font1.DEFAULT_FONT_NAME.toString());
+		font1.setFontHeightInPoints((short) 12);
+		font1.setBold(true);
+		CellStyle styles = wb.createCellStyle();
+  	  	Font font11 = wb.createFont();
+		  font11.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		  font11.setColor(HSSFColor.WHITE.index);
+		  styles.setFont(font11);
+		  styles.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+		  styles.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		  styles.setBorderBottom(CellStyle.BORDER_THIN);
+		  styles.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderLeft(CellStyle.BORDER_THIN);
+		  styles.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderRight(CellStyle.BORDER_THIN);
+		  styles.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderTop(CellStyle.BORDER_THIN);
+		  styles.setTopBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setAlignment(CellStyle.ALIGN_CENTER);
+		
+		/*
+		 * CellStyle style = wb.createCellStyle(); //
+		 * style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
+		 * style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		 * style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		 * style.setBorderBottom(CellStyle.BORDER_THIN);
+		 * style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+		 * style.setBorderLeft(CellStyle.BORDER_THIN);
+		 * style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		 * style.setBorderRight(CellStyle.BORDER_THIN);
+		 * style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		 * style.setBorderTop(CellStyle.BORDER_THIN);
+		 * style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+		 * style.setAlignment(CellStyle.ALIGN_CENTER); style.setFont(font);
+		 */
+        return styles;
+    }
+    
+    /**
+     * 
+     * This method will return style for Normal Cell
+     * 
+     * @return
+     */
+    protected CellStyle getNormalStyle() {
+        CellStyle style = wb.createCellStyle();
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        return style;
+    }
+    protected CellStyle getNormalStyle1() {
+    	CellStyle styles = wb.createCellStyle();
+		  styles.setFillForegroundColor(IndexedColors.BRIGHT_GREEN.getIndex());
+		  styles.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		  styles.setBorderBottom(CellStyle.BORDER_THIN);
+		  styles.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderLeft(CellStyle.BORDER_THIN);
+		  styles.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderRight(CellStyle.BORDER_THIN);
+		  styles.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderTop(CellStyle.BORDER_THIN);
+		  styles.setTopBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setAlignment(CellStyle.ALIGN_CENTER);
+        return styles;
+    }
+    
+    protected CellStyle getNormalStyle2() {
+    	CellStyle styles = wb.createCellStyle();
+		  styles.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
+		  styles.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		  styles.setBorderBottom(CellStyle.BORDER_THIN);
+		  styles.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderLeft(CellStyle.BORDER_THIN);
+		  styles.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderRight(CellStyle.BORDER_THIN);
+		  styles.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderTop(CellStyle.BORDER_THIN);
+		  styles.setTopBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setAlignment(CellStyle.ALIGN_CENTER);
+        return styles;
+    }
+    
+    protected CellStyle getNormalStyle3() {
+    	CellStyle styles = wb.createCellStyle();
+		  styles.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.getIndex());
+		  styles.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		  styles.setBorderBottom(CellStyle.BORDER_THIN);
+		  styles.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderLeft(CellStyle.BORDER_THIN);
+		  styles.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderRight(CellStyle.BORDER_THIN);
+		  styles.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderTop(CellStyle.BORDER_THIN);
+		  styles.setTopBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setAlignment(CellStyle.ALIGN_CENTER);
+        return styles;
+    }
+    
+    protected CellStyle getNormalStyle4() {
+    	CellStyle styles = wb.createCellStyle();
+		  styles.setFillForegroundColor(IndexedColors.PINK.getIndex());
+		  styles.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		  styles.setBorderBottom(CellStyle.BORDER_THIN);
+		  styles.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderLeft(CellStyle.BORDER_THIN);
+		  styles.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderRight(CellStyle.BORDER_THIN);
+		  styles.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderTop(CellStyle.BORDER_THIN);
+		  styles.setTopBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setAlignment(CellStyle.ALIGN_CENTER);
+        return styles;
+    }
+    protected CellStyle getNormalStyle5() {
+    	CellStyle styles = wb.createCellStyle();
+    	styles.setLocked(false);
+    	sh.protectSheet("password");
+		  styles.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+		  styles.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		  styles.setBorderBottom(CellStyle.BORDER_THIN);
+		  styles.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderLeft(CellStyle.BORDER_THIN);
+		  styles.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderRight(CellStyle.BORDER_THIN);
+		  styles.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderTop(CellStyle.BORDER_THIN);
+		  styles.setTopBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setAlignment(CellStyle.ALIGN_CENTER);
+        return styles;
+    }
+    
+    
+    protected CellStyle getNormalStyle6() {
+    	CellStyle styles = wb.createCellStyle();
+    	  Font font11 = wb.createFont();
+		  font11.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		  font11.setColor(HSSFColor.WHITE.index);
+		  styles.setFont(font11);
+		  styles.setFillForegroundColor(IndexedColors.BLACK.getIndex());
+		  styles.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		  styles.setBorderBottom(CellStyle.BORDER_THIN);
+		  styles.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderLeft(CellStyle.BORDER_THIN);
+		  styles.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderRight(CellStyle.BORDER_THIN);
+		  styles.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setBorderTop(CellStyle.BORDER_THIN);
+		  styles.setTopBorderColor(IndexedColors.BLACK.getIndex());
+		  styles.setAlignment(CellStyle.ALIGN_CENTER);
+        return styles;
+    }
+    
+    protected CellStyle getNormalStyle7() {
+        CellStyle style = wb.createCellStyle();
+             
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setLocked(true);
+        
+        return style;
+    }
+    
+    protected CellStyle getNormalStyle8() {
+	CellStyle styles = wb.createCellStyle();
+	  Font font11 = wb.createFont();
+	  font11.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	  font11.setColor(HSSFColor.WHITE.index);
+	  styles.setFont(font11);
+	  styles.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+	  styles.setFillPattern(CellStyle.SOLID_FOREGROUND);
+	  styles.setBorderBottom(CellStyle.BORDER_THIN);
+	  styles.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+	  styles.setBorderLeft(CellStyle.BORDER_THIN);
+	  styles.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+	  styles.setBorderRight(CellStyle.BORDER_THIN);
+	  styles.setRightBorderColor(IndexedColors.BLACK.getIndex());
+	  styles.setBorderTop(CellStyle.BORDER_THIN);
+	  styles.setTopBorderColor(IndexedColors.BLACK.getIndex());
+	  styles.setAlignment(CellStyle.ALIGN_CENTER);
+    
+	  return styles;
+    }
+    
+    
+    
+    /**
+     * @param columns
+     */
+    
+    private void fillHeadermain(String[] columns) {
+        wb = new SXSSFWorkbook(100); // keep 100 rows in memory, exceeding rows will be flushed to disk
+        sh = wb.createSheet("Details");
+        CellStyle headerStle = getHeaderStyles();
+        for (int rownum = 2; rownum <3; rownum++) {
+            Row row = sh.createRow(rownum);
+            for (int cellnum = 0; cellnum < columns.length-1; cellnum++) {
+                Cell cell = row.createCell(cellnum);
+                cell.setCellValue(columns[cellnum]);
+                cell.setCellStyle(headerStle);
+            }
+            String codes="";
+            for(int rownum1=columns.length-1;rownum1<=columns.length-1;rownum1++)
+            {
+            	codes=codes+columns[rownum1];
+            	 Cell cell = row.createCell(rownum1);
+            	  codes=codes.replace("[","").replace("]", "");
+                 cell.setCellValue(codes);
+                 cell.setCellStyle(headerStle);
+            }
+            System.out.println("Final Value to segregrate "+ codes);
+            
+            int cod=columns.length-1;
+            String trans="";
+           trans=codes;
+            String str1[]=trans.split(", ");
+           for(String s:str1)
+		     {
+        	   System.out.println("niininnnn  "+s);
+				 Cell sta14 = row.createCell(cod++);
+		    	 sta14.setCellStyle(headerStle);
+		    	 sta14.setCellValue(s); 
+		         System.out.println("Final Value to segregrate final "+ s); 
+		    }
+        
+        }
+    }
+    
+    
+    
+    
+    private void fillHeader(String[] columns) {
+        wb = new SXSSFWorkbook(100); // keep 100 rows in memory, exceeding rows will be flushed to disk
+        sh = wb.createSheet("Details");
+        CellStyle headerStle = getHeaderStyle();
+        for (int rownum = 2; rownum <3; rownum++) {
+            Row row = sh.createRow(rownum);
+            for (int cellnum = 0; cellnum < columns.length; cellnum++) {
+                Cell cell = row.createCell(cellnum);
+                cell.setCellValue(columns[cellnum]);
+                cell.setCellStyle(headerStle);
+            }
+        }
+    }
+    
+    private void fillHeaders(String[] column) {
+        wb = new SXSSFWorkbook(100); // keep 100 rows in memory, exceeding rows will be flushed to disk
+        sh = wb.createSheet("Details");
+        CellStyle headerStle = getHeaderStyles();
+        for (int rownum = 2; rownum <3; rownum++) {
+            Row row = sh.createRow(rownum);
+            for (int cellnum = 0; cellnum < column.length; cellnum++) {
+                Cell cell = row.createCell(cellnum);
+                cell.setCellValue(column[cellnum]);
+                cell.setCellStyle(headerStle);
+                sh.setColumnWidth((short) (rownum), (short) 3000);
+            }
+        }
+    }
+    
+    
+    public final SXSSFWorkbook exportMidtermExamExcel(String[] columns, List<Object[]> list) {
+        fillHeaders(columns);
+        fillDataMidTermExam(list);
+        autoResizeColumns(columns.length);
+        return wb;
+    }
+  
+    abstract void fillDataMidTermExam(List<Object[]> list);
+    
+    public final SXSSFWorkbook exportExcelTimeTableLog(String[] columns ,List<Object[]> list) {
+    	
+    	   fillHeader(columns);
+           fillDataTimeTableLog( list);
+           autoResizeColumns(columns.length);
+           return wb;
+    }
+    
+
+	void fillDataTimeTableLog(List<Object[]> list) {
+		// TODO Auto-generated method stub
+		
+	}
+    
+    
+    
+	public SXSSFWorkbook examattendanceexportExcel(String[] columns, List<Object[]> list) {
+	
+        fillHeader(columns);
+        fillExamAttendanceReport(list);
+        autoResizeColumns(columns.length);
+        return wb;
+    }
+  
+   
+	abstract void fillExamAttendanceReport(List<Object[]> list);
+
+	
+	
+    public final SXSSFWorkbook exportClassTimeTableExamExcel(String[] columns, List<ClassAttendance> list) {
+        fillHeader(columns);
+        fillDataClassTimeTableExam(list);
+        autoResizeColumns(columns.length);
+        return wb;
+    }
+  
+    abstract void fillDataClassTimeTableExam(List<ClassAttendance> list);
+	
+	public SXSSFWorkbook exportExcelGradeReportLog(String[] columns, List<Object[]> list) {
+		   fillHeader(columns);
+		   fillDataClassGradeReportLog(list);
+	        autoResizeColumns(columns.length);
+	        return wb;
+	    }
+	  
+	    abstract void fillDataClassGradeReportLog( List<Object[]> list);
+		
+
+public SXSSFWorkbook exportExcelSemesterReportLog(String[] columns, List<Object[]> list) {
+	  fillHeader(columns);
+	   fillDataClassSemesterReportLog(list);
+       autoResizeColumns(columns.length);
+       return wb;
+   }
+ 
+   abstract void fillDataClassSemesterReportLog( List<Object[]> list);
+   
+   
+   
+   public SXSSFWorkbook exportStudentAdmision(String[] columns, List<Studentpersonal> student) {
+		  fillHeader(columns);
+		   fillDataStudentAdmision(student);
+	       autoResizeColumns(columns.length);
+	       return wb;
+	   }
+	 
+	   abstract void fillDataStudentAdmision( List<Studentpersonal> student);
+	   
+	   
+	   public SXSSFWorkbook exportCompletestudentAdmissionReport(String[] columns, List<Studentpersonal> student) {
+			  fillHeader(columns);
+			   fillCompletestudentAdmissionReport(student);
+		       autoResizeColumns(columns.length);
+		       return wb;
+		   }
+		 
+		   abstract void fillCompletestudentAdmissionReport( List<Studentpersonal> student);
+		   
+	   
+	   public SXSSFWorkbook exportStudentNotAdmision(String[] columns, List<Studentpersonal> student) {
+			  fillHeader(columns);
+			  fillDataStudentAdmisionNot(student);
+		       autoResizeColumns(columns.length);
+		       return wb;
+		   }
+		 
+		   abstract void fillDataStudentAdmisionNot( List<Studentpersonal> student);
+	   
+	   
+	   public SXSSFWorkbook semesterRegistration(String[] columns, List<SemesterRegistration> student) {
+			  fillHeader(columns);
+			   fillDatasemesterRegistration(student);
+		       autoResizeColumns(columns.length);
+		       return wb;
+		   }
+		 
+		   abstract void fillDatasemesterRegistration( List<SemesterRegistration> student);
+		   
+		   
+		   public SXSSFWorkbook approvalReport(String[] columns, List<SemesterRegistration> student) {
+				  fillHeader(columns);
+				  fillapprovalReport(student);
+			       autoResizeColumns(columns.length);
+			       return wb;
+			   }
+			 
+			   abstract void fillapprovalReport( List<SemesterRegistration> student);
+		   
+
+	/*
+	 * public SXSSFWorkbook teacherCourseMapping(String[] columns,
+	 * List<TeacherCourseMapping> student) { fillHeader(columns);
+	 * fillDataTeacherCouurseMapping(student); autoResizeColumns(columns.length);
+	 * return wb; }
+	 * 
+	 * abstract void fillDataTeacherCouurseMapping( List<TeacherCourseMapping>
+	 * student);
+	 */
+		  
+	/*
+	 * public final SXSSFWorkbook gradeReportExcel(String[]
+	 * columns,List<GradeReport> list,List<Studentpersonal> code) {
+	 * fillHeader(columns); gradeReportExcelData(list,code);
+	 * autoResizeColumns(columns.length); return wb; }
+	 * 
+	 * abstract void gradeReportExcelData(List<GradeReport>
+	 * list,List<Studentpersonal> code);
+	 */
+	    
+	    
+	    public final SXSSFWorkbook coursesReportExcel(String[] columns,List<Courses> list) {
+	        fillHeader(columns);
+	        coursesReportExcelData(list);
+	        autoResizeColumns(columns.length);
+	        return wb;
+	    }
+	  
+	    abstract void coursesReportExcelData(List<Courses> list);	    
+	    
+	    
+	    public SXSSFWorkbook StudentsDocumentsUploadstatusExcel(String[] columns, List<Object[]> dataList) {
+	    	fillHeader(columns);
+	    	DocumentUploadStatus(dataList);
+	        autoResizeColumns(columns.length);
+	        return wb;
+	    }
+	    
+	    abstract void DocumentUploadStatus(List<Object[]> dataList);
+	    
+	    
+	    
+	    
+	    public SXSSFWorkbook exportBankdetailsReportReportExcel(String[] columns, List<Object[]> dataList) {
+	    	fillHeader(columns);
+	    	Bankdetails(dataList);
+	        autoResizeColumns(columns.length);
+	        return wb;
+	    }
+	    
+	    abstract void Bankdetails(List<Object[]> dataList);
+	    
+	    
+
+	    public SXSSFWorkbook batchReport(String[] columns, List<Batch> list) {
+				// TODO Auto-generated method stub
+		        fillHeader(columns);
+			     batchReportExcelData(list);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			  abstract void batchReportExcelData(List<Batch> list);	
+			    
+		 public SXSSFWorkbook exportAuditLogReportExcel(String[] columns, List<Object[]> dataList) {
+			fillHeader(columns);
+		    fillDataAuditLogReportLog(dataList);
+			autoResizeColumns(columns.length);
+			return wb;
+		}		 
+		abstract void fillDataAuditLogReportLog( List<Object[]> dataList);
+		 
+		public SXSSFWorkbook transactionexportExcel(String[] columns, List<Object[]> list) {
+			fillHeadermain(columns);
+			   fillDatatransactionexportReportLog(list);
+		       autoResizeColumns(columns.length);
+		       return wb;
+		   }
+		 
+		   abstract void fillDatatransactionexportReportLog( List<Object[]> list);
+		   
+		   public SXSSFWorkbook EvaluatorListReportExcel(String[] columns, List<EvaluatorList> expert) {
+			   fillHeader(columns);
+		        fillExpertReport(expert);
+		        autoResizeColumns(columns.length);
+		        return wb;
+		    }
+		   abstract void fillExpertReport(List<EvaluatorList> expert);
+
+			public SXSSFWorkbook topperlistExcel(String[] columns, List<Object[]> dataList) {
+				  fillHeader(columns);
+				   fillDataTopperReportLog(dataList);
+			       autoResizeColumns(columns.length);
+			       return wb;
+			   }
+			 
+			   abstract void fillDataTopperReportLog( List<Object[]> dataList);
+	 	 
+			   public SXSSFWorkbook criteriaReportlistExcel(String[] columns, List<Object[]> list) {
+								  fillHeader(columns);
+								   fillDatacriteriaReportLog(list);
+							       autoResizeColumns(columns.length);
+							       return wb;
+							   }	 
+					 abstract void fillDatacriteriaReportLog( List<Object[]> list);
+			
+					 
+			  public SXSSFWorkbook goldMeritReportlistExcel(String[] columns, List<Object[]> list) {
+						// TODO Auto-generated method stub
+							  fillHeader(columns);
+							   fillDatagoldMeritReportLog(list);
+						       autoResizeColumns(columns.length);
+						       return wb;
+						   }
+						 
+						   abstract void fillDatagoldMeritReportLog( List<Object[]> list);
+
+			public SXSSFWorkbook TransactionReportlistExcel(String[] columns, List<Object[]> list) {
+					 fillHeader(columns);
+					 fillDataTransactionReportLog(list);
+					 autoResizeColumns(columns.length);
+				     return wb;
+			 }
+							 
+		  abstract void fillDataTransactionReportLog( List<Object[]> list);
+			
+
+	  public SXSSFWorkbook questionPaperReportlistExcel(String[] columns, List<Object[]> list) {
+				// TODO Auto-generated method stub
+		  fillHeader(columns);
+		   fillDataquestionPaperReportLog(list);
+	       autoResizeColumns(columns.length);
+	       return wb;
+	   }
+	 
+	   abstract void fillDataquestionPaperReportLog( List<Object[]> list);
+
+
+		public SXSSFWorkbook excelInvigilatorAllocationReportlistExcel(String[] columns, List<Object[]> list) {
+			// TODO Auto-generated method stub
+			  fillHeader(columns);
+			   fillDataInvigilatorAllocationReportLog(list);
+		       autoResizeColumns(columns.length);
+		       return wb;
+		   }
+		 
+		   abstract void fillDataInvigilatorAllocationReportLog( List<Object[]> list);
+
+
+			public SXSSFWorkbook exportAccessLogReportExcel(String[] columns, List<AccessLogs> dataList) {
+				  fillHeader(columns);
+				   fillDataAccessLogReportLog(dataList);
+			       autoResizeColumns(columns.length);
+			       return wb;
+			   }
+			 
+			   abstract void fillDataAccessLogReportLog( List<AccessLogs> dataList);
+
+			    
+			    public SXSSFWorkbook exportoverallMarksReportExcel(String[] columns, List<Object[]> dataList) {
+			    	fillHeader(columns);
+			        filloverALLReportData(dataList);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			    
+			    abstract void filloverALLReportData(List<Object[]> dataList);
+			    
+	
+			    public SXSSFWorkbook exportoverallMarksReportMtechMbaExcel(String[] columns, List<Object[]> dataList) {
+			    	fillHeader(columns);
+			        filloverALLReportDataMtechMba(dataList);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			    
+			    abstract void filloverALLReportDataMtechMba(List<Object[]> dataList);
+			  
+			    public SXSSFWorkbook exportMarksheetUploadStatusExcel(String[] columns, List<Object[]> dataList) {
+			    	fillHeader(columns);
+			        fillMarksheetUploadStatus(dataList);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			    
+			    abstract void fillMarksheetUploadStatus(List<Object[]> dataList);
+			    
+			    
+			    public SXSSFWorkbook exportMarksheetUploadStatusMtechMbaExcel(String[] columns, List<Object[]> dataList) {
+			    	fillHeader(columns);
+			        fillfillMarksheetUploadStatusMtechMba(dataList);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			    
+			    abstract void fillfillMarksheetUploadStatusMtechMba(List<Object[]> dataList);
+			    
+			    
+			    public final SXSSFWorkbook exportMasterOfAllExcel(String[] columns, List<Object[]> list) {
+			        fillHeader(columns);
+			        fillDataMasterOfAll(list);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			  
+			    abstract void fillDataMasterOfAll(List<Object[]> list);
+
+
+			    public final SXSSFWorkbook creditHoursReportNewReportExcel(String[] columns,List<CreditHours> list) {
+			        fillHeader(columns);
+			        creditHoursReportExcelData(list);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			  
+			    abstract void creditHoursReportExcelData(List<CreditHours> list);  
+			    
+			    
+			    public SXSSFWorkbook exportNewBatchReportExcel(String[] columns, List<Object[]> dataList) {
+			    	fillHeader(columns);
+			        fillNewBatchReportData(dataList);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			    
+			    abstract void fillNewBatchReportData(List<Object[]> dataList); 
+			  
+			    
+			    
+			    public SXSSFWorkbook exportSubmittedReportExcel(String[] columns, List<Object[]> dataList) {
+			    	fillHeader(columns);
+			        fillSubmittedReportData(dataList);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			    
+			    abstract void fillSubmittedReportData(List<Object[]> dataList); 
+			    
+			    
+			    
+			    public SXSSFWorkbook exportsemesterRegistration(String[] columns, List<SemesterRegistration> dataList,List<CoursesRegistration> st1,List<Courses> st2) {
+			    	fillHeader(columns);
+			        fillexportsemRegistration(dataList,st1,st2);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			    
+			    abstract void fillexportsemRegistration(List<SemesterRegistration> dataList,List<CoursesRegistration> st1,List<Courses> st2); 
+			    
+			    
+			    
+			    public final SXSSFWorkbook exportSupplyExcel(String[] columns, List<Object[]> list) {
+			        fillHeader(columns);
+			        SupplyExcelReport(list);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			  
+			    abstract void SupplyExcelReport(List<Object[]> list);
+			    
+			    
+			    
+			    
+			    
+			    public final SXSSFWorkbook exportteachercoursemapreportExcel(String[] columns, List<Object[]> list) {
+			        fillHeader(columns);
+			        teachemappedcourseslistReport(list);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			  
+			    abstract void teachemappedcourseslistReport(List<Object[]> list);
+			
+			    
+			    
+			    
+			    public final SXSSFWorkbook exportteachercoursemapreportSampleExcel(String[] columns, List<Object[]> list) {
+			        fillHeader(columns);
+			        teacher(list);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			  
+			    abstract void teacher(List<Object[]> list);
+			
+			    
+			    
+			    public final SXSSFWorkbook exportteachercoursemapreportSamplesExcel(String[] columns, List<Object[]> list) {
+			        fillHeader(columns);
+			        teachers(list);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			  
+			    abstract void teachers(List<Object[]> list);
+			    
+			    
+			    
+			    public final SXSSFWorkbook exportvalidateGradeReportExcel(String[] columns, List<Object[]> list) {
+			        fillHeader(columns);
+			        GradeReport(list);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			  
+			    abstract void GradeReport(List<Object[]> list);
+			
+			    
+			    
+			    public final SXSSFWorkbook exportvalidateStaffReportExcel(String[] columns, List<Object[]> list) {
+			        fillHeader(columns);
+			        StaffReport(list);
+			        autoResizeColumns(columns.length);
+			        return wb;
+			    }
+			  
+			   
+				abstract void StaffReport(List<Object[]> list);
+				
+				public final SXSSFWorkbook IATheoryMarksReportExcel(String[] columns, List<CoursesRegistration> list) {
+					fillHeaders(columns);
+					TheoryMarks(list);
+					autoResizeColumnss(columns.length);
+					return wb;
+				 }	   
+				abstract void TheoryMarks(List<CoursesRegistration> list);
+								
+			    public final SXSSFWorkbook IAPracticalMarksReportExcel(String[] columns, List<CoursesRegistration> list) {
+				    fillHeaders(columns);
+				    PracticalMarks(list);
+				    autoResizeColumnss(columns.length);
+				    return wb;
+				    }
+				abstract void PracticalMarks(List<CoursesRegistration> list);
+				
+			//=======================	
+				
+				public final SXSSFWorkbook IAPracticalIndustrialVisitMarksReportExcel(String[] columns, List<CoursesRegistration> list) {
+				    fillHeaders(columns);
+				    IndustrialVisitPracticalMarks(list);
+				    autoResizeColumnss(columns.length);
+				    return wb;
+				    }
+				abstract void IndustrialVisitPracticalMarks(List<CoursesRegistration> list);
+				
+				
+				
+				public final SXSSFWorkbook IAPracticalMarksIndustrialTrainingOrInternshipReportExcel(String[] columns, List<CoursesRegistration> list) {
+				    fillHeaders(columns);
+				    IndustrialTrainingOrInternshipPracticalMarks(list);
+				    autoResizeColumnss(columns.length);
+				    return wb;
+				    }
+				abstract void IndustrialTrainingOrInternshipPracticalMarks(List<CoursesRegistration> list);
+				
+				
+				
+				public final SXSSFWorkbook IAPracticalMarksVillageAdoptionReportExcel(String[] columns, List<CoursesRegistration> list) {
+				    fillHeaders(columns);
+				    VillageAdoptionPracticalMarks(list);
+				    autoResizeColumnss(columns.length);
+				    return wb;
+				    }
+				abstract void VillageAdoptionPracticalMarks(List<CoursesRegistration> list);
+				
+				
+				
+				public final SXSSFWorkbook IAPracticalMarksResearchProjectReportExcel(String[] columns, List<CoursesRegistration> list) {
+				    fillHeaders(columns);
+				    ResearchProjectPracticalMarks(list);
+				    autoResizeColumnss(columns.length);
+				    return wb;
+				    }
+				abstract void ResearchProjectPracticalMarks(List<CoursesRegistration> list);
+				
+				
+				
+				public final SXSSFWorkbook IAPracticalMarksProjectReportExcel(String[] columns, List<CoursesRegistration> list) {
+				    fillHeaders(columns);
+				    ProjectPracticalMarks(list);
+				    autoResizeColumnss(columns.length);
+				    return wb;
+				    }
+				abstract void ProjectPracticalMarks(List<CoursesRegistration> list);
+				
+				
+
+				public final SXSSFWorkbook IAPracticalMarksSeminarReportExcel(String[] columns, List<CoursesRegistration> list) {
+				    fillHeaders(columns);
+				   SeminarPracticalMarks(list);
+				    autoResizeColumnss(columns.length);
+				    return wb;
+				    }
+				abstract void SeminarPracticalMarks(List<CoursesRegistration> list);
+				
+				
+				
+		//======================		
+		public final SXSSFWorkbook IATheoryMarksReportBtechExcel(String[] columns, List<CoursesRegistration> list) {
+					        fillHeaders(columns);
+					        BtechTheoryMarks(list);
+					        autoResizeColumnss(columns.length);
+					        return wb;
+		}
+	abstract void BtechTheoryMarks(List<CoursesRegistration> list);
+	
+	
+	
+    public SXSSFWorkbook InvigolatorReportExcel(String[] columns, List<InvigilatorDuty> dataList) {
+    	fillHeader(columns);
+    	InvigilatorDutydetails(dataList);
+        autoResizeColumns(columns.length);
+        return wb;
+    }
+    
+    abstract void InvigilatorDutydetails(List<InvigilatorDuty> dataList);	
+    
+    
+    
+    
+    public SXSSFWorkbook exportDynamicReportReportExcel(String[] columns, List<Object[]> dataList , String reportname) {
+    	fillHeader(columns);
+    	StudentDynamicdetails(dataList ,columns.length , reportname);
+        autoResizeColumns(columns.length);
+        return wb;
+    }
+    
+    abstract void StudentDynamicdetails(List<Object[]> dataList, int length  , String reportname);	
+	
+
+
+		public final SXSSFWorkbook exportEligibleExcel(String[] columns, List<EligiBilityResponse> list, List<String> approve) {
+		    fillHeader(columns);
+		    fillDataEligibleList(list ,approve);
+		    autoResizeColumns(columns.length);
+		    return wb;
+		}
+		
+		abstract void fillDataEligibleList(List<EligiBilityResponse> list, List<String> approve);
+
+}

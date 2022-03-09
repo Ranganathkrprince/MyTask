@@ -1,0 +1,148 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_room_master")
+public class RoomMaster {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
+	@ManyToOne( optional = false)
+	 @JoinColumn(name = "colleges_id", nullable = false)
+	 private Colleges colleges;  
+	
+	
+	private int  noOfInvigilator;
+		
+	private String exName;
+	
+	private String exRoomNumber;
+	
+	private Integer exRoomCapacity;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	private Integer exNumberOfStudent;
+
+	public Long getId() {
+		return id;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public int getNoOfInvigilator() {
+		return noOfInvigilator;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public String getExRoomNumber() {
+		return exRoomNumber;
+	}
+
+	public Integer getExRoomCapacity() {
+		return exRoomCapacity;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public Integer getExNumberOfStudent() {
+		return exNumberOfStudent;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setNoOfInvigilator(int noOfInvigilator) {
+		this.noOfInvigilator = noOfInvigilator;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public void setExRoomNumber(String exRoomNumber) {
+		this.exRoomNumber = exRoomNumber;
+	}
+
+	public void setExRoomCapacity(Integer exRoomCapacity) {
+		this.exRoomCapacity = exRoomCapacity;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setExNumberOfStudent(Integer exNumberOfStudent) {
+		this.exNumberOfStudent = exNumberOfStudent;
+	}
+
+	@Override
+	public String toString() {
+		return "RoomMaster [id=" + id + ", colleges=" + colleges + ", noOfInvigilator=" + noOfInvigilator + ", exName="
+				+ exName + ", exRoomNumber=" + exRoomNumber + ", exRoomCapacity=" + exRoomCapacity + ", exIsActive="
+				+ exIsActive + ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate="
+				+ exUpdateDate + ", exNumberOfStudent=" + exNumberOfStudent + "]";
+	}
+	
+}

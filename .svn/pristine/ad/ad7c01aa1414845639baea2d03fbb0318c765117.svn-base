@@ -1,0 +1,55 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.QuestionPaperPattern;
+@Repository
+@Service
+@Transactional
+public interface QuestionPaperPatternRepository  extends CrudRepository<QuestionPaperPattern, Long> {
+
+	List<QuestionPaperPattern> findByExIsDelete(boolean b);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_question_paper_pattern set ex_is_delete = ?1 ,ex_is_active =?2  where id =?3", nativeQuery = true)
+	int deleteQuestionPaperPattern(Boolean exIsDelete, Boolean is_active, Long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_question_paper_pattern set  ex_is_active = ?2, question_paper_topic_id = ?3, question_paper_type_id = ?4, ex_end_no = ?5, ex_start_no = ?6,ex_no_of_question=?7,ex_each_question_mark=?8,ex_update_date =?9 where  programmes_id = ?1 and department_id=?10 and id =?11", nativeQuery = true)
+	int updateQuestionPaperPattern(Long programme, Boolean exIsActive, Long questionPaperTopic, Long questionPaperType,
+			Double exEndNo, Double exStartNo, Double exNoOfQuestion, Double exEachQuestionMark, Date date, Long depatment, Long long1);
+
+
+	List<QuestionPaperPattern> findByExIsDeleteAndExIsActiveAndCoursesIdAndProgrammesId(boolean b, boolean c,
+			Long courses, Long programmes);
+
+
+	Optional<QuestionPaperPattern> findByExIsDeleteAndExIsActiveAndQuestionPaperTopicIdAndCoursesId(boolean b,
+			boolean c, Long id, Long courses);
+
+
+	
+
+
+
+
+
+	List<QuestionPaperPattern> findByExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeIdAndAcademicYearIdAndQuestionPaperTopicIdAndQuestionPaperTypeIdAndExamAnnouncementId(
+			boolean b, boolean c, Long programme, Long degree, Long academicYear, Long questionPaperTopic,
+			Long questionPaperType, Long examAnnouncement);
+
+
+
+}

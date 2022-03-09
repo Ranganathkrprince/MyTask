@@ -1,0 +1,279 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Category;
+import com.niftem.app.entity.Studentadmission;
+@Repository
+@Service
+@Transactional
+
+public interface StudentadmissionRepository  extends CrudRepository<Studentadmission, Long>{
+	
+	
+	List<Studentadmission> findByExIsDeleteAndExIsActive(Boolean exIsDelete, Boolean exIsActive);
+
+	
+	List<Studentadmission> findByExIsDeleteAndExUserNameAndExIsActive(Boolean exIsDelete, String exUserName, Boolean exIsActive);
+
+	List<Studentadmission> findByExIsDeleteAndExIsActiveAndCollegesIdAndDegreeId(boolean b, boolean c, Long colleges,Long degree);
+
+	List<Studentadmission> findByCollegesIdAndDegreeIdAndProgrammesIdAndAcademicYearId(Long colleges, Long degree,Long programmes, Long academicYear);
+
+	Optional<Studentadmission> findByExIsDeleteAndExIsActiveAndExEnrollementNo(boolean delete, boolean active, String string);
+	
+	List<Studentadmission> findByExEnrollementNoAndExIsDeleteAndExIsActive(String enroll , boolean delete, boolean active);
+	
+	
+	
+//	@Modifying
+//	@Transactional
+//	@Query(value = "update ex_student_admission set mentor_id =?1 where  id =?2", nativeQuery = true)
+//	int updatestudentmentor(Long mentor, Long id);
+
+	//List<Studentadmission> findByMentorIdAndId(Long mentor, Long studentadmission);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_student_admission set  ex_password = ?1  where ex_user_name =?2", nativeQuery = true)
+	int updateStudentPassword(String newpassworddcrypt, String userName);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_student_admission set  ex_study_status = ?1  where id =?2", nativeQuery = true)
+	int updateStatus(String newpassworddcrypt, Long userName);
+
+	List<Studentadmission> findByExIsDeleteAndExUserName(boolean b, String userName);
+	
+
+	List<Studentadmission> findByExIsDeleteAndExUserNameAndExPassword(boolean b, String userName,
+			String oldpassworddcrypt);
+
+
+	Optional<Studentadmission> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, Long studentadmission);
+
+
+	List<Studentadmission> findByExIsActiveAndExIsDeleteAndExIsApprove(boolean b, boolean c, int i);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_student_admission set ex_is_delete = ?1 , ex_is_active = ?2 , ex_is_approve=?3  where colleges_id = ?4 and degree_id=?5 and programmes_id =?6 and department_id=?7 and id=?8", nativeQuery = true)
+	int updatedstudent(boolean b, boolean c, int hod, Long colleges, Long degree, Long programmes, Long department,Long student);
+
+	Optional<Studentadmission> findByExIsDeleteAndExIsActiveAndIdAndExIsApprove(boolean b, boolean c, Long student,
+			int exIsApprove);
+
+
+
+	@Query(value ="SELECT * FROM ex_student_admission  where    id = ?1 and colleges_id = ?2 and programmes_id =?3   and academic_year_id =?4  and degree_id = ?5", nativeQuery = true)
+	List<Studentadmission> getStudentBetween(Long studentadmission, Long colleges, Long programmes, Long academicYear,Long degree);
+
+	
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_student_admission set ex_photo = ?1 where id =?2", nativeQuery = true)
+	
+	int updatePhoto(String imagepath, Long id);
+	
+	
+	Optional<Studentadmission> findByExIsDeleteAndExIsActiveAndExRollNo(boolean b, boolean c, String string);
+
+	List<Studentadmission> findByExIsActiveAndExIsDeleteAndDegreeIdAndStreamIdInAndProgrammesIdAndAcademicYearIdAndCollegesId(
+			boolean b, boolean c, Long degree, List<Long> list1, Long programmes, Long academicYear, Long colleges);
+
+	List<Studentadmission> findByExIsActiveAndExIsDeleteAndDegreeIdAndStreamIdInAndProgrammesIdAndCollegesId(boolean b,
+			boolean c, Long degree, List<Long> list1, Long programmes, Long colleges);
+
+	Optional<Studentadmission> findByExIsDeleteAndExIsActiveAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentId(
+			boolean b, boolean c, Long colleges, Long degree, Long programmes, Long department);
+
+	
+//		List<Studentadmission> findByIdBetween(Long studentIdFrom, Long studentIdto);
+
+		
+		@Modifying
+		@Transactional
+		@Query(value = "UPDATE ex_student_admission SET mentor_id = ?1 where id = ?2", nativeQuery = true)
+ 		
+		int updatestudentmentor(Long mentor, Long long1);
+
+		Optional<Studentadmission> findByExIsDeleteAndExIsActiveAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndStreamId(
+				boolean b, boolean c, Long colleges, Long degree, Long programmes, Long department, Long stream);
+	
+		@Modifying
+		@Transactional
+		@Query(value = "SELECT * FROM ex_student_admission WHERE  id  BETWEEN ?1 AND ?2 ", nativeQuery = true)
+		List<Studentadmission> findByIdBetween(Long studentIdFrom, Long studentIdto);
+
+		List<Studentadmission> findByExIsDeleteAndExIsActive(boolean b, boolean c);
+
+		Optional<Studentadmission> findByExIsDeleteAndExIsActiveAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndId(
+				boolean b, boolean c, Long colleges, Long degree, Long programmes, Long department, Long id);
+
+		Optional<Studentadmission> findByExIsDeleteAndExIsActiveAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndId(
+				boolean b, boolean c, Long colleges, Long degree, Long programmes, Long department,
+				Studentadmission studentadmission);
+
+		Optional<Studentadmission> findByExRollNoAndExIsDeleteAndExIsActive(String string, boolean b, boolean c);
+
+		List<Studentadmission> findByCollegesIdAndDegreeIdAndProgrammesIdAndAcademicYearIdAndDepartmentId(Long colleges,
+				Long degree, Long programmes, Long academicYear, Long department);
+
+		
+	
+		List<Studentadmission> findByExRollNoAndExIsActiveAndExIsDelete(String student, boolean b, boolean c);
+
+		List<Studentadmission> findByProgrammesIdAndCollegesIdAndDegreeIdAndExIsActiveAndExIsDeleteAndBatchId(
+				Long programmes, Long colleges, Long degree, boolean b, boolean c, long batch);
+
+		Optional<Studentadmission> findByExRollNo(String exRollNo);
+		
+		List<Studentadmission> findByExRollNoAndExIsActive(String exRollNo , boolean active);
+
+		Optional<Studentadmission> findByExRollNoAndBatchId(String exRollNo , Long batch);
+
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_student_admission set hostel_id =?1 where colleges_id =?2 and  programmes_id =?3 and  degree_id =?4 and ex_roll_no =?5", nativeQuery = true)
+		
+		int updateStudentforHostel(Long hostel, Long colleges, Long programmes, Long degree, String exRollNo);
+
+		
+		
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_student_admission set hostel_id =?1 where ex_roll_no =?2", nativeQuery = true)
+
+		int updateHostelfordelete(Long hostel, String exRollNo);
+
+		List<Studentadmission> findByExRollNoAndProgrammesIdAndCollegesIdAndExIsActiveAndExIsDelete(String student,
+				Long programmes, Long college, boolean b, boolean c);
+
+		
+		
+
+		List<Studentadmission> findByIdAndProgrammesIdAndExIsActiveAndExIsDelete(Long student, Long programmes,
+				boolean b, boolean c);
+
+		
+		List<Studentadmission> findByCollegesIdAndDegreeIdAndProgrammesIdAndExRollNoGreaterThanEqualAndExRollNoLessThanEqualAndDepartmentId(
+				Long colleges, Long degree, Long programmes, String exStudentRollNoFrom, String exStudentRollNoTo,
+				Long department);
+		
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_student_admission set section_id =?5 where colleges_id=?1 and degree_id=?2 and programmes_id=?3 and id =?4 and department_id=?6" , nativeQuery = true)
+		int updatestudentsection(Long colleges, Long degree, Long programmes, Long id, Long section, Long department);
+
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_student_admission set mentor_id =?5 where colleges_id=?1 and degree_id=?2 and programmes_id=?3 and id =?4 and department_id=?6" , nativeQuery = true)
+		int updatestudentMentor(Long colleges, Long degree, Long programmes, Long id, Long mentor, Long department);
+
+
+
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_student_admission set ex_is_approve = 0 where colleges_id=?1 and degree_id=?2 and programmes_id=?3 and batch_id =?4 and id not IN ?5" , nativeQuery = true)
+		int updateForRegistration(Long colleges, Long degree, Long programmes, Long batchId, List<Long> dataList);
+		
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_student_admission set ex_is_approve = 1 where colleges_id=?1 and degree_id=?2 and programmes_id=?3" , nativeQuery = true)
+		int updateStudentRegistration(Long colleges, Long degree, Long programmes);
+
+		List<Studentadmission> findByExRollNoAndProgrammesIdAndExIsActiveAndExIsDelete(String exRollNo, Long programmes,
+				boolean b, boolean c);
+
+		
+		List<Studentadmission> findByCollegesIdAndProgrammesIdAndDegreeIdAndAcademicYearId(Long colleges,
+				Long programmes, Long degree, Long academicYear);
+
+		@Modifying
+		@Transactional
+		@Query(value = "update ex_student_admission set ex_name=?1 ,ex_study_status =?2 ,ex_name_in_hindi=?3,colleges_id=?4 , category_id=?5,allocated_category_id=?6 ,section_id=?7 ,ex_is_active=?8 ,ex_details_qualification=?10,ex_all_india_rank =?11 where id =?9", nativeQuery = true)
+		
+		
+
+		int updateStudentadmist(String exName, String exStudyStatus, String exNameInHindi, Long colleges, Long category,
+				Long allocatedCategory, Long section, Boolean exIsActive, Long id, String exDetailsQualification,
+				String exAllIndiaRank);
+
+	
+	//	Map<String, Object> findByExIsDeleteAndExRollNoAndExIsActive(boolean b, String trim, boolean c);
+		
+		List<Studentadmission> findByExIsDeleteAndExIsActiveAndDegreeIdAndProgrammesIdAndDepartmentIdAndBatchId(boolean b, boolean c, Long degree, Long programmes, Long department , Long batch);
+
+		List<Studentadmission> findByExIsActiveAndExIsDeleteAndExIsApproveAndCollegesIdAndDegreeIdAndProgrammesIdAndDepartmentIdAndAcademicYearId(
+				boolean b, boolean c, int i, Long colleges, Long degree, Long programmes, Long department,
+				Long academicYear);
+
+
+		Optional<Studentadmission> findByExIsDeleteAndExIsActiveAndExRollNo(boolean b, boolean c, Long student);
+
+
+		@Query(value = "SELECT a1.ex_identifier AS clg,a2.ex_name AS degree,a3.ex_identifier AS pgm,a4.ex_identifier AS dept,a6.ex_identifier, a5.ex_contact_details AS cd,\r\n" + 
+				"a5.ex_email_id AS emailid, a.ex_roll_no AS roll,a.ex_name AS namesss,  \r\n" + 
+				"case when a.ex_document_path IS NULL OR a.ex_document_path = 'NA' then 'Pending' ELSE 'DocumentsUploaded' END AS documentstatus,\r\n" +
+				"case when b.document_type=1 AND b.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END as Provissionalseatallotmentletter,\r\n"+
+				"case when b.document_type=2 AND b.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END as JoSAAwebsitedulySignedbytheCandidate,\r\n"+
+				"case when b.document_type=3 AND b.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END as JEEMain ,\r\n"+
+				"case when b.document_type=4 AND b.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END as Classxii,\r\n"+
+				"case when b.document_type=5 AND b.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END as Classx,\r\n"+
+				"case when b.document_type=6 AND b.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END as AdharCardPanCard,\r\n"+
+				"case when b.document_type=7 AND b.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END as ValidPassPort,\r\n"+
+				"case when b.document_type=8 AND b.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END as OCIPIOCard,\r\n"+
+				"case when b.document_type=9 AND b.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END as ProofofExaminationCenter ,\r\n"+
+				"case when b.document_type=10 AND b.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END as ProofofCategory,\r\n"+
+				"case when b.document_type=11 AND b.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END as CertificateforKM,\r\n"+
+				"case when b.document_type=12 AND b.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END as MedicalCertificateofhandicap,\r\n"+
+				"case when b.document_type=13 AND b.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END as MigrationCertificateTransferCertificate ,\r\n"+
+				"case when b.document_type=14 AND b.exdocument_path IS NOT NULL then 'uploaded' ELSE 'pending' END as OtherDocuments \r\n"+
+				" FROM ex_student_admission a \r\n" + 
+				" LEFT JOIN ex_colleges a1 ON a1.id=a.colleges_id\r\n" + 
+				" LEFT JOIN ex_degree a2 ON a2.id=a.degree_id\r\n" + 
+				" LEFT JOIN ex_programmes a3 ON a3.id=a.programmes_id\r\n" + 
+				" LEFT JOIN ex_department a4 ON a4.id=a.department_id\r\n" + 
+				" LEFT JOIN ex_student_personal a5 ON a5.student_admission_id=a.id\r\n" + 
+				" LEFT JOIN ex_batch a6 ON a6.id=a.batch_id\r\n" + 
+				" LEFT JOIN ex_student_document b ON b.student_admission_id =a.id\r\n" + 
+				" LEFT JOIN ex_document_type c ON  b.document_type = c.id \r\n" + 
+				" \r\n" + 
+				" WHERE a.colleges_id=?1 AND  a.academic_year_id=?3 AND a.programmes_id=?2\r\n" + 
+				" ORDER BY a.department_id",nativeQuery = true)
+		List<Object[]> getDocuments(Long colleges, Long programmes, Long academicYear);
+
+		@Modifying
+		@Transactional
+		@Query(value = "UPDATE ex_student_admission a SET a.ex_name=?1,a.allocated_category_id=?3,a.category_id=?4 WHERE a.id=?2", nativeQuery = true)
+		int updatepersonal(String studentname, Long id,Long cat,Category candidate);
+	
+		
+
+
+		@Modifying
+		@Transactional
+		@Query(value = "UPDATE ex_student_admission a SET a.ex_name=?1,ex_name_in_hindi = ?2  WHERE a.id=?3", nativeQuery = true)
+		int updatename(String exName,String exName1, Long id);
+
+
+		
+		@Query(value = "SELECT * FROM ex_student_admission WHERE  id  = ?1 ", nativeQuery = true)
+		List<Studentadmission> findid(Long id);
+		
+		
+		
+}
+

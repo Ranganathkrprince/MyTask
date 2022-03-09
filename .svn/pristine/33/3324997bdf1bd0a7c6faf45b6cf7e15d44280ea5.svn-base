@@ -1,0 +1,92 @@
+package com.niftem.app.controller;
+
+import java.util.Map;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.niftem.app.entity.NotificationCategory;
+import com.niftem.app.model.LoadAlertRequest;
+import com.niftem.app.model.NotificationTemplateRequest;
+import com.niftem.app.model.PushAlertNotificationRequest;
+import com.niftem.app.service.NotificationService;
+
+@RequestMapping("/api/notification/")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RestController
+@Validated
+public class NotificationController {
+	@Autowired
+	private NotificationService notification;
+	@PostMapping(value = "/category/create")
+	public Map<String, String> saveNotificationCategory(@RequestBody NotificationCategory request) {
+		return notification.saveNotificationCategory(request);		
+	}
+	@PostMapping(value = "/category/get")
+	public Map<String, Object> getNotificationCategory(@RequestBody NotificationCategory request) {
+		return notification.getNotificationCategory(request);		
+	}
+	
+	@PostMapping(value = "/category/delete")
+	public Map<String, String> deleteNotificationCategory(@RequestBody NotificationCategory request) {
+		return notification.deleteNotificationCategory(request);		
+	}
+	@PostMapping(value = "/category/update")
+	public Map<String, String> updateNotificationCategory(@RequestBody NotificationCategory request) {
+		return notification.updateNotificationCategory(request);		
+	}
+	
+	@PostMapping(value = "/template/create")
+	public Map<String, String> createNotificationTemplate(@Valid @RequestBody NotificationTemplateRequest request) {
+		return notification.createNotificationTemplate(request);		
+	}
+	@PostMapping(value = "/template/get")
+	public Map<String, Object> getNotificationTemplate(@RequestBody NotificationTemplateRequest request) {
+		return notification.getNotificationTemplate(request);		
+	}
+	@PostMapping(value = "/template/delete")
+	public Map<String, String> deleteNotificationTemplate(@RequestBody NotificationTemplateRequest request) {
+		return notification.deleteNotificationTemplate(request);		
+	}
+	
+	@PostMapping(value = "/template/update")
+	public Map<String, String> updateNotificationTemplate(@RequestBody NotificationTemplateRequest request) {
+		return notification.updateNotificationTemplate(request);		
+	}
+	@PostMapping(value = "/alert/create")
+	public Map<String, String> createAlert( @Valid @RequestBody PushAlertNotificationRequest request) {
+		return notification.createAlert(request);		
+	}
+	@PostMapping(value = "/alert/delete")
+	public Map<String, String> deleteAlert(@RequestBody PushAlertNotificationRequest request) {
+		return notification.deleteAlert(request);		
+	}
+
+	@PostMapping(value = "/alert/get")
+	public Map<String, Object> getAlert(@RequestBody PushAlertNotificationRequest request) {
+		return notification.getAlert(request);		
+	}
+	@PostMapping(value = "/alert/update")
+	public Map<String, String> updateAlert(@RequestBody PushAlertNotificationRequest request) {
+		return notification.updateAlert(request);		
+	}
+	
+	@PostMapping(value = "/loadAlert")
+	public Map<String, Object> loadAlert( @Valid @RequestBody LoadAlertRequest request) {
+		return notification.loadAlert(request);
+		}
+		
+	@PostMapping(value = "/updateAlert")
+	public Map<String, String> updateAlert(@RequestBody LoadAlertRequest request) {
+		return notification.updateAlert(request);
+	}
+	
+	
+}

@@ -1,0 +1,722 @@
+package com.niftem.app.dao;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import com.niftem.app.util.AutoManager;
+
+@Repository
+public class DashboardDao extends AutoManager {
+	private static org.slf4j.Logger logger = LoggerFactory.getLogger("master-log");
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	public long studentCount(String college, String degree, String program, String academic) {
+		// TODO Auto-generated method stub
+		String hql = "";
+		String query1 = "";
+
+		if (!college.equals("")) {
+			query1 = query1 + " AND  colleges IN(" + college + ")";
+		}
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  degree IN(" + degree + ")";
+		}
+		if (!program.equals("")) {
+			query1 = query1 + " AND  programmes IN(" + program + ")";
+		}
+		if (!academic.equals("")) {
+			query1 = query1 + " AND  academicYear IN(" + academic + ")";
+		}
+		hql = "select count(distinct exRollNo) from Studentadmission where exIsActive=1 AND exIsDelete =0  " + query1;
+		Query query = entityManager.createQuery(hql);
+		logger.info("Sql Script to total Courses" + hql);
+		entityManager.close();
+
+		return (Long) query.getSingleResult();
+	}
+
+	public long staffCount(String college, String degree, String program) {
+		// TODO Auto-generated method stub
+		String hql = "";
+		String query1 = "";
+
+		if (!college.equals("")) {
+			query1 = query1 + " AND  colleges IN(" + college + ")";
+		}
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  degree IN(" + degree + ")";
+		}
+		if (!program.equals("")) {
+			query1 = query1 + " AND  programmes IN(" + program + ")";
+		}
+
+		hql = "select count(distinct exEmployeeId) from Staffpersonal where exIsActive=1 AND exIsDelete =0" + query1;
+		Query query = entityManager.createQuery(hql);
+		logger.info("Sql Script to total Courses" + hql);
+		entityManager.close();
+
+		return (Long) query.getSingleResult();
+
+	}
+
+	public long totalCourses(String college, String degree, String program, String academic, String programyear,
+			String semester) {
+		// TODO Auto-generated method stub
+		String hql = "";
+		String query1 = "";
+
+		if (!college.equals("")) {
+			query1 = query1 + " AND  colleges IN(" + college + ")";
+		}
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  degree IN(" + degree + ")";
+		}
+		if (!program.equals("")) {
+			query1 = query1 + " AND  programmes IN(" + program + ")";
+		}
+		if (!academic.equals("")) {
+			query1 = query1 + " AND  academicYear IN(" + academic + ")";
+		}
+		if (!programyear.equals("")) {
+			query1 = query1 + " AND  programmeYear IN(" + programyear + ")";
+		}
+		hql = "select count(distinct id) from Courses where exIsActive=1 AND exIsDelete =0    AND semester IN ("
+				+ semester + ")" + query1;
+		Query query = entityManager.createQuery(hql);
+		logger.info("Sql Script to total Courses" + hql);
+		entityManager.close();
+		return (Long) query.getSingleResult();
+	}
+
+	public long totalExamAttendance(String college, String degree, String program, String academic, String semester) {
+		// TODO Auto-generated method stub
+		String hql = "";
+		String query1 = "";
+
+		if (!college.equals("")) {
+			query1 = query1 + " AND  colleges IN(" + college + ")";
+		}
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  degree IN(" + degree + ")";
+		}
+		if (!program.equals("")) {
+			query1 = query1 + " AND  programmes IN(" + program + ")";
+		}
+		if (!academic.equals("")) {
+			query1 = query1 + " AND  academicYear IN(" + academic + ")";
+		}
+
+		System.out.println("In attendance");
+		hql = "select count(distinct courses ) from ExamAttendance where exIsActive=1 AND exIsDelete =0  AND semester IN ("
+				+ semester + ")" + query1;
+		Query query = entityManager.createQuery(hql);
+
+		System.out.println("In attendance");
+		logger.info("Sql Script to total Courses" + hql);
+		entityManager.close();
+
+		return (Long) query.getSingleResult();
+	}
+
+	public long totalBarcodeGenrated(String college, String degree, String program, String academic, String semester,
+			String programyear) {
+		// TODO Auto-generated method stub
+		String hql = "";
+		String query1 = "";
+
+		if (!college.equals("")) {
+			query1 = query1 + " AND  colleges IN(" + college + ")";
+		}
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  degree IN(" + degree + ")";
+		}
+		if (!program.equals("")) {
+			query1 = query1 + " AND  programmes IN(" + program + ")";
+		}
+		if (!academic.equals("")) {
+			query1 = query1 + " AND  academicYear IN(" + academic + ")";
+		}
+		if (!programyear.equals("")) {
+			query1 = query1 + " AND  programmeYear IN(" + programyear + ")";
+		}
+		hql = "select count(distinct exBarcode  ) from ExamBarcodes where exIsActive=1 AND exIsDelete =0  AND semester IN ("
+				+ semester + ")" + query1;
+		Query query = entityManager.createQuery(hql);
+
+		logger.info("Sql Script to total Courses" + hql);
+		entityManager.close();
+
+		return (Long) query.getSingleResult();
+
+	}
+
+	public long totalExamTimeTable(String degree, String program, String academic, String semester,
+			String programyear) {
+		// TODO Auto-generated method stub
+		String hql = "";
+		String query1 = "";
+
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  degree IN(" + degree + ")";
+		}
+		if (!program.equals("")) {
+			query1 = query1 + " AND  programmes IN(" + program + ")";
+		}
+		if (!academic.equals("")) {
+			query1 = query1 + " AND  academicYear IN(" + academic + ")";
+		}
+		if (!programyear.equals("")) {
+			query1 = query1 + " AND  programmeYear IN(" + programyear + ")";
+		}
+
+		hql = "select count(distinct courses ) from ExamTimeTable where exIsActive=1 AND exIsDelete =0  AND semester IN ("
+				+ semester + ")" + query1;
+		Query query = entityManager.createQuery(hql);
+
+		logger.info("Sql Script to total Courses" + hql);
+		entityManager.close();
+
+		return (Long) query.getSingleResult();
+
+	}
+
+	public long getRegisterCount(String college, String degree, String program, String academic, String programyear,
+			String semester) {
+		// TODO Auto-generated method stub
+		String hql = "";
+		String query1 = "";
+		if (!college.equals("")) {
+			query1 = query1 + " AND  colleges IN(" + college + ")";
+		}
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  degree IN(" + degree + ")";
+		}
+		if (!program.equals("")) {
+			query1 = query1 + " AND  programmes IN(" + program + ")";
+		}
+		if (!academic.equals("")) {
+			query1 = query1 + " AND  academicYear IN(" + academic + ")";
+		}
+		if (!programyear.equals("")) {
+			query1 = query1 + " AND  programmeYear IN(" + programyear + ")";
+		}
+		if (!semester.equals("")) {
+			query1 = query1 + " AND  semester IN(" + semester + ")";
+		}
+		hql = "select count(distinct studentadmission) from SemesterRegistration where exIsActive=1 AND exIsDelete =0 AND   registrationType= 1 "
+				+ query1;
+		Query query = entityManager.createQuery(hql);
+		logger.info("Sql Script to total Courses" + hql);
+		entityManager.close();
+
+		return (Long) query.getSingleResult();
+	}
+	
+	
+	public long getsupplyCount(String college, String degree, String program, String academic, String programyear,String semester) {
+		// TODO Auto-generated method stub
+		String hql = "";
+		String query1 = "";
+		if (!college.equals("")) {
+			query1 = query1 + " AND  colleges IN(" + college + ")";
+		}
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  degree IN(" + degree + ")";
+		}
+		if (!program.equals("")) {
+			query1 = query1 + " AND  programmes IN(" + program + ")";
+		}
+		if (!academic.equals("")) {
+			query1 = query1 + " AND  academicYear IN(" + academic + ")";
+		}
+		if (!programyear.equals("")) {
+			query1 = query1 + " AND  programmeYear IN(" + programyear + ")";
+		}
+		if (!semester.equals("")) {
+			query1 = query1 + " AND  semester IN(" + semester + ")";
+		}
+		hql = "select count(distinct studentadmission) from CoursesRegistration where exIsActive=1 AND exIsDelete =0 AND   registration = 2 "
+				+ query1;
+		Query query = entityManager.createQuery(hql);
+		logger.info("Sql Script to total Courses" + hql);
+		entityManager.close();
+
+		return (Long) query.getSingleResult();
+	}
+	
+	public long getreEvaluationCount(String college, String degree, String program, String academic, String programyear,String semester) {
+		// TODO Auto-generated method stub
+		String hql = "";
+		String query1 = "";
+		if (!college.equals("")) {
+			query1 = query1 + " AND  colleges IN(" + college + ")";
+		}
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  degree IN(" + degree + ")";
+		}
+		if (!program.equals("")) {
+			query1 = query1 + " AND  programmes IN(" + program + ")";
+		}
+		if (!academic.equals("")) {
+			query1 = query1 + " AND  academicYear IN(" + academic + ")";
+		}
+		if (!programyear.equals("")) {
+			query1 = query1 + " AND  programmeYear IN(" + programyear + ")";
+		}
+		if (!semester.equals("")) {
+			query1 = query1 + " AND  semester IN(" + semester + ")";
+		}
+		hql = "select count(distinct studentadmission) from CoursesRegistration where exIsActive=1 AND exIsDelete =0 AND   registration = 3 "
+				+ query1;
+		Query query = entityManager.createQuery(hql);
+		logger.info("Sql Script to total Courses" + hql);
+		entityManager.close();
+
+		return (Long) query.getSingleResult();
+	}
+	
+	public long getphotoCopyCount(String college, String degree, String program, String academic, String programyear,String semester) {
+		// TODO Auto-generated method stub
+		String hql = "";
+		String query1 = "";
+		if (!college.equals("")) {
+			query1 = query1 + " AND  colleges IN(" + college + ")";
+		}
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  degree IN(" + degree + ")";
+		}
+		if (!program.equals("")) {
+			query1 = query1 + " AND  programmes IN(" + program + ")";
+		}
+		if (!academic.equals("")) {
+			query1 = query1 + " AND  academicYear IN(" + academic + ")";
+		}
+		if (!programyear.equals("")) {
+			query1 = query1 + " AND  programmeYear IN(" + programyear + ")";
+		}
+		if (!semester.equals("")) {
+			query1 = query1 + " AND  semester IN(" + semester + ")";
+		}
+		hql = "select count(distinct studentadmission) from CoursesRegistration where exIsActive=1 AND exIsDelete =0 AND   registration = 4 "
+				+ query1;
+		Query query = entityManager.createQuery(hql);
+		logger.info("Sql Script to total Courses" + hql);
+		entityManager.close();
+
+		return (Long) query.getSingleResult();
+	}
+
+	public long totalQuestionPaperGenrated(String degree, String program, String academic, String courses) {
+		// TODO Auto-generated method stub
+		String hql = "";
+		String query1 = "";
+
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  degree IN(" + degree + ")";
+		}
+		if (!program.equals("")) {
+			query1 = query1 + " AND  programmes IN(" + program + ")";
+		}
+		if (!academic.equals("")) {
+			query1 = query1 + " AND  academicYear IN(" + academic + ")";
+		}
+		if (!academic.equals("")) {
+			query1 = query1 + " AND  academicYear IN(" + academic + ")";
+		}
+		if (!academic.equals("")) {
+			query1 = query1 + " AND  academicYear IN(" + academic + ")";
+		}
+		if (!courses.equals("")) {
+			query1 = query1 + " AND  courses IN(" + courses + ")";
+		}
+		hql = "select count(distinct exCourseCodeNo) from QuestionPaper where exIsActive=1 AND exIsDelete =0 "  + query1;
+		Query query = entityManager.createQuery(hql);
+		logger.info("Sql Script to total Courses" + hql);
+		entityManager.close();
+
+		return (Long) query.getSingleResult();
+	}
+
+	public Object getInvigilatorCount(String college, String degree, String academic) {
+		// TODO Auto-generated method stub
+		String hql = "";
+		String query1 = "";
+
+		if (!college.equals("")) {
+			query1 = query1 + " AND  colleges IN(" + college + ")";
+		}
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  degree IN(" + degree + ")";
+		}
+
+		if (!academic.equals("")) {
+			query1 = query1 + " AND  academicYear IN(" + academic + ")";
+		}
+		hql = "select count(distinct staff) from InvigilatorAllocation where exIsActive=1 AND exIsDelete =0" + query1;
+		Query query = entityManager.createQuery(hql);
+		logger.info("Sql Script to total Invigilator" + hql);
+		entityManager.close();
+
+		return (Long) query.getSingleResult();
+
+	}
+
+	public long totalExamTimeTableToBeGenerated(String college, String degree, String program, String academic,
+			String semester, String programyear) {				
+		// TODO Auto-generated method stub
+		String hql = "";
+		String query1 = "";
+
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  degree IN(" + degree + ")";
+		}
+		if (!program.equals("")) {
+			query1 = query1 + " AND  programmes IN(" + program + ")";
+		}
+		if (!academic.equals("")) {
+			query1 = query1 + " AND  academicYear IN(" + academic + ")";
+		}
+		if (!programyear.equals("")) {
+			query1 = query1 + " AND  programmeYear IN(" + programyear + ")";
+		}
+
+		hql = "select count(distinct courses ) from ExamTimeTable where exIsUpdate = 1 AND exIsActive=1 AND exIsDelete =0  AND semester IN ("
+				+ semester + ")" + query1;
+		Query query = entityManager.createQuery(hql);
+
+		logger.info("Sql Script to total Courses" + hql);
+		entityManager.close();
+
+		return (Long) query.getSingleResult();
+
+	}
+
+	public ArrayList<Object[]> gethelpDEsk(String program, String academicYear, String semester, String programYear,
+			String college, String degree) {
+		// TODO Auto-generated method stub
+		String hql = "";
+		String query1 = "";
+		if(!program.equals("")) {
+			query1 = query1 + " AND  s.programmes IN("+program+")";
+		}
+
+		if(!semester.equals("")) {
+			query1 = query1 + " AND  s.semester IN("+semester+")";
+		}	
+		
+		if(!programYear.equals("")) {
+			query1 = query1 + " AND  s.programmeYear IN("+programYear+")";
+		}	
+			
+		if(!college.equals("")) {
+			query1 = query1 + " AND  s.colleges IN("+college+")";
+		}	
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  s.degree IN("+degree+")";
+		}
+	
+		if (!academicYear.equals("")) {
+			query1 = query1 + " AND  s.academicYear IN("+academicYear+")";
+		}
+		
+		hql = "select s.exTicketNumber , s.exDescription , s.complaintStatus , s.complaintType.exName , s.studentId , s.complaintType.id , s.orderId from Complaint s where  "+query1;	
+		Query query = entityManager.createQuery(hql);
+			logger.info("Sql Script to Complaint" + hql);
+			entityManager.close();
+			return   (ArrayList<Object[]>) query.getResultList();  
+	}
+	
+	public Long getRegisterCount(String college ,String program , String academic , String semester , String programyear , Long registration , String degree){		
+		String hql = "";
+		String query1 = "";
+		if(!program.equals("")) {
+			query1 = query1 + " AND  s.programmes IN("+program+")";
+		}
+
+		if(!semester.equals("")) {
+			query1 = query1 + " AND  s.semester IN("+semester+")";
+		}	
+		
+		if(!programyear.equals("")) {
+			query1 = query1 + " AND  s.programmeYear IN("+programyear+")";
+		}	
+			
+		if(!college.equals("")) {
+			query1 = query1 + " AND  s.colleges IN("+college+")";
+		}	
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  s.degree IN("+degree+")";
+		}
+	
+		if (!academicYear.equals("")) {
+			query1 = query1 + " AND  s.academicYear IN("+academicYear+")";
+		}	
+		
+		
+		hql = "select count(distinct studentadmission) from CoursesRegistration where  registration.id = "+registration+" AND  exIsActive = 1 AND exIsDelete = 0 AND academicYear IN ("+academic+") "+query1;	
+		Query query = entityManager.createQuery(hql);
+			logger.info("Sql Script to getRegisterCount" + hql);
+			entityManager.close();
+			return (Long) query.getSingleResult();  
+	}
+	/////////////////////////
+	
+	
+	public List<Object[]>  totalCourses(String college ,String program , String academic , String semester , String programyear , Long rtype, String degree , String academicYear){		
+		String hql = "";
+		String query1 = "";
+		if(!program.equals("")) {
+			query1 = query1 + " AND  s.programmes IN("+program+")";
+		}
+
+		if(!semester.equals("")) {
+			query1 = query1 + " AND  s.semester IN("+semester+")";
+		}	
+		
+		if(!programyear.equals("")) {
+			query1 = query1 + " AND  s.programmeYear IN("+programyear+")";
+		}	
+			
+		if(!college.equals("")) {
+			query1 = query1 + " AND  s.colleges IN("+college+")";
+		}	
+		if (!degree.equals("")) {
+			query1 = query1 + " AND  s.degree IN("+degree+")";
+		}
+	
+		if (!academicYear.equals("")) {
+			query1 = query1 + " AND  s.academicYear IN("+academicYear+")";
+		}
+		
+		hql = "select count(distinct courses.id) as totalcount from CoursesRegistration s where registration.id = "+rtype+" AND  exIsActive = 1 AND exIsDelete = 0 AND academicYear IN ("+academic+") "+query1+ " Group by academicYear";	
+		Query query = entityManager.createQuery(hql);
+			logger.info("Sql Script to total Courses" + hql);
+			entityManager.close();			
+			return query.getResultList();
+	}
+	
+	public Long webAppTransactions(String college ,String program , String academic , String semester , String programyear, String startdate, String enddate ) throws ParseException{		
+		String hql = "";
+		String query1 = "";
+		if(!program.equals("")) {
+			query1 = query1 + " AND  programmes IN("+program+")";
+		}
+		
+		if(!semester.equals("")) {
+			query1 = query1 + " AND  semester IN("+semester+")";
+		}	
+		
+		if(!programyear.equals("")) {
+			query1 = query1 + " AND  programmeYear IN("+programyear+")";
+		}	
+		if(!startdate.equals("")) {
+			SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");	
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			String sDate = dateFormat.format(date.parse(startdate+" 00:00:00"));  
+			String eDate = dateFormat.format(date.parse(enddate+" 23:59:59")); 			
+		 query1 = query1 + " AND DATE(txnDate) >= '"+sDate+"' AND DATE(txnDate) <= '"+eDate+"'";
+		}
+		
+		
+		hql = "select count(distinct orderId) from OrderTransaction where paymentStatus  = 'Success' AND  paymentSource  = 0  AND  academicYear IN ("+academic+") "+query1;	
+		Query query = entityManager.createQuery(hql);
+			logger.info("Sql Script to get order trasaction" + hql);
+			entityManager.close();
+			return (Long) query.getSingleResult();  
+	}
+	
+	
+	public Object webAppCollection(String college ,String program , String academic , String semester , String programyear , String startdate, String enddate) throws ParseException{		
+		String hql = "";
+		String query1 = "";
+		if(!program.equals("")) {
+			query1 = query1 + " AND  programmes IN("+program+")";
+		}
+	
+		
+		if(!semester.equals("")) {
+			query1 = query1 + " AND  semester IN("+semester+")";
+		}	
+		
+		if(!programyear.equals("")) {
+			query1 = query1 + " AND  programmeYear IN("+programyear+")";
+		}	
+		if(!startdate.equals("")) {
+			SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");	
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			String sDate = dateFormat.format(date.parse(startdate+" 00:00:00"));  
+			String eDate = dateFormat.format(date.parse(enddate+" 23:59:59")); 			
+		 query1 = query1 + " AND DATE(txnDate) >= '"+sDate+"' AND DATE(txnDate) <= '"+eDate+"'";
+		}
+		
+		hql = "select COALESCE(SUM(txnAmount),0) from OrderTransaction where paymentStatus  = 'Success' AND paymentSource  = 0   AND  academicYear IN ("+academic+") "+query1;	
+		Query query = entityManager.createQuery(hql);
+			logger.info("Sql Script to getRegisterCount" + hql);
+			entityManager.close();
+			Object val  = query.getSingleResult();  
+			
+			return val;  
+	}
+	
+	public Long mobileAppTransactions(String college ,String program , String academic , String semester , String programyear, String startdate, String enddate ) throws ParseException{		
+		String hql = "";
+		String query1 = "";
+		if(!program.equals("")) {
+			query1 = query1 + " AND  programmes IN("+program+")";
+		}
+			
+		
+		if(!semester.equals("")) {
+			query1 = query1 + " AND  semester IN("+semester+")";
+		}	
+		
+		if(!programyear.equals("")) {
+			query1 = query1 + " AND  programmeYear IN("+programyear+")";
+		}	
+		if(!startdate.equals("")) {
+			SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");	
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			String sDate = dateFormat.format(date.parse(startdate+" 00:00:00"));  
+			String eDate = dateFormat.format(date.parse(enddate+" 23:59:59")); 			
+		 query1 = query1 + " AND DATE(txnDate) >= '"+sDate+"' AND DATE(txnDate) <= '"+eDate+"'";
+		}
+		
+		
+		hql = "select count(distinct orderId) from OrderTransaction where paymentStatus  = 'Success' AND  paymentSource  = 1   AND  academicYear IN ("+academic+") "+query1;	
+		Query query = entityManager.createQuery(hql);
+			logger.info("Sql Script to getRegisterCount" + hql);
+			entityManager.close();
+			return (Long) query.getSingleResult();  
+	}
+	
+	
+	public Object mobileAppCollection(String college ,String program , String academic , String semester , String programyear , String startdate, String enddate) throws ParseException{		
+		String hql = "";
+		String query1 = "";
+		if(!program.equals("")) {
+			query1 = query1 + " AND  programmes IN("+program+")";
+		}
+		
+		
+		if(!semester.equals("")) {
+			query1 = query1 + " AND  semester IN("+semester+")";
+		}	
+		
+		if(!programyear.equals("")) {
+			query1 = query1 + " AND  programmeYear IN("+programyear+")";
+		}	
+		if(!startdate.equals("")) {
+			SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");	
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			String sDate = dateFormat.format(date.parse(startdate+" 00:00:00"));  
+			String eDate = dateFormat.format(date.parse(enddate+" 23:59:59")); 			
+		 query1 = query1 + " AND DATE(txnDate) >= '"+sDate+"' AND DATE(txnDate) <= '"+eDate+"'";
+		}
+		
+		
+		hql = "select COALESCE(SUM(txnAmount),0) from OrderTransaction where paymentStatus  = 'Success' AND paymentSource  = 1   AND  academicYear IN ("+academic+") "+query1;	
+		Query query = entityManager.createQuery(hql);
+			logger.info("Sql Script to mobileAppCollection" + hql);
+			entityManager.close();
+			Object val  = query.getSingleResult();  
+			
+			return val;  
+	}
+	
+	public Long gradereport(String college ,String program , String academic , String semester , String programyear){		
+		String hql = "";
+		String query1 = "";
+		if(!program.equals("")) {
+			query1 = query1 + " AND  programmes IN("+program+")";
+		}
+		if(!college.equals("")) {
+			query1 = query1 + " AND  colleges IN("+college+")";
+		}	
+			
+		if(!semester.equals("")) {
+			query1 = query1 + " AND  semester IN("+semester+")";
+		}	
+		
+		if(!programyear.equals("")) {
+			query1 = query1 + " AND  programmeYear IN("+programyear+")";
+		}	
+		
+		
+		hql = "select count(distinct courses.id) from GradeReport where  exIsActive = 1 AND exIsDelete = 0 AND academicYear IN ("+academic+") "+query1;	
+		Query query = entityManager.createQuery(hql);
+			logger.info("Sql Script to getRegisterCount" + hql);
+			entityManager.close();
+			return (Long) query.getSingleResult();  
+	}
+	
+	
+	public Long semesterProgress(String college ,String program , String academic , String semester , String programyear){		
+		String hql = "";
+		String query1 = "";
+		if(!program.equals("")) {
+			query1 = query1 + " AND  programmes IN("+program+")";
+		}
+		if(!college.equals("")) {
+			query1 = query1 + " AND  colleges IN("+college+")";
+		}	
+			
+		if(!semester.equals("")) {
+			query1 = query1 + " AND  semester IN("+semester+")";
+		}	
+		
+		if(!programyear.equals("")) {
+			query1 = query1 + " AND  programmeYear IN("+programyear+")";
+		}	
+		
+		
+		hql = "select count(DISTINCT exRollNo) from SemesterProgressReport where  exIsActive = 1 AND exIsDelete = 0 AND academicYear IN ("+academic+") "+query1;	
+		Query query = entityManager.createQuery(hql);
+			logger.info("Sql Script to getRegisterCount" + hql);
+			entityManager.close();
+			return (Long) query.getSingleResult();  
+	}
+	
+	
+	
+	public Long getStudentCount(Long academicYear){		
+		String hql = "";
+		hql = "select count(id) from Studentadmission where  exIsActive = 1 AND exIsDelete = 0 AND academicYear = "+academicYear;	
+		Query query = entityManager.createQuery(hql);
+			logger.info("Sql Script to getStudentCount" + hql);
+			entityManager.close();
+			return (Long) query.getSingleResult();  
+	}
+	
+	
+	public Long getStudentCountOnProgram(Long program){		
+		String hql = "";
+		hql = "select count(id) from Studentadmission where  exIsActive = 1 AND exIsDelete = 0 AND programmes = "+program;	
+		Query query = entityManager.createQuery(hql);
+			logger.info("Sql Script to getStudentCountOnProgram" + hql);
+			entityManager.close();
+			return (Long) query.getSingleResult();  
+	}
+	
+	
+	public Long getCountOnGender(String gender){		
+		String hql = "";
+		hql = "select count(id) from Studentpersonal where exGender = '"+gender+"' ";	
+		Query query = entityManager.createQuery(hql);
+			logger.info("Sql Script to getCountOnGender" + hql);
+			entityManager.close();
+			return (Long) query.getSingleResult();  
+	}
+	
+}

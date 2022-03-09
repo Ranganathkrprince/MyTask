@@ -1,0 +1,12 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.FeemasterCollegeMapping;
+
+
+public interface FeemasterCollegeMappingRepository extends CrudRepository<FeemasterCollegeMapping, Long>{
+
+}

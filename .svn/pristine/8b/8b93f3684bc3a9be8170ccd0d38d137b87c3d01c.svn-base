@@ -1,0 +1,21 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.FeedBackScale;
+
+public interface FeedBackScaleRepository extends CrudRepository< FeedBackScale, Long>{
+
+	List<FeedBackScale> findByFeedBackIdInAndAboutFeedBackId(List<Object> feedbck, Long id);
+
+	@Query(value = "select   max(ex_scale_value)  from ex_scale ", nativeQuery = true)
+	Long findByMaxScaleValue();
+
+
+	
+
+
+}

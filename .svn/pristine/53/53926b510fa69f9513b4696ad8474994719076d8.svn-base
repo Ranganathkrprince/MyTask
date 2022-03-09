@@ -1,0 +1,17 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.AccessLogs;
+
+public interface AccessLogsRepository extends CrudRepository<AccessLogs, Long>{
+
+	@Query(value="SELECT * FROM ex_access_logs where ex_login_time BETWEEN ?1 AND ?2 ORDER BY  ex_login_time desc ",nativeQuery=true)
+	List<AccessLogs> findByCreatedate(Date startDate, Date endDate);
+
+	List<AccessLogs> findAllById(Long id);
+}

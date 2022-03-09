@@ -1,0 +1,27 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.StudentPenaltyDetails;
+
+public interface StudentPenaltyDetailsRepository extends CrudRepository<StudentPenaltyDetails, Long>{
+
+	
+	Optional<StudentPenaltyDetails> findById(Long id);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_student_penalty_details set is_paid = 1  where id = ?1", nativeQuery = true)
+	int updatePayment( String id);
+	
+	List<StudentPenaltyDetails> findByExRollNo(String rollnmber);
+	
+	List<StudentPenaltyDetails> findByExRollNoAndApprovetypeIdAndIsPaid(String rollnmber , Long approve , boolean paid);
+}

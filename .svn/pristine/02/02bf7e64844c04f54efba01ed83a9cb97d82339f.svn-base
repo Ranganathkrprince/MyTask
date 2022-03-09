@@ -1,0 +1,53 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.FeedBack;
+
+public interface FeedBackRepository  extends CrudRepository<FeedBack, Long>{
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_feed_back set ex_total_scale_value = ?1  where staff_id=?2 and courses_id=?3 and academic_year_id=?4 and programmes_id=?5 and programme_year_id=?6 and semster_id=?7 and student_admission_id =?8 and  id =?9", nativeQuery = true)
+	int updatetotalscalevalue(int totalvalue, Long staff, Long courses,Long academicYear, Long programmes, Long programmeYear,Long semster, Long studentId, Long id);
+
+	List<FeedBack> findByStudentadmissionIdAndCoursesIdAndProgrammeYearIdAndAcademicYearIdAndProgrammesIdAndSemesterIdAndStaffIdAndCollegesIdAndFeedbackType(
+			Long exStudentId, Long courses, Long programmeYear, Long academicYear, Long programmes, Long semester,
+			Long staff, Long colleges , int feedbacktype);	
+	
+	List<FeedBack> findByStudentadmissionIdAndProgrammeYearIdAndAcademicYearIdAndProgrammesIdAndSemesterIdAndCollegesIdAndFeedbackType(
+			Long exStudentId, Long programmeYear, Long academicYear, Long id, Long semester, Long colleges, int feedbacktype);
+
+	List<FeedBack> findByStudentadmissionIdAndCoursesIdAndProgrammeYearIdAndAcademicYearIdAndProgrammesIdAndSemesterIdAndCollegesIdAndFeedbackType(
+			Long student, Long id, Long programmeYear, Long academicYear, Long id2, Long semester, Long colleges, int feedbacktype);
+
+	List<FeedBack> findByStudentadmissionIdAndCoursesIdAndProgrammeYearIdAndAcademicYearIdAndSemesterIdAndCollegesIdAndFeedbackType(
+			Long exStudentId, Long courses, Long programmeYear, Long academicYear, Long semester, Long colleges, int feedbacktype);
+
+	List<FeedBack> findByCoursesIdAndProgrammeYearIdAndAcademicYearIdAndProgrammesIdAndSemesterIdAndStaffIdAndFeedbackType(
+			Long courses, Long programmeYear, Long academicYear, Long programmes, Long semester, Long staff, int feedbacktype);
+
+	List<FeedBack> findByStudentadmissionIdAndCoursesIdAndProgrammeYearIdAndAcademicYearIdAndProgrammesIdAndSemesterIdAndStaffIdAndCollegesIdAndDepartmentIdAndFeedbackType(
+			Long student, Long courses, Long programmeYear, Long academicYear, Long programmes, Long semester,
+			Long staff, Long colleges, Long department, int feedbacktype);
+
+	List<FeedBack> findByStudentadmissionIdAndCoursesIdAndProgrammeYearIdAndAcademicYearIdAndProgrammesIdAndSemesterIdAndStaffIdAndCollegesIdAndDepartmentIdAndDegreeIdAndFeedbackType(
+			Long student, Long courses, Long programmeYear, Long academicYear, Long programmes, Long semester,
+			Long staff, Long colleges, Long department, Long degree, int feedbacktype);
+
+	List<FeedBack> findByCoursesIdAndProgrammeYearIdAndAcademicYearIdAndProgrammesIdAndSemesterIdAndStaffIdAndDegreeIdAndDepartmentIdAndFeedbackType(
+			Long courses, Long programmeYear, Long academicYear, Long programmes, Long semester, Long staff,
+			Long degree, Long department, int feedbacktype);
+
+
+
+
+
+
+}

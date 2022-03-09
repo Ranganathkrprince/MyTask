@@ -1,0 +1,15 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.SupplementaryRegistration;
+
+public interface SupplementaryRegistrationRepository extends CrudRepository<SupplementaryRegistration, Long>{
+
+	List<SupplementaryRegistration> findByExIsDeleteAndExIsActiveAndStudentadmissionProgrammesIdInAndCollegesIdInAndDegreeIdInAndAcademicYearIdInAndSemesterIdInAndStudentadmissionDepartmentIdInAndProgrammeYearIdInOrderByStudentadmissionIdAsc(
+			boolean b, boolean c, List<Long> programmes, List<Long> colleges, List<Long> degree,
+			List<Long> academicYear, List<Long> semester, List<Long> department, List<Long> programmeYear);
+
+}

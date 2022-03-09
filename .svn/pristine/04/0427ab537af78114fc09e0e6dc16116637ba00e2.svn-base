@@ -1,0 +1,262 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "ex_complaint")
+public class Complaint {
+	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
+	private String exTicketNumber;
+	
+	 private String exRollNo;;
+	
+	private String orderId;
+	
+	private Integer complaintStatus ;
+	
+	private String txnReferenceNo;
+	 
+	private String bankReferenceNo;
+
+	private String exRemark;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a Description")
+	@Column(columnDefinition="TEXT")
+	private String exDescription;
+	
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes; 
+			
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "programme_year_id", nullable = false)
+	private ProgrammeYear programmeYear; 
+	
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester; 
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree; 
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "academicYear_id", nullable = false)
+	private AcademicYear academicYear;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "complaint_type_id", nullable = false)
+	private ComplaintType complaintType;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+
+	@ManyToOne( optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
+
+	public String getExRollNo() {
+		return exRollNo;
+	}
+
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExTicketNumber() {
+		return exTicketNumber;
+	}
+
+	public void setExTicketNumber(String exTicketNumber) {
+		this.exTicketNumber = exTicketNumber;
+	}
+
+	
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public Integer getComplaintStatus() {
+		return complaintStatus;
+	}
+
+	public void setComplaintStatus(Integer complaintStatus) {
+		this.complaintStatus = complaintStatus;
+	}
+
+	public String getTxnReferenceNo() {
+		return txnReferenceNo;
+	}
+
+	public void setTxnReferenceNo(String txnReferenceNo) {
+		this.txnReferenceNo = txnReferenceNo;
+	}
+
+	public String getBankReferenceNo() {
+		return bankReferenceNo;
+	}
+
+	public void setBankReferenceNo(String bankReferenceNo) {
+		this.bankReferenceNo = bankReferenceNo;
+	}
+
+	public String getExRemark() {
+		return exRemark;
+	}
+
+	public void setExRemark(String exRemark) {
+		this.exRemark = exRemark;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public ComplaintType getComplaintType() {
+		return complaintType;
+	}
+
+	public void setComplaintType(ComplaintType complaintType) {
+		this.complaintType = complaintType;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "Complaint [id=" + id + ", exTicketNumber=" + exTicketNumber + ", exRollNo=" + exRollNo + ", orderId="
+				+ orderId + ", complaintStatus=" + complaintStatus + ", txnReferenceNo=" + txnReferenceNo
+				+ ", bankReferenceNo=" + bankReferenceNo + ", exRemark=" + exRemark + ", exDescription=" + exDescription
+				+ ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", programmes=" + programmes
+				+ ", programmeYear=" + programmeYear + ", semester=" + semester + ", degree=" + degree
+				+ ", academicYear=" + academicYear + ", complaintType=" + complaintType + ", colleges=" + colleges
+				+ ", user=" + user + "]";
+	}
+
+
+
+	
+	
+
+	
+	
+
+}

@@ -1,0 +1,61 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.ClassTimeTable;
+
+public interface ClassTimeTableRepository extends CrudRepository<ClassTimeTable, Long>{
+	
+	List<ClassTimeTable> findByAcademicYearIdAndCollegesIdAndDegreeIdAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndExIsActiveAndExIsDelete
+	(Long academic , Long college , Long degree ,  Long programmes , Long programyear , Long semester , Boolean active , Boolean delete);
+
+	
+	List<ClassTimeTable> findByAcademicYearIdAndCollegesIdAndDegreeIdAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndExIsActiveAndExIsDeleteAndCoursesIdAndCoursesTypeId
+	(Long academic , Long college , Long degree ,  Long programmes , Long programyear , Long semester , Boolean active , Boolean delete , Long courses , Long courseType);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_class_timetable set ex_is_update = ?1 , ex_update_date = ?2 where courses_id =?3 AND semester_id =?4 AND programmes_id = ?5 AND programmeyear_id =?6 AND academicyear_id = ?7 AND coursestype_id=?8 AND section_id=?9 ", nativeQuery = true)
+	int updateTimetableRecord(boolean update, Date exIsActive, Long course , Long semester , Long program , Long programyear , Long academic, Long coursesType , Long section);
+
+
+	List<ClassTimeTable> findByAcademicYearIdAndCollegesIdAndDegreeIdAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndExIsActiveAndExIsDeleteAndCoursesIdAndCoursesTypeId(
+			Long academicYear, Long colleges, Long degree, Long programmes, Long programmeYear, Long semester,
+			boolean b, boolean c, Long courses, Long coursesType);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_class_timetable set ex_is_update = ?1 , ex_update_date = ?2 where courses_id =?3 AND semester_id =?4 AND programmes_id = ?5 AND programmeyear_id =?6 AND academicyear_id = ?7 AND coursestype_id=?8", nativeQuery = true)
+	int updateTimetableDayRecord(boolean update, Date exIsActive, Long course , Long semester , Long program , Long programyear , Long academic, Long coursesType);
+
+
+	List<ClassTimeTable> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndExIsUpdate(boolean b, boolean c,
+			Long academicYear, boolean d);
+
+
+	List<ClassTimeTable> findByAcademicYearIdAndCollegesIdAndDegreeIdAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndSectionIdAndExIsActiveAndExIsDelete(
+			Long academicYear, Long colleges, Long degree, Long programmes, Long programmeYear, Long semester,
+			Long section, boolean b, boolean c);
+
+
+	List<ClassTimeTable> findByExIsDeleteAndExIsActiveAndAcademicYearIdAndSectionIdAndExIsUpdate(boolean b, boolean c,
+			Long academicYear, Long section, boolean d);
+
+
+
+
+	
+	List<ClassTimeTable> findByAcademicYearIdAndCollegesIdAndDegreeIdAndProgrammesIdAndProgrammeYearIdAndSemesterIdAndExIsActiveAndExIsDeleteAndCoursesIdAndCoursesTypeIdAndSectionId(
+			Long academicYear, Long colleges, Long degree, Long programmes, Long programmeYear, Long semester,
+			boolean b, boolean c, Long courses, Long coursesType, Long section);
+
+}

@@ -1,0 +1,148 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+public class PublishResultRequest {
+
+	@NotNull(message = "Please provide colleges")
+	private Long colleges;
+	
+	@NotNull(message = "Please provide academicyear")
+	private Long academicYear;
+	
+	@NotNull(message = "Please provide Programmes")
+	private Long programmes;
+	
+	private Long department;
+	
+	@NotNull(message = "Please select Department")
+	private List<Long> departments;
+	
+	@NotNull(message = "Please select courses")
+	private List<Long> semester;
+	
+	@NotNull(message = "Please provide Degree")
+	private Long degree;
+	
+	
+	@NotNull(message = "Please provide Degree")
+	private Long batch;
+	
+	private int exIsPublish;
+	
+	private int exResultType;
+	
+	private Long user;
+	
+	private Long id;
+
+	public Long getColleges() {
+		return colleges;
+	}
+
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+	public Long getDepartment() {
+		return department;
+	}
+
+	public List<Long> getSemester() {
+		return semester;
+	}
+
+	public Long getDegree() {
+		return degree;
+	}
+
+	public Long getBatch() {
+		return batch;
+	}
+
+	public int getExIsPublish() {
+		return exIsPublish;
+	}
+
+	public int getExResultType() {
+		return exResultType;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+
+	public void setSemester(List<Long> semester) {
+		this.semester = semester;
+	}
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+	public void setBatch(Long batch) {
+		this.batch = batch;
+	}
+
+	public void setExIsPublish(int exIsPublish) {
+		this.exIsPublish = exIsPublish;
+	}
+
+	public void setExResultType(int exResultType) {
+		this.exResultType = exResultType;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	
+	
+
+	public List<Long> getDepartments() {
+		return departments;
+	}
+
+	public void setDepartments(List<Long> departments) {
+		this.departments = departments;
+	}
+
+	@Override
+	public String toString() {
+		return "PublishResultRequest [colleges=" + colleges + ", academicYear=" + academicYear + ", programmes="
+				+ programmes + ", department=" + department + ", departments=" + departments + ", semester=" + semester
+				+ ", degree=" + degree + ", batch=" + batch + ", exIsPublish=" + exIsPublish + ", exResultType="
+				+ exResultType + ", user=" + user + ", id=" + id + "]";
+	}
+
+}

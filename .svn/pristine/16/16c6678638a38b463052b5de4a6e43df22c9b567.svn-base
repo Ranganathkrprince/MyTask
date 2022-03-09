@@ -1,0 +1,24 @@
+package com.niftem.app.dao;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Repository;
+
+import com.niftem.app.entity.University;
+
+@Transactional
+@Repository
+public class UniversityDAO {
+	
+	@PersistenceContext	
+	private EntityManager entityManager;	
+	
+	public List<University> getAllArticles() {
+		String hql = "select exName from University";
+		return (List<University>) entityManager.createQuery(hql).getResultList();
+	}		
+}

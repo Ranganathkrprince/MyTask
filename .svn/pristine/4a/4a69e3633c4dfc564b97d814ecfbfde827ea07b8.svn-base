@@ -1,0 +1,50 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.OGPA;
+
+public interface OGPARepository extends CrudRepository<OGPA, Long>{
+
+	
+	List<OGPA> findByCollegesIdAndProgrammesIdAndDegreeIdAndAcademicYearIdAndExIsReGeneratedAndScrutinizeOrderByExRollNo(
+			Long colleges, Long programmes, Long degree, Long enrollmentYear, boolean b, Long scrt);
+
+	List<OGPA> findByExRollNoAndCollegesIdAndProgrammesIdAndDegreeIdAndAcademicYearIdAndExIsReGeneratedAndScrutinize(
+			String exRollNo, Long colleges, Long programmes, Long degree, Long enrollmentYear, boolean b, Long scrt);
+
+	
+@Query(value = "select DISTINCT c.ex_identifier AS clg,c1.ex_name,c2.ex_identifier AS pgm,c3.ex_identifier AS batch,c4.ex_identifier AS ay,\r\n"+
+	 "UPPER(sp.ex_name) as studentname,o.ex_roll_no,s.ex_contact_details,s.ex_email_id,\r\n"+
+	" CONCAT(f.ex_grade_point_av,'/',f.ex_total_credit_hour,'/',f.ex_camu_grade_point_av), \r\n" + 
+	" CONCAT(f1.ex_grade_point_av,'/',f1.ex_total_credit_hour,'/',f1.ex_camu_grade_point_av),\r\n" + 
+	"  CONCAT(f2.ex_grade_point_av,'/',f2.ex_total_credit_hour,'/',f2.ex_camu_grade_point_av),\r\n" + 
+	"   CONCAT(f3.ex_grade_point_av,'/',f3.ex_total_credit_hour,'/',f3.ex_camu_grade_point_av),\r\n" + 
+	"	 CONCAT(f4.ex_grade_point_av,'/',f4.ex_total_credit_hour,'/',f4.ex_camu_grade_point_av),\r\n" + 
+	"	  CONCAT(f5.ex_grade_point_av,'/',f5.ex_total_credit_hour,'/',f5.ex_camu_grade_point_av),\r\n" + 
+	"	   CONCAT(f6.ex_grade_point_av,'/',f6.ex_total_credit_hour,'/',f6.ex_camu_grade_point_av),\r\n" + 
+	"		 CONCAT(f7.ex_grade_point_av,'/',f7.ex_total_credit_hour,'/',f7.ex_camu_grade_point_av),o.overall_grade_point"+
+	"       FROM   ex_overall_grade_report o JOIN  ex_student_admission sp ON  sp.id= o.student_id \r\n"+
+	"		 JOIN  ex_student_personal s ON s.student_admission_id=sp.id\r\n" + 
+	"		 JOIN ex_colleges c ON sp.colleges_id=c.id\r\n" + 
+	"		 JOIN ex_degree c1 ON sp.degree_id=c1.id\r\n" + 
+	"		 JOIN ex_programmes c2 ON sp.programmes_id=c2.id\r\n" + 
+	"		 JOIN ex_batch c3 ON sp.batch_id=c3.id\r\n" + 
+	"		 JOIN ex_academic_year c4 ON sp.academic_year_id=c4.id\r\n"+	
+	"		JOIN  ex_semester_progress_report f ON s.student_admission_id=f.student_admission_id AND f.semester_id=1\r\n" + 
+	"		JOIN  ex_semester_progress_report f1 ON s.student_admission_id=f1.student_admission_id AND f1.semester_id=2\r\n" + 
+	"		JOIN  ex_semester_progress_report f2 ON s.student_admission_id=f2.student_admission_id AND f2.semester_id=3\r\n" + 
+	"		JOIN  ex_semester_progress_report f3 ON s.student_admission_id=f3.student_admission_id AND f3.semester_id=4\r\n" + 
+	"		JOIN  ex_semester_progress_report f4 ON s.student_admission_id=f4.student_admission_id AND f4.semester_id=5\r\n" + 
+	"		JOIN  ex_semester_progress_report f5 ON s.student_admission_id=f5.student_admission_id AND f5.semester_id=6\r\n" + 
+	"		JOIN  ex_semester_progress_report f6 ON s.student_admission_id=f6.student_admission_id AND f6.semester_id=7\r\n" + 
+	"		JOIN  ex_semester_progress_report f7 ON s.student_admission_id=f7.student_admission_id AND f7.semester_id=8\r\n" + 
+
+	"WHERE o.ex_is_re_generated=true AND o.scrutinize=true AND o.overall_grade_point>=8 AND o.academic_year_id=?1 AND o.colleges_id IN ?2"
+	+"	ORDER BY  o.overall_grade_point desc",nativeQuery = true)
+	List<Object[]> getExcelReport(Long academicYear, List<Long> colleges);
+
+}

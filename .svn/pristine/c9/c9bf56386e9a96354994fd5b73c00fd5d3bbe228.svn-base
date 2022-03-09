@@ -1,0 +1,23 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.CustomerSmsLog;
+
+public interface CustomerSmsLogRepository extends JpaRepository<CustomerSmsLog, Long> {
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_customer_sms_log set ex_is_active = 1  where otpcode =?1 and ex_mobile = ?2", nativeQuery = true)
+	int updateCustomerLog( String otpcode , String ex_mobile);
+
+	
+	List<CustomerSmsLog> findByExMobileAndOtpcode(String mobile , String otp);
+}

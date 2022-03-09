@@ -1,0 +1,231 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+@Entity
+@Table(name = "ex_hostel")
+public class Hostel {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
+	
+	private String exName;
+	private String exHostelType;
+	private String exHostelCode;
+	private String exHostelCapacity;
+	private String exHostelIncharge;
+	private String exHostelAddress;
+	private String exTelephone;
+
+	private Integer singleRoom;
+	private Integer doubleRoom;
+	private Integer tripleRoom;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges; 
+
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+	
+	 @Temporal(TemporalType.TIMESTAMP)
+	 @Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	  private Date exCreateDate;
+
+
+	 @Temporal(TemporalType.TIMESTAMP)
+	 @Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	 private Date exUpdateDate;
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public String getExName() {
+		return exName;
+	}
+
+
+	public String getExHostelType() {
+		return exHostelType;
+	}
+
+
+	public String getExHostelCode() {
+		return exHostelCode;
+	}
+
+
+	public String getExHostelCapacity() {
+		return exHostelCapacity;
+	}
+
+
+	public String getExHostelIncharge() {
+		return exHostelIncharge;
+	}
+
+
+	public String getExHostelAddress() {
+		return exHostelAddress;
+	}
+
+
+	public String getExTelephone() {
+		return exTelephone;
+	}
+
+
+	public Integer getSingleRoom() {
+		return singleRoom;
+	}
+
+
+	public Integer getDoubleRoom() {
+		return doubleRoom;
+	}
+
+
+	public Integer getTripleRoom() {
+		return tripleRoom;
+	}
+
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+
+	public void setExHostelType(String exHostelType) {
+		this.exHostelType = exHostelType;
+	}
+
+
+	public void setExHostelCode(String exHostelCode) {
+		this.exHostelCode = exHostelCode;
+	}
+
+
+	public void setExHostelCapacity(String exHostelCapacity) {
+		this.exHostelCapacity = exHostelCapacity;
+	}
+
+
+	public void setExHostelIncharge(String exHostelIncharge) {
+		this.exHostelIncharge = exHostelIncharge;
+	}
+
+
+	public void setExHostelAddress(String exHostelAddress) {
+		this.exHostelAddress = exHostelAddress;
+	}
+
+
+	public void setExTelephone(String exTelephone) {
+		this.exTelephone = exTelephone;
+	}
+
+
+	public void setSingleRoom(Integer singleRoom) {
+		this.singleRoom = singleRoom;
+	}
+
+
+	public void setDoubleRoom(Integer doubleRoom) {
+		this.doubleRoom = doubleRoom;
+	}
+
+
+	public void setTripleRoom(Integer tripleRoom) {
+		this.tripleRoom = tripleRoom;
+	}
+
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Hostel [id=" + id + ", exName=" + exName + ", exHostelType=" + exHostelType + ", exHostelCode="
+				+ exHostelCode + ", exHostelCapacity=" + exHostelCapacity + ", exHostelIncharge=" + exHostelIncharge
+				+ ", exHostelAddress=" + exHostelAddress + ", exTelephone=" + exTelephone + ", singleRoom=" + singleRoom
+				+ ", doubleRoom=" + doubleRoom + ", tripleRoom=" + tripleRoom + ", colleges=" + colleges
+				+ ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate
+				+ ", exUpdateDate=" + exUpdateDate + "]";
+	}
+
+
+
+
+}

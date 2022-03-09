@@ -1,0 +1,97 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+@Entity
+@Table(name = "ex_letter_grade_settings")
+public class LetterGradeSetting {
+	   
+	   @Id
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Long id;
+
+	    @NotBlank
+	    private String exLetterGrade;
+
+	    @NotBlank
+	    private Double exPointGrade;
+	    
+	    @NotBlank
+	    private Double exMinRangeMarks;
+	    
+	    @NotBlank
+	    private Double exMaxRangeMarks;
+	
+		@Column(columnDefinition="TEXT")
+		private String exDescription;
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public String getExLetterGrade() {
+			return exLetterGrade;
+		}
+
+		public void setExLetterGrade(String exLetterGrade) {
+			this.exLetterGrade = exLetterGrade;
+		}
+
+		public Double getExPointGrade() {
+			return exPointGrade;
+		}
+
+		public void setExPointGrade(Double exPointGrade) {
+			this.exPointGrade = exPointGrade;
+		}
+
+		public Double getExMinRangeMarks() {
+			return exMinRangeMarks;
+		}
+
+		public void setExMinRangeMarks(Double exMinRangeMarks) {
+			this.exMinRangeMarks = exMinRangeMarks;
+		}
+
+		public Double getExMaxRangeMarks() {
+			return exMaxRangeMarks;
+		}
+
+		public void setExMaxRangeMarks(Double exMaxRangeMarks) {
+			this.exMaxRangeMarks = exMaxRangeMarks;
+		}
+
+		public String getExDescription() {
+			return exDescription;
+		}
+
+		public void setExDescription(String exDescription) {
+			this.exDescription = exDescription;
+		}
+
+		@Override
+		public String toString() {
+			return "LetterGradeSetting [id=" + id + ", exLetterGrade=" + exLetterGrade + ", exPointGrade="
+					+ exPointGrade + ", exMinRangeMarks=" + exMinRangeMarks + ", exMaxRangeMarks=" + exMaxRangeMarks
+					+ ", exDescription=" + exDescription + "]";
+		}
+		
+		
+		
+	
+	
+
+}

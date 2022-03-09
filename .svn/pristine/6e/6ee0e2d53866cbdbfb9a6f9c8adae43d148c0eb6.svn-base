@@ -1,0 +1,277 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+public class SemesterEligibility {
+	
+	
+	private List<Long> id;
+	
+	private List<Long> approveTypeList;
+	
+	private Long approveTypeId;
+	
+	private Long user;
+    
+	@NotNull(message = "academicYear is required")
+    private Long academicYear;    
+
+	@NotNull(message = "colleges is required")
+	 private Long colleges; 
+	
+	@NotNull(message = "degree is required")
+	private Long degree;
+	
+	@NotNull(message = "programmes is required")
+	private Long programmes; 
+	
+	@NotNull(message = "department is required")
+	private Long department; 
+	
+	@NotNull(message = "semester is required")
+	private Long semester; 
+	
+	@NotNull(message = "courses is required")
+	private Long courses; 
+	
+	@NotNull(message = "coursesType is required")
+	private Long coursesType; 	
+	
+	private String approveType;
+	
+	private Long student; 
+	
+	private Long mentor; 
+	private Long batch; 
+	
+	private String remark; 
+	
+	@NotNull(message = "programmeYear is required")
+     private Long programmeYear;
+	
+    private Long examAnnouncement;
+    
+   
+	private List<NoDuesRequest> noDues;
+
+
+	public List<Long> getId() {
+		return id;
+	}
+
+
+	public List<Long> getApproveTypeList() {
+		return approveTypeList;
+	}
+
+
+	public Long getApproveTypeId() {
+		return approveTypeId;
+	}
+
+
+	public Long getUser() {
+		return user;
+	}
+
+
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+
+
+	public Long getColleges() {
+		return colleges;
+	}
+
+
+	public Long getDegree() {
+		return degree;
+	}
+
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+
+	public Long getDepartment() {
+		return department;
+	}
+
+
+	public Long getSemester() {
+		return semester;
+	}
+
+
+	public Long getCourses() {
+		return courses;
+	}
+
+
+	public Long getCoursesType() {
+		return coursesType;
+	}
+
+
+	public String getApproveType() {
+		return approveType;
+	}
+
+
+	public Long getStudent() {
+		return student;
+	}
+
+
+	public Long getMentor() {
+		return mentor;
+	}
+
+
+	public Long getBatch() {
+		return batch;
+	}
+
+
+	public String getRemark() {
+		return remark;
+	}
+
+
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+
+
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+
+	public List<NoDuesRequest> getNoDues() {
+		return noDues;
+	}
+
+
+	public void setId(List<Long> id) {
+		this.id = id;
+	}
+
+
+	public void setApproveTypeList(List<Long> approveTypeList) {
+		this.approveTypeList = approveTypeList;
+	}
+
+
+	public void setApproveTypeId(Long approveTypeId) {
+		this.approveTypeId = approveTypeId;
+	}
+
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+
+
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+
+
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+
+
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+
+
+	public void setCoursesType(Long coursesType) {
+		this.coursesType = coursesType;
+	}
+
+
+	public void setApproveType(String approveType) {
+		this.approveType = approveType;
+	}
+
+
+	public void setStudent(Long student) {
+		this.student = student;
+	}
+
+
+	public void setMentor(Long mentor) {
+		this.mentor = mentor;
+	}
+
+
+	public void setBatch(Long batch) {
+		this.batch = batch;
+	}
+
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+
+	public void setNoDues(List<NoDuesRequest> noDues) {
+		this.noDues = noDues;
+	}
+
+
+	@Override
+	public String toString() {
+		return "SemesterEligibility [id=" + id + ", approveTypeList=" + approveTypeList + ", approveTypeId="
+				+ approveTypeId + ", user=" + user + ", academicYear=" + academicYear + ", colleges=" + colleges
+				+ ", degree=" + degree + ", programmes=" + programmes + ", department=" + department + ", semester="
+				+ semester + ", courses=" + courses + ", coursesType=" + coursesType + ", approveType=" + approveType
+				+ ", student=" + student + ", mentor=" + mentor + ", batch=" + batch + ", remark=" + remark
+				+ ", programmeYear=" + programmeYear + ", examAnnouncement=" + examAnnouncement + ", noDues=" + noDues
+				+ "]";
+	}
+
+
+	
+
+
+	
+	
+}

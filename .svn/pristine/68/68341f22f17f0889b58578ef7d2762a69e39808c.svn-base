@@ -1,0 +1,223 @@
+
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_internal_marks_configuration")
+public class InternalMarksConfiguration {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;	
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	 private Boolean exIsActive;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	 private Boolean exIsDelete;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+	
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exStartDate;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exEndDate;
+	
+	private Integer exStatus;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "DATETIME")
+	private Date exExtendDate;
+	
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "examAnnouncement_id", nullable = false)
+	private ExamAnnouncement examAnnouncement;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "collage_id", nullable = false)
+	private Colleges colleges;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes; 
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "academicYear_id", nullable = false)
+	private AcademicYear academicYear;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "programmeyear_id", nullable = false)
+	private ProgrammeYear programmeYear; 
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semster semester;
+
+	public Long getId() {
+		return id;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public Date getExStartDate() {
+		return exStartDate;
+	}
+
+	public Date getExEndDate() {
+		return exEndDate;
+	}
+
+	public Integer getExStatus() {
+		return exStatus;
+	}
+
+	public Date getExExtendDate() {
+		return exExtendDate;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public ProgrammeYear getProgrammeYear() {
+		return programmeYear;
+	}
+
+	public Semster getSemester() {
+		return semester;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setExStartDate(Date exStartDate) {
+		this.exStartDate = exStartDate;
+	}
+
+	public void setExEndDate(Date exEndDate) {
+		this.exEndDate = exEndDate;
+	}
+
+	public void setExStatus(Integer exStatus) {
+		this.exStatus = exStatus;
+	}
+
+	public void setExExtendDate(Date exExtendDate) {
+		this.exExtendDate = exExtendDate;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public void setProgrammeYear(ProgrammeYear programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+
+	public void setSemester(Semster semester) {
+		this.semester = semester;
+	}
+
+	@Override
+	public String toString() {
+		return "InternalMarksConfiguration [id=" + id + ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete
+				+ ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate + ", exStartDate=" + exStartDate
+				+ ", exEndDate=" + exEndDate + ", exStatus=" + exStatus + ", exExtendDate=" + exExtendDate + ", degree="
+				+ degree + ", examAnnouncement=" + examAnnouncement + ", colleges=" + colleges + ", programmes="
+				+ programmes + ", academicYear=" + academicYear + ", programmeYear=" + programmeYear + ", semester="
+				+ semester + "]";
+	}
+
+	
+	
+}

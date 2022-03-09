@@ -1,0 +1,164 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_student_id_setting")
+public class StudentIdSetting {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+			
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "academicYear_id", nullable = false)
+	private AcademicYear academicYear; 
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+	
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes; 
+	
+	private String exStartWith;
+	 
+	private String exIdValue;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private boolean exIsActive;
+
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private boolean exIsDelete;
+	
+	 @Temporal(TemporalType.TIMESTAMP)
+	 @Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	  private Date exCreateDate;
+
+
+	 @Temporal(TemporalType.TIMESTAMP)
+	 @Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	 private Date exUpdateDate;
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+
+	public String getExStartWith() {
+		return exStartWith;
+	}
+
+
+	public void setExStartWith(String exStartWith) {
+		this.exStartWith = exStartWith;
+	}
+
+
+	public String getExIdValue() {
+		return exIdValue;
+	}
+
+
+	public void setExIdValue(String exIdValue) {
+		this.exIdValue = exIdValue;
+	}
+
+
+	public boolean isExIsActive() {
+		return exIsActive;
+	}
+
+
+	public void setExIsActive(boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+
+	public boolean isExIsDelete() {
+		return exIsDelete;
+	}
+
+
+	public void setExIsDelete(boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+
+	@Override
+	public String toString() {
+		return "StudentIdSetting [id=" + id + ", academicYear=" + academicYear + ", colleges=" + colleges
+				+ ", programmes=" + programmes + ", exStartWith=" + exStartWith + ", exIdValue=" + exIdValue
+				+ ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate
+				+ ", exUpdateDate=" + exUpdateDate + "]";
+	}
+}

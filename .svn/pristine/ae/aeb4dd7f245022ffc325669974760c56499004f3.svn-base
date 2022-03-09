@@ -1,0 +1,446 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name = "ex_external_marks")
+public class ExternalMarks {
+	
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Long id;
+		
+		@ManyToOne(optional = true)
+		@JoinColumn(name = "expert_id", nullable = true)
+		private EvaluatorList expert;
+
+		@ManyToOne(optional = true)
+		@JoinColumn(name = "exam_barcode", nullable = true)
+		private ExamBarcodes exambarcode;
+		
+		private Double firstQMarks;
+		private Double secondQMarks;
+		private Double thirdQMarks;
+		private Double fourQMarks;
+		private Double fiveQMarks;
+		private Double sixQMarks;
+		private Double sevenQMarks;
+		private Double eightQMarks;
+		private Double nineQMarks;
+		private Double tenQMarks;
+		private Double elevenQMarks;
+		private Double twelveQMarks;
+		private Double thirteenQMarks;
+		private Double fourteenQMarks;
+		private Double fifteenQMarks;
+		private Double sixteenQMarks;
+		private Double seventeenQMarks;
+		private Double eighteenQMarks;
+		private Double ninteenQMarks;
+		private Double twentyQMarks;
+		private Double twentyoneQMarks;
+		private Double twentytwoQMarks;
+		private Double twentythreeQMarks;
+		private Double twentyfourQMarks;
+		private Double twentyfiveQMarks;
+		private Double twentysixQMarks;
+		private Double twentysevenQMarks;
+		private Double twentyeightQMarks;
+		private Double twentynineQMarks;
+		private Double thirtyQMarks;
+		private Double thirtyoneQMarks;
+		private Double thirtytwoQMarks;
+		private Double thirtythreeQMarks;
+		private Double thirtyfourQMarks;
+		private Double thirtyfiveQMarks;
+		private Double thirtysixQMarks;
+		private Double thirtysevenQMarks;
+		private Double thirtyeightQMarks;
+		private Double thirtynineQMarks;
+		private Double fortyQMarks;
+		private String exBarcode;
+
+		public Double getThirteenQMarks() {
+			return thirteenQMarks;
+		}
+
+		public void setThirteenQMarks(Double thirteenQMarks) {
+			this.thirteenQMarks = thirteenQMarks;
+		}
+
+		public Double getFourteenQMarks() {
+			return fourteenQMarks;
+		}
+
+		public void setFourteenQMarks(Double fourteenQMarks) {
+			this.fourteenQMarks = fourteenQMarks;
+		}
+
+		public Double getFifteenQMarks() {
+			return fifteenQMarks;
+		}
+
+		public void setFifteenQMarks(Double fifteenQMarks) {
+			this.fifteenQMarks = fifteenQMarks;
+		}
+
+		public Double getSixteenQMarks() {
+			return sixteenQMarks;
+		}
+
+		public void setSixteenQMarks(Double sixteenQMarks) {
+			this.sixteenQMarks = sixteenQMarks;
+		}
+
+		public Double getSeventeenQMarks() {
+			return seventeenQMarks;
+		}
+
+		public void setSeventeenQMarks(Double seventeenQMarks) {
+			this.seventeenQMarks = seventeenQMarks;
+		}
+
+		public Double getEighteenQMarks() {
+			return eighteenQMarks;
+		}
+
+		public void setEighteenQMarks(Double eighteenQMarks) {
+			this.eighteenQMarks = eighteenQMarks;
+		}
+
+		public Double getNinteenQMarks() {
+			return ninteenQMarks;
+		}
+
+		public void setNinteenQMarks(Double ninteenQMarks) {
+			this.ninteenQMarks = ninteenQMarks;
+		}
+
+		public Double getTwentyQMarks() {
+			return twentyQMarks;
+		}
+
+		public void setTwentyQMarks(Double twentyQMarks) {
+			this.twentyQMarks = twentyQMarks;
+		}
+
+		public Double getTwentyoneQMarks() {
+			return twentyoneQMarks;
+		}
+
+		public void setTwentyoneQMarks(Double twentyoneQMarks) {
+			this.twentyoneQMarks = twentyoneQMarks;
+		}
+
+		public Double getTwentytwoQMarks() {
+			return twentytwoQMarks;
+		}
+
+		public void setTwentytwoQMarks(Double twentytwoQMarks) {
+			this.twentytwoQMarks = twentytwoQMarks;
+		}
+
+		public Double getTwentythreeQMarks() {
+			return twentythreeQMarks;
+		}
+
+		public void setTwentythreeQMarks(Double twentythreeQMarks) {
+			this.twentythreeQMarks = twentythreeQMarks;
+		}
+
+		public Double getTwentyfourQMarks() {
+			return twentyfourQMarks;
+		}
+
+		public void setTwentyfourQMarks(Double twentyfourQMarks) {
+			this.twentyfourQMarks = twentyfourQMarks;
+		}
+
+		public Double getTwentyfiveQMarks() {
+			return twentyfiveQMarks;
+		}
+
+		public void setTwentyfiveQMarks(Double twentyfiveQMarks) {
+			this.twentyfiveQMarks = twentyfiveQMarks;
+		}
+
+		public Double getTwentysixQMarks() {
+			return twentysixQMarks;
+		}
+
+		public void setTwentysixQMarks(Double twentysixQMarks) {
+			this.twentysixQMarks = twentysixQMarks;
+		}
+
+		public Double getTwentysevenQMarks() {
+			return twentysevenQMarks;
+		}
+
+		public void setTwentysevenQMarks(Double twentysevenQMarks) {
+			this.twentysevenQMarks = twentysevenQMarks;
+		}
+
+		public Double getTwentyeightQMarks() {
+			return twentyeightQMarks;
+		}
+
+		public void setTwentyeightQMarks(Double twentyeightQMarks) {
+			this.twentyeightQMarks = twentyeightQMarks;
+		}
+
+		public Double getTwentynineQMarks() {
+			return twentynineQMarks;
+		}
+
+		public void setTwentynineQMarks(Double twentynineQMarks) {
+			this.twentynineQMarks = twentynineQMarks;
+		}
+
+		public Double getThirtyQMarks() {
+			return thirtyQMarks;
+		}
+
+		public void setThirtyQMarks(Double thirtyQMarks) {
+			this.thirtyQMarks = thirtyQMarks;
+		}
+
+		public Double getThirtyoneQMarks() {
+			return thirtyoneQMarks;
+		}
+
+		public void setThirtyoneQMarks(Double thirtyoneQMarks) {
+			this.thirtyoneQMarks = thirtyoneQMarks;
+		}
+
+		public Double getThirtytwoQMarks() {
+			return thirtytwoQMarks;
+		}
+
+		public void setThirtytwoQMarks(Double thirtytwoQMarks) {
+			this.thirtytwoQMarks = thirtytwoQMarks;
+		}
+
+		public Double getThirtythreeQMarks() {
+			return thirtythreeQMarks;
+		}
+
+		public void setThirtythreeQMarks(Double thirtythreeQMarks) {
+			this.thirtythreeQMarks = thirtythreeQMarks;
+		}
+
+		public Double getThirtyfourQMarks() {
+			return thirtyfourQMarks;
+		}
+
+		public void setThirtyfourQMarks(Double thirtyfourQMarks) {
+			this.thirtyfourQMarks = thirtyfourQMarks;
+		}
+
+		public Double getThirtyfiveQMarks() {
+			return thirtyfiveQMarks;
+		}
+
+		public void setThirtyfiveQMarks(Double thirtyfiveQMarks) {
+			this.thirtyfiveQMarks = thirtyfiveQMarks;
+		}
+
+		public Double getThirtysixQMarks() {
+			return thirtysixQMarks;
+		}
+
+		public void setThirtysixQMarks(Double thirtysixQMarks) {
+			this.thirtysixQMarks = thirtysixQMarks;
+		}
+
+		public Double getThirtysevenQMarks() {
+			return thirtysevenQMarks;
+		}
+
+		public void setThirtysevenQMarks(Double thirtysevenQMarks) {
+			this.thirtysevenQMarks = thirtysevenQMarks;
+		}
+
+		public Double getThirtyeightQMarks() {
+			return thirtyeightQMarks;
+		}
+
+		public void setThirtyeightQMarks(Double thirtyeightQMarks) {
+			this.thirtyeightQMarks = thirtyeightQMarks;
+		}
+
+		public Double getThirtynineQMarks() {
+			return thirtynineQMarks;
+		}
+
+		public void setThirtynineQMarks(Double thirtynineQMarks) {
+			this.thirtynineQMarks = thirtynineQMarks;
+		}
+
+		public Double getFortyQMarks() {
+			return fortyQMarks;
+		}
+
+		public void setFortyQMarks(Double fortyQMarks) {
+			this.fortyQMarks = fortyQMarks;
+		}
+
+		public Long getId() {
+			return id;
+		}
+
+		public EvaluatorList getExpert() {
+			return expert;
+		}
+
+		public ExamBarcodes getExambarcode() {
+			return exambarcode;
+		}
+
+		public Double getFirstQMarks() {
+			return firstQMarks;
+		}
+
+		public Double getSecondQMarks() {
+			return secondQMarks;
+		}
+
+		public Double getThirdQMarks() {
+			return thirdQMarks;
+		}
+
+		public Double getFourQMarks() {
+			return fourQMarks;
+		}
+
+		public Double getFiveQMarks() {
+			return fiveQMarks;
+		}
+
+		public Double getSixQMarks() {
+			return sixQMarks;
+		}
+
+		public Double getSevenQMarks() {
+			return sevenQMarks;
+		}
+
+		public Double getEightQMarks() {
+			return eightQMarks;
+		}
+
+		public Double getNineQMarks() {
+			return nineQMarks;
+		}
+
+		public Double getTenQMarks() {
+			return tenQMarks;
+		}
+
+		public Double getElevenQMarks() {
+			return elevenQMarks;
+		}
+
+		public Double getTwelveQMarks() {
+			return twelveQMarks;
+		}
+
+		public String getExBarcode() {
+			return exBarcode;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public void setExpert(EvaluatorList expert) {
+			this.expert = expert;
+		}
+
+		public void setExambarcode(ExamBarcodes exambarcode) {
+			this.exambarcode = exambarcode;
+		}
+
+		public void setFirstQMarks(Double firstQMarks) {
+			this.firstQMarks = firstQMarks;
+		}
+
+		public void setSecondQMarks(Double secondQMarks) {
+			this.secondQMarks = secondQMarks;
+		}
+
+		public void setThirdQMarks(Double thirdQMarks) {
+			this.thirdQMarks = thirdQMarks;
+		}
+
+		public void setFourQMarks(Double fourQMarks) {
+			this.fourQMarks = fourQMarks;
+		}
+
+		public void setFiveQMarks(Double fiveQMarks) {
+			this.fiveQMarks = fiveQMarks;
+		}
+
+		public void setSixQMarks(Double sixQMarks) {
+			this.sixQMarks = sixQMarks;
+		}
+
+		public void setSevenQMarks(Double sevenQMarks) {
+			this.sevenQMarks = sevenQMarks;
+		}
+
+		public void setEightQMarks(Double eightQMarks) {
+			this.eightQMarks = eightQMarks;
+		}
+
+		public void setNineQMarks(Double nineQMarks) {
+			this.nineQMarks = nineQMarks;
+		}
+
+		public void setTenQMarks(Double tenQMarks) {
+			this.tenQMarks = tenQMarks;
+		}
+
+		public void setElevenQMarks(Double elevenQMarks) {
+			this.elevenQMarks = elevenQMarks;
+		}
+
+		public void setTwelveQMarks(Double twelveQMarks) {
+			this.twelveQMarks = twelveQMarks;
+		}
+
+		public void setExBarcode(String exBarcode) {
+			this.exBarcode = exBarcode;
+		}
+
+		@Override
+		public String toString() {
+			return "ExternalMarks [id=" + id + ", expert=" + expert + ", exambarcode=" + exambarcode + ", firstQMarks="
+					+ firstQMarks + ", secondQMarks=" + secondQMarks + ", thirdQMarks=" + thirdQMarks + ", fourQMarks="
+					+ fourQMarks + ", fiveQMarks=" + fiveQMarks + ", sixQMarks=" + sixQMarks + ", sevenQMarks="
+					+ sevenQMarks + ", eightQMarks=" + eightQMarks + ", nineQMarks=" + nineQMarks + ", tenQMarks="
+					+ tenQMarks + ", elevenQMarks=" + elevenQMarks + ", twelveQMarks=" + twelveQMarks
+					+ ", thirteenQMarks=" + thirteenQMarks + ", fourteenQMarks=" + fourteenQMarks + ", fifteenQMarks="
+					+ fifteenQMarks + ", sixteenQMarks=" + sixteenQMarks + ", seventeenQMarks=" + seventeenQMarks
+					+ ", eighteenQMarks=" + eighteenQMarks + ", ninteenQMarks=" + ninteenQMarks + ", twentyQMarks="
+					+ twentyQMarks + ", twentyoneQMarks=" + twentyoneQMarks + ", twentytwoQMarks=" + twentytwoQMarks
+					+ ", twentythreeQMarks=" + twentythreeQMarks + ", twentyfourQMarks=" + twentyfourQMarks
+					+ ", twentyfiveQMarks=" + twentyfiveQMarks + ", twentysixQMarks=" + twentysixQMarks
+					+ ", twentysevenQMarks=" + twentysevenQMarks + ", twentyeightQMarks=" + twentyeightQMarks
+					+ ", twentynineQMarks=" + twentynineQMarks + ", thirtyQMarks=" + thirtyQMarks + ", thirtyoneQMarks="
+					+ thirtyoneQMarks + ", thirtytwoQMarks=" + thirtytwoQMarks + ", thirtythreeQMarks="
+					+ thirtythreeQMarks + ", thirtyfourQMarks=" + thirtyfourQMarks + ", thirtyfiveQMarks="
+					+ thirtyfiveQMarks + ", thirtysixQMarks=" + thirtysixQMarks + ", thirtysevenQMarks="
+					+ thirtysevenQMarks + ", thirtyeightQMarks=" + thirtyeightQMarks + ", thirtynineQMarks="
+					+ thirtynineQMarks + ", fortyQMarks=" + fortyQMarks + ", exBarcode=" + exBarcode + "]";
+		}
+
+	
+		
+}

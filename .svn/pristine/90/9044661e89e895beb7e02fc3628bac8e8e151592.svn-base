@@ -1,0 +1,216 @@
+package com.niftem.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ex_question_paper_version")
+public class QuestionPaperVersion {
+	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
+	private String exQuestion ;
+	
+	private String exkeyAnswer ;
+
+
+	private int exQuestionNum ;
+
+	private String exVersion ;
+	
+	private String exType ;
+	
+	private String exQuestionType ;
+	
+	private String exCourseCodeNo;
+
+
+	
+
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "academicYear_id", nullable = false)
+	private AcademicYear academicYear;
+	
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "examAnnouncement_id", nullable = false)
+	private ExamAnnouncement examAnnouncement;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+	   
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "questionPaperPattern_id", nullable = false)
+	private QuestionPaperPattern questionPaperPattern ;
+	
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "courses_id", nullable = false)
+	private Courses courses;
+	
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "questionPaper_id", nullable = false)
+	private QuestionPaper questionPaper ;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+	
+	@ManyToOne( optional = false)
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExQuestion() {
+		return exQuestion;
+	}
+
+	public void setExQuestion(String exQuestion) {
+		this.exQuestion = exQuestion;
+	}
+
+	public String getExkeyAnswer() {
+		return exkeyAnswer;
+	}
+
+	public void setExkeyAnswer(String exkeyAnswer) {
+		this.exkeyAnswer = exkeyAnswer;
+	}
+
+	public int getExQuestionNum() {
+		return exQuestionNum;
+	}
+
+	public void setExQuestionNum(int exQuestionNum) {
+		this.exQuestionNum = exQuestionNum;
+	}
+
+	public String getExVersion() {
+		return exVersion;
+	}
+
+	public void setExVersion(String exVersion) {
+		this.exVersion = exVersion;
+	}
+
+	public String getExType() {
+		return exType;
+	}
+
+	public void setExType(String exType) {
+		this.exType = exType;
+	}
+
+	public String getExQuestionType() {
+		return exQuestionType;
+	}
+
+	public void setExQuestionType(String exQuestionType) {
+		this.exQuestionType = exQuestionType;
+	}
+
+	public String getExCourseCodeNo() {
+		return exCourseCodeNo;
+	}
+
+	public void setExCourseCodeNo(String exCourseCodeNo) {
+		this.exCourseCodeNo = exCourseCodeNo;
+	}
+
+	public AcademicYear getAcademicYear() {
+		return academicYear;
+	}
+
+	public void setAcademicYear(AcademicYear academicYear) {
+		this.academicYear = academicYear;
+	}
+
+	public ExamAnnouncement getExamAnnouncement() {
+		return examAnnouncement;
+	}
+
+	public void setExamAnnouncement(ExamAnnouncement examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public QuestionPaperPattern getQuestionPaperPattern() {
+		return questionPaperPattern;
+	}
+
+	public void setQuestionPaperPattern(QuestionPaperPattern questionPaperPattern) {
+		this.questionPaperPattern = questionPaperPattern;
+	}
+
+	public Courses getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+
+	public QuestionPaper getQuestionPaper() {
+		return questionPaper;
+	}
+
+	public void setQuestionPaper(QuestionPaper questionPaper) {
+		this.questionPaper = questionPaper;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	@Override
+	public String toString() {
+		return "QuestionPaperVersion [id=" + id + ", exQuestion=" + exQuestion + ", exkeyAnswer=" + exkeyAnswer
+				+ ", exQuestionNum=" + exQuestionNum + ", exVersion=" + exVersion + ", exType=" + exType
+				+ ", exQuestionType=" + exQuestionType + ", exCourseCodeNo=" + exCourseCodeNo + ", academicYear="
+				+ academicYear + ", examAnnouncement=" + examAnnouncement + ", degree=" + degree
+				+ ", questionPaperPattern=" + questionPaperPattern + ", courses=" + courses + ", questionPaper="
+				+ questionPaper + ", programmes=" + programmes + ", department=" + department + "]";
+	}
+	
+	
+	
+	   
+
+
+}

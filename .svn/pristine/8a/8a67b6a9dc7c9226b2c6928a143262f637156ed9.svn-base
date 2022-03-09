@@ -1,0 +1,26 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.StudentCertificateRequeest;
+
+public interface StudentCertificateRequeestRepository extends CrudRepository<StudentCertificateRequeest, Long>{
+
+	List<StudentCertificateRequeest>  findByStudentadmissionIdAndCertificateTypeId(Long id, Long long1);
+
+	List<StudentCertificateRequeest>  findByStatus(int status);
+	List<StudentCertificateRequeest>  findByStudentadmissionId(Long rollno);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_student_certificate_request set ex_update_date = ?1,exdocument_path =?2  , status = 1 , user_id = ?3 where id =?4 ", nativeQuery = true)
+	int updateRecord(Date date, String path, Long user , Long id);
+
+}

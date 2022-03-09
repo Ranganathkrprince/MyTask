@@ -1,0 +1,41 @@
+package com.niftem.app.controller;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.niftem.app.model.Login;
+import com.niftem.app.service.LoginService;
+
+@RestController
+@RequestMapping("/api/login/")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@Validated
+public class LoginController {
+
+@Autowired
+private LoginService loginService;
+
+private static Logger logger = LoggerFactory.getLogger("master-log");
+	@RequestMapping(value = "/doLogin")
+	public Map<String, Object> createAuthenticationToken(@Valid @RequestBody Login login , HttpServletRequest request) throws Exception {
+		
+		logger.info("getLocalAddr : "+request.getLocalAddr());
+		logger.info("getRemoteAddr: "+request.getRemoteAddr());
+		logger.info("getLocalName: "+request.getLocalName());
+		logger.info("getRemoteHost: "+request.getRemoteHost());
+		System.out.println("getInputStream: "+request.getInputStream());
+		return loginService.login(login,request);		
+	}
+
+}

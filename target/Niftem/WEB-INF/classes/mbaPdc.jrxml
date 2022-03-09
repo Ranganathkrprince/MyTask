@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pdc" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1b696e0a-8142-465b-93a1-8d952bc1cd62">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="university" class="java.lang.String"/>
+	<parameter name="studentId" class="java.lang.String"/>
+	<parameter name="studentIdk" class="java.lang.String"/>
+	<parameter name="name" class="java.lang.String"/>
+	<parameter name="refNo" class="java.lang.String"/>
+	<parameter name="father" class="java.lang.String"/>
+	<parameter name="mother" class="java.lang.String"/>
+	<parameter name="geneder" class="java.lang.String"/>
+	<parameter name="pernoun" class="java.lang.String"/>
+	<parameter name="adjective" class="java.lang.String"/>
+	<parameter name="dateOfDeclaration" class="java.lang.String"/>
+	<parameter name="ogpa" class="java.lang.String"/>
+	<parameter name="joinedyear" class="java.lang.String"/>
+	<parameter name="passoutyear" class="java.lang.String"/>
+	<parameter name="scrutinize" class="java.lang.Integer"/>
+	<parameter name="batch" class="java.lang.String"/>
+	<parameter name="con" class="java.lang.String"/>
+	<parameter name="conk" class="java.lang.String"/>
+	<parameter name="logo" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="programe" class="java.lang.String"/>
+	<field name="programek" class="java.lang.String"/>
+	<field name="college" class="java.lang.String"/>
+	<field name="collegek" class="java.lang.String"/>
+	<field name="academicyear" class="java.lang.String"/>
+	<field name="department" class="java.lang.String"/>
+	<field name="enrollmentno" class="java.lang.String"/>
+	<background>
+		<band height="540" splitType="Stretch">
+			<rectangle>
+				<reportElement key="rectangle" x="0" y="10" width="800" height="523" forecolor="#549041" uuid="e06a859d-7551-40f1-b1b6-2dc4405684d7"/>
+				<graphicElement>
+					<pen lineWidth="5.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+		</band>
+	</background>
+	<title>
+		<band height="110" splitType="Stretch">
+			<image onErrorType="Blank">
+				<reportElement positionType="Float" x="340" y="20" width="150" height="83" uuid="3c10a87f-9887-4074-b709-f34b55a21820"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="30" y="10" width="180" height="23" isRemoveLineWhenBlank="true" uuid="dcabf550-445f-4aa4-b3c7-9a3ef52e8e34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Enrollment No.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="170" y="10" width="120" height="23" uuid="0d3b1adc-cedd-4956-a322-1ee7f4ea15b5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{enrollmentno}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="48" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="70" y="-40" width="670" height="83" forecolor="#32941C" uuid="d14e9adb-fc6d-4951-98a3-f4594d2574a6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="25" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{university}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="25" width="630" height="23" uuid="24494b6e-2d9c-40b5-927d-0be76f3f4540"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[[Deemed to be University under De-Novo Category under Section-3 of the UGC Act, 1956]
+]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement x="80" y="20" width="630" height="50" forecolor="#CE2A2D" uuid="24494b6e-2d9c-40b5-927d-0be76f3f4540"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="25" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Provisional Degree Certificate
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="-5" width="630" height="25" uuid="24494b6e-2d9c-40b5-927d-0be76f3f4540"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Kundli,Distt.Sonepat,Haryana [India] -131028]
+]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<columnFooter>
+		<band height="306" splitType="Stretch">
+			<textField>
+				<reportElement x="20" y="-10" width="740" height="253" uuid="2ab18b7b-ce5b-4949-abff-dae36d28c23d"/>
+				<textElement textAlignment="Justified" markup="styled">
+					<font fontName="SansSerif" size="15"/>
+					<paragraph lineSpacing="Proportional" lineSpacingSize="2.1"/>
+				</textElement>
+				<textFieldExpression><![CDATA["              "+"This is to certify that"+"<style isBold='true' pdfFontName='Times-Bold'>"+$P{con}+" "+$P{name}+","+"</style>"+ " " +"Son/Daughter"+" "+"of" +" "+"<style isBold='true' pdfFontName='Times-Bold'>"+$P{father}+" and " +$P{mother}+"</style>"+","+" "+ "Roll No."+"<style isBold='true' pdfFontName='Times-Bold'>"+$P{studentId}+"</style>"+" "+", has qualified for the award of the degree of"+" "+"<style isBold='true' pdfFontName='Times-Bold'>"+$F{programe}+"</style>"+" "+ "With [Dual specialization in "+"<style isBold='true' pdfFontName='Times-Bold'>"+$F{department}+"</style>"+" of this Deemed to be University and successfully passed the prescribed examinations held during the Academic Session" +" " +"<style isBold='true' pdfFontName='Times-Bold'>"+$P{batch}+"</style>"+" "+"with"+" "+"<style isBold='true' pdfFontName='Times-Bold'>"+$P{ogpa}+"</style>"+" "+ "OGPA."+"<style isBold='true' pdfFontName='Times-Bold'>" +"</style>"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="140" width="670" height="35" isRemoveLineWhenBlank="true" uuid="641b1d57-5734-43d4-9e5f-7156012241f2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="false" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[The degree will be conferred on the candidate in the convocation or thereafter.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="540" y="240" width="240" height="40" isRemoveLineWhenBlank="true" uuid="641b1d57-5734-43d4-9e5f-7156012241f2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Controller Of Examinations]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="230" width="240" height="40" isRemoveLineWhenBlank="true" uuid="33d27723-1cad-4a45-997b-d835631e3dc7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="false" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Kundli (Sonepat)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="250" width="50" height="40" isRemoveLineWhenBlank="true" uuid="dae3fb0b-f971-4c7c-90ae-64906cd0b839"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Date:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="140" y="260" width="110" height="20" uuid="a0115443-dc35-4cbb-8a06-1528cda35a3a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dateOfDeclaration}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

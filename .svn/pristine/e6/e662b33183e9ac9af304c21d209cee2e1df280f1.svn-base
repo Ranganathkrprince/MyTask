@@ -1,0 +1,120 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+public class PushAlertNotificationRequest {
+	private Long user;	
+	@NotNull(message="please provide colleges")
+	private List<Long> college;
+	@NotNull(message="please provide programmeYear")
+	private List<Long> programmeYear;
+	@NotNull(message="please provide department")
+	private List<Long> department;
+	@NotNull(message="please provide programmes")
+	private List<Long> programmes;	
+	@NotNull(message="please provide academicYear")
+	private Long academicYear;
+	@NotNull(message="please provide semester")
+	private Long semester;
+	@NotNull(message="please provide category")
+	private Long category;
+	@NotNull(message="please provide template")
+	private Long template;
+	private Long id;
+	private String message;
+	private String title;
+	@NotNull(message="please provide degree")
+	private List<Long> degree;
+	
+	public List<Long> getDegree() {
+		return degree;
+	}
+	public void setDegree(List<Long> degree) {
+		this.degree = degree;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	
+	public List<Long> getProgrammeYear() {
+		return programmeYear;
+	}
+	public void setProgrammeYear(List<Long> programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public Long getSemester() {
+		return semester;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+	
+	public List<Long> getCollege() {
+		return college;
+	}
+	public void setCollege(List<Long> college) {
+		this.college = college;
+	}
+	public List<Long> getDepartment() {
+		return department;
+	}
+	public void setDepartment(List<Long> department) {
+		this.department = department;
+	}
+	public List<Long> getProgrammes() {
+		return programmes;
+	}
+	public void setProgrammes(List<Long> programmes) {
+		this.programmes = programmes;
+	}
+	public Long getCategory() {
+		return category;
+	}
+	public void setCategory(Long category) {
+		this.category = category;
+	}
+	public Long getTemplate() {
+		return template;
+	}
+	public void setTemplate(Long template) {
+		this.template = template;
+	}
+	
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	@Override
+	public String toString() {
+		return "PushAlertNotificationRequest [user=" + user + ", college=" + college + ", programmeYear="
+				+ programmeYear + ", department=" + department + ", programmes=" + programmes + ", academicYear="
+				+ academicYear + ", semester=" + semester + ", category=" + category + ", template=" + template
+				+ ", id=" + id + ", message=" + message + ", title=" + title + ", degree=" + degree + "]";
+	}
+	
+}

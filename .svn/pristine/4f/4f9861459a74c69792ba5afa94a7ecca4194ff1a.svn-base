@@ -1,0 +1,47 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.PenaltyConfiguration;
+
+
+
+public interface PenaltyConfigurationRepository extends CrudRepository<PenaltyConfiguration, Long> {
+
+	
+	
+	@Query(value ="SELECT * FROM ex_penalty_configuration where ex_is_active = ?1 AND  ex_is_delete = ?2 AND degree_id = ?3 AND semester_id = ?5  AND programmeyear_id = ?4 AND programmes_id =?6 AND ex_start_date <=?7 AND ex_end_date >=?8 ", nativeQuery = true)
+
+	List<PenaltyConfiguration> validateDate(boolean b, boolean c, Long degree, Long programmeYear, Long semester,
+			Long programmes, Date startdate, Date enddate);
+
+	List<PenaltyConfiguration> findByExIsDelete(boolean b);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_penalty_configuration set ex_is_delete=?1 ,ex_is_active=?2 where id =?3", nativeQuery = true)
+	int deletePenalty(Boolean exIsDelete, Boolean is_active, Long id);
+
+	
+	
+	
+	@Query(value ="SELECT * FROM ex_penalty_configuration where ex_is_active = ?1 AND  ex_is_delete = ?2 AND  ex_due_date = ?3 AND ex_start_date <=?4 AND ex_end_date >=?5 AND id =?6", nativeQuery = true)
+
+	List<PenaltyConfiguration> updatevalidateDate(boolean b, boolean c, Date duedate, Date staetdate, Date enddate, Long id);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_penalty_configuration set ex_is_active = ?1,ex_is_delete=?2 ,ex_start_date=?3 ,ex_end_date =?4 , ex_due_date = ?5 , ex_inc_amount = ?6 ,ex_update_date = ?8 where id =?7", nativeQuery = true)
+
+	int updatePenalty(Boolean exIsActive, boolean b, Date parse, Date parse2, Date parse3, Double exIncAmount, Long id,
+			Date date);
+
+}

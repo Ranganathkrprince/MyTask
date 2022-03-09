@@ -1,0 +1,102 @@
+package com.niftem.app.model;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class CategoryRequest {
+
+	private Long id;
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	@NotEmpty
+	@NotNull
+	@NotBlank(message = "Please provide a name")
+	private String exName;
+
+	@NotNull(message = "Please provide a exIsActive 0/1")
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean exIsActive;
+	@NotNull(message = "Please provide a feeApply")
+	private Integer exIsFeeApply;
+	private Boolean exIsDelete;
+	private Date exCreateDate;
+	private Date exUpdateDate;
+	private Long user;
+
+	public Long getUser() {
+		return user;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public Integer getExIsFeeApply() {
+		return exIsFeeApply;
+	}
+
+	public void setExIsFeeApply(Integer exIsFeeApply) {
+		this.exIsFeeApply = exIsFeeApply;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	@Override
+	public String toString() {
+		return "CategoryRequest [id=" + id + ", exName=" + exName + ", exIsActive=" + exIsActive + ", exIsFeeApply="
+				+ exIsFeeApply + ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate + ", exUpdateDate="
+				+ exUpdateDate + ", user=" + user + "]";
+	}
+
+	
+
+}

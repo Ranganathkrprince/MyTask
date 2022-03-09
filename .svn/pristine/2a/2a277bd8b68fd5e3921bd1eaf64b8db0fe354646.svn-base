@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClassTimeTable" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8b717232-1cc5-42a0-add4-e32ea01c30cf">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="programmeYear" class="java.lang.Long"/>
+	<parameter name="programme" class="java.lang.Long"/>
+	<parameter name="semester" class="java.lang.Long"/>
+	<parameter name="department" class="java.lang.Long"/>
+	<parameter name="academicYear" class="java.lang.Long"/>
+	<parameter name="college" class="java.lang.Long"/>
+	<parameter name="degree" class="java.lang.Long"/>
+	<parameter name="stream" class="java.lang.Long"/>
+	<parameter name="programmeYearName" class="java.lang.String"/>
+	<parameter name="programmeName" class="java.lang.String"/>
+	<parameter name="semesterName" class="java.lang.String"/>
+	<parameter name="departmentName" class="java.lang.String"/>
+	<parameter name="academicYearName" class="java.lang.String"/>
+	<parameter name="collegeName" class="java.lang.String"/>
+	<parameter name="degreeName" class="java.lang.String"/>
+	<parameter name="streamName" class="java.lang.String"/>
+	<parameter name="createdBy" class="java.lang.String"/>
+	<parameter name="university" class="java.lang.String"/>
+	<parameter name="logo" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+ (SELECT DISTINCT p.ex_name FROM ex_class_timetable_days e ,ex_week_days p WHERE e.week_days_id='1' and p.id=e.week_days_id) AS "Monday",
+ (SELECT DISTINCT p.ex_name FROM ex_class_timetable_days e, ex_week_days p WHERE e.week_days_id='2' and p.id=e.week_days_id) AS "Tuesday",
+ (SELECT DISTINCT p.ex_name FROM ex_class_timetable_days e ,ex_week_days p WHERE e.week_days_id='3' and p.id=e.week_days_id) AS "wednesday",
+ (SELECT DISTINCT p.ex_name FROM ex_class_timetable_days e, ex_week_days p WHERE e.week_days_id='4' and p.id=e.week_days_id) AS "Thursday",
+ (SELECT DISTINCT p.ex_name FROM ex_class_timetable_days e ,ex_week_days p WHERE e.week_days_id='5' and p.id=e.week_days_id) AS "Firday",
+
+       concat('( ' ,e1.ex_start_time, ' to ', e1.ex_end_time, ' ) ',c.ex_courses_code ,'-',h.ex_name ) as "course1",
+	   concat('( ' ,e1.ex_start_time, ' to ', e1.ex_end_time, ' ) ',c1.ex_courses_code , '-', h1.ex_name) as "course2",
+	   concat('( ' ,e1.ex_start_time, ' to ', e1.ex_end_time, ' ) ',c2.ex_courses_code ,'-',h2.ex_name)as "course3",
+       concat('( ' ,e1.ex_start_time, ' to ', e1.ex_end_time, ' ) ',c3.ex_courses_code ,'-', h3.ex_name) as "course4",
+       concat('( ' ,e1.ex_start_time, ' to ', e1.ex_end_time, ' ) ',c4.ex_courses_code ,'-', h4.ex_name) as "course5"
+
+
+    FROM (SELECT DISTINCT id,courses_id,coursestype_id
+          FROM   ex_class_timetable f
+          where	 f.academicyear_id=$P{academicYear} and
+			     f.collage_id =$P{college} and degree_id =$P{degree} and department_id=$P{department} and programmeyear_id=$P{programmeYear} and  programmes_id =$P{programme} and semester_id =$P{semester} and stream_id=$P{stream} and ex_is_update ='1'
+         )e
+
+	left Join ex_class_timetable_days e1 on e1.class_timetable_id = e.id  and e.courses_id =e1.courses_id and e1.ex_start_time IS NOT NULL and e1.week_days_id='1'
+	left Join ex_class_timetable_days e2 on e2.class_timetable_id = e.id  and e.courses_id =e2.courses_id and e2.ex_start_time IS NOT NULL and e2.week_days_id='2'
+	left Join ex_class_timetable_days e3 on e3.class_timetable_id  = e.id and e.courses_id =e3.courses_id and e3.ex_start_time IS NOT NULL and e3.week_days_id='3'
+  left Join ex_class_timetable_days e4 on e4.class_timetable_id  = e.id and e.courses_id =e4.courses_id and e4.ex_start_time IS NOT NULL and e4.week_days_id='4'
+  left Join ex_class_timetable_days e5 on e5.class_timetable_id  = e.id and e.courses_id =e5.courses_id and e5.ex_start_time IS NOT NULL and e5.week_days_id='5'
+
+  LEFT JOIN ex_courses c ON c.id = e1.courses_id
+  LEFT JOIN ex_courses c1 ON c1.id = e2.courses_id
+  LEFT JOIN ex_courses c2 ON c2.id = e3.courses_id
+  LEFT JOIN ex_courses c3 ON c3.id = e4.courses_id
+  LEFT JOIN ex_courses c4 ON c4.id = e5.courses_id
+  
+    LEFT JOIN ex_coursesType h ON h.id =  e.coursestype_id AND e1.class_timetable_id=e.id
+  LEFT JOIN ex_coursesType h1 ON h1.id = e.coursestype_id AND e2.class_timetable_id=e.id
+  LEFT JOIN ex_coursesType h2 ON h2.id = e.coursestype_id AND e3.class_timetable_id=e.id
+  LEFT JOIN ex_coursesType h3 ON h3.id = e.coursestype_id AND e4.class_timetable_id=e.id
+  LEFT JOIN ex_coursesType h4 ON h4.id = e.coursestype_id AND e5.class_timetable_id=e.id]]>
+	</queryString>
+	<field name="Monday" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Monday"/>
+	</field>
+	<field name="Tuesday" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Tuesday"/>
+	</field>
+	<field name="wednesday" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="wednesday"/>
+	</field>
+	<field name="Thursday" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Thursday"/>
+	</field>
+	<field name="Firday" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Firday"/>
+	</field>
+	<field name="course1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="course1"/>
+	</field>
+	<field name="course2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="course2"/>
+	</field>
+	<field name="course3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="course3"/>
+	</field>
+	<field name="course4" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="course4"/>
+	</field>
+	<field name="course5" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="course5"/>
+	</field>
+	<group name="Monday">
+		<groupExpression><![CDATA[$F{Monday}]]></groupExpression>
+	</group>
+	<group name="Tuesday">
+		<groupExpression><![CDATA[$F{Tuesday}]]></groupExpression>
+	</group>
+	<group name="wednesday">
+		<groupExpression><![CDATA[$F{wednesday}]]></groupExpression>
+	</group>
+	<group name="Thursday">
+		<groupExpression><![CDATA[$F{Thursday}]]></groupExpression>
+	</group>
+	<group name="Firday">
+		<groupExpression><![CDATA[$F{Firday}]]></groupExpression>
+	</group>
+	<group name="course1">
+		<groupExpression><![CDATA[$F{course1}]]></groupExpression>
+	</group>
+	<group name="course2">
+		<groupExpression><![CDATA[$F{course2}]]></groupExpression>
+	</group>
+	<group name="course3">
+		<groupExpression><![CDATA[$F{course3}]]></groupExpression>
+	</group>
+	<group name="course4">
+		<groupExpression><![CDATA[$F{course4}]]></groupExpression>
+	</group>
+	<group name="course5">
+		<groupExpression><![CDATA[$F{course5}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="188" splitType="Stretch">
+			<staticText>
+				<reportElement x="160" y="50" width="250" height="20" uuid="65032c39-bc34-43c4-80e4-1416475e800c"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Class Time Table]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="420" y="148" width="100" height="40" uuid="9cb0348e-40c3-445e-a623-8f7398c51456"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TimeRoman" size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Firday}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="20" y="148" width="100" height="40" uuid="799d9acd-3c20-4f8a-a6b0-bff62b9f5967"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TimeRoman" size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Monday}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="120" y="148" width="100" height="40" uuid="d05c9f4b-c709-43a5-96c8-032e426be2a7"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TimeRoman" size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Tuesday}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="220" y="148" width="100" height="40" uuid="4687e7f9-d353-4100-9888-8a0ac67bae1b"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TimeRoman" size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{wednesday}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="320" y="148" width="100" height="40" uuid="d8cbcf70-13a0-40fe-8c8b-38dbc194537d"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TimeRoman" size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Thursday}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="90" y="0" width="462" height="20" uuid="4484adce-b6a5-4e3d-b289-24a484df750c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TimeRoman" size="14" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{university}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement positionType="Float" x="4" y="0" width="86" height="70" uuid="556036bb-5521-4fff-885d-e8a324033fd8"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="60" y="90" width="462" height="20" uuid="56007853-e6b7-4f98-a0d5-e47295bd0f09"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TimeRoman" size="14" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{departmentName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="20" y="0" width="100" height="30" uuid="1a93ec9b-48a5-4943-9295-68ec1943842d"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TimeRoman" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{course1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="0" width="100" height="30" uuid="06cae611-443a-40a1-9913-c25fb06830d5"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TimeRoman" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{course2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="220" y="0" width="100" height="30" uuid="41ef0bfb-3e8e-49ff-be39-97ca26ace6c8"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TimeRoman" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{course3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="320" y="0" width="100" height="30" uuid="a672578e-26b7-4668-b001-9a75c9db4ecf"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TimeRoman" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{course4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="420" y="0" width="100" height="30" uuid="1c82e93c-e409-451e-8221-485825ab41d5"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TimeRoman" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{course5}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

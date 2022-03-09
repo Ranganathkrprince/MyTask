@@ -1,0 +1,79 @@
+package com.niftem.app.model;
+
+public class PhotoCopyRequest {
+	private String barcode;
+	private Long degree;
+	private Long programmes;
+	private Long courses;
+
+	private Long colleges;
+	private Long programmeYear;
+	private Long semester;
+	private Long academicYear;
+	private String exRollNo;
+	
+	public String getBarcode() {
+		return barcode;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public Long getCourses() {
+		return courses;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public Long getSemester() {
+		return semester;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public String getExRollNo() {
+		return exRollNo;
+	}
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public void setExRollNo(String exRollNo) {
+		this.exRollNo = exRollNo;
+	}
+	@Override
+	public String toString() {
+		return "PhotoCopyRequest [barcode=" + barcode + ", degree=" + degree + ", programmes=" + programmes
+				+ ", courses=" + courses + ", colleges=" + colleges + ", programmeYear=" + programmeYear + ", semester="
+				+ semester + ", academicYear=" + academicYear + ", exRollNo=" + exRollNo + "]";
+	}
+
+
+	
+	
+}

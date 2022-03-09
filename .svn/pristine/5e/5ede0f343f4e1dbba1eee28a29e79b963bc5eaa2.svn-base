@@ -1,0 +1,23 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.NoDuesMapping;
+import com.niftem.app.entity.User;
+
+public interface NoDuesMappingRepository extends CrudRepository< NoDuesMapping, Long>{
+
+	
+	List<NoDuesMapping> findByConfigDegreeIdAndConfigAcademicYearIdAndConfigCollegesIdAndConfigDepartmentIdAndConfigProgrammesIdAndApprtypeId
+	(Long degree,Long academic , Long college , Long dept ,Long proram , Long approve);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_nodues_mapping set ex_is_approve = 1 , user_id = ?1 where  id IN ?2 and approvetype_id =?3", nativeQuery = true)
+	int updateApproval(User user, List<Long> list , Long approvetye);	
+}

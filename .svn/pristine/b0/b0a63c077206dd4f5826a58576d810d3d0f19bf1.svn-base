@@ -1,0 +1,225 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotNull;
+
+public class ExamAttendanceLogRequest {
+	
+	private Long id;
+	
+	@NotNull(message = "Please provide academicYear")
+	private Long academicYear;
+	
+	@NotNull(message = "Please provide colleges")
+	private Long colleges;
+	
+	@NotNull(message = "Please provide degree")
+	private Long degree;
+	
+	private Long programmeYear;
+
+	private Long Studentadmission;
+	public Long getStudentadmission() {
+		return Studentadmission;
+	}
+	public void setStudentadmission(Long studentadmission) {
+		Studentadmission = studentadmission;
+	}
+	@NotNull(message = "Please provide programmes")
+	private Long programmes;
+	
+	@NotNull(message = "Please provide courses")
+	private Long courses;
+	
+	@NotNull(message = "Please provide Exam Id")
+	private Long examAnnouncement;
+	 
+	@NotNull(message = "Please provide stream")
+	private Long stream;
+
+	@NotNull(message = "Please provide stream")
+	private Long coursestype;
+	
+	private Boolean exIsActive;
+	
+	private Long user;
+	
+	@NotNull(message = "Please provide registrationType")
+	private Long registrationType;
+	
+	
+	@NotNull(message = "Please provide semester")
+	private Long semester;
+	
+	@NotNull(message = "Please provide department Id")
+	private Long  department;
+	
+	private String exBarcode;
+    private String exTimeLimit;
+	private String exTimeTaken;
+	private String exAnsBookletPath;
+	private String exEvaluatedPath;
+	
+	private	Double omrMarks;
+	private Double externalmarks;
+	
+	private String exStudentIdFrom;
+	private String exStudentIdTo;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getAcademicYear() {
+		return academicYear;
+	}
+	public void setAcademicYear(Long academicYear) {
+		this.academicYear = academicYear;
+	}
+	public Long getColleges() {
+		return colleges;
+	}
+	public void setColleges(Long colleges) {
+		this.colleges = colleges;
+	}
+	public Long getDegree() {
+		return degree;
+	}
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+	public Long getProgrammeYear() {
+		return programmeYear;
+	}
+	public void setProgrammeYear(Long programmeYear) {
+		this.programmeYear = programmeYear;
+	}
+	public Long getProgrammes() {
+		return programmes;
+	}
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+	public Long getCourses() {
+		return courses;
+	}
+	public void setCourses(Long courses) {
+		this.courses = courses;
+	}
+	public Long getExamAnnouncement() {
+		return examAnnouncement;
+	}
+	public void setExamAnnouncement(Long examAnnouncement) {
+		this.examAnnouncement = examAnnouncement;
+	}
+	public Long getStream() {
+		return stream;
+	}
+	public void setStream(Long stream) {
+		this.stream = stream;
+	}
+	public Long getCoursestype() {
+		return coursestype;
+	}
+	public void setCoursestype(Long coursestype) {
+		this.coursestype = coursestype;
+	}
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+	public Long getUser() {
+		return user;
+	}
+	public void setUser(Long user) {
+		this.user = user;
+	}
+	public Long getRegistrationType() {
+		return registrationType;
+	}
+	public void setRegistrationType(Long registrationType) {
+		this.registrationType = registrationType;
+	}
+	public Long getSemester() {
+		return semester;
+	}
+	public void setSemester(Long semester) {
+		this.semester = semester;
+	}
+	public Long getDepartment() {
+		return department;
+	}
+	public void setDepartment(Long department) {
+		this.department = department;
+	}
+	public String getExBarcode() {
+		return exBarcode;
+	}
+	public void setExBarcode(String exBarcode) {
+		this.exBarcode = exBarcode;
+	}
+	public String getExTimeLimit() {
+		return exTimeLimit;
+	}
+	public void setExTimeLimit(String exTimeLimit) {
+		this.exTimeLimit = exTimeLimit;
+	}
+	public String getExTimeTaken() {
+		return exTimeTaken;
+	}
+	public void setExTimeTaken(String exTimeTaken) {
+		this.exTimeTaken = exTimeTaken;
+	}
+	public String getExAnsBookletPath() {
+		return exAnsBookletPath;
+	}
+	public void setExAnsBookletPath(String exAnsBookletPath) {
+		this.exAnsBookletPath = exAnsBookletPath;
+	}
+	public String getExEvaluatedPath() {
+		return exEvaluatedPath;
+	}
+	public void setExEvaluatedPath(String exEvaluatedPath) {
+		this.exEvaluatedPath = exEvaluatedPath;
+	}
+	public Double getOmrMarks() {
+		return omrMarks;
+	}
+	public void setOmrMarks(Double omrMarks) {
+		this.omrMarks = omrMarks;
+	}
+	public Double getExternalmarks() {
+		return externalmarks;
+	}
+	public void setExternalmarks(Double externalmarks) {
+		this.externalmarks = externalmarks;
+	}
+	public String getExStudentIdFrom() {
+		return exStudentIdFrom;
+	}
+	public void setExStudentIdFrom(String exStudentIdFrom) {
+		this.exStudentIdFrom = exStudentIdFrom;
+	}
+	public String getExStudentIdTo() {
+		return exStudentIdTo;
+	}
+	public void setExStudentIdTo(String exStudentIdTo) {
+		this.exStudentIdTo = exStudentIdTo;
+	}
+	@Override
+	public String toString() {
+		return "ExamAttendanceLogRequest [id=" + id + ", academicYear=" + academicYear + ", colleges=" + colleges
+				+ ", degree=" + degree + ", programmeYear=" + programmeYear + ", Studentadmission=" + Studentadmission
+				+ ", programmes=" + programmes + ", courses=" + courses + ", examAnnouncement=" + examAnnouncement
+				+ ", stream=" + stream + ", coursestype=" + coursestype + ", exIsActive=" + exIsActive + ", user="
+				+ user + ", registrationType=" + registrationType + ", semester=" + semester + ", department="
+				+ department + ", exBarcode=" + exBarcode + ", exTimeLimit=" + exTimeLimit + ", exTimeTaken="
+				+ exTimeTaken + ", exAnsBookletPath=" + exAnsBookletPath + ", exEvaluatedPath=" + exEvaluatedPath
+				+ ", omrMarks=" + omrMarks + ", externalmarks=" + externalmarks + ", exStudentIdFrom=" + exStudentIdFrom
+				+ ", exStudentIdTo=" + exStudentIdTo + "]";
+	}
+	
+
+}

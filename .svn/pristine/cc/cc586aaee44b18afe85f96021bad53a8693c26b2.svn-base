@@ -1,0 +1,68 @@
+package com.niftem.app.model;
+
+import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class CoursesTypeRequest {
+	private Long id;
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a name")
+	private String exName;
+	
+	@NotNull(message = "Please provide a exIsActive 0/1")
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+    private Boolean exIsActive;
+	
+	
+
+	private String exDescription;
+     
+	private Long user;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "CoursesTypeRequest [id=" + id + ", exName=" + exName + ", exIsActive=" + exIsActive + ", exDescription="
+				+ exDescription + ", user=" + user + "]";
+	}
+}

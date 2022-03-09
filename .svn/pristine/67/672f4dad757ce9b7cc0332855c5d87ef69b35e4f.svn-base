@@ -1,0 +1,137 @@
+package com.niftem.app.model;
+
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class DepartmentRequest {
+
+	@NotEmpty@NotNull@NotBlank(message = "Please provide exName")
+	private String exName;
+	
+	private Long id;    
+	
+    private String exLocalName;
+	
+	@NotNull(message = "Please provide a exIsActive 0/1")
+	private Boolean exIsActive;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide Identifier")
+    private String exIdentifier;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide DepartmentCode")
+    private String exDepartmentCode;
+	
+	@Column(columnDefinition="BOOLEAN DEFAULT false")
+	private Boolean exIsDelete;
+	
+	@NotNull(message = "degree is required")
+	private Long degree;
+	
+	@NotNull(message = "programmes is required")
+	private Long programmes;
+	
+	@NotNull(message="please provide colleges")
+	private List<Long> colleges ;
+	
+	private Long user;
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExLocalName() {
+		return exLocalName;
+	}
+
+	public void setExLocalName(String exLocalName) {
+		this.exLocalName = exLocalName;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public String getExIdentifier() {
+		return exIdentifier;
+	}
+
+	public void setExIdentifier(String exIdentifier) {
+		this.exIdentifier = exIdentifier;
+	}
+
+	public String getExDepartmentCode() {
+		return exDepartmentCode;
+	}
+
+	public void setExDepartmentCode(String exDepartmentCode) {
+		this.exDepartmentCode = exDepartmentCode;
+	}
+
+	public Boolean getExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setExIsDelete(Boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	public Long getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+	public List<Long> getColleges() {
+		return colleges;
+	}
+
+	public void setColleges(List<Long> colleges) {
+		this.colleges = colleges;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "DepartmentRequest [exName=" + exName + ", id=" + id + ", exLocalName=" + exLocalName + ", exIsActive="
+				+ exIsActive + ", exIdentifier=" + exIdentifier + ", exDepartmentCode=" + exDepartmentCode
+				+ ", exIsDelete=" + exIsDelete + ", degree=" + degree + ", programmes=" + programmes + ", colleges="
+				+ colleges + ", user=" + user + "]";
+	}
+}

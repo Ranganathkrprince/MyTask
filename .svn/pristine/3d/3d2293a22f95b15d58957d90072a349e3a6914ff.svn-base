@@ -1,0 +1,69 @@
+package com.niftem.app.service;
+
+import java.util.Map;
+
+import javax.validation.Valid;
+
+import com.niftem.app.model.AttendenceRequest;
+import com.niftem.app.model.ClassTimeTableRequest;
+import com.niftem.app.model.EligibleListforExamRequest;
+import com.niftem.app.model.NoduR;
+import com.niftem.app.model.SemesterEligibility;
+import com.niftem.app.model.TeachingSummaryRequest;
+
+public interface ClassAcademicService {
+
+	Map<String, Object> createClassTimeTable(ClassTimeTableRequest request);
+
+	Map<String, Object> getclassTimeTable(@Valid ClassTimeTableRequest request);
+
+	Map<String, Object> updateclassTimeTable(ClassTimeTableRequest request);
+
+	Map<String, Object> checkTimeTableStatus(@Valid ClassTimeTableRequest request);
+	
+	Map<String, Object> getMonthName();
+
+	
+	Map<String, Object> createTeachingSummary(@Valid TeachingSummaryRequest request);
+	Map<String, Object> updateTeachingSummary(@Valid TeachingSummaryRequest request);
+	Map<String, Object> getTeachingSummary();
+	Map<String, Object> deleteTeachingSummary(TeachingSummaryRequest request);
+
+	Map<String, Object> createClassAttendance(@Valid ClassTimeTableRequest request);
+
+	Map<String, Object> getEligibleListforExam(@Valid EligibleListforExamRequest request);
+
+	Map<String, Object> generateAttendence(@Valid AttendenceRequest request);
+
+	Map<String, Object> checkAttendenceEligibility(@Valid SemesterEligibility request);
+
+	Map<String, Object> getstudentEligiblelist(@Valid SemesterEligibility request);
+
+	Map<String, Object> generateclassTimeTable(@Valid ClassTimeTableRequest request);
+
+	Map<String, Object> attendenceCalculator(AttendenceRequest request);
+
+	Map<String, Object> studentListForApprove(SemesterEligibility request);
+
+	Map<String, Object> approveStudent(SemesterEligibility request);
+
+	Map<String, Object> eligibleList(SemesterEligibility request);
+
+	Map<String, Object> nonEligibleList(SemesterEligibility request);
+
+	Map<String, Object> sendNonEligibleEmail(SemesterEligibility request);
+
+	Map<String, Object> noDuesConfiguration(NoduR request);
+
+	Map<String, Object> getStudentForNoDues(SemesterEligibility request);
+
+	Map<String, Object> noDuesApprove(SemesterEligibility request);
+
+	Map<String, Object> approveStudentwithPenalty(SemesterEligibility request);
+
+	Map<String, Object> noDuesListForStudent(SemesterEligibility request);
+
+	Map<String, Object> updatenoDuesConfiguration(NoduR request);
+
+	Map<String, Object> getnoDuesConfiguration(NoduR request);
+}

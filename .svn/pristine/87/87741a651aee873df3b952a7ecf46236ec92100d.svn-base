@@ -1,0 +1,349 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "ex_staff_personal")
+public class Staffpersonal {	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+		
+	
+	@NotEmpty
+	@NotNull
+	@NotBlank(message = "Please provide a Name")
+	private String exName;
+
+	
+	private String exNameInHindi;
+	
+	@NotEmpty
+	@NotNull
+	@NotBlank(message = "Please provide a ContactDetails")
+	private String exContactDetails;
+	
+	private String exDateOfJoing;
+
+	/*private String exFirstName;
+	private String exMiddleName;
+
+	private String exLastName;*/
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "date_of_birth", columnDefinition = "DATETIME")
+	private Date exDateOfBirth;
+	
+	private String exLoginName;
+	private String exPassword;
+	private String exEmployeeId;
+	
+	@Column(columnDefinition="TEXT")
+	private String exAddress;
+	
+	private String exEmail;
+	
+	//private String gender;
+	private String exGender;
+	
+	//private String exMobile;
+	private String exState;
+	private String exCity;
+	private String exPhoto;
+	private String exShortName;
+	
+	@Column(columnDefinition="int default 0")
+	private int invigilator;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "colleges_id", nullable = false)
+	private Colleges colleges;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "degree_id", nullable = false)
+	private Degree degree;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "programmes_id", nullable = false)
+	private Programmes programmes;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "stafftype_id", nullable = true)
+	private StaffType stafftype;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "department_id", nullable = true)
+	private Department department;
+	
+
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "ex_staff_personal_designation",joinColumns = { @JoinColumn(name = "staffpersonal_id", referencedColumnName = "id", nullable = false, updatable = true)},
+          inverseJoinColumns = {  @JoinColumn(name = "designation_id", referencedColumnName = "id", nullable = false, updatable = false)})
+    private List<Designation> designation = new LinkedList<>();
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+	private Date exCreateDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+	private Date exUpdateDate;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private boolean exIsActive;
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private boolean exIsDelete;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public String getExNameInHindi() {
+		return exNameInHindi;
+	}
+
+	public String getExContactDetails() {
+		return exContactDetails;
+	}
+
+	public String getExDateOfJoing() {
+		return exDateOfJoing;
+	}
+
+	public Date getExDateOfBirth() {
+		return exDateOfBirth;
+	}
+
+	public String getExLoginName() {
+		return exLoginName;
+	}
+
+	public String getExPassword() {
+		return exPassword;
+	}
+
+	public String getExEmployeeId() {
+		return exEmployeeId;
+	}
+
+
+	public String getExAddress() {
+		return exAddress;
+	}
+
+	public String getExEmail() {
+		return exEmail;
+	}
+
+	public String getExGender() {
+		return exGender;
+	}
+
+	public String getExState() {
+		return exState;
+	}
+
+	public String getExCity() {
+		return exCity;
+	}
+
+	public String getExPhoto() {
+		return exPhoto;
+	}
+
+	public int getInvigilator() {
+		return invigilator;
+	}
+
+	public Colleges getColleges() {
+		return colleges;
+	}
+
+	public Degree getDegree() {
+		return degree;
+	}
+
+	public Programmes getProgrammes() {
+		return programmes;
+	}
+
+	public StaffType getStafftype() {
+		return stafftype;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public List<Designation> getDesignation() {
+		return designation;
+	}
+
+	public Date getExCreateDate() {
+		return exCreateDate;
+	}
+
+	public Date getExUpdateDate() {
+		return exUpdateDate;
+	}
+
+	public boolean isExIsActive() {
+		return exIsActive;
+	}
+
+	public boolean isExIsDelete() {
+		return exIsDelete;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public void setExNameInHindi(String exNameInHindi) {
+		this.exNameInHindi = exNameInHindi;
+	}
+
+	public void setExContactDetails(String exContactDetails) {
+		this.exContactDetails = exContactDetails;
+	}
+
+	public void setExDateOfJoing(String exDateOfJoing) {
+		this.exDateOfJoing = exDateOfJoing;
+	}
+
+	public void setExDateOfBirth(Date exDateOfBirth) {
+		this.exDateOfBirth = exDateOfBirth;
+	}
+
+	public void setExLoginName(String exLoginName) {
+		this.exLoginName = exLoginName;
+	}
+
+	public void setExPassword(String exPassword) {
+		this.exPassword = exPassword;
+	}
+
+	public void setExEmployeeId(String exEmployeeId) {
+		this.exEmployeeId = exEmployeeId;
+	}
+
+
+	public void setExAddress(String exAddress) {
+		this.exAddress = exAddress;
+	}
+
+	public void setExEmail(String exEmail) {
+		this.exEmail = exEmail;
+	}
+
+	public void setExGender(String exGender) {
+		this.exGender = exGender;
+	}
+
+	public void setExState(String exState) {
+		this.exState = exState;
+	}
+
+	public void setExCity(String exCity) {
+		this.exCity = exCity;
+	}
+
+	public void setExPhoto(String exPhoto) {
+		this.exPhoto = exPhoto;
+	}
+
+	public void setInvigilator(int invigilator) {
+		this.invigilator = invigilator;
+	}
+
+	public void setColleges(Colleges colleges) {
+		this.colleges = colleges;
+	}
+
+	public void setDegree(Degree degree) {
+		this.degree = degree;
+	}
+
+	public void setProgrammes(Programmes programmes) {
+		this.programmes = programmes;
+	}
+	public String getExShortName() {
+		return exShortName;
+	}
+
+	public void setExShortName(String exShortName) {
+		this.exShortName = exShortName;
+	}
+
+	public void setStafftype(StaffType stafftype) {
+		this.stafftype = stafftype;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public void setDesignation(List<Designation> designation) {
+		this.designation = designation;
+	}
+
+	public void setExCreateDate(Date exCreateDate) {
+		this.exCreateDate = exCreateDate;
+	}
+
+	public void setExUpdateDate(Date exUpdateDate) {
+		this.exUpdateDate = exUpdateDate;
+	}
+
+	public void setExIsActive(boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public void setExIsDelete(boolean exIsDelete) {
+		this.exIsDelete = exIsDelete;
+	}
+
+	@Override
+	public String toString() {
+		return "Staffpersonal [id=" + id + ", exName=" + exName + ", exNameInHindi=" + exNameInHindi
+				+ ", exContactDetails=" + exContactDetails + ", exDateOfJoing=" + exDateOfJoing + ", exDateOfBirth="
+				+ exDateOfBirth + ", exLoginName=" + exLoginName + ", exPassword=" + exPassword + ", exEmployeeId="
+				+ exEmployeeId + ", exAddress=" + exAddress + ", exEmail=" + exEmail + ", exGender=" + exGender
+				+ ", exState=" + exState + ", exCity=" + exCity + ", exPhoto=" + exPhoto + ", exShortName="
+				+ exShortName + ", invigilator=" + invigilator + ", colleges=" + colleges + ", degree=" + degree
+				+ ", programmes=" + programmes + ", stafftype=" + stafftype + ", department=" + department
+				+ ", designation=" + designation + ", exCreateDate=" + exCreateDate + ", exUpdateDate=" + exUpdateDate
+				+ ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete + "]";
+	}
+	
+}

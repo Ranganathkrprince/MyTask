@@ -1,0 +1,72 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.Batch;
+
+public interface BatchRepository  extends CrudRepository<Batch, Long>{
+	List<Batch> findByExNameAndExIsDelete(String trim, Boolean exIsDelete);
+
+	List<Batch> findByExIsDelete(Boolean exIsDelete);
+
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_batch set ex_is_delete = ?1  ,ex_is_active = ?2  where id =?3", nativeQuery = true)
+	int deleteBatch(Boolean exIsDelete, Boolean is_active, Long id);
+	
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_batch set ex_name = ?1 ,ex_is_active =?2 , ex_description =?3  , ex_update_date = ?4 , ex_identifier = ?6 , degree_id = ?7, programmes_id = ?8 where id =?5", nativeQuery = true)
+	int updateBatchRecord(String exName, Boolean exIsActive, String exDescription, Date date, Long id,String exIdentifier, Long degree_id, Long programmes_id); 
+
+
+	Optional<Batch> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, Long batch);
+
+//new added
+	//Optional<Batch> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, String trim);
+
+	Optional<Batch> findByExNameAndExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeId(String trim, boolean b, boolean c , Long program , Long degree);
+
+	
+	
+	Optional<Batch> findByExIdentifierAndExIsDeleteAndExIsActive(String trim, boolean b, boolean c);
+
+	Optional<Batch> findByExNameAndExIsDeleteAndExIsActive(String name, boolean delete, boolean active);
+
+	List<Batch> findByExIdentifierAndExIsDelete(String exIdentifier, boolean b);
+
+	Optional<Batch> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, Batch batch);
+
+	List<Batch> findByExNameAndExIsDeleteAndExIdentifierAndDegreeIdAndProgrammesId(String trim, boolean b,
+			String exIdentifier, Long degree, Long programmes);
+
+	List<Batch> findByProgrammesIdInAndDegreeIdOrderByIdDesc(Long programmes, Long degree);
+
+	List<Batch> findByProgrammesIdInAndDegreeIdIn(List<Long> programmes, List<Long> degree);
+
+	Optional<Batch> findByIdAndExIsDeleteAndExIsActive(Long batch, boolean b, boolean c);
+
+	
+	
+	@Query(value = "select * from ex_batch where ex_is_delete=?2 and ex_is_active=?3 and ex_name =?1 and  programmes_id = ?4 AND degree_id = ?5", nativeQuery = true)
+	Optional<Batch> findrecords(String trim, boolean b, boolean c, Long id, Long id2);
+
+//	Optional<Batch> findByExNameAndExIsDeleteAndExIsActive(String trim);
+	
+
+	List<Batch> findByExNameIn(List<String> batch1);
+
+	Optional<Batch> findByExIdentifierAndExIsDeleteAndExIsActiveAndProgrammesIdAndDegreeId(String trim, boolean b,
+			boolean c, Long id, Long id2);
+
+}

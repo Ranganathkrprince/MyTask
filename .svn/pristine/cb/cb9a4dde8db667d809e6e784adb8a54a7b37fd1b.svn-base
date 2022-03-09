@@ -1,0 +1,52 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.niftem.app.entity.ApplicationVersion;
+
+
+public interface ApplicationVersionRepository extends CrudRepository<ApplicationVersion, Long>{
+
+	List<ApplicationVersion> findByExAppTypeAndExIsDelete(String trim, boolean b);
+
+	List<ApplicationVersion> findByExVersionAndExIsDelete(String trim, boolean b);
+
+	Optional<ApplicationVersion> findByExIsDeleteAndId(boolean b, Long id);
+
+	List<ApplicationVersion> findByExDescriptionAndExIsDelete(String trim, boolean b);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE ex_application_version a SET a.ex_app_type=?1 , a.ex_description=?2,\r\n" + 
+			"a.ex_is_active = ?3, a.ex_update_date = ?4, a.ex_due_date = ?6 ,a.ex_version = ?7,\r\n" + 
+			"a.user_id = ?8 where  a.id = ?5 ", nativeQuery = true)
+	int updateAppversionRecords(String exAppType, String exDescription, Boolean exIsActive, Date date, Long id,
+			Date add_duedate, String exVersion, Long user);
+
+	List<ApplicationVersion> findByExIsDelete(boolean b);
+
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_application_version set ex_is_delete = ?1  ,ex_is_active = ?2  where id =?3", nativeQuery = true)
+	int deleteAppVersion(Boolean exIsDelete, Boolean is_active, Long id);
+
+	@Query(value = "SELECT * FROM ex_application_version a WHERE a.ex_is_delete=?1", nativeQuery = true)
+	List<ApplicationVersion> app(Boolean exIsDelete);
+
+	List<ApplicationVersion> findByExVersionAndExAppTypeAndExIsDelete(String trim, String trim2, boolean b);
+
+	
+	
+
+	
+	
+}

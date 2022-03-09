@@ -1,0 +1,298 @@
+package com.niftem.app.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "ex_late_registration")
+public class LateRegistration {
+			
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Long id;
+		
+	    @ManyToOne( optional = false)
+	    @JoinColumn(name = "academicyear_id", nullable = false)
+	    private AcademicYear academicYear;    
+
+		 @ManyToOne( optional = false)
+		 @JoinColumn(name = "colleges_id", nullable = false)
+		 private Colleges colleges; 
+		
+		@ManyToOne(optional = false)
+		@JoinColumn(name = "degree_id", nullable = false)
+		private Degree degree;
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "programmes_id", nullable = false)
+		private Programmes programmes; 
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "department_id", nullable = false)
+		private Department department; 
+		
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "programmeyear_id", nullable = false)
+		private ProgrammeYear programmeYear; 
+		
+
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "semester_id", nullable = false)
+		private Semster semester; 
+	    
+		@ManyToOne( optional = false)
+		@JoinColumn(name = "student_admission_id", nullable = false)
+		private Studentadmission studentadmission; 
+		
+		@ManyToOne( optional = true)
+		@JoinColumn(name = "courses_id", nullable = true)
+		private Courses courses; 
+		
+		@ManyToOne( optional = true)
+		@JoinColumn(name = "mentor_id", nullable = true)
+		private Mentor mentor; 
+		
+		@ManyToOne( optional = true)
+		@JoinColumn(name = "coursestype_id", nullable = true)
+		private CoursesType coursesType; 
+		
+
+		@Column(columnDefinition="BOOLEAN DEFAULT false")
+	    private Boolean exIsActive;
+		
+		@Column(columnDefinition="BOOLEAN DEFAULT false")
+		private Boolean exIsDelete;
+		
+		@Temporal(TemporalType.TIMESTAMP)
+		@Column(name = "ex_create_date", columnDefinition = "DATETIME")
+		private Date exCreateDate;
+
+		@Temporal(TemporalType.TIMESTAMP)
+		@Column(name = "ex_update_date", columnDefinition = "DATETIME")
+		private Date exUpdateDate;
+		
+		
+		@Column(columnDefinition="integer default 0")
+	    private Integer exIsMentor;
+		
+		@Column(columnDefinition="integer default 0")
+	    private Integer exIsHod;
+
+		@Column(columnDefinition="integer default 0")
+	    private Integer exIsDean;
+		
+		private String exDocumentPath;
+		
+	    private Integer exIsApproveType;
+
+		
+		@Column(columnDefinition="TEXT")
+		private String exRemark;
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public AcademicYear getAcademicYear() {
+			return academicYear;
+		}
+
+		public void setAcademicYear(AcademicYear academicYear) {
+			this.academicYear = academicYear;
+		}
+
+		public Colleges getColleges() {
+			return colleges;
+		}
+
+		public void setColleges(Colleges colleges) {
+			this.colleges = colleges;
+		}
+
+		public Degree getDegree() {
+			return degree;
+		}
+
+		public void setDegree(Degree degree) {
+			this.degree = degree;
+		}
+
+		public Programmes getProgrammes() {
+			return programmes;
+		}
+
+		public void setProgrammes(Programmes programmes) {
+			this.programmes = programmes;
+		}
+
+		public Department getDepartment() {
+			return department;
+		}
+
+		public void setDepartment(Department department) {
+			this.department = department;
+		}
+
+		public ProgrammeYear getProgrammeYear() {
+			return programmeYear;
+		}
+
+		public void setProgrammeYear(ProgrammeYear programmeYear) {
+			this.programmeYear = programmeYear;
+		}
+
+		public Semster getSemester() {
+			return semester;
+		}
+
+		public void setSemester(Semster semester) {
+			this.semester = semester;
+		}
+
+		public Studentadmission getStudentadmission() {
+			return studentadmission;
+		}
+
+		public void setStudentadmission(Studentadmission studentadmission) {
+			this.studentadmission = studentadmission;
+		}
+
+		public Boolean getExIsActive() {
+			return exIsActive;
+		}
+
+		public void setExIsActive(Boolean exIsActive) {
+			this.exIsActive = exIsActive;
+		}
+
+		public Boolean getExIsDelete() {
+			return exIsDelete;
+		}
+
+		public void setExIsDelete(Boolean exIsDelete) {
+			this.exIsDelete = exIsDelete;
+		}
+
+		public Date getExCreateDate() {
+			return exCreateDate;
+		}
+
+		public void setExCreateDate(Date exCreateDate) {
+			this.exCreateDate = exCreateDate;
+		}
+
+		public Date getExUpdateDate() {
+			return exUpdateDate;
+		}
+
+		public void setExUpdateDate(Date exUpdateDate) {
+			this.exUpdateDate = exUpdateDate;
+		}
+
+		public Integer getExIsMentor() {
+			return exIsMentor;
+		}
+
+		public void setExIsMentor(Integer exIsMentor) {
+			this.exIsMentor = exIsMentor;
+		}
+
+		public Integer getExIsHod() {
+			return exIsHod;
+		}
+
+		public void setExIsHod(Integer exIsHod) {
+			this.exIsHod = exIsHod;
+		}
+
+		public Integer getExIsDean() {
+			return exIsDean;
+		}
+
+		public void setExIsDean(Integer exIsDean) {
+			this.exIsDean = exIsDean;
+		}
+
+		public String getExDocumentPath() {
+			return exDocumentPath;
+		}
+
+		public void setExDocumentPath(String exDocumentPath) {
+			this.exDocumentPath = exDocumentPath;
+		}
+
+		public String getExRemark() {
+			return exRemark;
+		}
+
+		public void setExRemark(String exRemark) {
+			this.exRemark = exRemark;
+		}
+
+		public Integer getExIsApproveType() {
+			return exIsApproveType;
+		}
+
+		public void setExIsApproveType(Integer exIsApproveType) {
+			this.exIsApproveType = exIsApproveType;
+		}
+
+		public Courses getCourses() {
+			return courses;
+		}
+
+		public void setCourses(Courses courses) {
+			this.courses = courses;
+		}
+
+		public CoursesType getCoursesType() {
+			return coursesType;
+		}
+
+		public void setCoursesType(CoursesType coursesType) {
+			this.coursesType = coursesType;
+		}
+
+		public Mentor getMentor() {
+			return mentor;
+		}
+
+		public void setMentor(Mentor mentor) {
+			this.mentor = mentor;
+		}
+
+		@Override
+		public String toString() {
+			return "LateRegistration [id=" + id + ", academicYear=" + academicYear + ", colleges=" + colleges
+					+ ", degree=" + degree + ", programmes=" + programmes + ", department=" + department
+					+ ", programmeYear=" + programmeYear + ", semester=" + semester + ", studentadmission="
+					+ studentadmission + ", courses=" + courses + ", mentor=" + mentor + ", coursesType=" + coursesType
+					+ ", exIsActive=" + exIsActive + ", exIsDelete=" + exIsDelete + ", exCreateDate=" + exCreateDate
+					+ ", exUpdateDate=" + exUpdateDate + ", exIsMentor=" + exIsMentor + ", exIsHod=" + exIsHod
+					+ ", exIsDean=" + exIsDean + ", exDocumentPath=" + exDocumentPath + ", exIsApproveType="
+					+ exIsApproveType + ", exRemark=" + exRemark + "]";
+		}
+
+		
+
+		
+
+		
+
+		
+
+}

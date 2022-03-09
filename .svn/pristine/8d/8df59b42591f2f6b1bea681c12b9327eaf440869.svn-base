@@ -1,0 +1,26 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.AuditLog;
+import com.niftem.app.entity.PrivilegesFeatures;
+import com.niftem.app.entity.PrivilegesModules;
+import com.niftem.app.entity.Staffpersonal;
+
+public interface AuditLogRepository extends CrudRepository<AuditLog, Long>{
+
+	@Query(value="SELECT * FROM ex_audit_log where ex_create_date BETWEEN ?1 AND ?2 ",nativeQuery=true)
+	List<AuditLog> findByCreatedate(Date startDate, Date endDate);
+	
+	@Query(value="SELECT b.ex_privilege_module , c.ex_featurename , a.ex_record_type , a.ex_description, a.ex_create_date,d.ex_name AS staff\r\n" + 
+			"FROM ex_audit_log a , ex_privileges_modules b , ex_privileges_features c , ex_user d\r\n" + 
+			" WHERE a.privileges_modules_id = b.id  AND c.privileges_modules_id = b.id AND  a.user_id = d.id AND a.ex_create_date >= ?1 AND a.ex_create_date <= ?2 AND a.privileges_modules_id = ?3  ",nativeQuery=true)
+	List<Object[]> auditLogReport(String sDate, String eDate, String privilegesModulesId);
+	
+
+	
+}

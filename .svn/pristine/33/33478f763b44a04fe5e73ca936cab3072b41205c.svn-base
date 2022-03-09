@@ -1,0 +1,15 @@
+package com.niftem.app.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.niftem.app.entity.ModuleMapping;
+
+public interface ModuleMappingRepository extends CrudRepository<ModuleMapping, Long>{
+
+	
+	List<ModuleMapping> findByExModuleNameAndRoleId (String modole, long role);
+	
+	List<ModuleMapping> findByRoleId (long role);
+}

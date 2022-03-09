@@ -1,0 +1,129 @@
+package com.niftem.app.repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import com.niftem.app.entity.Staffpersonal;
+
+public interface StaffpersonalRepository extends CrudRepository<Staffpersonal, Long> {
+
+	List<Staffpersonal> findByExIsDelete(boolean delete);
+
+	List<Staffpersonal> findByExEmployeeIdAndExIsDelete(String string, boolean b);
+
+	List<Staffpersonal> findByExLoginNameAndExIsDelete(String trim, boolean b);
+
+	List<Staffpersonal> findByCollegesIdAndDegreeId(Long colleges, Long degree);
+
+	List<Staffpersonal> findByStafftypeId(Long stafftype);
+
+	List<Staffpersonal> findByCollegesIdAndDegreeIdAndStafftypeId(Long colleges, Long degree, Long stafftype);
+
+	Optional<Staffpersonal> findByExIsDeleteAndExIsActiveAndId(boolean b, boolean c, Long staff);
+
+
+
+	List<Staffpersonal> findByExIsDeleteAndExLoginNameAndExIsActive(boolean b, String trim, boolean c);
+
+	
+//upload added for staff
+
+	
+
+	
+
+	//List<Staffpersonal> findByExLoginNameAndExIsDeleteAndExIsActive(String string, boolean b, boolean c);
+
+	List<Staffpersonal> findByExLoginNameAndExPasswordAndExIsDelete(String userName, String dcrypt, Boolean is_delete);
+	
+
+	List<Staffpersonal> findByExEmployeeIdAndExIsDeleteAndExIsActive(String string, boolean b, boolean c);
+
+
+	
+	//List<Staffpersonal> findByExLoginNameAndExPasswordAndExIsDelete(String userName, String dcrypt, Boolean is_delete);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_staff_personal set ex_password = ?1 where ex_login_name =?2", nativeQuery = true)
+
+	int updateStaffPassword(String newpassworddcrypt, String userName);
+
+	
+	List<Staffpersonal> findByExIsDeleteAndExLoginName(boolean b, String userName);
+
+	
+
+	Optional<Staffpersonal> findByExIsDeleteAndExIsActiveAndExEmployeeId(boolean b, boolean c, String string);
+
+	
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_staff_personal set ex_photo = ?1 where id =?2", nativeQuery = true)
+	int updatePhoto(String imagepath, Long id);
+
+
+	List<Staffpersonal> findByExIsDeleteAndExIsActiveAndCollegesIdAndProgrammesIdAndDegreeIdAndDesignationIdIn(
+			boolean b, boolean c, Long colleges, Long programmes, Long degree, List<Long> list1);
+
+	Optional<Staffpersonal> findByIdAndExIsDeleteAndExIsActive(Long staff, boolean b, boolean c);
+
+	List<Staffpersonal> findByIdAndExIsDelete(Long staff, boolean b);
+
+	List<Staffpersonal> findByCollegesIdInAndProgrammesIdInAndDepartmentIdInAndDegreeIdIn(List<Long> colleges,
+			List<Long> programmes, List<Long> department, List<Long> degree);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_staff_personal set ex_name = ?1 , ex_email = ?2,  ex_contact_details = ?3, ex_is_active = ?4,ex_city=?6,ex_address=?7,date_of_birth=?8,ex_gender=?9,ex_state=?10,ex_employee_id=?11,ex_update_date=?12,ex_date_of_joing=?13,ex_name_in_hindi=?14 , invigilator =?15 , ex_short_name = ?16 where id =?5", nativeQuery = true)
+
+	int updateStaffpersonal(String exName, String exEmail, String exContactDetails, boolean exIsActive, Long id,
+			String exCity, String exAddress, Date parse, String exGender, String exState, String exEmployeeId,
+			Date updatedate, String exDateOfJoing, String exNameInHindi , int invigilator , String shortname);
+
+	
+	
+	@Query(value = "SELECT a1.ex_identifier as college,a2.ex_name as degree,a3.ex_identifier as pfm,a4.ex_identifier as ay,a5.ex_name as name,\r\n" + 
+			"a7.ex_name as m,a.ex_employee_id as q,a.ex_name as w,a.ex_email as e,a.ex_contact_details as r,a.ex_address as t,\r\n" + 
+			"a.date_of_birth as dateofbirth,a.ex_gender as u,b.ex_adhaar_number as j,b.ex_bank_account_no as y,b.ex_bank_name as k,b.ex_ifsc_code,b.ex_pan_number,\r\n" + 
+			"b.ex_qualification,b.ex_blood_group , a.invigilator \r\n" + 
+			"FROM  ex_staff_personal a \r\n" + 
+			"LEFT JOIN ex_staff_emp_details b ON a.id=b.staffpersonal_id\r\n" + 
+			"LEFT JOIN ex_colleges a1 ON a1.id=a.colleges_id\r\n" + 
+			"LEFT JOIN ex_degree a2 ON a2.id=a.degree_id\r\n" + 
+			"LEFT JOIN ex_programmes a3 ON a3.id=a.programmes_id\r\n" + 
+			"LEFT JOIN ex_department a4 ON a4.id=a.department_id\r\n" + 
+			"LEFT JOIN ex_staff_type a5 ON a5.id=a.stafftype_id\r\n" + 
+			"LEFT JOIN ex_staff_personal_designation a6 ON a6.staffpersonal_id=a.id\r\n" + 
+			"LEFT JOIN ex_designation a7 ON a7.id=a6.designation_id\r\n"+
+			"WHERE a.ex_is_active=TRUE AND a.ex_is_delete=FALSE ORDER BY a.department_id", nativeQuery = true)
+				List<Object[]> getstaffdetails();
+	
+				List<Staffpersonal> findByExIsDeleteAndIdAndExIsActive( boolean b,Long staff, boolean c);
+	
+
+	
+	@Query(value = "SELECT count(a.id) from ex_staff_personal a WHERE a.ex_is_active = 1 AND a.ex_is_delete = 0 and  a.invigilator = 0", nativeQuery = true)
+	int getInviGilatorCount();
+
+	@Query(value = "SELECT * from ex_staff_personal a WHERE a.ex_is_active = 1 AND a.ex_is_delete = 0 and a.invigilator = 0  ORDER BY RAND() LIMIT 3", nativeQuery = true)
+	List<Staffpersonal> getAllstaffforallocation();
+	
+	
+	@Query(value = "SELECT * from ex_staff_personal a WHERE a.ex_is_active = 1 AND a.ex_is_delete = 0  and a.invigilator = 0 and  a.id NOT IN ?1 ORDER BY RAND() LIMIT 3", nativeQuery = true)
+	List<Staffpersonal> getstaffforallocation(List<Long> id);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update ex_staff_personal set invigilator = 0 where id IN ?1", nativeQuery = true)
+	int InvigilatorAllocaion(List<Long> id);
+}

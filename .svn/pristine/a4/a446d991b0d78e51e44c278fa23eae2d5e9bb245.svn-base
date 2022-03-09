@@ -1,0 +1,104 @@
+package com.niftem.app.model;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class BatchRequest {
+	private Long id;
+	 
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a name")
+	private String exName;
+	
+	@NotNull(message = "Please provide a exIsActive 0/1")
+	
+    private Boolean exIsActive;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a Identifier")
+	private String exIdentifier;
+	
+	@NotEmpty@NotNull@NotBlank(message = "Please provide a description")
+	private String exDescription;
+	
+	private Long degree;
+	
+	private Long programmes;
+
+      private Long user;
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getExName() {
+		return exName;
+	}
+
+	public void setExName(String exName) {
+		this.exName = exName;
+	}
+
+	public Boolean getExIsActive() {
+		return exIsActive;
+	}
+
+	public void setExIsActive(Boolean exIsActive) {
+		this.exIsActive = exIsActive;
+	}
+
+	public String getExIdentifier() {
+		return exIdentifier;
+	}
+
+	public void setExIdentifier(String exIdentifier) {
+		this.exIdentifier = exIdentifier;
+	}
+
+	public String getExDescription() {
+		return exDescription;
+	}
+
+	public void setExDescription(String exDescription) {
+		this.exDescription = exDescription;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	
+	
+	public Long getDegree() {
+		return degree;
+	}
+
+	public void setDegree(Long degree) {
+		this.degree = degree;
+	}
+
+	public Long getProgrammes() {
+		return programmes;
+	}
+
+	public void setProgrammes(Long programmes) {
+		this.programmes = programmes;
+	}
+
+	@Override
+	public String toString() {
+		return "BatchRequest [id=" + id + ", exName=" + exName + ", exIsActive=" + exIsActive + ", exIdentifier="
+				+ exIdentifier + ", exDescription=" + exDescription + ", degree=" + degree + ", programmes="
+				+ programmes + ", user=" + user + "]";
+	}
+
+	
+	
+	
+}
